@@ -3,9 +3,9 @@
 //-------------------------------------------------
 class ClipMagPickup:RandomSpawner replaces Clip{
 	default{
-		dropitem "ZM66RifleMags",256,12;
-		dropitem "HDPistolMag",256,2;
-		dropitem "HDSMGMag",256,1;
+		//dropitem "ZM66RifleMags",256,12;
+		//dropitem "HDPistolMag",256,2;
+		//dropitem "HDSMGMag",256,1;
 		dropitem "ArmorBonus",256,1;
 	}
 }
@@ -22,8 +22,8 @@ class ClipBoxPickup1:ZM66RifleMags{
 		super.postbeginplay();
 		if(random(0,2))A_SpawnItemEx("HDFragGrenadeAmmo",-3,-3,flags:SXF_NOCHECKPOSITION);
 		if(random(0,2)){
-			A_SpawnItemEx("HDRocketAmmo",3,3,flags:SXF_NOCHECKPOSITION);
-			A_SpawnItemEx("ZM66AssaultRifle",1,1,flags:SXF_NOCHECKPOSITION);
+			//A_SpawnItemEx("HDRocketAmmo",3,3,flags:SXF_NOCHECKPOSITION);
+			//A_SpawnItemEx("ZM66AssaultRifle",1,1,flags:SXF_NOCHECKPOSITION);
 		}else A_SpawnItemEx("ZM66Random",1,1,flags:SXF_NOCHECKPOSITION);
 	}
 }
@@ -31,18 +31,18 @@ class ClipBoxPickup2:HDSMGMag{
 	override void postbeginplay(){
 		super.postbeginplay();
 		if(random(0,2))A_SpawnItemEx("HDFragGrenadeAmmo",-3,-3,flags:SXF_NOCHECKPOSITION);
-		if(random(0,2))A_SpawnItemEx("HDSMGMag",3,3,flags:SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("HDSMG",1,1,flags:SXF_NOCHECKPOSITION);
+		//if(random(0,2))A_SpawnItemEx("HDSMGMag",3,3,flags:SXF_NOCHECKPOSITION);
+		//A_SpawnItemEx("HDSMG",1,1,flags:SXF_NOCHECKPOSITION);
 	}
 }
 class ShellRandom:RandomSpawner replaces Shell{
 	default{
-		dropitem "ShellPickup",256,8;
+		//dropitem "ShellPickup",256,8;
 		dropitem "HDFumbledShell",256,4;
 		dropitem "DecoPusher",200,4;
 		dropitem "BFGVileShard",200,1;
-		dropitem "HDCellpacks",256,1;
-		dropitem "ZM66RifleMags",256,1;
+		//dropitem "HDCellpacks",256,1;
+		//dropitem "ZM66RifleMags",256,1;
 		dropitem "HDAB",200,1;
 		dropitem "YokaiSpawner",128,1;
 	}
@@ -51,7 +51,7 @@ class ShellBoxRandom:RandomSpawner replaces ShellBox{
 	default{
 		dropitem "ShellBoxPickup",256,10;
 		dropitem "DecoPusher",200,1;
-		dropitem "HDCellpacks",256,2;
+		//dropitem "HDCellpacks",256,2;
 		dropitem "HDAB",256,1;
 		dropitem "HDFragGrenadePickup",256,1;
 	}
@@ -66,17 +66,17 @@ class RocketBoxRandom:RandomSpawner replaces RocketBox{
 class CellRandom:RandomSpawner replaces Cell{
 	default{
 		dropitem "BFGVileShard",128,1;
-		dropitem "LiberatorMag",256,3;
+		//dropitem "LiberatorMag",256,3;
 		dropitem "BrontornisRound",256,2;
-		dropitem "HDCellpacks",256,7;
+		//dropitem "HDCellpacks",256,7;
 	}
 }
 class CellPackReplacer:RandomSpawner replaces CellPack{
 	default{
 		dropitem "BFGVileShard",196,1;
-		dropitem "LiberatorMag",256,3;
+		//dropitem "LiberatorMag",256,3;
 		dropitem "BrontornisSpawner",256,1;
-		dropitem "HDCellpacks",256,4;
+		//dropitem "HDCellpacks",256,4;
 		dropitem "HDAB",256,1;
 		dropitem "PortableLadder",256,1;
 		dropitem "YokaiSpawner",256,1;
@@ -369,11 +369,11 @@ class HDAmBoxDisarmed:HDAmBoxUnarmed{
 class HDFragGrenadePickup:FragP{
 	override void postbeginplay(){
 		super.postbeginplay();
-		A_SpawnItemEx("FragP",-4,0,flags:SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("FragP",-4,4,flags:SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("FragP",0,4,flags:SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("FragP",4,0,flags:SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("FragP",4,4,flags:SXF_NOCHECKPOSITION);
+		if(random(0,2)) A_SpawnItemEx("FragP",-4,0,flags:SXF_NOCHECKPOSITION);
+		if(random(0,2)) A_SpawnItemEx("FragP",-4,4,flags:SXF_NOCHECKPOSITION);
+		if(random(0,2)) A_SpawnItemEx("FragP",0,4,flags:SXF_NOCHECKPOSITION);
+		if(random(0,2)) A_SpawnItemEx("FragP",4,0,flags:SXF_NOCHECKPOSITION);
+		if(random(0,2)) A_SpawnItemEx("FragP",4,4,flags:SXF_NOCHECKPOSITION);
 	}
 }
 
@@ -442,10 +442,10 @@ class HelmFrag:RandomSpawner replaces ArmorBonus{
 		dropitem "DecoPusher",96,20;
 		dropitem "SpiritualArmour",96,2;
 		dropitem "HDFragGrenades",72,1;
-		dropitem "LiberatorMag",48,1;
-		dropitem "ZM66RifleMags",48,1;
+		//dropitem "LiberatorMag",48,1;
+		//dropitem "ZM66RifleMags",48,1;
 		dropitem "BFGVileShard",96,1;
-		dropitem "HDCellPacks",48,1;
+		//dropitem "HDCellPacks",48,1;
 		dropitem "PortableStimpack",48,1;
 		dropitem "ClipBox",48,1;
 		dropitem "HDAB",48,1;
@@ -457,8 +457,8 @@ class BlueFrag:RandomSpawner replaces HealthBonus{
 		dropitem "BluePotion",96,2;
 		dropitem "HDFragGrenades",72,1;
 		dropitem "BFGVileShard",96,1;
-		dropitem "HDPistolMag",48,1;
-		dropitem "HDCellPacks",72,1;
+		//dropitem "HDPistolMag",48,1;
+		//dropitem "HDCellPacks",72,1;
 		dropitem "PortableMedikit",48,1;
 		dropitem "PortableStimpack",48,1;
 		dropitem "HDAB",48,1;
