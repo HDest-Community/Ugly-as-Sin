@@ -1,0 +1,53 @@
+version "3.4"
+
+class HDScav_Bootstrap : EventHandler {
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		player.mo.giveinventory("HDScav_HungerTracker", 1);
+	}
+}
+
+class HDScav_HungerTracker : CustomInventory {
+	int calories;
+	int minfatigue;
+	HDPlayerPawn ownr;
+
+	default {
+		+INVENTORY.AUTOACTIVATE;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		calories = 2000;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let ownr = HDPlayerPawn(owner);
+
+		//Tick off one calorie every second
+		//and tick off per fatigue
+		if(level.time % 35 == 1) {
+			calories -= 1;
+			calories -= ownr.fatigue;
+			if(calories < 0) { calories = 0; }
+			console.printf("%i", calories);
+		}
+
+		//Tick up minimum fatigue level every minute starving
+		if((calories == 0) && (level.time % 2100 == 1)) {
+			minfatigue += 1;
+		}
+
+		if(ownr.fatigue < minfatigue) { ownr.fatigue = minfatigue; }
+	}
+
+	States {
+		Spawn:
+			TNT1 A -1;
+			stop;
+		Use:
+			TNT1 A 1;
+			loop;
+	}
+}
