@@ -29,20 +29,22 @@ class HDScav_HungerTracker : CustomInventory {
 
 		//Per minute
 		if(level.time % 2100 == 1) {
-			if(calories == 0) { minfatigue += 1; }
-			else { minfatigue -= 1; }
+			if(calories == 0) { minfatigue += 2; }
+			else { minfatigue -= 2; }
+			if(minfatigue < 0) { minfatigue = 0; }
+			if(hd_debug) { A_Log(string.format("Energy: %i", calories)); }
+			if(hd_debug) { A_Log(string.format("MinFatigue: %i", minfatigue)); }
 		}
 
 		//Per second
 		if(level.time % 35 == 1) {
 			calories -= 1;
 			calories -= ownr.fatigue;
+			if(calories < 0) { calories = 0; }
 		}
 
 		//Per tic
 		if(ownr.fatigue < minfatigue) { ownr.fatigue = minfatigue; }
-		if(minfatigue < 0) { minfatigue = 0; }
-		if(calories < 0) { calories = 0; }
 	}
 
 	States {
