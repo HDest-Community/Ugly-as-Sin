@@ -1,0 +1,7 @@
+HDScav/FoodScoop1	dssgload
+HDScav/FoodScoop2	dsgrload
+
+$random HDScav/FoodScoop {
+	HDScav/FoodScoop1
+	HDScav/FoodScoop2
+}
