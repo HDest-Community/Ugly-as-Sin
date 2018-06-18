@@ -39,7 +39,7 @@ class HDScav_HungerTracker : CustomInventory {
 		//Per second
 		if(level.time % 35 == 1) {
 			calories -= 1;
-			calories -= ownr.fatigue;
+			calories -= (ownr.fatigue - minfatigue);
 			if(calories < 0) { calories = 0; }
 		}
 
