@@ -1,6 +1,6 @@
 zlib License
 
-(C) 2016 Sterling Parker (aka "Caligari87")
+(C) 2018 Sterling Parker (aka "Caligari87")
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
