@@ -83,7 +83,7 @@ class HDScav_FoodItem : HDPickup {
 		if(!countinv("HDScav_FoodEater")) { GiveInventory("HDScav_FoodEater",1); }
 		invoker.eater = HDScav_FoodEater(FindInventory("HDScav_FoodEater", false));
 		if(invoker.eater.mealSize <= 0) {
-			invoker.eater.mealSize = random(2,5)*50;
+			invoker.eater.mealSize = random(10,15)*50;
 			TakeInventory("HDScav_FoodItem",1);
 		}
 		A_SelectWeapon("HDScav_FoodEater");
