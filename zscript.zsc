@@ -36,7 +36,7 @@ class HDScav_HungerTracker : CustomInventory {
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		calories = 2000;
+		calories = random(1500,2000);
 	}
 
 	override void DoEffect() {
