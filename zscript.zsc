@@ -73,8 +73,8 @@ class HDScav_HungerTracker : CustomInventory {
 		if(calories >= 500 && calories < 1000) { statusMessage = "Your stomach grumbles. "; }
 		else if(calories >= 0 && calories < 500) { statusMessage = "Your stomach aches. "; }
 		//Fatigue status message
-		if(minfatigue >= 15 && minfatigue < 20) { statusMessage = statusMessage.."You feel weak. ";
-		if(minfatigue >= 20) { statusMessage = statusMessage.."You're getting shaky. ";
+		if(minfatigue >= 15 && minfatigue < 20) { statusMessage = statusMessage.."You feel weak. "; }
+		if(minfatigue >= 20) { statusMessage = statusMessage.."You're getting shaky. "; }
 		//Last meal messages
 		int mealdelta = (lastmeal - calories);
 		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
