@@ -6,6 +6,17 @@ class HDScav_Bootstrap : EventHandler {
 		player.mo.giveinventory("HDScav_HungerTracker", 1);
 		player.mo.giveinventory("HDScav_FoodItem", 3);
 	}
+
+	override void WorldThingSpawned(WorldEvent e) {
+		if(e.Thing.GetClassName() == "HDBP") {
+			for(int i=1; i <= 3; i++) {
+				let spawneditem = HDScav_FoodItem(Actor.Spawn("HDScav_FoodItem", e.Thing.pos, false));
+				spawneditem.vel.x += frandom(-1,1);
+				spawneditem.vel.y += frandom(-1,1);
+				if(random(i,8) == 8) { break; }
+			}
+		}
+	}
 }
 
 class HDScav_HungerTracker : CustomInventory {
