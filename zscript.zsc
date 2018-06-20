@@ -123,8 +123,8 @@ class HDScav_EmptyFoodItem : HDDebris {
 
 class HDScav_FoodEater : HDWoundFixer {
 	HDScav_HungerTracker tracker;
-	double biteSize;
-	double mealSize;
+	int biteSize;
+	int mealSize;
 
 	action state HDScav_CheckFood() {
 		if(invoker.mealSize <= 0) {
@@ -144,9 +144,9 @@ class HDScav_FoodEater : HDWoundFixer {
 
 	action void HDScav_TakeScoop() {
 		A_PlaySound("HDScav/FoodScoop", CHAN_BODY, frandom(0.3, 0.6));
-		invoker.biteSize  = invoker.mealSize;
-		invoker.biteSize *= frandom(0.1,1.0);
-		invoker.biteSize  = clamp(invoker.biteSize, 1, 40);
+		invoker.biteSize  = min(invoker.mealsize, 75) * frandom(0.75,1.0);
+		invoker.biteSize *= frandom(0.75,1.0);
+		invoker.biteSize  = clamp(invoker.biteSize, 1, 75);
 	}
 
 	action state HDScav_Consume() {
