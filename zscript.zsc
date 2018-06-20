@@ -26,7 +26,10 @@ class HDScav_Bootstrap : EventHandler {
 
 class HDScav_HungerTracker : CustomInventory {
 	int calories;
+	int lastcalories;
+	int lastmeal;
 	int minfatigue;
+	string statusMessage;
 	HDPlayerPawn ownr;
 
 	default {
@@ -61,6 +64,27 @@ class HDScav_HungerTracker : CustomInventory {
 
 		//Per tic
 		if(ownr.fatigue < minfatigue) { ownr.fatigue = minfatigue; }
+	}
+
+	void HungerStatus() {
+		//Hunger status messages
+		statusMessage = "";
+		if(calories >= 500 && calories < 1000) { statusMessage = "Your stomach grumbles. "; }
+		else if(calories >= 0 && calories < 500) { statusMessage = "Your stomach aches. "; }
+		//Delta since last meal
+		if(calories > lastcalories) {
+			lastmeal = calories;
+			lastcalories = calories;
+		}
+		if(lastmeal - calories >= 500 && lastmeal - calories <1000) { statusMessage = statusMessage.."Time for another meal?"; }
+		else if(lastmeal - calories >= 1000 && lastmeal - calories <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
+		else if(lastmeal - calories >= 1500 && lastmeal - calories <2000) { statusMessage = statusMessage.."When did you last eat? "; }
+		else if(lastmeal - calories >= 2000 && lastmeal - calories <2500) { statusMessage = statusMessage.."You can't remember your last meal... "; }
+		//Display if delta calories over threshold
+		if(abs(lastcalories - calories) >= 500) {
+			A_Log(statusMessage);
+			lastcalories = calories;
+		}
 	}
 
 	States {
