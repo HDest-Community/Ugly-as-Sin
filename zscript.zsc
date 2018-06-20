@@ -18,7 +18,7 @@ class HDScav_Bootstrap : EventHandler {
 				let spawneditem = HDScav_FoodItem(Actor.Spawn("HDScav_FoodItem", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(random(i,8) == 8) { break; }
+				if(random(i,4) == 4) { break; }
 			}
 		}
 	}
