@@ -165,10 +165,6 @@ class HDScav_FoodEater : HDWoundFixer {
 		return ResolveState("Swallow");
 	}
 
-	action void HDScav_Swallow() {
-
-	}
-
 	States {
 		Spawn:
 			TNT1 A 1;
@@ -176,7 +172,7 @@ class HDScav_FoodEater : HDWoundFixer {
 		Select:
 			TNT1 A 10 {
 				if(!getcvar("hd_helptext")) return;
-				A_WeaponMessage("Hold Fire to eat.\n\nRemember to chew your food!",175);
+				A_WeaponMessage("Hold Fire to eat.\nRemember to chew your food!",175);
 
 			}
 			goto Super::Select;
