@@ -104,6 +104,23 @@ class HDScav_FoodItem : HDPickup {
 	}
 }
 
+class HDScav_EmptyFoodItem : HDDebris {
+	default {
+		scale 0.4;
+		bouncesound "misc/wallchunks";
+		bouncefactor 0.5;
+	}
+
+	States {
+		Spawn:
+			HSCV C 1;
+			Wait;
+		Death:
+			HSCV C -1;
+			stop;
+	}
+}
+
 class HDScav_FoodEater : HDWoundFixer {
 	HDScav_HungerTracker tracker;
 	double biteSize;
@@ -112,7 +129,12 @@ class HDScav_FoodEater : HDWoundFixer {
 	action state HDScav_CheckFood() {
 		if(invoker.mealSize <= 0) {
 			A_WeaponMessage("No more food!",175);
-			return ResolveState("Ready");
+			let empty=spawn("HDScav_EmptyFoodItem",pos+(0,0,height-8));
+			empty.angle=angle+2;
+			empty.vel=vel;
+			empty.A_ChangeVelocity(3,1,1,CVF_RELATIVE);
+			A_SelectWeapon("Ring");
+			return ResolveState("nope");
 		}
 		else {
 			A_WeaponMessage(string.format("Food left: %i", invoker.mealSize),175);
@@ -177,6 +199,7 @@ class HDScav_FoodEater : HDWoundFixer {
 			TNT1 A 0 A_Refire("Consume");
 		Swallow:
 			TNT1 A random(5,10) A_PlaySound("weapons/pocket");
+			TNT1 A 0 HDScav_CheckFood();
 			goto Ready;
 	}
 }
