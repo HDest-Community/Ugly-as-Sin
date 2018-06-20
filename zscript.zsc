@@ -48,7 +48,7 @@ class HDScav_HungerTracker : CustomInventory {
 
 		//Per minute
 		if(level.time % 2100 == 1) {
-			if(calories == 0) { minfatigue += 2; }
+			if(calories == 0) { minfatigue += 2; lastcalories += 60; }
 			else { minfatigue -= 2; }
 			if(minfatigue < 0) { minfatigue = 0; }
 			if(hd_debug) { A_Log(string.format("Energy: %i", calories)); }
