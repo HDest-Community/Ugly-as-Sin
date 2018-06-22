@@ -7,6 +7,7 @@ class HDScav_Bootstrap : EventHandler {
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("AlreadyInitialized")) {
 			player.mo.giveinventory("HDScav_HungerTracker", 1);
+			player.mo.giveinventory("HDScav_FoodEater", 1);
 			player.mo.giveinventory("HDScav_FoodItem", 3);
 			player.mo.giveinventory("AlreadyInitialized", 1);
 		}
@@ -156,6 +157,10 @@ class HDScav_FoodEater : HDWoundFixer {
 	int mealSize;
 	string flavor;
 
+	default {
+		+INVENTORY.UNDROPPABLE;
+	}
+
 	action string RandomFlavor() {
 		switch(random(0,5))	{
 			case 0:
@@ -183,16 +188,20 @@ class HDScav_FoodEater : HDWoundFixer {
 	action state HDScav_CheckFood() {
 		if(invoker.mealSize <= 0) {
 			A_WeaponMessage("No more food!",175);
-			let empty=spawn("HDScav_EmptyFoodItem",pos+(0,0,height-8));
-			invoker.flavor == "";
-			empty.angle=angle+2;
-			empty.vel=vel;
-			empty.A_ChangeVelocity(3,1,1,CVF_RELATIVE);
-			TakeInventory("HDScav_FoodItem",1);
+			HDScav_DropEmpty();
 			A_SelectWeapon("Ring");
 			return ResolveState("nope");
 		}
 		return ResolveState(null);
+	}
+
+	action void HDScav_DropEmpty() {
+		let empty=spawn("HDScav_EmptyFoodItem",pos+(0,0,height-8));
+		invoker.flavor == "";
+		empty.angle=angle+2;
+		empty.vel=vel;
+		empty.A_ChangeVelocity(3,1,1,CVF_RELATIVE);
+		TakeInventory("HDScav_FoodItem",1);
 	}
 
 	action void HDScav_TakeScoop() {
@@ -221,9 +230,6 @@ class HDScav_FoodEater : HDWoundFixer {
 	}
 
 	States {
-		Spawn:
-			TNT1 A 1;
-			Stop;
 		Select:
 			TNT1 A 10 {
 				if(!getcvar("hd_helptext")) return;
