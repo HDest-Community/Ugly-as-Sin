@@ -3,6 +3,7 @@ version "3.4"
 class AlreadyInitialized : Inventory {}
 
 class HDScav_Bootstrap : EventHandler {
+	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("AlreadyInitialized")) {
@@ -13,15 +14,63 @@ class HDScav_Bootstrap : EventHandler {
 		}
 	}
 
+	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
+		//Spawn rations on backpacks, with a change of a messkit
 		if(e.Thing.GetClassName() == "HDBP") {
 			for(int i=1; i <= 3; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(random(i,4) == 4) { break; }
+				if(RandomChance(0.35)) { break; }
+			}
+			if(RandomChance(0.25) {
+				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
+				spawneditem.vel.x += frandom(-1,1);
+				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
+
+		//Spawn rations on ammo boxes
+		if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
+			for(int i=1; i <= 2; i++) {
+				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
+				spawneditem.vel.x += frandom(-1,1);
+				spawneditem.vel.y += frandom(-1,1);
+				if(RandomChance(0.5) == 1) { break; }
+			}
+		}
+
+		//Randomly spawn on stimpacks, rarely replace
+		if(e.Thing.GetClassName() == "PortableStimpack") {
+			if(RandomChance(0.5) == 0) {
+				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
+				spawneditem.vel.x += frandom(-1,1);
+				spawneditem.vel.y += frandom(-1,1);
+				if(RandomChance(0.25) == 0) {
+					e.Thing.Destroy();
+				}
+			}
+		}
+
+		//Rarely spawn on medikits, very very rarely replace
+		if(e.Thing.GetClassName() == "PortableMedikit") {
+			if(RandomChance(0.15) == 0) {
+				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
+				spawneditem.vel.x += frandom(-1,1);
+				spawneditem.vel.y += frandom(-1,1);
+				if(RandomChance(0.15) == 0) {
+					e.Thing.Destroy();
+				}
+			}
+		}
+	}
+
+	//Return true for random below percentage
+	bool RandomChance(double percentage = 0.5) {
+		if(percentage < 0.0 || percentage > 1.0) { ThrowAbortException("Invalid range for random chance."); }
+		if(frandom(0.0, 1.0) <= percentage) { return true; }
+		return false;
 	}
 }
 
