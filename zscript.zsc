@@ -360,22 +360,22 @@ class HDScav_MessKit : HDWoundFixer {
 	action string RandomFlavor() {
 		switch(random(0,5))	{
 			case 0:
-				return "'Chili w/Beans'\n\nThe cheese will back you up for a month...\n";
+				return "\cb'Chili w/Beans'\c-\n\nThe cheese will back you up for a month...\n";
 				break;
 			case 1:
-				return "'Shredded Barbeque Beef'\n\nAnd 'Carb Fortified Beverage Powder'\nto wash it down.\n";
+				return "\cb'Shredded Barbeque Beef'\c-\n\nAnd 'Carb Fortified Beverage Powder'\nto wash it down.\n";
 				break;
 			case 2:
-				return "'Meatballs in Marinara Sauce'\n\nIts-a me, Doomguy!\n";
+				return "\cb'Meatballs in Marinara Sauce'\c-\n\nIts-a me, Doomguy!\n";
 				break;
 			case 3:
-				return "'Chili and Macaroni'\n\nOh boy, that means Skittles for desert!\n";
+				return "\cb'Chili and Macaroni'\c-\n\nOh boy, that means Skittles for desert!\n";
 				break;
 			case 4:
-				return "'Spinach Mushrooms & Cream Sauce Fettuccine'\n\nMmm, eatin' fancy in the warzone tonight.\n";
+				return "\cb'Spinach Mushrooms & Fettuccine'\c-\n\nMmm, eatin' fancy in the warzone tonight.\n";
 				break;
 			case 5:
-				return "' Rib Shaped BBQ Pork Patty'\n\nJust like mamma used to make back home...\n";
+				return "\cb' Rib Shaped BBQ Pork Patty'\c-\n\nJust like mamma used to make back home...\n";
 				break;
 		}
 		return "'Generic Military Ration'";
