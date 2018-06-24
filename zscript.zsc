@@ -226,6 +226,12 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	override inventory CreateTossable(int amt) {
+		//Drop both current meal and messkit if stunned
+		/*if(owner.stunned) {
+			HDScav_TossOpened();
+			if(amount<=0) { amount = 1; }
+			return super.CreateTossable();
+		}*/
 		//Toss unopened rations
 		if(owner.countinv("HDScav_Ration") > 1) {
 			owner.TakeInventory("HDScav_Ration",1);
