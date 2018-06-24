@@ -16,7 +16,7 @@ class HDScav_Bootstrap : EventHandler {
 
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
-		if(!e.Thing.GetClassName()) return;
+		if(level.time > 10 || !e.Thing.GetClassName()) return;
 		//Spawn rations on backpacks, with a change of a messkit
 		else if(e.Thing.GetClassName() == "HDBP") {
 			int count = random(1,3);
