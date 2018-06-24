@@ -262,11 +262,13 @@ class HDScav_MessKit : HDWoundFixer {
 			TNT1 A 0 HDScav_CheckFood();
 			goto nope;
 		Scoop:
-			TNT1 A random(15,20) HDScav_TakeScoop();
+			TNT1 A 0 HDScav_TakeScoop();
+			TNT1 A random(15,20);
 			TNT1 A 0 A_Refire("Consume");
 			goto nope;
 		Consume:
-			TNT1 A random(8,12) HDScav_Consume();
+			TNT1 A 0 HDScav_Consume();
+			TNT1 A random(8,12);
 			TNT1 A 0 A_Refire("Consume");
 		Swallow:
 			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
