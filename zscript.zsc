@@ -226,15 +226,22 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	override inventory CreateTossable(int amt) {
-		//Throw away uneaten portion
-		if(rationOpen == true) {
-			HDScav_TossOpened();
-			return NULL;
-		}
 		//Toss unopened rations
-		else if(owner.countinv("HDScav_Ration") > 0) {
+		if(owner.countinv("HDScav_Ration") > 1) {
 			owner.TakeInventory("HDScav_Ration",1);
 			return inventory(Spawn("HDScav_Ration", owner.pos));
+		}
+		else if(owner.countinv("HDScav_Ration") == 1) {
+			if(rationOpen == true) {
+				//Throw away uneaten portion
+				HDScav_TossOpened();
+				return NULL;
+			}
+			else {
+				//Toss last unopened ration
+				owner.TakeInventory("HDScav_Ration",1);
+				return inventory(Spawn("HDScav_Ration", owner.pos));
+			}
 		}
 		//Toss messkit itself
 		else {
