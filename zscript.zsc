@@ -59,6 +59,22 @@ class HDScav_Bootstrap : EventHandler {
 				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
+
+		//Randomly break 9mm mags into loose rounds
+		//Commented out as this method of replacing is not good yet
+		/*else if(e.Thing.GetClassName() == "HD9mMag15" || e.Thing.GetClassName() == "HD9mMag30") {
+			if(e.Thing.bDROPPED) { return; }
+			if(RandomChance(0.5) ) {
+				int count = random(3,12);
+				for(int i=1; i <= count; i++) {
+					let spawneditem = HDLoose9mm(Actor.Spawn("HDLoose9mm", e.Thing.pos, false));
+					spawneditem.vel.x += frandom(-2,2);
+					spawneditem.vel.y += frandom(-2,2);
+					spawneditem.vel.z += frandom(1,2);
+				}
+				e.Thing.Destroy();
+			}
+		}*/
 	}
 
 	//Return true for random below percentage
