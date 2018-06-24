@@ -131,24 +131,25 @@ class HDScav_HungerTracker : CustomInventory {
 	void HungerStatus() {
 		//Hunger status messages
 		statusMessage = "";
-		if(calories >= 500 && calories < 1000) { statusMessage = "Your stomach grumbles. "; }
+		if(calories >= 1500) { statusMessage = "Your stomach is full. "; }
+		else if(calories >= 500 && calories < 1000) { statusMessage = "Your stomach grumbles. "; }
 		else if(calories >= 0 && calories < 500) { statusMessage = "Your stomach aches. "; }
 		//Fatigue status message
-		if(minfatigue >= 15 && minfatigue < 20) { statusMessage = statusMessage.."You feel weak. "; }
-		if(minfatigue >= 20) { statusMessage = statusMessage.."You're getting shaky. "; }
+		if(minfatigue >= 0 && minfatigue < 15) { statusMessage = statusMessage.."You feel weak. "; }
+		if(minfatigue >= 15) { statusMessage = statusMessage.."You're getting shaky. "; }
 		//Last meal messages
 		int mealdelta = (lastmeal - calories);
 		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
 		else if(mealdelta >= 1000 && mealdelta <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
 		else if(mealdelta >= 1500 && mealdelta <2000) { statusMessage = statusMessage.."When did you last eat? "; }
 		else if(mealdelta >= 2000 && mealdelta <2500) { statusMessage = statusMessage.."You can't remember your last meal... "; }
-		//Reset delta if meal eaten
+		//Reset delta if calories increase
 		if(calories > lastcalories) {
 			lastmeal = calories;
 			lastcalories = calories;
 		}
-		//Display if delta over threshold, and reset
-		if(abs(lastcalories - calories) >= 500) {
+		//Display message if delta over threshold, and reset
+		if(abs(lastcalories - calories) >= 250) {
 			A_Log(statusMessage);
 			lastcalories = calories;
 		}
