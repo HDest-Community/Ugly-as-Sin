@@ -16,15 +16,16 @@ class HDScav_Bootstrap : EventHandler {
 
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
+		if(!e.Thing.GetClassName()) return;
 		//Spawn rations on backpacks, with a change of a messkit
-		if(e.Thing.GetClassName() == "HDBP") {
-			for(int i=1; i <= 3; i++) {
+		else if(e.Thing.GetClassName() == "HDBP") {
+			int count = random(1,3);
+			for(int i=1; i <= count; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(RandomChance(0.35)) { break; }
 			}
-			if(RandomChance(0.25) {
+			if(RandomChance(0.25)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
@@ -32,36 +33,30 @@ class HDScav_Bootstrap : EventHandler {
 		}
 
 		//Spawn rations on ammo boxes
-		if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			for(int i=1; i <= 2; i++) {
+		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
+			int count = random(1,2);
+			for(int i=1; i <= count; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(RandomChance(0.5) == 1) { break; }
 			}
 		}
 
-		//Randomly spawn on stimpacks, rarely replace
-		if(e.Thing.GetClassName() == "PortableStimpack") {
-			if(RandomChance(0.5) == 0) {
+		//Randomly spawn on stimpacks
+		else if(e.Thing.GetClassName() == "PortableStimpack") {
+			if(RandomChance(0.5)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(RandomChance(0.25) == 0) {
-					e.Thing.Destroy();
-				}
 			}
 		}
 
-		//Rarely spawn on medikits, very very rarely replace
-		if(e.Thing.GetClassName() == "PortableMedikit") {
+		//Rarely spawn on medikits
+		else if(e.Thing.GetClassName() == "PortableMedikit") {
 			if(RandomChance(0.15) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				spawneditem.vel.x += frandom(-1,1);
 				spawneditem.vel.y += frandom(-1,1);
-				if(RandomChance(0.15) == 0) {
-					e.Thing.Destroy();
-				}
 			}
 		}
 	}
