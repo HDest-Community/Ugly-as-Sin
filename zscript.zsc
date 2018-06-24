@@ -169,7 +169,7 @@ class HDScav_Ration : HDPickup {
 	default {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
-		hdpickup.bulk 10;
+		hdpickup.bulk 6;
 		scale 0.5;
 		-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
@@ -215,7 +215,7 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	override double, int weaponbulk(){
-		return 10,0;
+		return 15,0;
 	}
 
 	override void DoEffect() {
