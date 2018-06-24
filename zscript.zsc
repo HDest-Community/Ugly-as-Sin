@@ -170,7 +170,7 @@ class HDScav_Ration : HDPickup {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
 		hdpickup.bulk 6;
-		scale 0.5;
+		scale 0.4;
 		-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
@@ -208,6 +208,7 @@ class HDScav_MessKit : HDWoundFixer {
 
 	default {
 		Scale 0.5;
+		Inventory.PickupMessage "Picked up messkit.";
 		Inventory.Icon "HSCVB0";
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
