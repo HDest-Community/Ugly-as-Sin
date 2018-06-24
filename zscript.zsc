@@ -168,7 +168,7 @@ class HDScav_HungerTracker : CustomInventory {
 class HDScav_Ration : HDPickup {
 	default {
 		inventory.pickupmessage "Picked up some food.";
-		inventory.MaxAmount 8;
+		inventory.MaxAmount 16;
 		hdpickup.bulk 10;
 		scale 0.5;
 		-INVENTORY.INVBAR;
