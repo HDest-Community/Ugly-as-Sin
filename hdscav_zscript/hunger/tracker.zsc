@@ -1,0 +1,79 @@
+class HDScav_HungerTracker : CustomInventory {
+	int calories;
+	int lastcalories;
+	int lastmeal;
+	int minfatigue;
+	string statusMessage;
+	HDPlayerPawn ownr;
+
+	default {
+		+INVENTORY.AUTOACTIVATE;
+		+INVENTORY.PERSISTENTPOWER;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		calories = random(1500,2000);
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let ownr = HDPlayerPawn(owner);
+
+		//Per minute
+		if(level.time % 2100 == 1) {
+			if(calories == 0) { minfatigue += 2; lastcalories += 60; }
+			else { minfatigue -= 2; }
+			if(minfatigue < 0) { minfatigue = 0; }
+			if(hd_debug) { A_Log(string.format("Energy: %i\tMinFatigue: %i", calories, minfatigue)); }
+			if(hd_debug) { A_Log(string.format("lastmeal: %i\tlastcalories: %i", lastmeal, lastcalories)); }
+			HungerStatus();
+		}
+
+		//Per second
+		if(level.time % 35 == 1) {
+			calories -= 1;
+			calories -= (ownr.fatigue - minfatigue);
+			if(calories < 0) { calories = 0; }
+		}
+
+		//Per tic
+		if(ownr.fatigue < minfatigue) { ownr.fatigue = minfatigue; }
+	}
+
+	void HungerStatus() {
+		//Hunger status messages
+		statusMessage = "";
+		if(calories >= 1500) { statusMessage = statusMessage.."Your stomach is full. "; }
+		else if(calories >= 500 && calories < 1000) { statusMessage = statusMessage.."Your stomach grumbles. "; }
+		else if(calories >= 0 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
+		//Fatigue status message
+		if(minfatigue >= 5 && minfatigue < 15) { statusMessage = statusMessage.."You feel weak. "; }
+		if(minfatigue >= 15) { statusMessage = statusMessage.."You're getting shaky. "; }
+		//Last meal messages
+		int mealdelta = (lastmeal - calories);
+		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
+		else if(mealdelta >= 1000 && mealdelta <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
+		else if(mealdelta >= 1500 && mealdelta <2000) { statusMessage = statusMessage.."When did you last eat? "; }
+		else if(mealdelta >= 2000 && mealdelta <2500) { statusMessage = statusMessage.."You can't remember your last meal... "; }
+		//Reset delta if calories increase
+		if(calories > lastcalories) {
+			lastmeal = calories;
+			lastcalories = calories;
+		}
+		//Display message if delta over threshold, and reset
+		if(abs(lastcalories - calories) >= 250) {
+			owner.A_Log("\ck"..statusMessage, true);
+			lastcalories = calories;
+		}
+	}
+
+	States {
+		Spawn:
+			TNT1 A -1;
+			stop;
+		Use:
+			TNT1 A 1;
+			loop;
+	}
+}

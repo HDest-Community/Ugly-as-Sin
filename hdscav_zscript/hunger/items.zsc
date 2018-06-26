@@ -1,0 +1,33 @@
+class HDScav_Ration : HDPickup {
+	default {
+		inventory.pickupmessage "Picked up some food.";
+		inventory.MaxAmount 16;
+		hdpickup.bulk 6;
+		scale 0.4;
+		-INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+	}
+
+	States {
+		Spawn:
+			HSCV A -1;
+			stop;
+	}
+}
+
+class HDScav_EmptyRation : HDDebris {
+	default {
+		scale 0.4;
+		bouncesound "misc/wallchunks";
+		bouncefactor 0.65;
+	}
+
+	States {
+		Spawn:
+			HSCV C 1;
+			Wait;
+		Death:
+			HSCV C -1;
+			stop;
+	}
+}
