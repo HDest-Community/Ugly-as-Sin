@@ -9,7 +9,7 @@ class HDScav_Ration : HDPickup {
 	}
 
 	States {
-		Spawn:
+		Spawn2:
 			HSCV A -1;
 			stop;
 	}
