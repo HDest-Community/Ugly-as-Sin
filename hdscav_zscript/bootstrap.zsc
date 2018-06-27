@@ -36,7 +36,7 @@ class HDScav_Bootstrap : EventHandler {
 
 		//Spawn rations on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			int count = random(1,2);
+			int count = random(0,2);
 			for(int i=1; i <= count; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
@@ -44,14 +44,14 @@ class HDScav_Bootstrap : EventHandler {
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			if(RandomChance(0.5)) {
+			if(RandomChance(0.15)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			if(RandomChance(0.15) == 0) {
+			if(RandomChance(0.05) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
