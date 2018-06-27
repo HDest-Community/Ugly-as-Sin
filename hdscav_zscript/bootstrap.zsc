@@ -28,13 +28,9 @@ class HDScav_Bootstrap : EventHandler {
 			int count = random(1,3);
 			for(int i=1; i <= count; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 			if(RandomChance(0.25)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
 
@@ -43,8 +39,6 @@ class HDScav_Bootstrap : EventHandler {
 			int count = random(1,2);
 			for(int i=1; i <= count; i++) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
 
@@ -52,8 +46,6 @@ class HDScav_Bootstrap : EventHandler {
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
 			if(RandomChance(0.5)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
 
@@ -61,8 +53,6 @@ class HDScav_Bootstrap : EventHandler {
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
 			if(RandomChance(0.15) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
 
@@ -70,8 +60,6 @@ class HDScav_Bootstrap : EventHandler {
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
 			if(RandomChance(0.15) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-				spawneditem.vel.x += frandom(-1,1);
-				spawneditem.vel.y += frandom(-1,1);
 			}
 		}
 
