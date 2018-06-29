@@ -115,9 +115,15 @@ class HDScav_MessKit : HDWoundFixer {
 
 	//Takes a random-sized "bite" of the food
 	action void HDScav_TakeScoop() {
+		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+		if(invoker.tracker.calories >= 2500) {
+			if(getcvar("hd_helptext")) { A_WeaponMessage("You're full.\nCouldn't eat another bite.", 175); }
+			return;
+		}
+		double difference = clamp(2500 - invoker.tracker.calories, 0, 500);
 		A_PlaySound("HDScav/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
-		invoker.biteSize  = min(invoker.mealsize, 75) * frandom(0.75,1.0);
-		invoker.biteSize *= frandom(0.75,1.0);
+		invoker.biteSize  = min(invoker.mealsize, 75) * frandom(0.75,1.0);;
+		invoker.biteSize *= (difference / 500.0);
 		invoker.biteSize  = clamp(invoker.biteSize, 1, 75);
 	}
 
