@@ -93,6 +93,8 @@ class HDScav_MessKit : HDWoundFixer {
 
 	//Displayed when the messkit is opened for use
 	action void HDScav_SelectText() {
+		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+		invoker.tracker.lastcalories = invoker.tracker.calories + 248;
 		if(!getcvar("hd_helptext")) return;
 		A_WeaponMessage("\cjMESS KIT\c-\n\n\nPress and hold Fire to eat.\n\nAltfire opens a new ration,\nif one isn't already open.", 175);
 	}
