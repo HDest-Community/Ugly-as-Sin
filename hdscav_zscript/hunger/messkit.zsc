@@ -126,9 +126,9 @@ class HDScav_MessKit : HDWoundFixer {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		if(invoker.bitesize > 0) {
 			//Chew
-			int chunk = random(5,10);
-			A_PlaySound("weapons/pocket", CHAN_AUTO, frandom(0.25, 0.4));
-			A_PlaySound("misc/fragroll", CHAN_AUTO, frandom(0.25, 0.5));
+			int chunk = random(1,10) ;
+			A_PlaySound("weapons/pocket", CHAN_AUTO, frandom(0.25, 0.6));
+			A_PlaySound("misc/fragroll", CHAN_AUTO, frandom(0.25, 0.7));
 			invoker.mealSize -= clamp(chunk, 0, invoker.biteSize);
 			invoker.tracker.calories += clamp(chunk, 0, invoker.biteSize);
 			invoker.biteSize -= clamp(chunk, 0, invoker.biteSize);
