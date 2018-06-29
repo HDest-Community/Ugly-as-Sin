@@ -143,7 +143,7 @@ class HDScav_MessKit : HDWoundFixer {
 		if(countinv("HDScav_Ration") > 0) {
 			if(invoker.mealSize <= 0 && invoker.rationOpen == false) {
 				A_PlaySound("imp/melee");
-				invoker.mealSize = random(10,15)*50;
+				invoker.mealSize = random(8,12)*50;
 				invoker.rationOpen = true;
 				invoker.flavor = RandomFlavor();
 				if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s", invoker.flavor), 175); }
