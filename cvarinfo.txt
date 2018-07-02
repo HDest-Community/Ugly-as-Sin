@@ -1,0 +1,1 @@
+server float HDScav_TimeScale = 60;

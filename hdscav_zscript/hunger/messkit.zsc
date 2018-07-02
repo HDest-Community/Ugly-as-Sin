@@ -2,6 +2,8 @@ class HDScav_MessKit : HDWoundFixer {
 	HDScav_HungerTracker tracker;
 	int biteSize;
 	int mealSize;
+	int drinkSize;
+	int sipSize;
 	string flavor;
 	bool rationOpen;
 
@@ -39,7 +41,7 @@ class HDScav_MessKit : HDWoundFixer {
 		else if(owner.countinv("HDScav_Ration") == 1) {
 			if(rationOpen == true) {
 				//Throw away uneaten portion
-				HDScav_TossOpened();
+				HDScav_TossOpened(true);
 				return NULL;
 			}
 			else {
@@ -72,7 +74,8 @@ class HDScav_MessKit : HDWoundFixer {
 			}
 			goto nope;
 		Fire:
-			TNT1 A 0 HDScav_CheckFood();
+		Eat:
+			TNT1 A 0 HDScav_CheckConsumables(1);
 			goto nope;
 		Scoop:
 			TNT1 A 0 HDScav_TakeScoop();
@@ -83,11 +86,21 @@ class HDScav_MessKit : HDWoundFixer {
 			TNT1 A 0 HDScav_Consume();
 			TNT1 A random(8,12);
 			TNT1 A 0 A_Refire("Consume");
+			goto Swallow;
+		AltFire:
+		Drink:
+			TNT1 A 0 HDScav_CheckConsumables(2);
+			goto nope;
+		Sip:
+			TNT1 A 0 HDScav_Sip();
+			TNT1 A 1 ;
+			TNT1 A 0 A_Refire("Sip");
+			goto Swallow;
+		Reload:
+			TNT1 A random(15,20) HDScav_OpenFood();
+			goto nope;
 		Swallow:
 			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
-			goto nope;
-		Altfire:
-			TNT1 A random(15,20) HDScav_OpenFood();
 			goto nope;
 	}
 
@@ -96,20 +109,25 @@ class HDScav_MessKit : HDWoundFixer {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		invoker.tracker.lastcalories = invoker.tracker.calories + 248;
 		if(!getcvar("hd_helptext")) return;
-		A_WeaponMessage("\cjMESS KIT\c-\n\n\nPress and hold Fire to eat.\n\nAltfire opens a new ration,\nif one isn't already open.", 175);
+		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.", 175);
 	}
 
 	//Makes sure the player has a food item open and food available.
 	//If no food and open, toss empty. If not open, give message.
-	action state HDScav_CheckFood() {
-		if(invoker.mealSize > 0 && invoker.rationOpen == true) {
-			return ResolveState("Scoop");
+	action state HDScav_CheckConsumables(int type = 1) {
+		if(invoker.rationOpen == true) {
+			if(type == 1 && invoker.mealSize > 0) {
+				return ResolveState("Scoop");
+			}
+			if(type == 2 && invoker.drinkSize > 0) {
+				A_PlaySound("misc/smallslop");
+				return ResolveState("Sip");
+			}
+			invoker.HDScav_TossOpened(false);
 		}
-		else if(invoker.rationOpen == true) {
-			invoker.HDScav_TossOpened();
-			return ResolveState("nope");
+		if(invoker.mealSize <=0 && invoker.drinkSize <=0 && getcvar("hd_helptext")) {
+			A_WeaponMessage("Nothing to eat or drink!\n\nHave you opened a ration?", 175);
 		}
-		if(getcvar("hd_helptext")) { A_WeaponMessage("Nothing to eat!\n\nHave you opened a ration?", 175); }
 		return ResolveState(null);
 	}
 
@@ -138,10 +156,24 @@ class HDScav_MessKit : HDWoundFixer {
 			invoker.mealSize -= clamp(chunk, 0, invoker.biteSize);
 			invoker.tracker.calories += clamp(chunk, 0, invoker.biteSize);
 			invoker.biteSize -= clamp(chunk, 0, invoker.biteSize);
-			if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s\n\n\nFood left: %i", invoker.flavor, invoker.mealSize), 175); }
+			if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175); }
 			return ResolveState(null);
 		}
 		return ResolveState("Swallow");
+	}
+
+	action state HDScav_Sip() {
+		int drops = random(4,8);
+		for(int i = 1; i <= drops; i++) {
+			invoker.sipsize += 1;
+			invoker.drinksize -= 1;
+			if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175); }
+			if(invoker.drinksize <= 0 || invoker.sipSize > random(75,150)) {
+				invoker.sipsize = 0;
+				return ResolveState("Swallow");
+			}
+		}
+		return ResolveState(null);
 	}
 
 	//Open a new food ration if one isn't already open
@@ -149,7 +181,8 @@ class HDScav_MessKit : HDWoundFixer {
 		if(countinv("HDScav_Ration") > 0) {
 			if(invoker.mealSize <= 0 && invoker.rationOpen == false) {
 				A_PlaySound("imp/melee");
-				invoker.mealSize = random(8,12)*50;
+				invoker.mealSize = random(8,10)*50;
+				invoker.drinkSize = 500;
 				invoker.rationOpen = true;
 				invoker.flavor = RandomFlavor();
 				if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s", invoker.flavor), 175); }
@@ -164,10 +197,13 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	//Toss opened ration
-	void HDScav_TossOpened() {
-		if(owner.getcvar("hd_helptext") && mealsize > 0) { A_WeaponMessage("Tossed leftovers. No 5-second rule here.", 175); }
+	void HDScav_TossOpened(bool force = false) {
+		if((drinkSize > 0 || mealSize > 0) && force == false) { return; }
+		if(owner.getcvar("hd_helptext") && (mealsize > 0 || drinkSize > 0)) { A_WeaponMessage("Tossed leftovers. No 5-second rule here.", 175); }
 		biteSize = 0;
 		mealSize = 0;
+		drinksize = 0;
+		sipsize = 0;
 		flavor = "";
 		rationOpen = false;
 		let empty=spawn("HDScav_EmptyRation",owner.pos+(0,0,owner.height-8));
