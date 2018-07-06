@@ -22,6 +22,7 @@ class HDScav_HungerTracker : CustomInventory {
 	override void DoEffect() {
 		super.DoEffect();
 		let ownr = HDPlayerPawn(owner);
+		if(!ownr || !ownr.player) { return; }
 
 		//Time-scaled values
 		second = 35 / HDScav_TimeScale;
