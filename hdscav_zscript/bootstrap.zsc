@@ -23,42 +23,41 @@ class HDScav_Bootstrap : EventHandler {
 
 		if(level.time > 10 || !e.Thing.GetClassName()) return;
 
-		//Spawn rations on backpacks, with a chance of a messkit
+		//Spawn rations on backpacks, with a chance of an extra ration, and chance of messkit
 		else if(e.Thing.GetClassName() == "HDBP") {
-			int count = random(1,3);
-			for(int i=1; i <= count; i++) {
-				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
+			let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
+			if(RandomChance(0.01 * HDScav_TimeScale)) {
+				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
 			}
-			if(RandomChance(0.25)) {
+			if(RandomChance(0.005 * HDScav_TimeScale)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
 			}
 		}
 
-		//Spawn rations on ammo boxes
+		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			int count = random(0,2);
-			for(int i=1; i <= count; i++) {
+			if(RandomChance(0.005 * HDScav_TimeScale)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			if(RandomChance(0.15)) {
+			if(RandomChance(0.0025 * HDScav_TimeScale)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			if(RandomChance(0.05) == 0) {
+			if(RandomChance(0.001 * HDScav_TimeScale) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			if(RandomChance(0.15) == 0) {
+			if(RandomChance(0.0025 * HDScav_TimeScale) == 0) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
