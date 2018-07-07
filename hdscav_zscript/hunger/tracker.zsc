@@ -60,15 +60,17 @@ class HDScav_HungerTracker : CustomInventory {
 			lastdrink += (1 / minute);
 		}
 
-		//Status updates and debugging messages
-		if(level.time % 35 == 1) {
+		//Status updates and debugging messages periodically depending on timescale
+		//Slower timescales won't meaningfully change values second-to-second
+		if(level.time % int(minute) == 1) {
 			HungerStatus();
 			ThirstStatus();
-			if(hd_debug==2) {
-				A_Log(string.format("Energy: %g, \tWater: %g", calories, water));
-				A_Log(string.format("MinFatigue: %g", minfatigue));
-				A_Log(string.format("Last meal: %g", lastmeal));
-				A_Log(string.format("Last calories: %g", lastcalories));
+			if(hd_debug >= 2) {
+				A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
+			}
+			if(hd_debug > 2) {
+				A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
+				A_Log(string.format("MinFatigue: %i", minfatigue));
 			}
 		}
 	}
