@@ -43,7 +43,7 @@ class HDScav_HungerTracker : CustomInventory {
 		if(ownr.fatigue < minfatigue) { ownr.fatigue = minfatigue; }
 
 		//Reduce calories
-		calories -= (1 / minute);
+		calories -= (1 / minute) * frandom(0.8, 1.2);
 		calories -= ((ownr.fatigue - minfatigue) / minute);
 		if(calories < 0) {
 			calories = 0;
@@ -52,7 +52,7 @@ class HDScav_HungerTracker : CustomInventory {
 		}
 
 		//Reduce water
-		water -= (1 / minute);
+		water -= (1 / minute) * frandom(0.8, 1.2);
 		water -= ((ownr.fatigue - minfatigue) / minute);
 		if(water < 0) {
 			water = 0;
