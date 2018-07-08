@@ -65,10 +65,10 @@ class HDScav_HungerTracker : CustomInventory {
 		if(level.time % int(minute) == 1) {
 			HungerStatus();
 			ThirstStatus();
-			if(hd_debug >= 2) {
+			if(HDScav_Debug >= 1) {
 				A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
 			}
-			if(hd_debug > 2) {
+			if(HDScav_Debug == 2) {
 				A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
 				A_Log(string.format("MinFatigue: %i", minfatigue));
 			}
