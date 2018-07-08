@@ -112,6 +112,7 @@ class HDScav_MessKit : HDWoundFixer {
 	action void HDScav_SelectText() {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		invoker.tracker.lastcalories = invoker.tracker.calories + 248;
+		invoker.tracker.lastwater = invoker.tracker.water + 199;
 		if(!getcvar("hd_helptext")) return;
 		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.\n\nUnload dumps the current ration,\ndiscarding all remaining contents", 175);
 	}
