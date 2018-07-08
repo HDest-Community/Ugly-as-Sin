@@ -93,7 +93,7 @@ class HDScav_MessKit : HDWoundFixer {
 			goto nope;
 		Sip:
 			TNT1 A 0 HDScav_Sip();
-			TNT1 A 1 ;
+			TNT1 A 1;
 			TNT1 A 0 A_Refire("Sip");
 			goto Swallow;
 		Reload:
@@ -102,6 +102,10 @@ class HDScav_MessKit : HDWoundFixer {
 		Swallow:
 			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
 			goto nope;
+		User4:
+		Toss:
+			TNT1 A 1 { invoker.HDScav_TossOpened(true); }
+			goto nope;
 	}
 
 	//Displayed when the messkit is opened for use
@@ -109,7 +113,7 @@ class HDScav_MessKit : HDWoundFixer {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		invoker.tracker.lastcalories = invoker.tracker.calories + 248;
 		if(!getcvar("hd_helptext")) return;
-		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.", 175);
+		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.\n\nUnload dumps the current ration,\ndiscarding all remaining contents", 175);
 	}
 
 	//Makes sure the player has a food item open and food available.
@@ -202,6 +206,7 @@ class HDScav_MessKit : HDWoundFixer {
 	//Toss opened ration
 	void HDScav_TossOpened(bool force = false) {
 		if((drinkSize > 0 || mealSize > 0) && force == false) { return; }
+		if(rationOpen == false) { return; }
 		if(owner.getcvar("hd_helptext") && (mealsize > 0 || drinkSize > 0)) { A_WeaponMessage("Tossed leftovers. No 5-second rule here.", 175); }
 		biteSize = 0;
 		mealSize = 0;
