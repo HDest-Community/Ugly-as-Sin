@@ -119,11 +119,20 @@ class HDScav_MessKit : HDWoundFixer {
 	//Makes sure the player has a food item open and food available.
 	//If no food and open, toss empty. If not open, give message.
 	action state HDScav_CheckConsumables(int type = 1) {
+		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		if(invoker.rationOpen == true) {
 			if(type == 1 && invoker.mealSize > 0) {
+				if(invoker.tracker.calories >= 2500) {
+					if(getcvar("hd_helptext")) { A_WeaponMessage("You're full.\nCouldn't eat another bite.", 175); }
+					return ResolveState("nope");
+				}
 				return ResolveState("Scoop");
 			}
 			if(type == 2 && invoker.drinkSize > 0) {
+				if(invoker.tracker.water >= 2500) {
+					if(getcvar("hd_helptext")) { A_WeaponMessage("You're full.\nCouldn't drink another drop.", 175); }
+					return ResolveState("nope");
+				}
 				A_PlaySound("misc/smallslop");
 				return ResolveState("Sip");
 			}
@@ -137,11 +146,6 @@ class HDScav_MessKit : HDWoundFixer {
 
 	//Takes a random-sized "bite" of the food
 	action void HDScav_TakeScoop() {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
-		if(invoker.tracker.calories >= 2500) {
-			if(getcvar("hd_helptext")) { A_WeaponMessage("You're full.\nCouldn't eat another bite.", 175); }
-			return;
-		}
 		double difference = clamp(2500 - invoker.tracker.calories, 0, 500);
 		A_PlaySound("HDScav/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
 		invoker.biteSize  = min(invoker.mealsize, 75) * frandom(0.75,1.0);;
