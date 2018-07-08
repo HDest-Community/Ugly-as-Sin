@@ -1,0 +1,16 @@
+AddOptionMenu "OptionsMenu" {
+	StaticText " "
+	Submenu "HD-Scavenger Settings", "HDScav_Options"
+}
+
+OptionMenu "HDScav_Options" {
+	Title "HD-Scavenger Settings"
+
+	StaticText "--Warning--", orange
+	StaticText "Timescale changes will take effect", grey
+	StaticText "immediately, but will not trigger new item", grey
+	StaticText "spawns until the next level is loaded.", grey
+	StaticText ""
+	Slider "Timescale","HDScav_TimeScale",1,120,1,0
+
+}
