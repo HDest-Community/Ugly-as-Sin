@@ -1,6 +1,10 @@
 version "3.4"
 
-#include "hdscav_zscript/bootstrap.zsc"
+// Hunger and Thirst scripts
+#include "hdscav_zscript/hunger/bootstrap.zsc"
 #include "hdscav_zscript/hunger/tracker.zsc"
 #include "hdscav_zscript/hunger/items.zsc"
 #include "hdscav_zscript/hunger/messkit.zsc"
+
+// Scarcity scripts
+#include "hdscav_zscript/scarcity/bootstrap.zsc"

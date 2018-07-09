@@ -1,0 +1,66 @@
+class HDScav_Scarcity_Bootstrap : EventHandler {
+
+	override void WorldThingSpawned(WorldEvent e) {
+		bool replaced = false;
+
+		// Conditions for skipping spawn adjustment
+		if(level.time > 10) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing.bDROPPED) { return; }
+
+		// Randomly break 9mm mags into loose rounds
+		switch(e.Thing.GetClassName()) {
+			case 'HD9mMag15':
+				if(RandomChance(0.75)) {
+					SpawnStuff('HDLoose9mm', random(4, 8), e.Thing.pos);
+					replaced = true;
+				}
+				if(RandomChance(0.5)) {
+					SpawnStuff('HDPistolEmptyMag', 1, e.Thing.pos, false);
+					replaced = true;
+				}
+				if(RandomChance(0.25)) {
+					replaced = true;
+				}
+				break;
+			case 'HD9mMag30':
+				if(RandomChance(0.75)) {
+					SpawnStuff('HDLoose9mm', random(8, 15), e.Thing.pos);
+					replaced = true;
+				}
+				if(RandomChance(0.5)) {
+					SpawnStuff('HDSMGEmptyMag', 1, e.Thing.pos, false);
+					replaced = true;
+				}
+				if(RandomChance(0.25)) {
+					replaced = true;
+				}
+				break;
+		}
+
+		// Delete the original object if it was replaced
+		if(replaced == true) {
+			if(HDScav_Debug >=1) { console.printf("%s replaced", e.Thing.GetClassName()); }
+			e.Thing.Destroy();
+		}
+
+	}
+
+	void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
+		for(int i = 1; i <= count; i++) {
+			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
+			if(!spawneditem || randomvel == false) { return; }
+			spawneditem.bDROPPED == true;
+			spawneditem.vel.x += frandom(-2,2);
+			spawneditem.vel.y += frandom(-2,2);
+			spawneditem.vel.z += frandom(1,2);
+		}
+	}
+
+	//Return true for random below percentage
+	bool RandomChance(double percentage = 0.5) {
+		if(percentage < 0.0 || percentage > 1.0) { ThrowAbortException("Invalid range for random chance."); }
+		if(frandom(0.0, 1.0) <= percentage) { return true; }
+		return false;
+	}
+}

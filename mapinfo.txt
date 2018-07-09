@@ -1,3 +1,4 @@
 GameInfo {
-	AddEventHandlers = "HDScav_Bootstrap"
+	AddEventHandlers = "HDScav_Hunger_Bootstrap"
+	AddEventHandlers = "HDScav_Scarcity_Bootstrap"
 }
