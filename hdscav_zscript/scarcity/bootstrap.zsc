@@ -1,42 +1,36 @@
 class HDScav_Scarcity_Bootstrap : EventHandler {
+	double ScarcityFactor;
 
 	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
-
+		ScarcityFactor = double(HDScav_ScarcityRate) / 100.0;
 		// Conditions for skipping spawn adjustment
-		double rate = double(HDScav_ScarcityRate) / 100.0;
-		if(!RandomChance(rate)) { return; }
-		if(level.time > 10) { return; }
+
+		if(!RandomChance(ScarcityFactor)) { return; }
+		if(level.time > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
 
 		// Randomly break 9mm mags into loose rounds
 		switch(e.Thing.GetClassName()) {
 			case 'HD9mMag15':
-				if(RandomChance(0.75)) {
-					SpawnStuff('HDLoose9mm', random(4, 8), e.Thing.pos);
-					replaced = true;
-				}
-				if(RandomChance(0.5)) {
-					SpawnStuff('HDPistolEmptyMag', 1, e.Thing.pos, false);
-					replaced = true;
-				}
-				if(RandomChance(0.25)) {
-					replaced = true;
-				}
+				replaced = MagReplacer('HD9mMag15', 'HDLoose9mm', 15, e.Thing);
 				break;
 			case 'HD9mMag30':
-				if(RandomChance(0.75)) {
-					SpawnStuff('HDLoose9mm', random(8, 15), e.Thing.pos);
-					replaced = true;
-				}
-				if(RandomChance(0.5)) {
-					SpawnStuff('HDSMGEmptyMag', 1, e.Thing.pos, false);
-					replaced = true;
-				}
-				if(RandomChance(0.25)) {
-					replaced = true;
-				}
+				replaced = MagReplacer('HD9mMag30', 'HDLoose9mm', 30, e.Thing);
+				break;
+			case 'HD4mMag':
+				replaced = MagReplacer('HD4mMag', 'FourMilAmmo', 50, e.Thing);
+				break;
+			case 'HD7mMag':
+				replaced = MagReplacer('HD7mMag', 'SevenMilAmmo', 30, e.Thing);
+				break;
+			case 'HD7mClip':
+				replaced = MagReplacer('HD7mClip', 'SevenMilAmmo', 10, e.Thing);
+				break;
+			case 'ShellPickup':
+				SpawnStuff('HDShellAmmo', random(0,4), e.Thing.pos, true);
+				replaced = true;
 				break;
 		}
 
@@ -48,6 +42,27 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 
 	}
 
+	//Generic function for replacing map-spawned magazines
+	bool MagReplacer(name MagName, name ammoName, int MagCap, actor spawnPointer) {
+		bool returnValue;
+		//Replace with some ammo
+		if(!RandomChance(0.75 * ScarcityFactor)) {
+			SpawnStuff(ammoName, random(1, MagCap / 4), spawnPointer.pos);
+			returnValue = true;
+		}
+		//Replace with an empty or partial mag
+		if(!RandomChance(0.5 * ScarcityFactor)) {
+			HDMagAmmo.SpawnMag(spawnPointer, MagName, randompick(0, 0, random(1, MagCap / 4)));
+			returnValue = true;
+		}
+		//Replace with nothing
+		if(!RandomChance(0.25 * ScarcityFactor)) {
+			returnValue = true;
+		}
+		return returnValue;
+	}
+
+	//Generic function for spawning some bundle of things, like loose rounds
 	void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
 		for(int i = 1; i <= count; i++) {
 			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
