@@ -1,2 +1,3 @@
 server float HDScav_TimeScale = 60;
+server int HDScav_ScarcityRate = 50;
 server int HDScav_Debug = 0;

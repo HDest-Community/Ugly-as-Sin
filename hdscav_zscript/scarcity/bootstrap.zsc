@@ -4,6 +4,8 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 		bool replaced = false;
 
 		// Conditions for skipping spawn adjustment
+		double rate = double(HDScav_ScarcityRate) / 100.0;
+		if(!RandomChance(rate)) { return; }
 		if(level.time > 10) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
