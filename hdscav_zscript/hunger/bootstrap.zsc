@@ -14,7 +14,7 @@ class HDScav_Hunger_Bootstrap : EventHandler {
 
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
-		if(level.time > 10) { return; }
+		if(level.time > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
 
