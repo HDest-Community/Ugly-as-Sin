@@ -34,11 +34,37 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 				break;
 			case 'HDBattery':
 				int MagCap = 20 * (1.25 - ScarcityFactor);
-				if(!RandomChance(0.25 * ScarcityFactor)) {
-					HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
-				}
+				HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
 				replaced = true;
 				break;
+		}
+
+		// Randomly break medical and health items
+		switch(e.Thing.GetClassName()) {
+			case 'PortableMedikit':
+				if(RandomChance(ScarcityFactor - 0.5)) { SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
+				let spawneditem = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
+				if(!spawneditem) { break; }
+				spawneditem.injectableflesh = random(0, 2);
+				spawneditem.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
+				if(spawneditem.injectableflesh < 2 || spawneditem.usedpatches > 0) { spawneditem.frame = 2; }
+				replaced = true;
+				break;
+			case 'PortableStimpack':
+				SpawnStuff('SpentStim', 1, e.Thing.pos);
+				replaced = true;
+				break;
+			case 'PortableBerserkPack':
+				if(RandomChance(0.5)) {
+					SpawnStuff('SpentZerk', 1, e.Thing.pos);
+					replaced = true;
+				}
+			case 'BluePotion':
+				if(RandomChance(0.5)) {
+					SpawnStuff('SpentBottle', 1, e.Thing.pos);
+					SpawnStuff('SpentCork', 1, e.Thing.pos);
+					replaced = true;
+				}
 		}
 
 		// Delete the original object if it was replaced
