@@ -1,3 +1,16 @@
+OptionValue "HDScav_Nice_Timescales" {
+	1,   "1x"
+	2,   "2x"
+	5,   "5x"
+	10,  "10x"
+	20,  "20x"
+	40,  "40x"
+	60,  "60x"
+	80,  "80x"
+	100, "100x"
+	120, "120x"
+}
+
 AddOptionMenu "OptionsMenu" {
 	StaticText " "
 	Submenu "HD-Scavenger Settings", "HDScav_Options"
@@ -7,7 +20,7 @@ OptionMenu "HDScav_Options" {
 	Title "HD-Scavenger Settings"
 
 
-	Slider "Timescale","HDScav_TimeScale",1,120,1,0
+	Option "Timescale","HDScav_TimeScale","HDScav_Nice_Timescales"
 	StaticText "--Warning--", orange
 	StaticText "Timescale changes will take effect", grey
 	StaticText "immediately, but will not trigger new item", grey
