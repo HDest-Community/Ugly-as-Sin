@@ -4,14 +4,14 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
 		ScarcityFactor = double(HDScav_ScarcityRate) / 100.0;
-		// Conditions for skipping spawn adjustment
 
+		// Conditions for skipping spawn adjustment
 		if(!RandomChance(ScarcityFactor)) { return; }
 		if(level.time > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
 
-		// Randomly break packed ammo pickups into loose rounds
+		// Randomly break/reduce packed ammo pickups
 		switch(e.Thing.GetClassName()) {
 			case 'HD9mMag15':
 				replaced = MagReplacer('HD9mMag15', 'HDLoose9mm', 15, e.Thing);
@@ -39,7 +39,7 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 				break;
 		}
 
-		// Randomly break medical and health items
+		// Randomly break/reduce medical and health items
 		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
 				if(RandomChance(ScarcityFactor - 0.5)) { SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
