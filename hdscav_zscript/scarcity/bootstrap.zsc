@@ -11,7 +11,7 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
 
-		// Randomly break 9mm mags into loose rounds
+		// Randomly break packed ammo pickups into loose rounds
 		switch(e.Thing.GetClassName()) {
 			case 'HD9mMag15':
 				replaced = MagReplacer('HD9mMag15', 'HDLoose9mm', 15, e.Thing);
@@ -32,6 +32,13 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 				SpawnStuff('HDShellAmmo', random(0, 4 * (1.25-ScarcityFactor)), e.Thing.pos, true);
 				replaced = true;
 				break;
+			case 'HDBattery':
+				int MagCap = 20 * (1.25 - ScarcityFactor);
+				if(!RandomChance(0.25 * ScarcityFactor)) {
+					HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
+				}
+				replaced = true;
+				break;
 		}
 
 		// Delete the original object if it was replaced
@@ -45,10 +52,10 @@ class HDScav_Scarcity_Bootstrap : EventHandler {
 	//Generic function for replacing map-spawned magazines
 	bool MagReplacer(name MagName, name ammoName, int MagCap, actor spawnPointer) {
 		bool returnValue;
-		MagCap *= (1.25 - ScarcityFactor)
+		MagCap *= (1.25 - ScarcityFactor);
 		//Replace with some ammo
 		if(!RandomChance(0.75 * ScarcityFactor)) {
-			SpawnStuff(ammoName, random(1, MagCap, spawnPointer.pos);
+			SpawnStuff(ammoName, random(1, MagCap), spawnPointer.pos);
 			returnValue = true;
 		}
 		//Replace with an empty or partial mag
