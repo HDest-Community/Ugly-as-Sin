@@ -45,14 +45,14 @@ class HDScav_Hunger_Bootstrap : EventHandler {
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			if(RandomChance(0.001 * HDScav_TimeScale) == 0) {
+			if(RandomChance(0.001 * HDScav_TimeScale)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			if(RandomChance(0.0025 * HDScav_TimeScale) == 0) {
+			if(RandomChance(0.0025 * HDScav_TimeScale)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 			}
 		}
