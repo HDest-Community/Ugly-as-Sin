@@ -14,7 +14,8 @@ OptionMenu "HDScav_Options" {
 	StaticText "spawns until the next level is loaded.", grey
 	StaticText " "
 
-	Slider "Scarcity rate","HDScav_ScarcityRate",0,100,1,0
+	Slider "Scarcity rate","HDScav_ScarcityRate",0,100,5,0
 	StaticText "Controls probability for map spawns", grey
 	StaticText "to be downsized or removed.", grey
+	StaticText "Changes will apply on next level load.", grey
 }
