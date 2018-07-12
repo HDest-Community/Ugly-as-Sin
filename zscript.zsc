@@ -2,6 +2,7 @@ version "3.4"
 
 // Hunger and Thirst scripts
 #include "hdscav_zscript/hunger/bootstrap.zsc"
+#include "hdscav_zscript/hunger/spawner.zsc"
 #include "hdscav_zscript/hunger/tracker.zsc"
 #include "hdscav_zscript/hunger/items.zsc"
 #include "hdscav_zscript/hunger/messkit.zsc"
