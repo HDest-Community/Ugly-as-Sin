@@ -19,15 +19,16 @@ class HDScav_EmptyRation : HDDebris {
 	default {
 		scale 0.4;
 		bouncesound "misc/wallchunks";
-		bouncefactor 0.65;
+		bouncefactor 0.3;
+		-FORCEXYBILLBOARD;
 	}
 
 	States {
 		Spawn:
-			HSCV C 1;
-			Wait;
+			HSCV D 1;
+			Loop;
 		Death:
-			HSCV C -1;
+			HSCV D -1;
 			stop;
 	}
 }
