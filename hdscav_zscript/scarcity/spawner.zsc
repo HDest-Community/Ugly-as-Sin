@@ -1,4 +1,4 @@
-class HDScav_Scarcity_Bootstrap : EventHandler {
+class HDScav_Scarcity_Spawner : EventHandler {
 	double ScarcityFactor;
 
 	override void WorldThingSpawned(WorldEvent e) {
