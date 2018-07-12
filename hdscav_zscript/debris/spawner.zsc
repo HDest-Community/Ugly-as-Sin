@@ -1,0 +1,26 @@
+class HDScav_Debris_Spawner : EventHandler {
+
+	//Spawn random debris as appropriate
+	override void WorldThingSpawned(WorldEvent e) {
+
+		// Conditions for skipping spawns
+		if(!e.Thing) { return; }
+
+		switch(e.Thing.GetClassName()) {
+			case 'SpentStim':
+				SpawnStuff('HDScav_EmptyStimpack', 1, e.Thing.pos);
+				break;
+		}
+	}
+
+	//Generic function for spawning some bundle of things, like loose rounds
+	void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
+		for(int i = 1; i <= count; i++) {
+			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
+			if(!spawneditem || randomvel == false) { return; }
+			spawneditem.vel.x += frandom(-2,2);
+			spawneditem.vel.y += frandom(-2,2);
+			spawneditem.vel.z += frandom(1,2);
+		}
+	}
+}
