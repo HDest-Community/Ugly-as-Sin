@@ -1,5 +1,5 @@
 GameInfo {
 	AddEventHandlers = "HDScav_Hunger_Bootstrap"
 	AddEventHandlers = "HDScav_Hunger_Spawner"
-	AddEventHandlers = "HDScav_Scarcity_Bootstrap"
+	AddEventHandlers = "HDScav_Scarcity_Spawner"
 }
