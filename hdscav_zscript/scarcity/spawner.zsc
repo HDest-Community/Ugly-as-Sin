@@ -57,7 +57,8 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				break;
 			case 'PortableBerserkPack':
 				if(RandomChance(0.5)) {
-					SpawnStuff('SpentZerk', 1, e.Thing.pos);
+					SpawnStuff('SpentZerk', random(1,4), e.Thing.pos);
+					SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
 					replaced = true;
 				}
 			case 'BluePotion':

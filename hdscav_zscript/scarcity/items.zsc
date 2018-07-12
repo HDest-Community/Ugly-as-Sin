@@ -33,3 +33,21 @@ class HDScav_EmptyMedikit : HDDebris {
 			stop;
 	}
 }
+
+class HDScav_EmptyZerkpack : HDDebris {
+	default {
+		scale 0.35;
+		bouncefactor 0.3;
+		bouncesound "misc/wallchunks";
+		-FORCEXYBILLBOARD;
+	}
+
+	States {
+		Spawn:
+			HSCV G 1;
+			Loop;
+		Death:
+			HSCV G -1;
+			stop;
+	}
+}
