@@ -48,6 +48,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				spawneditem.injectableflesh = random(0, 2);
 				spawneditem.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
 				if(spawneditem.injectableflesh < 2 || spawneditem.usedpatches > 0) { spawneditem.frame = 2; }
+				SpawnStuff('HDScav_EmptyMedikit', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'PortableStimpack':

@@ -9,3 +9,7 @@ version "3.4"
 
 // Scarcity scripts
 #include "hdscav_zscript/scarcity/spawner.zsc"
+#include "hdscav_zscript/scarcity/items.zsc"
+
+// Debris spawner
+#include "hdscav_zscript/debris/spawner.zsc"

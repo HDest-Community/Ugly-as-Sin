@@ -1,0 +1,35 @@
+class HDScav_EmptyStimpack : HDDebris {
+	default {
+		scale 0.35;
+		bouncefactor 0.3;
+		bouncesound "misc/wallchunks";
+		-FORCEXYBILLBOARD;
+	}
+
+	States {
+		Spawn:
+			HSCV E 1;
+			Loop;
+		Death:
+			HSCV E -1;
+			stop;
+	}
+}
+
+class HDScav_EmptyMedikit : HDDebris {
+	default {
+		scale 0.35;
+		bouncefactor 0.3;
+		bouncesound "misc/wallchunks";
+		-FORCEXYBILLBOARD;
+	}
+
+	States {
+		Spawn:
+			HSCV F 1;
+			Loop;
+		Death:
+			HSCV F -1;
+			stop;
+	}
+}
