@@ -174,13 +174,13 @@ class HDScav_MessKit : HDWoundFixer {
 	//Consume a random amount of water "drops" to simulate drinking
 	action state HDScav_Sip() {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
-		int drops = random(4,8);
+		int drops = random(1,2);
 		for(int i = 1; i <= drops; i++) {
 			invoker.sipsize += 1;
 			invoker.tracker.water += 1;
 			invoker.drinksize -= 1;
 			if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175); }
-			if(invoker.drinksize <= 0 || invoker.sipSize > random(75,150)) {
+			if(invoker.drinksize <= 0 || invoker.sipSize > random(25,50)) {
 				invoker.sipsize = 0;
 				return ResolveState("Swallow");
 			}
