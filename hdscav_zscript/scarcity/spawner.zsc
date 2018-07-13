@@ -6,7 +6,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		ScarcityFactor = double(HDScav_ScarcityRate) / 100.0;
 
 		// Conditions for skipping spawn adjustment
-		if(!RandomChance(ScarcityFactor)) { return; }
+		if(!HDScav.RandomChance(ScarcityFactor)) { return; }
 		if(level.time > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing.bDROPPED) { return; }
@@ -29,7 +29,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = MagReplacer('HD7mClip', 'SevenMilAmmo', 10, e.Thing);
 				break;
 			case 'ShellPickup':
-				SpawnStuff('HDShellAmmo', random(0, 4 * (1.25-ScarcityFactor)), e.Thing.pos, true);
+				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * (1.25-ScarcityFactor)), e.Thing.pos, true);
 				replaced = true;
 				break;
 			case 'HDBattery':
@@ -42,29 +42,29 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		// Randomly break/reduce medical and health items
 		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
-				if(RandomChance(ScarcityFactor - 0.5)) { SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
+				if(HDScav.RandomChance(ScarcityFactor - 0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
 				let spawneditem = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
 				if(!spawneditem) { break; }
 				spawneditem.injectableflesh = random(0, 2);
 				spawneditem.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
 				if(spawneditem.injectableflesh < 2 || spawneditem.usedpatches > 0) { spawneditem.frame = 2; }
-				SpawnStuff('HDScav_EmptyMedikit', 1, e.Thing.pos);
+				HDScav.SpawnStuff('HDScav_EmptyMedikit', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'PortableStimpack':
-				SpawnStuff('SpentStim', 1, e.Thing.pos);
+				HDScav.SpawnStuff('SpentStim', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'PortableBerserkPack':
-				if(RandomChance(0.5)) {
-					SpawnStuff('SpentZerk', random(1,4), e.Thing.pos);
-					SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
+				if(HDScav.RandomChance(0.5)) {
+					HDScav.SpawnStuff('SpentZerk', random(1,4), e.Thing.pos);
+					HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
 					replaced = true;
 				}
 			case 'BluePotion':
-				if(RandomChance(0.5)) {
-					SpawnStuff('SpentBottle', 1, e.Thing.pos);
-					SpawnStuff('SpentCork', 1, e.Thing.pos);
+				if(HDScav.RandomChance(0.5)) {
+					HDScav.SpawnStuff('SpentBottle', 1, e.Thing.pos);
+					HDScav.SpawnStuff('SpentCork', 1, e.Thing.pos);
 					replaced = true;
 				}
 		}
@@ -82,37 +82,19 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		bool returnValue;
 		MagCap *= (1.25 - ScarcityFactor);
 		//Replace with some ammo
-		if(!RandomChance(0.75 * ScarcityFactor)) {
-			SpawnStuff(ammoName, random(1, MagCap), spawnPointer.pos);
+		if(!HDScav.RandomChance(0.75 * ScarcityFactor)) {
+			HDScav.SpawnStuff(ammoName, random(1, MagCap), spawnPointer.pos);
 			returnValue = true;
 		}
 		//Replace with an empty or partial mag
-		if(!RandomChance(0.5 * ScarcityFactor)) {
+		if(!HDScav.RandomChance(0.5 * ScarcityFactor)) {
 			HDMagAmmo.SpawnMag(spawnPointer, MagName, randompick(0, 0, random(1, MagCap)));
 			returnValue = true;
 		}
 		//Replace with nothing
-		if(!RandomChance(0.25 * ScarcityFactor)) {
+		if(!HDScav.RandomChance(0.25 * ScarcityFactor)) {
 			returnValue = true;
 		}
 		return returnValue;
-	}
-
-	//Generic function for spawning some bundle of things, like loose rounds
-	void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
-		for(int i = 1; i <= count; i++) {
-			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
-			if(!spawneditem || randomvel == false) { return; }
-			spawneditem.vel.x += frandom(-2,2);
-			spawneditem.vel.y += frandom(-2,2);
-			spawneditem.vel.z += frandom(1,2);
-		}
-	}
-
-	//Return true for random below percentage
-	bool RandomChance(double percentage = 0.5) {
-		if(percentage < 0.0 || percentage > 1.0) { ThrowAbortException("Invalid range for random chance."); }
-		if(frandom(0.0, 1.0) <= percentage) { return true; }
-		return false;
 	}
 }

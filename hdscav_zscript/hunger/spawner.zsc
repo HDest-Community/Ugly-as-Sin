@@ -17,19 +17,19 @@ class HDScav_Hunger_Spawner : EventHandler {
 		//Spawn rations on backpacks, with a chance of an extra ration, and chance of messkit
 		if(e.Thing.GetClassName() == "HDBP") {
 			let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
-			if(RandomChance(0.01 * spawnRate)) {
+			if(HDScav.RandomChance(0.01 * spawnRate)) {
 				if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \tSpawnRate: %f", toSpawn_Rations, spawnRate); }
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				toSpawn_Rations--;
 			}
-			if(RandomChance(0.005 * spawnRate)) {
+			if(HDScav.RandomChance(0.005 * spawnRate)) {
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_MessKit", e.Thing.pos, false));
 			}
 		}
 
 		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			if(RandomChance(0.005 * spawnRate)) {
+			if(HDScav.RandomChance(0.005 * spawnRate)) {
 				if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \tSpawnRate: %f", toSpawn_Rations, spawnRate); }
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				toSpawn_Rations--;
@@ -38,7 +38,7 @@ class HDScav_Hunger_Spawner : EventHandler {
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			if(RandomChance(0.0025 * spawnRate)) {
+			if(HDScav.RandomChance(0.0025 * spawnRate)) {
 				if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \tSpawnRate: %f", toSpawn_Rations, spawnRate); }
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				toSpawn_Rations--;
@@ -47,7 +47,7 @@ class HDScav_Hunger_Spawner : EventHandler {
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			if(RandomChance(0.002 * spawnRate)) {
+			if(HDScav.RandomChance(0.002 * spawnRate)) {
 				if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \tSpawnRate: %f", toSpawn_Rations, spawnRate); }
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				toSpawn_Rations--;
@@ -56,18 +56,11 @@ class HDScav_Hunger_Spawner : EventHandler {
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			if(RandomChance(0.002 * spawnRate)) {
+			if(HDScav.RandomChance(0.002 * spawnRate)) {
 				if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \tSpawnRate: %f", toSpawn_Rations, spawnRate); }
 				let spawneditem = HDScav_Ration(Actor.Spawn("HDScav_Ration", e.Thing.pos, false));
 				toSpawn_Rations--;
 			}
 		}
-	}
-
-	//Return true for random below percentage
-	bool RandomChance(double percentage = 0.5) {
-		if(percentage < 0.0 || percentage > 1.0) { ThrowAbortException("Invalid range for random chance."); }
-		if(frandom(0.0, 1.0) <= percentage) { return true; }
-		return false;
 	}
 }

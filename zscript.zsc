@@ -1,5 +1,8 @@
 version "3.4"
 
+// Static functions
+#include "hdscav_zscript/static.zsc"
+
 // Hunger and Thirst scripts
 #include "hdscav_zscript/hunger/bootstrap.zsc"
 #include "hdscav_zscript/hunger/spawner.zsc"
