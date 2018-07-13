@@ -10,6 +10,7 @@ class HDScav {
 
 	//Generic function for spawning some bundle of things, like loose rounds
 	static play void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
+		if(count <= 0) { return; }
 		for(int i = 1; i <= count; i++) {
 			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
 			if(!spawneditem || randomvel == false) { return; }
