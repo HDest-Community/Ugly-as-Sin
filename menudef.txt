@@ -22,12 +22,13 @@ OptionMenu "HDScav_Options" {
 
 	Option "Timescale","HDScav_TimeScale","HDScav_Nice_Timescales"
 	StaticText "Timescale changes will take effect", grey
-	StaticText "immediately, but will not trigger new item", grey
+	StaticText "immediately, but will not trigger new", grey
 	StaticText "spawns until the next level is loaded.", grey
 	StaticText " "
 
-	ScaleSlider "Scarcity rate","HDScav_ScarcityRate",0,100,5,"Disabled"
+	ScaleSlider "Scarcity rate","HDScav_ScarcityRate", 0, 100, 5, "Disabled"
 	StaticText "Controls probability for spawns", grey
 	StaticText "to be downsized or removed.", grey
 	StaticText "Changes will apply on next level load.", grey
+	StaticText "Rates above 75% may be unplayable.", grey
 }
