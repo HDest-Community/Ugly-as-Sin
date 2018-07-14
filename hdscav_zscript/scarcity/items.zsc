@@ -49,7 +49,7 @@ class HDScav_FakePickup : HDPickup {
 
 class HDScav_EmptyStimpack : HDScav_FakePickup {
 	default {
-		scale 0.35;
+		scale 0.3;
 	}
 
 	States {
@@ -64,7 +64,7 @@ class HDScav_EmptyStimpack : HDScav_FakePickup {
 
 class HDScav_EmptyMedikit : HDScav_FakePickup {
 	default {
-		scale 0.35;
+		scale 0.3;
 	}
 
 	States {
@@ -79,7 +79,7 @@ class HDScav_EmptyMedikit : HDScav_FakePickup {
 
 class HDScav_EmptyZerkpack : HDScav_FakePickup {
 	default {
-		scale 0.35;
+		scale 0.3;
 	}
 
 	States {
@@ -94,7 +94,7 @@ class HDScav_EmptyZerkpack : HDScav_FakePickup {
 
 class HDScav_EmptyRocketBox : HDScav_FakePickup {
 	default {
-		scale 0.35;
+		scale 0.5;
 	}
 
 	States {
