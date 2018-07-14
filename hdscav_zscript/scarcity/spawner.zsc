@@ -121,7 +121,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 	int BoxReducer(name BoxName, name ammoName, int BoxCap, actor spawnPointer) {
 		int rounds, loose;
 		BoxCap *= min(1.25 - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo even at max scarcity
-		rounds = random(1, BoxCap); //Pick a number up to cap
+		rounds = random(BoxCap * 0.5, BoxCap); //Pick a number from 50% up to cap
 		//Drop random amount of on ground
 		if(HDScav.RandomChance(0.5)) {
 			loose = random(1, rounds * 0.5); //spill up to 50%
