@@ -37,6 +37,14 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
 				replaced = true;
 				break;
+			case 'RocketBigPickup':
+				for(int i = 1; i <= 8; i++) {
+					if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('HDRocketAmmo', random(0, 1), e.Thing.pos); }
+					else { HDScav.SpawnStuff('DudRocket', random(0, 1), e.Thing.pos); }
+				}
+				HDScav.SpawnStuff('HDScav_EmptyRocketBox', 1, e.Thing.pos);
+				replaced = true;
+				break;
 		}
 
 		// Randomly break/reduce medical and health items

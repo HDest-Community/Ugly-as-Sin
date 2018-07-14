@@ -91,3 +91,18 @@ class HDScav_EmptyZerkpack : HDScav_FakePickup {
 			stop;
 	}
 }
+
+class HDScav_EmptyRocketBox : HDScav_FakePickup {
+	default {
+		scale 0.35;
+	}
+
+	States {
+		Spawn:
+			HSCV H 1;
+			Loop;
+		Death:
+			HSCV H -1;
+			stop;
+	}
+}
