@@ -59,7 +59,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		// Randomly break/reduce medical and health items
 		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
-				if(HDScav.RandomChance(ScarcityFactor - 0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
+				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
 				let spawneditem = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
 				if(!spawneditem) { break; }
 				spawneditem.injectableflesh = random(0, 2);
