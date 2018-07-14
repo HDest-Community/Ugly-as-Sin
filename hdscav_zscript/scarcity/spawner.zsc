@@ -35,14 +35,14 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = MagReplacer('HD7mClip', 'SevenMilAmmo', 10, e.Thing);
 				break;
 			case 'ShellPickup':
-				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * (1.25-ScarcityFactor)), e.Thing.pos, true);
+				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * min(1.25-ScarcityFactor, 1.0)), e.Thing.pos, true);
 				replaced = true;
 				break;
 			case 'ShellBoxPickup':
 				hdupk(e.Thing).amount = BoxReducer('ShellBoxPickup', 'HDShellAmmo', 20, e.Thing);
 				break;
 			case 'HDBattery':
-				int MagCap = 20 * (1.25 - ScarcityFactor);
+				int MagCap = 20 * min(1.25 - ScarcityFactor, 1.0);
 				HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
 				replaced = true;
 				break;
