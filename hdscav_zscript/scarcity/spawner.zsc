@@ -99,18 +99,20 @@ class HDScav_Scarcity_Spawner : EventHandler {
 
 	}
 
-	//Generic function for replacing map-spawned magazines
+	//Generic function for breaking/replacing map-spawned magazines
 	bool MagReplacer(name MagName, name ammoName, int MagCap, actor spawnPointer) {
 		bool returnValue;
-		MagCap *= (1.25 - ScarcityFactor); //Possible spawn at least *some* ammo even at max scarcity
-		//Replace with some ammo
+		int rounds, packed;
+		MagCap *= min(1.25 - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo even at max scarcity
+		rounds = random(1, MagCap); //Pick a number up to cap
+		//Pack some in a mag, or no mag at all
 		if(HDScav.RandomChance(0.5)) {
-			HDScav.SpawnStuff(ammoName, random(1, MagCap), spawnPointer.pos);
+			packed = randompick(0, random(1, rounds)); //50%: pack none (spawn empty), or up to all
+			rounds -= packed;
+			HDMagAmmo.SpawnMag(spawnPointer, MagName, packed);
 		}
-		//Replace with an empty or partial mag (50% chance of either)
-		if(HDScav.RandomChance(0.5)) {
-			HDMagAmmo.SpawnMag(spawnPointer, MagName, randompick(0, random(1, MagCap)));
-		}
+		//spill the rest on the ground
+		HDScav.SpawnStuff(ammoName, rounds, spawnPointer.pos);
 		returnValue = true;
 		return returnValue;
 	}
