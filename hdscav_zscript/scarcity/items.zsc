@@ -1,9 +1,13 @@
-class HDScav_EmptyStimpack : HDDebris {
+// Can't actually pick these up, but they respond to the action
+class HDScav_FakePickup : HDPickup {
+	override void actualpickup(actor other) {
+		return;
+	}
+}
+
+class HDScav_EmptyStimpack : HDScav_FakePickup {
 	default {
 		scale 0.35;
-		bouncefactor 0.3;
-		bouncesound "misc/wallchunks";
-		-FORCEXYBILLBOARD;
 	}
 
 	States {
@@ -16,12 +20,9 @@ class HDScav_EmptyStimpack : HDDebris {
 	}
 }
 
-class HDScav_EmptyMedikit : HDDebris {
+class HDScav_EmptyMedikit : HDScav_FakePickup {
 	default {
 		scale 0.35;
-		bouncefactor 0.3;
-		bouncesound "misc/wallchunks";
-		-FORCEXYBILLBOARD;
 	}
 
 	States {
@@ -34,12 +35,9 @@ class HDScav_EmptyMedikit : HDDebris {
 	}
 }
 
-class HDScav_EmptyZerkpack : HDDebris {
+class HDScav_EmptyZerkpack : HDScav_FakePickup {
 	default {
 		scale 0.35;
-		bouncefactor 0.3;
-		bouncesound "misc/wallchunks";
-		-FORCEXYBILLBOARD;
 	}
 
 	States {
