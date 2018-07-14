@@ -19,11 +19,17 @@ class HDScav_Scarcity_Spawner : EventHandler {
 			case 'HD9mMag30':
 				replaced = MagReplacer('HD9mMag30', 'HDLoose9mm', 30, e.Thing);
 				break;
+			case 'HD9mBoxPickup':
+				hdupk(e.Thing).amount = BoxReducer('HD9mBoxPickup', 'HDLoose9mm', 100, e.Thing);
+				break;
 			case 'HD4mMag':
 				replaced = MagReplacer('HD4mMag', 'FourMilAmmo', 50, e.Thing);
 				break;
 			case 'HD7mMag':
 				replaced = MagReplacer('HD7mMag', 'SevenMilAmmo', 30, e.Thing);
+				break;
+			case 'HD7mBoxPickup':
+				hdupk(e.Thing).amount = BoxReducer('HD7mBoxPickup', 'SevenMilAmmo', 50, e.Thing);
 				break;
 			case 'HD7mClip':
 				replaced = MagReplacer('HD7mClip', 'SevenMilAmmo', 10, e.Thing);
@@ -31,6 +37,9 @@ class HDScav_Scarcity_Spawner : EventHandler {
 			case 'ShellPickup':
 				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * (1.25-ScarcityFactor)), e.Thing.pos, true);
 				replaced = true;
+				break;
+			case 'ShellBoxPickup':
+				hdupk(e.Thing).amount = BoxReducer('ShellBoxPickup', 'HDShellAmmo', 20, e.Thing);
 				break;
 			case 'HDBattery':
 				int MagCap = 20 * (1.25 - ScarcityFactor);
@@ -104,5 +113,20 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		}
 		returnValue = true;
 		return returnValue;
+	}
+
+	//Generic function for reducing amount in map-spawned ammo boxes, without removal since boxes are already rare
+	int BoxReducer(name BoxName, name ammoName, int BoxCap, actor spawnPointer) {
+		int rounds, loose;
+		BoxCap *= min(1.25 - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo even at max scarcity
+		rounds = random(1, BoxCap); //Pick a number up to cap
+		//Drop random amount of on ground
+		if(HDScav.RandomChance(0.5)) {
+			loose = random(1, rounds * 0.5); //spill up to 50%
+			rounds -= loose;
+			HDScav.SpawnStuff(ammoName, loose, spawnPointer.pos);
+		}
+		//Pack the rest into the box.
+		return rounds;
 	}
 }
