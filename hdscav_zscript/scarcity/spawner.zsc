@@ -52,21 +52,26 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = true;
 				break;
 			case 'PortableStimpack':
-				HDScav.SpawnStuff('SpentStim', 1, e.Thing.pos);
+				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('SpentStim', random(0, 1), e.Thing.pos); }
+				else { HDScav.SpawnStuff('HDScav_StimInjector', random(0, 1), e.Thing.pos); }
+				HDScav.SpawnStuff('HDScav_EmptyStimpack', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'PortableBerserkPack':
-				if(HDScav.RandomChance(0.5)) {
-					HDScav.SpawnStuff('SpentZerk', random(1,4), e.Thing.pos);
-					HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
-					replaced = true;
+				for(int i = 1; i <= 4; i++) {
+					if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('SpentZerk', random(0, 1), e.Thing.pos); }
+					else { HDScav.SpawnStuff('HDScav_ZerkInjector', random(0, 1), e.Thing.pos); }
 				}
+				HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
+				replaced = true;
+				break;
 			case 'BluePotion':
 				if(HDScav.RandomChance(0.5)) {
 					HDScav.SpawnStuff('SpentBottle', 1, e.Thing.pos);
 					HDScav.SpawnStuff('SpentCork', 1, e.Thing.pos);
 					replaced = true;
 				}
+				break;
 		}
 
 		// Delete the original object if it was replaced
