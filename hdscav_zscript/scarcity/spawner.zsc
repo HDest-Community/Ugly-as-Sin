@@ -9,6 +9,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		if(!HDScav.RandomChance(ScarcityFactor)) { return; }
 		if(level.time > 1) { return; }
 		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
 		if(e.Thing.bDROPPED) { return; }
 
 		// Randomly break/reduce packed ammo pickups
