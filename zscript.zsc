@@ -16,3 +16,7 @@ version "3.4"
 
 // Debris spawner
 #include "hdscav_zscript/debris/spawner.zsc"
+
+// Weapon Sling
+#include "hdscav_zscript/sling/bootstrap.zsc"
+#include "hdscav_zscript/sling/sling.zsc"

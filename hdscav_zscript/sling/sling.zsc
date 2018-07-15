@@ -1,0 +1,115 @@
+class HDScav_WeaponSling : HDPickup {
+	int useDelay, holdingUse;
+	int slingPrep;
+	bool slingBraced;
+	string attachedWeapon;
+	int attachedPoints;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a weapon sling.";
+		Inventory.Icon "HSCVI0";
+		HDPickup.Bulk 10;
+		Scale 0.75;
+		+FLATSPRITE;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr) { return; }
+		if((ownr.gunbraced && !slingBraced)) { return; } // Skip if already braced on something
+		// Break attachment if dropped
+		if(ownr.countinv(attachedWeapon) == 0) {
+			attachedWeapon = "";
+			attachedPoints = 0;
+		}
+		if(attachedPoints < 2) { return; }
+		if(attachedWeapon != ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if the current weapon isn't the attached one
+
+		useDelay = CVar.GetCVar('hd_hudusedelay', owner.player).GetInt();
+
+		// Check for held [use] button and increment / decrement counters
+		if((ownr.player.cmd.buttons & BT_USE)) {
+			holdingUse++;
+			if(holdingUse >= useDelay) {
+				slingPrep += 20;
+			}
+		}
+		else {
+			holdingUse = 0;
+			slingPrep -= 30;
+		}
+
+		// Keep values sane
+		slingPrep = clamp(slingPrep, 0, 360);
+		holdingUse = clamp(holdingUse, 0, useDelay);
+
+		// "Animation" for preparing or stoping the sling
+		if(slingPrep > 0 && slingPrep < 360) {
+			if(holdingUse > 0) {
+				owner.A_SetPitch(owner.pitch + sin(slingPrep) * 0.5, SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle + cos(slingPrep) * 0.5, SPF_INTERPOLATE);
+
+			}
+			else {
+				owner.A_SetPitch(owner.pitch - sin(slingPrep) * 0.5, SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle - cos(slingPrep) * 0.5, SPF_INTERPOLATE);
+			}
+		}
+
+		//Enable or disable on completion
+		if(slingPrep == 360) {
+			ownr.gunbraced = true;
+			slingBraced = true;
+		}
+		else if(slingPrep == 0) {
+			ownr.gunbraced = false;
+			slingBraced = false;
+		}
+	}
+
+	action void HDScav_AttachToWeapon() {
+		let ownr = HDPlayerPawn(invoker.owner);
+		string weapName = ownr.player.ReadyWeapon.GetClassName();
+		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >=2) {
+			if(getcvar("hd_helptext")) { console.printf("Sling already attached."); }
+			return;
+		}
+		else if (invoker.attachedWeapon != weapName) {
+			invoker.attachedWeapon = "";
+			invoker.attachedPoints = 0;
+			if(getcvar("hd_helptext")) { console.printf("Removed sling from previous weapon."); }
+		}
+		if(weapName == "hdsmg" ||
+			weapName == "zm66assaultrifle" ||
+			weapName == "zm66semi" ||
+			weapName == "zm66regular" ||
+			weapName == "vulcanette" ||
+			weapName == "liberatorrifle" ||
+			weapName == "liberatornogl") {
+				//A_PlaySound("misc/tink", CHAN_WEAPON, 0.3);
+				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
+				invoker.attachedPoints++;
+				invoker.attachedWeapon = ownr.player.ReadyWeapon.GetClassName();
+				if(getcvar("hd_helptext")) { console.printf("Attached a sling point (%i of 2).", invoker.attachedPoints); }
+		}
+		else {
+			if(getcvar("hd_helptext")) { console.printf("Can't put a sling on this weapon.", invoker.attachedPoints); }
+		}
+		invoker.attachedPoints = clamp(invoker.attachedPoints, 0, 2);
+		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >= 2) {
+			if(getcvar("hd_helptext")) { console.printf("Sling ready."); }
+		}
+	}
+
+	States {
+		Spawn:
+			HSCV I -1;
+			stop;
+		Use:
+			HSCV I 1 HDScav_AttachToWeapon();
+			fail;
+	}
+}
