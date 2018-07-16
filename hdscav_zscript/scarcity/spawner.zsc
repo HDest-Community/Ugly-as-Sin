@@ -1,5 +1,6 @@
 class HDScav_Scarcity_Spawner : EventHandler {
 	double ScarcityFactor;
+	actor spawneditem;
 
 	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
@@ -55,17 +56,15 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				HDScav.SpawnStuff('HDScav_EmptyRocketBox', 1, e.Thing.pos);
 				replaced = true;
 				break;
-		}
 
 		// Randomly break/reduce medical and health items
-		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
 				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
-				let spawneditem = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
-				if(!spawneditem) { break; }
-				spawneditem.injectableflesh = random(0, 2);
-				spawneditem.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
-				if(spawneditem.injectableflesh < 2 || spawneditem.usedpatches > 0) { spawneditem.frame = 2; }
+				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
+				if(!spawnedMedikit) { break; }
+				spawnedMedikit.injectableflesh = random(0, 2);
+				spawnedMedikit.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
+				if(spawnedMedikit.injectableflesh < 2 || spawnedMedikit.usedpatches > 0) { spawnedMedikit.frame = 2; }
 				HDScav.SpawnStuff('HDScav_EmptyMedikit', 1, e.Thing.pos);
 				replaced = true;
 				break;
@@ -89,6 +88,14 @@ class HDScav_Scarcity_Spawner : EventHandler {
 					HDScav.SpawnStuff('SpentCork', 1, e.Thing.pos);
 					replaced = true;
 				}
+				break;
+
+		// Randomly break equipment items
+			case 'HDMap':
+				let spawnedMap = HDSCav_Automap(actor.Spawn('HDSCav_Automap', e.Thing.pos));
+				if(!spawnedMap) { break; }
+				spawnedMap.status = randompick(0,0,1,1,2);
+				replaced = true;
 				break;
 		}
 
