@@ -39,7 +39,7 @@ class HDScav_WeaponSling : HDPickup {
 		}
 		else {
 			holdingUse = 0;
-			slingPrep -= 30;
+			slingPrep -= 45;
 		}
 
 		// Keep values sane
@@ -49,15 +49,19 @@ class HDScav_WeaponSling : HDPickup {
 		// "Animation" for preparing or stoping the sling
 		if(slingPrep > 0 && slingPrep < 360) {
 			if(holdingUse > 0) {
-				owner.A_SetPitch(owner.pitch + sin(slingPrep) * 0.5, SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle + cos(slingPrep) * 0.5, SPF_INTERPOLATE);
+				owner.A_SetPitch(owner.pitch + sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle + cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 
 			}
 			else {
-				owner.A_SetPitch(owner.pitch - sin(slingPrep) * 0.5, SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle - cos(slingPrep) * 0.5, SPF_INTERPOLATE);
+				owner.A_SetPitch(owner.pitch - sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle - cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 			}
 		}
+
+		if(slingPrep == 40 || slingPrep == 315) { owner.A_PlaySound("weapons/pocket", CHAN_WEAPON, 0.25); }
+		if(slingPrep == 340) { owner.A_PlaySound("weapons/rifleclick2",CHAN_BODY,0.3); }
+
 
 		//Enable or disable on completion
 		if(slingPrep == 360) {
@@ -91,7 +95,7 @@ class HDScav_WeaponSling : HDPickup {
 			weapName == "vulcanette" ||
 			weapName == "liberatorrifle" ||
 			weapName == "liberatornogl") {
-				//A_PlaySound("misc/tink", CHAN_WEAPON, 0.3);
+				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
 				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
 				invoker.attachedPoints++;
 				invoker.attachedWeapon = ownr.player.ReadyWeapon.GetClassName();
