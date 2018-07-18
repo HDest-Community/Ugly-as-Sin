@@ -8,7 +8,7 @@ class HDScav_Hunger_Spawner : EventHandler {
 
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
-		if(level.time > 10) { return; }
+		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
 		//if(e.Thing.bDROPPED) { return; }
