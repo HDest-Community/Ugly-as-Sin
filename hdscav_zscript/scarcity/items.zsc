@@ -1,3 +1,49 @@
+// Damaged lite-amp effects (does not replace inventory item)
+
+/*class HDScav_PortableLiteAmp : PortableLiteAmp replaces PortableLiteAmp {
+	bool isBroken;
+
+	override void PostBeginPlay() {
+		isBroken = true;
+		super.PostBeginPlay();
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		if(HDScav.RandomChance(0.1)) {
+			Shader.SetEnabled(owner.player,"NiteVis",false);
+		}
+	}
+}*/
+
+/*class HDScav_BrokeLiteAmpEffect : CustomInventory {
+	PortableLiteAmp realLiteAmp;
+	bool wasWorn;
+
+	default {
+		+INVENTORY.AUTOACTIVATE;
+		+INVENTORY.PERSISTENTPOWER;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let realLiteAmp = PortableLiteAmp(owner.FindInventory("PortableLiteAmp"));
+
+		if(realLiteAmp.worn && HDScav.RandomChance(0.1)) {
+			owner.A_SetBlend("00 00 00", 0 , 35 * frandom(0.1, 5.0), "00 00 00" , 1);
+		}
+	}
+
+	States {
+		Spawn:
+			TNT1 A -1;
+			stop;
+		Use:
+			TNT1 A 1;
+			loop;
+	}
+}*/
+
 // Damaged automap
 class HDScav_Automap : HDPickup {
 	int status;
