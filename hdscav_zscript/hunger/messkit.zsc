@@ -4,6 +4,7 @@ class HDScav_MessKit : HDWoundFixer {
 	int mealSize;
 	int drinkSize;
 	int sipSize;
+	int speedFactor;
 	string flavor;
 	bool rationOpen;
 
@@ -23,6 +24,7 @@ class HDScav_MessKit : HDWoundFixer {
 	override void DoEffect() {
 		//Set "amount" next to messkit as available food items
 		amount = owner.countinv("HDScav_Ration");
+		speedFactor = clamp(double(HDScav_TimeScale) / 10, 1, 12);
 		super.DoEffect();
 	}
 
@@ -149,9 +151,9 @@ class HDScav_MessKit : HDWoundFixer {
 	action void HDScav_TakeScoop() {
 		double difference = clamp(2500 - invoker.tracker.calories, 0, 500);
 		A_PlaySound("HDScav/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
-		invoker.biteSize  = min(invoker.mealsize, 75) * frandom(0.75,1.0);;
+		invoker.biteSize  = min(invoker.mealsize, 75 * invoker.speedFactor) * frandom(0.75,1.0);;
 		invoker.biteSize *= (difference / 500.0);
-		invoker.biteSize  = clamp(invoker.biteSize, 1, 75);
+		invoker.biteSize  = clamp(invoker.biteSize, 1, 75 * invoker.speedFactor);
 	}
 
 	//"Chew" the food
@@ -159,7 +161,7 @@ class HDScav_MessKit : HDWoundFixer {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
 		if(invoker.bitesize > 0) {
 			//Chew
-			int chunk = random(1,10) ;
+			int chunk = random(1,10) * invoker.speedFactor;
 			A_PlaySound("weapons/pocket", CHAN_AUTO, frandom(0.25, 0.6));
 			A_PlaySound("misc/fragroll", CHAN_AUTO, frandom(0.25, 0.7));
 			invoker.mealSize -= clamp(chunk, 0, invoker.biteSize);
@@ -174,13 +176,13 @@ class HDScav_MessKit : HDWoundFixer {
 	//Consume a random amount of water "drops" to simulate drinking
 	action state HDScav_Sip() {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
-		int drops = random(1,2);
+		int drops = random(1,2) * invoker.speedFactor;
 		for(int i = 1; i <= drops; i++) {
 			invoker.sipsize += 1;
 			invoker.tracker.water += 1;
 			invoker.drinksize -= 1;
 			if(getcvar("hd_helptext")) { A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175); }
-			if(invoker.drinksize <= 0 || invoker.sipSize > random(25,50)) {
+			if(invoker.drinksize <= 0 || invoker.sipSize > random(25,50) * invoker.speedFactor) {
 				invoker.sipsize = 0;
 				return ResolveState("Swallow");
 			}
