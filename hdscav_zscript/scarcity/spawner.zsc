@@ -71,6 +71,13 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				HDScav.SpawnStuff('HDScav_EmptyRocketBox', 1, e.Thing.pos);
 				replaced = true;
 				break;
+			case 'FragP':
+			case 'HDFragGrenadeAmmo':
+				if(HDScav.RandomChance(0.5)) {
+					HDScav.SpawnStuff('HDFragSpoon', random(0, 1), e.Thing.pos);
+					replaced = true;
+				}
+				break;
 		}
 
 		// Randomly break/reduce medical and health items
