@@ -8,9 +8,24 @@ class HDScav_Scarcity_Spawner : EventHandler {
 
 		// Conditions for skipping spawn adjustment
 		if(!HDScav.RandomChance(ScarcityFactor)) { return; }
-		if(level.maptime > 1) { return; }
+		if(level.maptime > 5) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		// Randomly reduce armor
+		switch(e.Thing.GetClassName()) {
+			case 'HDArmour':
+				let ArmourReducer = HDScav_ArmorReducer(actor.Spawn('HDScav_ArmorReducer', e.Thing.pos));
+				ArmourReducer.target = e.Thing;
+				ArmourReducer.ScarcityFactor = ScarcityFactor;
+				break;
+			/*case 'HDArmour':
+				let spawnedArmor = HDArmour(actor.Spawn('HDArmour', e.Thing.pos));
+				spawnedArmor.amount *= frandom(1.0 - ScarcityFactor, 1.0);
+				break;*/
+		}
+
+		// Addition skip, hopefully prevent recusion
 		if(e.Thing.bDROPPED) { return; }
 
 		// Randomly break/reduce packed ammo pickups
@@ -56,8 +71,10 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				HDScav.SpawnStuff('HDScav_EmptyRocketBox', 1, e.Thing.pos);
 				replaced = true;
 				break;
+		}
 
 		// Randomly break/reduce medical and health items
+		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
 				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
 				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
@@ -89,8 +106,10 @@ class HDScav_Scarcity_Spawner : EventHandler {
 					replaced = true;
 				}
 				break;
+		}
 
 		// Randomly break equipment items
+		switch(e.Thing.GetClassName()) {
 			case 'HDMap':
 				let spawnedMap = HDSCav_Automap(actor.Spawn('HDSCav_Automap', e.Thing.pos));
 				if(!spawnedMap) { break; }
@@ -138,5 +157,24 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		}
 		//Pack the rest into the box.
 		return rounds;
+	}
+}
+
+class HDScav_ArmorReducer : Actor {
+	double ScarcityFactor;
+
+	States {
+		Spawn:
+			TNT1 AAAAA 1;
+			TNT1 A 0 ReduceArmor();
+			stop;
+	}
+
+	action void ReduceArmor() {
+		if(invoker.target) {
+			Inventory(invoker.target).amount *= frandom(1.0 - invoker.ScarcityFactor, 1.0);
+			if(HDScav_Debug >=1) { console.printf("%s reduced to %i", Inventory(invoker.target).GetClassName(), Inventory(invoker.target).amount); }
+		}
+		Destroy();
 	}
 }
