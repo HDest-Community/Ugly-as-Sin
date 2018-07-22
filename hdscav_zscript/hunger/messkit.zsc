@@ -4,7 +4,7 @@ class HDScav_MessKit : HDWoundFixer {
 	int mealSize;
 	int drinkSize;
 	int sipSize;
-	int speedFactor;
+	double speedFactor;
 	string flavor;
 	bool rationOpen;
 
