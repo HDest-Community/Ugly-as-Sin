@@ -33,5 +33,5 @@ OptionMenu "HDScav_Options" {
 	StaticText "Rates above 75% may be unplayable.", grey
 	StaticText " "
 
-	Slider "Frag despawn rate","HDScav_FragFactor", 0.0, 1.0, 0.05, 2
+	ScaleSlider "Frag despawn rate","HDScav_FragFactor", 0, 100, 5, "Disabled"
 }

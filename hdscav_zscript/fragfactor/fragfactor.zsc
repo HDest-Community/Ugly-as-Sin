@@ -1,12 +1,14 @@
 class HDScav_FragRemovalHandler : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
+		if(HDScav_FragFactor == 0) { return; }
+		double removeChance = double(HDScav_FragFactor) * 0.01;
 		switch(e.Thing.GetClassName()) {
 			case 'FragShard':
 			case 'BFGVileShard':
 			case 'VileShard':
-				if(HDScav.RandomChance(HDScav_FragFactor)) {
-					if(HDScav_Debug >=1) { console.printf("%s despawned", e.Thing.GetClassName()); }
+				if(HDScav.RandomChance(removeChance)) {
+					if(HDScav_Debug >=1) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
 					e.Thing.Destroy();
 				}
 				break;

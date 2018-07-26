@@ -1,4 +1,4 @@
 server float HDScav_TimeScale = 60;
 server int HDScav_ScarcityRate = 50;
 server int HDScav_Debug = 0;
-server float HDScav_FragFactor = 0.0;
+server int HDScav_FragFactor = 0;
