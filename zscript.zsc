@@ -20,3 +20,6 @@ version "3.3"
 // Weapon Sling
 #include "hdscav_zscript/sling/bootstrap.zsc"
 #include "hdscav_zscript/sling/sling.zsc"
+
+// Frag spawning factor
+#include "hdscav_zscript/fragfactor/fragfactor.zsc"
