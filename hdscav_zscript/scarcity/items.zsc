@@ -221,9 +221,6 @@ class HDScav_EmptyStimpack : HDScav_FakePickup {
 		Spawn:
 			HSCV E 1;
 			Loop;
-		Death:
-			HSCV E -1;
-			stop;
 	}
 }
 
@@ -236,9 +233,6 @@ class HDScav_EmptyMedikit : HDScav_FakePickup {
 		Spawn:
 			HSCV F 1;
 			Loop;
-		Death:
-			HSCV F -1;
-			stop;
 	}
 }
 
@@ -251,9 +245,6 @@ class HDScav_EmptyZerkpack : HDScav_FakePickup {
 		Spawn:
 			HSCV G 1;
 			Loop;
-		Death:
-			HSCV G -1;
-			stop;
 	}
 }
 
@@ -266,8 +257,17 @@ class HDScav_EmptyRocketBox : HDScav_FakePickup {
 		Spawn:
 			HSCV H 1;
 			Loop;
-		Death:
-			HSCV H -1;
-			stop;
+	}
+}
+
+class HDScav_BrokenLiteAmp : HDScav_FakePickup {
+	default {
+		scale 0.5;
+	}
+
+	States {
+		Spawn:
+			HSCV O 1;
+			Loop;
 	}
 }

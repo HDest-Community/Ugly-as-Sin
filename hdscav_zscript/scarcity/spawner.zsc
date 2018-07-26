@@ -123,6 +123,11 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				spawnedMap.status = randompick(0,0,1,1,2);
 				replaced = true;
 				break;
+			case 'PortableLiteAmp':
+				if(HDScav.RandomChance(0.25)) {
+					HDScav.SpawnStuff('HDScav_BrokenLiteAmp', 1, e.Thing.pos);
+					replaced = true;
+				}
 		}
 
 		// Delete the original object if it was replaced
