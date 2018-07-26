@@ -3,6 +3,7 @@ class HungerInitialized : Inventory {}
 class HDScav_Hunger_Bootstrap : EventHandler {
 	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
+		if(HDScav_TimeScale == 0) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("HungerInitialized")) {
 			player.mo.giveinventory("HDScav_HungerTracker", 1);
