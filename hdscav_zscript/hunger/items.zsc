@@ -3,7 +3,7 @@ class HDScav_Ration : HDPickup {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
 		hdpickup.bulk 6;
-		scale 0.4;
+		scale 0.3;
 		-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
@@ -17,7 +17,7 @@ class HDScav_Ration : HDPickup {
 
 class HDScav_EmptyRation : HDDebris {
 	default {
-		scale 0.4;
+		scale 0.25;
 		bouncesound "misc/wallchunks";
 		bouncefactor 0.3;
 		-FORCEXYBILLBOARD;
