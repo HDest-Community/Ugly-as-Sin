@@ -56,4 +56,5 @@ OptionMenu "HDScav_Scarcity_Options" {
 OptionMenu "HDScav_Misc_Options" {
 	Title "Misc Options"
 	ScaleSlider "Frag despawn rate","HDScav_FragFactor", 0, 100, 5, "Disabled"
+	Option "Weapon Sling","HDScav_SlingEnabled","OnOff"
 }

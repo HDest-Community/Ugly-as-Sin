@@ -4,8 +4,14 @@ class HDScav_Sling_Bootstrap : EventHandler {
 	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
-		if(!player.mo.countinv("SlingInitialized")) {
-			player.mo.giveinventory("HDScav_WeaponSling", 1);
+		if(HDScav_SlingEnabled == true) {
+			if(!player.mo.countinv("SlingInitialized")) {
+				player.mo.giveinventory("HDScav_WeaponSling", 1);
+			}
+		}
+		else {
+			player.mo.TakeInventory("SlingInitialized", 1);
+			player.mo.TakeInventory("HDScav_WeaponSling", 1);
 		}
 	}
 }

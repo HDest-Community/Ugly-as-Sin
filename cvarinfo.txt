@@ -3,3 +3,4 @@ server int HDScav_ScarcityRate = 50;
 server float HDScav_ScarcityOverspawn = 0.5;
 server int HDScav_Debug = 0;
 server int HDScav_FragFactor = 0;
+server bool HDScav_SlingEnabled = true;
