@@ -111,7 +111,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
 				replaced = true;
 				break;
-			case 'BluePotion':
+			/*case 'BluePotion':
 				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
 					break;
 				}
@@ -120,7 +120,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 					HDScav.SpawnStuff('SpentCork', 1, e.Thing.pos);
 					replaced = true;
 				}
-				break;
+				break;*/
 		}
 
 		// Randomly break equipment items
