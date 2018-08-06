@@ -1,10 +1,12 @@
 class HDScav_Scarcity_Spawner : EventHandler {
 	double ScarcityFactor;
+	double OverspawnFactor;
 	actor spawneditem;
 
 	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
 		ScarcityFactor = double(HDScav_ScarcityRate) / 100.0;
+		OverspawnFactor = HDScav_ScarcityOverspawn + 1.0;
 
 		// Conditions for skipping spawn adjustment
 		if(!HDScav.RandomChance(ScarcityFactor)) { return; }
@@ -52,20 +54,20 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = MagReplacer('HD7mClip', 'SevenMilAmmo', 10, e.Thing);
 				break;
 			case 'ShellPickup':
-				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * min(1.25-ScarcityFactor, 1.0)), e.Thing.pos, true);
+				HDScav.SpawnStuff('HDShellAmmo', random(0, 4 * min(OverspawnFactor-ScarcityFactor, 1.0)), e.Thing.pos, true);
 				replaced = true;
 				break;
 			case 'ShellBoxPickup':
 				hdupk(e.Thing).amount = BoxReducer('ShellBoxPickup', 'HDShellAmmo', 20, e.Thing);
 				break;
 			case 'HDBattery':
-				int MagCap = 20 * min(1.25 - ScarcityFactor, 1.0);
+				int MagCap = 20 * min(OverspawnFactor - ScarcityFactor, 1.0);
 				HDMagAmmo.SpawnMag(e.Thing, 'HDBattery', random(0, MagCap));
 				replaced = true;
 				break;
 			case 'RocketBigPickup':
 				for(int i = 1; i <= 5; i++) {
-					if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('HDRocketAmmo', random(0, 1), e.Thing.pos); }
+					if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDRocketAmmo', random(0, 1), e.Thing.pos); }
 					else { HDScav.SpawnStuff('DudRocket', random(0, 1), e.Thing.pos); }
 				}
 				HDScav.SpawnStuff('HDScav_EmptyRocketBox', 1, e.Thing.pos);
@@ -73,7 +75,10 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				break;
 			case 'FragP':
 			case 'HDFragGrenadeAmmo':
-				if(HDScav.RandomChance(0.5)) {
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
+					break;
+				}
+				else {
 					HDScav.SpawnStuff('HDFragSpoon', random(0, 1), e.Thing.pos);
 					replaced = true;
 				}
@@ -83,7 +88,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 		// Randomly break/reduce medical and health items
 		switch(e.Thing.GetClassName()) {
 			case 'PortableMedikit':
-				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('PortableStimpack', 1, e.Thing.pos); }
 				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', e.Thing.pos));
 				if(!spawnedMedikit) { break; }
 				spawnedMedikit.injectableflesh = random(0, 2);
@@ -93,21 +98,24 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = true;
 				break;
 			case 'PortableStimpack':
-				if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('SpentStim', random(0, 1), e.Thing.pos); }
-				else { HDScav.SpawnStuff('HDScav_StimInjector', random(0, 1), e.Thing.pos); }
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_StimInjector', random(0, 1), e.Thing.pos); }
+				else { HDScav.SpawnStuff('SpentStim', random(0, 1), e.Thing.pos); }
 				HDScav.SpawnStuff('HDScav_EmptyStimpack', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'PortableBerserkPack':
 				for(int i = 1; i <= 4; i++) {
-					if(HDScav.RandomChance(0.5)) { HDScav.SpawnStuff('SpentZerk', random(0, 1), e.Thing.pos); }
-					else { HDScav.SpawnStuff('HDScav_ZerkInjector', random(0, 1), e.Thing.pos); }
+					if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_ZerkInjector', random(0, 1), e.Thing.pos); }
+					else { HDScav.SpawnStuff('SpentZerk', random(0, 1), e.Thing.pos); }
 				}
 				HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
 				replaced = true;
 				break;
 			case 'BluePotion':
-				if(HDScav.RandomChance(0.5)) {
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
+					break;
+				}
+				else {
 					HDScav.SpawnStuff('SpentBottle', 1, e.Thing.pos);
 					HDScav.SpawnStuff('SpentCork', 1, e.Thing.pos);
 					replaced = true;
@@ -124,7 +132,10 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = true;
 				break;
 			case 'PortableLiteAmp':
-				if(HDScav.RandomChance(0.25)) {
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
+					break;
+				}
+				else {
 					HDScav.SpawnStuff('HDScav_BrokenLiteAmp', 1, e.Thing.pos);
 					replaced = true;
 				}
@@ -142,10 +153,10 @@ class HDScav_Scarcity_Spawner : EventHandler {
 	bool MagReplacer(name MagName, name ammoName, int MagCap, actor spawnPointer) {
 		bool returnValue;
 		int rounds, packed;
-		MagCap *= min(1.25 - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo even at max scarcity
-		rounds = random(1, MagCap); //Pick a number up to cap
+		MagCap *= min(OverspawnFactor - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo, based on overspawn
+		rounds = random(0, MagCap); //Pick a number up to cap
 		//Pack some in a mag, or no mag at all
-		if(HDScav.RandomChance(0.5)) {
+		if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
 			packed = randompick(0, random(1, rounds)); //50%: pack none (spawn empty), or up to all
 			rounds -= packed;
 			HDMagAmmo.SpawnMag(spawnPointer, MagName, packed);
@@ -159,11 +170,11 @@ class HDScav_Scarcity_Spawner : EventHandler {
 	//Generic function for reducing amount in map-spawned ammo boxes, without removal since boxes are already rare
 	int BoxReducer(name BoxName, name ammoName, int BoxCap, actor spawnPointer) {
 		int rounds, loose;
-		BoxCap *= min(1.25 - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo even at max scarcity
+		BoxCap *= min(OverspawnFactor - ScarcityFactor, 1.0); //Possible spawn at least *some* ammo, based on overspawn
 		rounds = random(BoxCap * 0.5, BoxCap); //Pick a number from 50% up to cap
 		//Drop random amount of on ground
-		if(HDScav.RandomChance(0.5)) {
-			loose = random(1, rounds * 0.5); //spill up to 50%
+		if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
+			loose = random(0, rounds * 0.5); //spill up to 50%
 			rounds -= loose;
 			HDScav.SpawnStuff(ammoName, loose, spawnPointer.pos);
 		}

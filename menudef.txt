@@ -33,6 +33,7 @@ OptionMenu "HDScav_Options" {
 	StaticText " "
 
 	ScaleSlider "Scarcity rate","HDScav_ScarcityRate", 0, 100, 5, "Disabled"
+	Slider "Overspawn ratio","HDScav_ScarcityOverspawn", 0, 1, 0.05, 2
 	StaticText "Controls probability for spawns", grey
 	StaticText "to be downsized or removed.", grey
 	StaticText "Changes will apply on next level load.", grey
