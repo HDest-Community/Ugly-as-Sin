@@ -132,13 +132,13 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = true;
 				break;
 			case 'PortableLiteAmp':
-				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) {
-					break;
-				}
-				else {
+				PortableLiteAmp(e.Thing).brokenness = 400 + random(-100 * HDScav_ScarcityOverspawn, 100);
+				if(HDScav_Debug >=1) { console.printf("Liteamp brokenness %i", PortableLiteAmp(e.Thing).brokenness); }
+				if(PortableLiteAmp(e.Thing).brokenness > 450) {
 					HDScav.SpawnStuff('HDScav_BrokenLiteAmp', 1, e.Thing.pos);
 					replaced = true;
 				}
+				break;
 		}
 
 		// Delete the original object if it was replaced
