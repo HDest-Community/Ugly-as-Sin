@@ -5,7 +5,7 @@ class HDScav_2FCartridge_Handler : Inventory {
 	override void DoEffect() {
 		super.DoEffect();
 		let ownr = HDPlayerPawn(owner);
-		if(!ownr) { return; }
+		if(!ownr || !ownr.player.ReadyWeapon) { return; }
 		if(cooldown == 0 && ownr.player.ReadyWeapon.GetClassName() == 'HDMedikitter') {
 			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('HDScav_2FCartridge') < 8) {
 				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh > 0) {
