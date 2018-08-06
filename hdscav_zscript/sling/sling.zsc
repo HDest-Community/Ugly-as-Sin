@@ -84,7 +84,7 @@ class HDScav_WeaponSling : HDPickup {
 		else if (invoker.attachedWeapon != weapName) {
 			invoker.attachedWeapon = "";
 			invoker.attachedPoints = 0;
-			if(getcvar("hd_helptext")) { console.printf("Removed sling from previous weapon."); }
+			//if(getcvar("hd_helptext")) { console.printf("Removed sling from previous weapon."); }
 		}
 		if(weapName == "hdsmg" ||
 			weapName == "hunter" ||
