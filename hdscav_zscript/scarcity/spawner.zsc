@@ -132,7 +132,11 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				replaced = true;
 				break;
 			case 'PortableLiteAmp':
-				PortableLiteAmp(e.Thing).brokenness = 400 + random(-100 * HDScav_ScarcityOverspawn, 100);
+				double avgbroke = 400 + random(-400 * HDScav_ScarcityOverspawn, 100 * (1.0 - HDScav_ScarcityOverspawn));
+				avgbroke += 400 + random(-400 * HDScav_ScarcityOverspawn, 100 * (1.0 - HDScav_ScarcityOverspawn));
+				avgbroke += 400 + random(-400 * HDScav_ScarcityOverspawn, 100 * (1.0 - HDScav_ScarcityOverspawn));
+				avgbroke /= 3;
+				PortableLiteAmp(e.Thing).brokenness = int(avgbroke);
 				if(HDScav_Debug >=1) { console.printf("Liteamp brokenness %i", PortableLiteAmp(e.Thing).brokenness); }
 				if(PortableLiteAmp(e.Thing).brokenness > 450) {
 					HDScav.SpawnStuff('HDScav_BrokenLiteAmp', 1, e.Thing.pos);
