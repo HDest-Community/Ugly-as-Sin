@@ -95,12 +95,14 @@ class HDScav_Scarcity_Spawner : EventHandler {
 				spawnedMedikit.usedpatches = random(0, HD_MEDPATCHLIMIT * ScarcityFactor);
 				if(spawnedMedikit.injectableflesh < 2 || spawnedMedikit.usedpatches > 0) { spawnedMedikit.frame = 2; }
 				HDScav.SpawnStuff('HDScav_EmptyMedikit', 1, e.Thing.pos);
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_2FCartridge', random(0, 2 - spawnedMedikit.injectableflesh), e.Thing.pos); }
 				replaced = true;
 				break;
 			case 'PortableStimpack':
 				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_StimInjector', random(0, 1), e.Thing.pos); }
 				else { HDScav.SpawnStuff('SpentStim', random(0, 1), e.Thing.pos); }
 				HDScav.SpawnStuff('HDScav_EmptyStimpack', 1, e.Thing.pos);
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_2FCartridge', random(0, 1), e.Thing.pos); }
 				replaced = true;
 				break;
 			case 'PortableBerserkPack':
@@ -109,6 +111,7 @@ class HDScav_Scarcity_Spawner : EventHandler {
 					else { HDScav.SpawnStuff('SpentZerk', random(0, 1), e.Thing.pos); }
 				}
 				HDScav.SpawnStuff('HDScav_EmptyZerkpack', 1, e.Thing.pos);
+				if(HDScav.RandomChance(HDScav_ScarcityOverspawn)) { HDScav.SpawnStuff('HDScav_2FCartridge', random(0, 1), e.Thing.pos); }
 				replaced = true;
 				break;
 			/*case 'BluePotion':

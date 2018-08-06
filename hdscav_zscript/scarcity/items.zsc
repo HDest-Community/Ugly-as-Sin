@@ -1,3 +1,61 @@
+// spare Second Flesh cartridges
+class HDScav_2FCartridge_Handler : Inventory {
+	int cooldown;
+
+	override void DoEffect() {
+		super.DoEffect();
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr) { return; }
+		if(cooldown == 0 && ownr.player.ReadyWeapon.GetClassName() == 'HDMedikitter') {
+			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('HDScav_2FCartridge') < 8) {
+				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh > 0) {
+					HDMedikitter(ownr.player.ReadyWeapon).injectableflesh--;
+					owner.A_GiveInventory('HDScav_2FCartridge', 1);
+					owner.A_PlaySound("weapons/rifleclick", volume: 0.5);
+					cooldown = 20;
+				}
+			}
+
+			else if((ownr.player.cmd.buttons & BT_USER1) && owner.countinv('HDScav_2FCartridge') > 0) {
+				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh < 2) {
+					HDMedikitter(ownr.player.ReadyWeapon).injectableflesh++;
+					owner.A_TakeInventory('HDScav_2FCartridge', 1);
+					owner.A_PlaySound("weapons/rifleload", volume: 0.75);
+					cooldown = 20;
+				}
+			}
+		}
+		cooldown = clamp(cooldown - 1, 0, 20);
+	}
+}
+
+class HDScav_2FCartridge : HDPickup {
+	Default {
+		Inventory.Amount 1;
+		inventory.pickupmessage "Picked up a second flesh cartridge.";
+		inventory.MaxAmount 8;
+		hdpickup.bulk 6;
+		Inventory.Icon "HSCVP0";
+		+INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+		+Inventory.KEEPDEPLETED;
+		scale 0.25;
+	}
+
+	action void HelpMessage() {
+		if(getcvar("hd_helptext")) { console.printf("With your medikit open, press secondary reload to insert the cartridge, and unload to remove the cartridge."); }
+	}
+
+	States {
+		Spawn:
+			HSCV P -1;
+			stop;
+		Use:
+			HSCV P 1 HelpMessage();
+			fail;
+	}
+}
+
 // Damaged automap
 class HDScav_Automap : HDPickup {
 	int status;

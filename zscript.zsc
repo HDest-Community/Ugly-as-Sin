@@ -11,6 +11,7 @@ version "3.3"
 #include "hdscav_zscript/hunger/messkit.zsc"
 
 // Scarcity scripts
+#include "hdscav_zscript/scarcity/bootstrap.zsc"
 #include "hdscav_zscript/scarcity/spawner.zsc"
 #include "hdscav_zscript/scarcity/items.zsc"
 

@@ -5,4 +5,5 @@ GameInfo {
 	AddEventHandlers = "HDScav_Debris_Spawner"
 	AddEventHandlers = "HDScav_Sling_Bootstrap"
 	AddEventHandlers = "HDScav_FragRemovalHandler"
+	AddEventHandlers = "HDScav_Scarcity_Bootstrap"
 }
