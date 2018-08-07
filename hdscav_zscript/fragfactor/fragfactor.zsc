@@ -1,8 +1,8 @@
 class HDScav_FragRemovalHandler : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
-		if(HDScav_FragFactor == 0) { return; }
-		double removeChance = double(HDScav_FragFactor) * 0.01;
+		if(HDScav_FragSpawnRate == 100) { return; }
+		double removeChance = 1.0 - (double(HDScav_FragSpawnRate) * 0.01);
 		switch(e.Thing.GetClassName()) {
 			case 'FragShard':
 			case 'BFGVileShard':
