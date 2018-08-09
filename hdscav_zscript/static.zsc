@@ -1,9 +1,8 @@
 // Static functions for general use
 class HDScav {
-
 	//Return true for random below percentage
 	static play bool RandomChance(double percentage = 0.5) {
-		if((percentage < 0.0 || percentage > 1.0) && HDScav_Debug >=1) { ThrowAbortException("Debug: HDScav.RandomChance input out of bounds."); }
+		if((percentage < 0.0 || percentage > 1.0) && HDScav_Debug >=1) { console.printf("\cgWARNING: HDScav.RandomChance input out of bounds."); }
 		percentage = clamp(percentage, 0.0, 1.0);
 		if(frandom(0.0, 1.0) <= percentage) { return true; }
 		return false;
