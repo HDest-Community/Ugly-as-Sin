@@ -50,11 +50,16 @@ OptionMenu "HDScav_Hunger_Options" {
 
 OptionMenu "HDScav_Scarcity_Options" {
 	Title "Scarcity Options"
+
 	Slider "Overspawn ratio","HDScav_ScarcityOverspawn", 0, 1, 0.05, 2
 }
 
 OptionMenu "HDScav_Misc_Options" {
 	Title "Misc Options"
+
 	Slider "Frag spawn rate","HDScav_FragSpawnRate", 0, 100, 5, 0
+	Command "Remove Frag", "netevent HDScav_RemoveFrag"
+	StaticText " "
+
 	Option "Weapon Sling","HDScav_SlingEnabled","OnOff"
 }

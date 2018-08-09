@@ -14,4 +14,22 @@ class HDScav_FragRemovalHandler : EventHandler {
 				break;
 		}
 	}
+
+	override void NetworkProcess(ConsoleEvent e) {
+		if(e.Name == "HDScav_RemoveFrag") {
+			int RemovedShards = RemoveLevelFrag();
+			console.printf("Removed "..RemovedShards.." frag shards.");
+		}
+	}
+
+	int RemoveLevelFrag() {
+		int count = 0;
+		let iterator1 = ThinkerIterator.Create("FragShard");
+		for (Thinker mo; (mo = iterator1.Next());) { mo.Destroy(); count++; }
+		let iterator2 = ThinkerIterator.Create("BFGVileShard");
+		for (Thinker mo; (mo = iterator2.Next());) { mo.Destroy(); count++;}
+		let iterator3 = ThinkerIterator.Create("VileShard");
+		for (Thinker mo; (mo = iterator3.Next());) { mo.Destroy(); count++;}
+		return count;
+	}
 }
