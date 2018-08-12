@@ -1,0 +1,17 @@
+class ReloaderInitialized : Inventory {}
+
+class HDScav_Reloader_Bootstrap : EventHandler {
+	//initialize additional player inventory
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(HDScav_ReloaderEnabled == true) {
+			if(!player.mo.countinv("ReloaderInitialized")) {
+				player.mo.giveinventory("HDScav_Reloader", 1);
+			}
+		}
+		else {
+			player.mo.TakeInventory("ReloaderInitialized", 1);
+			player.mo.TakeInventory("HDScav_Reloader", 1);
+		}
+	}
+}

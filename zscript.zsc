@@ -24,3 +24,7 @@ version "3.3"
 
 // Frag spawning factor
 #include "hdscav_zscript/fragfactor/fragfactor.zsc"
+
+// Field reloading kit
+#include "hdscav_zscript/reloader/bootstrap.zsc"
+#include "hdscav_zscript/reloader/reloader.zsc"

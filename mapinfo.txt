@@ -6,4 +6,5 @@ GameInfo {
 	AddEventHandlers = "HDScav_Sling_Bootstrap"
 	AddEventHandlers = "HDScav_FragRemovalHandler"
 	AddEventHandlers = "HDScav_Scarcity_Bootstrap"
+	AddEventHandlers = "HDScav_Reloader_Bootstrap"
 }

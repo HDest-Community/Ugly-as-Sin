@@ -1,0 +1,210 @@
+class HDScav_Reloader : HDWeapon {
+	string statusMessage;
+	string lastStatus;
+	int reloadMode;
+	int rawShot;
+	int brassProgress, breakProgress, shotProgress, pressProgress;
+	int readyBrass, readyPowder, readyShot;
+
+	enum reloadermodes {
+		HDSCAV_RELOAD_BRASS = 0,
+		HDSCAV_RELOAD_BREAK = 1,
+		HDSCAV_RELOAD_REFORGE = 2,
+		HDSCAV_RELOAD_PRESS = 3,
+	}
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a portable field reloading kit.";
+		Inventory.Icon "HSCVQ0";
+		Scale 0.6;
+		+INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		//+WEAPON.NOAUTOFIRE;
+	}
+
+	override double, int weaponbulk(){
+		return 20,0;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		reloadMode = HDSCAV_RELOAD_BRASS;
+	}
+
+	void ChangeMode() {
+		reloadMode++;
+		if(reloadMode > HDSCAV_RELOAD_PRESS) { reloadMode = HDSCAV_RELOAD_BRASS; }
+	}
+
+	void UpdateMessage(string appendMessage = "") {
+		statusMessage = "";
+		statusMessage = statusMessage.."\cyField Reloading Kit\n\n";
+		if(reloadMode == HDSCAV_RELOAD_BRASS) { statusMessage = statusMessage.."\cuHold \cqFire \cuto prep brass\n"; }
+		else if(reloadMode == HDSCAV_RELOAD_BREAK) { statusMessage = statusMessage.."\cuHold \cqFire \cuto split powder and shot\n"; }
+		else if(reloadMode == HDSCAV_RELOAD_REFORGE) { statusMessage = statusMessage.."\cuHold \cqFire \cuto reforge shot\n"; }
+		else if(reloadMode == HDSCAV_RELOAD_PRESS) { statusMessage = statusMessage.."\cuHold \cqFire \cuto press a new round\n"; }
+		statusMessage = statusMessage.."\cqFiremode \cuto change mode\n\n";
+		statusMessage = statusMessage.."\cj7.76mm brass: "..owner.countinv("SevenMilBrass").."\n";
+		statusMessage = statusMessage.."\cj4.26mm rounds: "..owner.countinv("FourMilAmmo").."\n";
+		statusMessage = statusMessage.."\n";
+		statusMessage = statusMessage.."\cj4.26mm shot: "..rawShot.."\n";
+		statusMessage = statusMessage.."\n";
+		if(readyPowder < 3) { statusMessage = statusMessage.."\cg"; } else { statusMessage = statusMessage.."\cd"; }
+		statusMessage = statusMessage.."Prepped powder: "..readyPowder.."\n";
+		if(readyBrass < 1) { statusMessage = statusMessage.."\cg"; } else { statusMessage = statusMessage.."\cd"; }
+		statusMessage = statusMessage.."Prepped 7.76mm brass: "..readyBrass.."\n";
+		if(readyShot < 1) { statusMessage = statusMessage.."\cg"; } else { statusMessage = statusMessage.."\cd"; }
+		statusMessage = statusMessage.."Prepped 7.76mm shot: "..readyShot.."\n";
+		statusMessage = statusMessage.."\n";
+		statusMessage = statusMessage..appendMessage;
+		A_WeaponMessage(statusMessage);
+	}
+
+	action state ProcessReload() {
+		switch(invoker.reloadMode) {
+			//Clean, lubricate, trim, and resize brass
+			case HDSCAV_RELOAD_BRASS:
+				if(countinv("SevenMilBrass") <= 0 && invoker.brassProgress == 0) {
+					invoker.lastStatus = "No brass to prep!";
+					return ResolveState(null);
+				}
+				if(invoker.lastStatus == "") {
+					invoker.lastStatus = "Prepping brass";
+					TakeInventory("SevenMilBrass", 1);
+				}
+				invoker.brassProgress++;
+				invoker.lastStatus = invoker.lastStatus..".";
+				if(invoker.brassProgress > 10) {
+					invoker.brassProgress = 0;
+					invoker.readyBrass++;
+					invoker.lastStatus = "Brass casing ready!";
+					A_PlaySound("misc/casing", volume: 0.15);
+					return ResolveState("finished");
+				}
+				break;
+			//Breaking down powder and shot from caseless rounds
+			case HDSCAV_RELOAD_BREAK:
+				if(countinv("FourMilAmmo") <= 0 && invoker.breakProgress == 0) {
+					invoker.lastStatus = "No caseless rounds to break!";
+					return ResolveState(null);
+				}
+				if(invoker.lastStatus == "") {
+					invoker.lastStatus = "Breaking caseless rounds";
+					TakeInventory("FourMilAmmo", 1);
+				}
+				invoker.breakProgress++;
+				invoker.lastStatus = invoker.lastStatus..".";
+				if(invoker.breakProgress > 5) {
+					invoker.breakProgress = 0;
+					invoker.readyPowder++;
+					invoker.RawShot++;
+					invoker.lastStatus = "Powder and shot broken down!";
+					A_PlaySound("weapons/rifleclick", volume: 0.15);
+					return ResolveState("finished");
+				}
+				break;
+			//Reforge 4.26mm shot into 7.76mm shot
+			case HDSCAV_RELOAD_REFORGE:
+				if(invoker.rawShot < 3 && invoker.shotProgress == 0) {
+					invoker.lastStatus = "\gNot enough shot to reforge!";
+					return ResolveState(null);
+				}
+				if(invoker.lastStatus == "") {
+					invoker.lastStatus = "Reforging shot";
+					invoker.rawShot -= 3;
+				}
+				invoker.shotProgress++;
+				invoker.lastStatus = invoker.lastStatus..".";
+				if(invoker.shotProgress >= 10) {
+					invoker.shotProgress = 0;
+					invoker.readyShot++;
+					invoker.lastStatus = "Shot reforged!";
+					A_PlaySound("misc/tink", volume: 0.15);
+					return ResolveState("finished");
+				}
+				break;
+			//Press shot and powder and brass into a new round
+			case HDSCAV_RELOAD_PRESS:
+				if((invoker.readyShot < 1 || invoker.readyPowder < 3 || invoker.readyBrass < 1) && invoker.pressProgress == 0) {
+					invoker.lastStatus = "\gNot enough prepped materials!";
+					return ResolveState(null);
+				}
+				if(invoker.lastStatus == "") {
+					invoker.lastStatus = "Presssing new 7.76mm round";
+					invoker.readyPowder -= 3;
+					invoker.readyShot--;
+					invoker.readyBrass--;
+				}
+				invoker.pressProgress++;
+				invoker.lastStatus = invoker.lastStatus..".";
+				if(invoker.pressProgress > 15) {
+					invoker.pressProgress = 0;
+					invoker.lastStatus = "\cfNew round pressed!!";
+					A_GiveInventory("SevenMilAmmo", 1);
+					A_PlaySound("misc/casing", volume: 0.5);
+					return ResolveState("finished");
+				}
+				break;
+		}
+		return ResolveState(null);
+	}
+
+	States {
+		Spawn:
+			HSCV Q -1;
+			stop;
+		Select:
+			TNT1 A 10 {
+				invoker.UpdateMessage(); }
+			goto Super::Select;
+		DeselectHold:
+			TNT1 A 1;
+			TNT1 A 0 A_Refire("DeselectHold");
+			TNT1 A 0{
+				A_SelectWeapon("Ring");
+				A_WeaponReady(WRF_NOFIRE);
+			}
+			goto nope;
+		Ready:
+			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
+			TNT1 A 1 { invoker.lastStatus = ""; }
+			goto Super::Ready;
+		Fire:
+			TNT1 A 3 ProcessReload();
+			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
+			TNT1 A 1 A_Refire("fire");
+			goto aborted;
+		finished:
+			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
+			TNT1 A 1 A_Refire("finished");
+			TNT1 A 1 { invoker.lastStatus = ""; }
+			goto ready;
+		aborted:
+			TNT1 A 0 {
+				if(invoker.brassProgress > 0) {
+					invoker.brassProgress = 0;
+					invoker.lastStatus = "\caRuined the casing!";
+				}
+				if(invoker.breakProgress > 0) {
+					invoker.breakProgress = 0;
+					invoker.lastStatus = "\caRuined the powder and shot!";
+				}
+				if(invoker.shotProgress > 0) {
+					invoker.shotProgress = 0;
+					invoker.lastStatus = "\caRuined the shot!";
+				}
+				if(invoker.pressProgress > 0) {
+					invoker.pressProgress = 0;
+					invoker.lastStatus = "\caRuined the new round!";
+				}
+			}
+			TNT1 A 20 { invoker.UpdateMessage(invoker.lastStatus); }
+			goto finished;
+		User2:
+			TNT1 A 1 { invoker.ChangeMode(); }
+			goto nope;
+	}
+}

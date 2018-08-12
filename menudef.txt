@@ -62,4 +62,5 @@ OptionMenu "HDScav_Misc_Options" {
 	StaticText " "
 
 	Option "Weapon Sling","HDScav_SlingEnabled","OnOff"
+	Option "Weapon Reloader","HDScav_ReloaderEnabled","OnOff"
 }
