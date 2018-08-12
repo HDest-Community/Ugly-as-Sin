@@ -94,7 +94,7 @@ class HDScav_HungerTracker : CustomInventory {
 		}
 		//Display message if delta over threshold, and reset
 		if(abs(lastcalories - calories) >= 250 && statusmessage != "") {
-			owner.A_Log("\ck"..statusMessage, true);
+			owner.A_Log("\ci"..statusMessage, true);
 			lastcalories = calories;
 		}
 	}
@@ -118,7 +118,7 @@ class HDScav_HungerTracker : CustomInventory {
 		}
 		//Display message if delta over threshold, and reset
 		if(abs(lastwater - water) >= 200 && statusmessage != "") {
-			owner.A_Log("\ck"..statusMessage, true);
+			owner.A_Log("\cv"..statusMessage, true);
 			lastwater = water;
 		}
 	}

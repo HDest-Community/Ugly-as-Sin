@@ -108,13 +108,21 @@ class HDScav_MessKit : HDWoundFixer {
 		Toss:
 			TNT1 A 1 { invoker.HDScav_TossOpened(true); }
 			goto nope;
+		Firemode:
+		DisplayStatus:
+			TNT1 A 1 DisplayStatus();
+			goto nope;
+	}
+
+	action void DisplayStatus() {
+		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+		invoker.tracker.lastcalories = invoker.tracker.calories + 250;
+		invoker.tracker.lastwater = invoker.tracker.water + 200;
 	}
 
 	//Displayed when the messkit is opened for use
 	action void HDScav_SelectText() {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
-		invoker.tracker.lastcalories = invoker.tracker.calories + 248;
-		invoker.tracker.lastwater = invoker.tracker.water + 199;
+		DisplayStatus();
 		if(!getcvar("hd_helptext")) return;
 		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.\n\nUnload dumps the current ration,\ndiscarding all remaining contents", 175);
 	}
