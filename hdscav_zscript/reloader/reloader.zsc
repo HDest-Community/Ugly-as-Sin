@@ -68,7 +68,7 @@ class HDScav_Reloader : HDWeapon {
 			//Clean, lubricate, trim, and resize brass
 			case HDSCAV_RELOAD_BRASS:
 				if(countinv("SevenMilBrass") <= 0 && invoker.brassProgress == 0) {
-					invoker.lastStatus = "No brass to prep!";
+					invoker.lastStatus = "\cgNo brass to prep!";
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
@@ -80,7 +80,7 @@ class HDScav_Reloader : HDWeapon {
 				if(invoker.brassProgress > 10) {
 					invoker.brassProgress = 0;
 					invoker.readyBrass++;
-					invoker.lastStatus = "Brass casing ready!";
+					invoker.lastStatus = "\cdBrass casing ready!";
 					A_PlaySound("misc/casing", volume: 0.15);
 					return ResolveState("finished");
 				}
@@ -88,7 +88,7 @@ class HDScav_Reloader : HDWeapon {
 			//Breaking down powder and shot from caseless rounds
 			case HDSCAV_RELOAD_BREAK:
 				if(countinv("FourMilAmmo") <= 0 && invoker.breakProgress == 0) {
-					invoker.lastStatus = "No caseless rounds to break!";
+					invoker.lastStatus = "\cgNo caseless rounds to break!";
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
@@ -101,7 +101,7 @@ class HDScav_Reloader : HDWeapon {
 					invoker.breakProgress = 0;
 					invoker.readyPowder++;
 					invoker.RawShot++;
-					invoker.lastStatus = "Powder and shot broken down!";
+					invoker.lastStatus = "\cdPowder and shot broken down!";
 					A_PlaySound("weapons/rifleclick", volume: 0.15);
 					return ResolveState("finished");
 				}
@@ -109,7 +109,7 @@ class HDScav_Reloader : HDWeapon {
 			//Reforge 4.26mm shot into 7.76mm shot
 			case HDSCAV_RELOAD_REFORGE:
 				if(invoker.rawShot < 3 && invoker.shotProgress == 0) {
-					invoker.lastStatus = "\gNot enough shot to reforge!";
+					invoker.lastStatus = "\cgNot enough shot to reforge!";
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
@@ -121,7 +121,7 @@ class HDScav_Reloader : HDWeapon {
 				if(invoker.shotProgress >= 10) {
 					invoker.shotProgress = 0;
 					invoker.readyShot++;
-					invoker.lastStatus = "Shot reforged!";
+					invoker.lastStatus = "\cdShot reforged!";
 					A_PlaySound("misc/tink", volume: 0.15);
 					return ResolveState("finished");
 				}
