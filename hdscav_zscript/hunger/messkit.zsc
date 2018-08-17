@@ -116,6 +116,7 @@ class HDScav_MessKit : HDWoundFixer {
 
 	action void DisplayStatus() {
 		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+		if(!invoker.tracker) { return; }
 		invoker.tracker.lastcalories = invoker.tracker.calories + 250;
 		invoker.tracker.lastwater = invoker.tracker.water + 200;
 	}
