@@ -5,3 +5,4 @@ server int HDScav_Debug = 0;
 server int HDScav_FragSpawnRate = 100;
 server bool HDScav_SlingEnabled = true;
 server bool HDScav_ReloaderEnabled = true;
+server bool HDScav_ReloaderAutoContinue = false;

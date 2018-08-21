@@ -29,7 +29,7 @@ class HDScav_Reloader : HDWeapon {
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
-		+WEAPON.NO_AUTO_SWITCH;
+		//+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
 	}
 
@@ -220,6 +220,7 @@ class HDScav_Reloader : HDWeapon {
 		Ready:
 			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
 			TNT1 A 1 { invoker.lastStatus = ""; }
+			TNT1 A 1 { if(HDScav_ReloaderAutoContinue) { A_Refire("Fire"); } }
 			goto Super::Ready;
 		Fire:
 			TNT1 A 3 ProcessReload();
@@ -228,7 +229,7 @@ class HDScav_Reloader : HDWeapon {
 			goto aborted;
 		finished:
 			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
-			TNT1 A 1 A_Refire("finished");
+			TNT1 A 1 { if(!HDScav_ReloaderAutoContinue) { A_Refire("finished"); } }
 			TNT1 A 1 { invoker.lastStatus = ""; }
 			goto ready;
 		aborted:
