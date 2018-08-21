@@ -13,6 +13,13 @@ class HDScav_Reloader : HDWeapon {
 		HDSCAV_RELOAD_PRESS = 3,
 	}
 
+	enum successthresholds {
+		HDSCAV_SUCCESS_BRASS = 10,
+		HDSCAV_SUCCESS_BREAK = 5,
+		HDSCAV_SUCCESS_REFORGE = 10,
+		HDSCAV_SUCCESS_PRESS = 10,
+	}
+
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
@@ -73,16 +80,13 @@ class HDScav_Reloader : HDWeapon {
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
-					invoker.lastStatus = "Prepping brass";
+					invoker.lastStatus = "Prepping brass\n";
 					TakeInventory("SevenMilBrass", 1);
 				}
 				invoker.brassProgress++;
 				invoker.lastStatus = invoker.lastStatus..".";
-				if(invoker.brassProgress > 10) {
-					invoker.brassProgress = 0;
-					invoker.readyBrass++;
-					invoker.lastStatus = "\cdBrass casing ready!";
-					A_PlaySound("misc/casing", volume: 0.15);
+				if(invoker.brassProgress > HDSCAV_SUCCESS_BRASS - random(0, HDSCAV_SUCCESS_BRASS / 4)) {
+					invoker.HandleSuccess();
 					return ResolveState("finished");
 				}
 				break;
@@ -93,17 +97,13 @@ class HDScav_Reloader : HDWeapon {
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
-					invoker.lastStatus = "Breaking caseless rounds";
+					invoker.lastStatus = "Breaking caseless rounds\n";
 					TakeInventory("FourMilAmmo", 1);
 				}
 				invoker.breakProgress++;
 				invoker.lastStatus = invoker.lastStatus..".";
-				if(invoker.breakProgress > 5) {
-					invoker.breakProgress = 0;
-					invoker.readyPowder++;
-					invoker.RawShot++;
-					invoker.lastStatus = "\cdPowder and shot broken down!";
-					A_PlaySound("weapons/rifleclick", volume: 0.15);
+				if(invoker.breakProgress > HDSCAV_SUCCESS_BREAK - random(0, HDSCAV_SUCCESS_BREAK / 4)) {
+					invoker.HandleSuccess();
 					return ResolveState("finished");
 				}
 				break;
@@ -114,16 +114,13 @@ class HDScav_Reloader : HDWeapon {
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
-					invoker.lastStatus = "Reforging shot";
+					invoker.lastStatus = "Reforging shot\n";
 					invoker.rawShot -= 3;
 				}
 				invoker.shotProgress++;
 				invoker.lastStatus = invoker.lastStatus..".";
-				if(invoker.shotProgress >= 10) {
-					invoker.shotProgress = 0;
-					invoker.readyShot++;
-					invoker.lastStatus = "\cdShot reforged!";
-					A_PlaySound("misc/tink", volume: 0.15);
+				if(invoker.shotProgress >= HDSCAV_SUCCESS_REFORGE - random(0, HDSCAV_SUCCESS_REFORGE / 4)) {
+					invoker.HandleSuccess();
 					return ResolveState("finished");
 				}
 				break;
@@ -134,23 +131,74 @@ class HDScav_Reloader : HDWeapon {
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
-					invoker.lastStatus = "Presssing new 7.76mm round";
+					invoker.lastStatus = "Presssing new 7.76mm round\n";
 					invoker.readyPowder -= 3;
 					invoker.readyShot--;
 					invoker.readyBrass--;
 				}
 				invoker.pressProgress++;
 				invoker.lastStatus = invoker.lastStatus..".";
-				if(invoker.pressProgress > 15) {
-					invoker.pressProgress = 0;
-					invoker.lastStatus = "\cfNew round pressed!!";
-					A_GiveInventory("SevenMilAmmo", 1);
-					A_PlaySound("misc/casing", volume: 0.5);
+				if(invoker.pressProgress > HDSCAV_SUCCESS_PRESS - random(0, HDSCAV_SUCCESS_PRESS / 4)) {
+					invoker.HandleSuccess();
 					return ResolveState("finished");
 				}
 				break;
 		}
 		return ResolveState(null);
+	}
+
+	void HandleSuccess() {
+		switch(reloadMode) {
+			case HDSCAV_RELOAD_BRASS:
+				brassProgress = 0;
+				readyBrass++;
+				lastStatus = "\cdBrass casing ready!";
+				owner.A_PlaySound("misc/casing", volume: 0.15);
+				break;
+			case HDSCAV_RELOAD_BREAK:
+				breakProgress = 0;
+				readyPowder++;
+				RawShot++;
+				lastStatus = "\cdPowder and shot broken down!";
+				owner.A_PlaySound("weapons/rifleclick", volume: 0.15);
+				break;
+			case HDSCAV_RELOAD_REFORGE:
+				shotProgress = 0;
+				readyShot++;
+				lastStatus = "\cdShot reforged!";
+				A_PlaySound("misc/tink", volume: 0.15);
+				break;
+			case HDSCAV_RELOAD_PRESS:
+				pressProgress = 0;
+				lastStatus = "\cfNew round pressed!!";
+				owner.A_GiveInventory("SevenMilAmmo", 1);
+				owner.A_PlaySound("misc/casing", volume: 0.5);
+				break;
+		}
+	}
+
+	action state HandleAbort() {
+		if(invoker.brassProgress > 0) {
+			if(random(0, HDSCAV_SUCCESS_BRASS) < invoker.brassProgress) { invoker.HandleSuccess(); return resolveState("finished"); }
+			invoker.brassProgress = 0;
+			invoker.lastStatus = "\caRuined the casing!";
+		}
+		if(invoker.breakProgress > 0) {
+			if(random(0, HDSCAV_SUCCESS_BREAK) < invoker.breakProgress) { invoker.HandleSuccess(); return resolveState("finished"); }
+			invoker.breakProgress = 0;
+			invoker.lastStatus = "\caRuined the powder and shot!";
+		}
+		if(invoker.shotProgress > 0) {
+			if(random(0, HDSCAV_SUCCESS_REFORGE) < invoker.shotProgress) { invoker.HandleSuccess(); return resolveState("finished"); }
+			invoker.shotProgress = 0;
+			invoker.lastStatus = "\caRuined the shot!";
+		}
+		if(invoker.pressProgress > 0) {
+			if(random(0, HDSCAV_SUCCESS_PRESS) < invoker.pressProgress) { invoker.HandleSuccess(); return resolveState("finished"); }
+			invoker.pressProgress = 0;
+			invoker.lastStatus = "\caRuined the new round!";
+		}
+		return resolveState(null);
 	}
 
 	States {
@@ -184,25 +232,8 @@ class HDScav_Reloader : HDWeapon {
 			TNT1 A 1 { invoker.lastStatus = ""; }
 			goto ready;
 		aborted:
-			TNT1 A 0 {
-				if(invoker.brassProgress > 0) {
-					invoker.brassProgress = 0;
-					invoker.lastStatus = "\caRuined the casing!";
-				}
-				if(invoker.breakProgress > 0) {
-					invoker.breakProgress = 0;
-					invoker.lastStatus = "\caRuined the powder and shot!";
-				}
-				if(invoker.shotProgress > 0) {
-					invoker.shotProgress = 0;
-					invoker.lastStatus = "\caRuined the shot!";
-				}
-				if(invoker.pressProgress > 0) {
-					invoker.pressProgress = 0;
-					invoker.lastStatus = "\caRuined the new round!";
-				}
-			}
-			TNT1 A 20 { invoker.UpdateMessage(invoker.lastStatus); }
+			TNT1 A 0 HandleAbort();
+			TNT1 A 35 { invoker.UpdateMessage(invoker.lastStatus); }
 			goto finished;
 		User2:
 			TNT1 A 1 { invoker.ChangeMode(); }
