@@ -19,7 +19,7 @@ class HDScav_WeaponSling : HDPickup {
 		super.DoEffect();
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return; }
-		if(!ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if no ready weapon
+		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
 		if((ownr.gunbraced && !slingBraced)) { return; } // Skip if already braced on something
 		// Break attachment if dropped
 		if(ownr.countinv(attachedWeapon) == 0) {
