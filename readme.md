@@ -9,3 +9,4 @@ Features are implemented as configurable modules, any of which may be independen
 * **Reloading Kit** - Allows manual reloading of 7.76mm rounds while in the map, instead of consolidating between maps. The `Auto-Continue` option lets the player hold down the action button instead of clicking at each step.
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing. The sling must be attached to the weapon by activating the inventory item and may only be attached to one weapon at a time. Hold the [Use] key to brace.
 * **Fragshard Reducer** - Specifies chance for enemy-reviving fragshards to be allowed to spawn. There is also an option to remove all existing fragshards from the level.
+* **Friendly Marines** - Friendly marines may randomly replace human-type corpses, for some occasional much-needed reinforcements.
