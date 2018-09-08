@@ -9,6 +9,7 @@ class UaS_Scarcity_Spawner : EventHandler {
 		OverspawnFactor = UaS_ScarcityOverspawn + 1.0;
 
 		// Conditions for skipping spawn adjustment
+		if(UaS_ScarcityEnabled == false) { return; }
 		if(!UaS.RandomChance(ScarcityFactor)) { return; }
 		if(level.maptime > 5) { return; }
 		if(!e.Thing) { return; }

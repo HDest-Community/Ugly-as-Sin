@@ -1,7 +1,7 @@
 class UaS_FragRemovalHandler : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
-		if(UaS_FragSpawnRate == 100) { return; }
+		if(UaS_FragSpawnRate == 100 || UaS_FragReducerEnabled == false) { return; }
 		double removeChance = 1.0 - (double(UaS_FragSpawnRate) * 0.01);
 		switch(e.Thing.GetClassName()) {
 			case 'FragShard':
