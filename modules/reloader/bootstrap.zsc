@@ -7,7 +7,7 @@ class UaS_Reloader_Bootstrap : EventHandler {
 		if(UaS_ReloaderEnabled == true) {
 			if(!player.mo.countinv("ReloaderInitialized")) {
 				player.mo.GiveInventory("ReloaderInitialized", 1);
-				if(player.mo.countinv("LiberatorRifle")) {
+				if(player.mo.countinv("LiberatorRifle") || player.mo.countinv("BossRifle")) {
 					player.mo.giveinventory("UaS_Reloader", 1);
 				}
 			}
@@ -29,6 +29,9 @@ class UaS_Reloader_Bootstrap : EventHandler {
 				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
 				break;
 			case 'LiberatorNoGL':
+				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
+				break;
+			case 'BossRifle':
 				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
 				break;
 		}
