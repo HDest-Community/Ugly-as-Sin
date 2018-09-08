@@ -6,6 +6,6 @@ Features are implemented as configurable modules, any of which may be independen
 
 * **Hunger** - Requires the player to eat and drink or suffer fatigue penalties. The `Timescale` setting controls the player's "burn rate" (1x = real-time). A messkit is provided in the player's inventory, while prepackaged rations will spawn randomly found around the level.
 * **Scarcity** - Reduce the supplies available to the player by despawning and/or breaking up ammo and item spawns. The `Scarcity Rate` is the chance for a spawn to be removed, while the `Overspawn Ratio` allows some portion or usable version of the spawn to be left over.
-* Reloading Kit - Allows manual reloading of 7.76mm rounds while in the map, instead of consolidating between maps. The `Auto-Continue` option lets the player hold down the action button instead of clicking at each step.
-* Weapon Sling - Allows the player to "brace" their weapon anywhere, even while standing. The sling must be attached to the weapon by activating the inventory item and may only be attached to one weapon at a time. Hold the [Use] key to brace.
-* Fragshard Reducer - Specifies chance for enemy-reviving fragshards to be allowed to spawn. There is also an option to remove all existing fragshards from the level.
+* **Reloading Kit** - Allows manual reloading of 7.76mm rounds while in the map, instead of consolidating between maps. The `Auto-Continue` option lets the player hold down the action button instead of clicking at each step.
+* **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing. The sling must be attached to the weapon by activating the inventory item and may only be attached to one weapon at a time. Hold the [Use] key to brace.
+* **Fragshard Reducer** - Specifies chance for enemy-reviving fragshards to be allowed to spawn. There is also an option to remove all existing fragshards from the level.
