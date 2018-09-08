@@ -49,6 +49,10 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Frag_Options"
 	StaticText " "
 
+	Option "Allied Marines","UaS_AlliesEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Ally_Options"
+	StaticText " "
+
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
 	StaticText "enabling, disabling, or changing module settings."
@@ -86,6 +90,12 @@ OptionMenu "UaS_Frag_Options" {
 	Slider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, 0
 	Command "Remove Frag", "netevent UaS_RemoveFrag"
 }
+
+OptionMenu "UaS_Ally_Options" {
+	Title "Allies Module"
+	ScaleSlider "Ally spawn rate","UaS_AllySpawnRate", 0, 100, 5, "Disabled"
+}
+
 
 OptionMenu "UaS_Misc_Options" {
 	Title "Misc Options"

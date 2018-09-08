@@ -7,4 +7,5 @@ GameInfo {
 	AddEventHandlers = "UaS_FragRemovalHandler"
 	AddEventHandlers = "UaS_Scarcity_Bootstrap"
 	AddEventHandlers = "UaS_Reloader_Bootstrap"
+	AddEventHandlers = "UaS_Ally_Spawner"
 }

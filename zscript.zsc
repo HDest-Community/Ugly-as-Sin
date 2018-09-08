@@ -28,3 +28,6 @@ version "3.5"
 // Field reloading kit
 #include "modules/reloader/bootstrap.zsc"
 #include "modules/reloader/reloader.zsc"
+
+// Allied marine spawning
+#include "modules/allies/spawner.zsc"

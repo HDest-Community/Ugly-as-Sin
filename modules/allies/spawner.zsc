@@ -1,0 +1,36 @@
+class UaS_Ally_Spawner : EventHandler {
+
+	//Spawn allied marines randomly
+	override void WorldThingSpawned(WorldEvent e) {
+		bool replaced = false;
+		double spawnChance = (double(UaS_AllySpawnRate) * 0.01);
+
+		// Conditions for skipping spawns
+		if(UaS_AlliesEnabled == false) { return; }
+		if(!UaS.RandomChance(spawnChance)) { return; }
+		if(level.maptime > 5) { return; }
+		if(!e.Thing) { return; }
+
+		bool corpseType = (
+			e.Thing.GetClassName() == 'DeadZombieMan' ||
+			e.Thing.GetClassName() == 'DeadShotgunGuy' ||
+			e.Thing.GetClassName() == 'DeadRifleman' ||
+			e.Thing.GetClassName() == 'ReallyDeadRifleman'
+		);
+
+		if(corpseType) {
+			replaced = SpawnAlly(e.Thing.pos);
+			if(replaced) { e.Thing.Destroy(); }
+		}
+	}
+
+	bool SpawnAlly(vector3 pos) {
+		Actor ally = actor.spawn('HDMarine', pos);
+		if(!ally) { return false; }
+		if(!ally.CheckPosition(pos.xy)) {
+			ally.Destroy();
+			return false;
+		}
+		return true;
+	}
+}

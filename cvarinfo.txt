@@ -14,4 +14,7 @@ user int UaS_SlingDelay = 35;
 server bool UaS_FragReducerEnabled = false;
 server int UaS_FragSpawnRate = 100;
 
+server bool UaS_AlliesEnabled = false;
+server int UaS_AllySpawnRate = 25;
+
 server int UaS_Debug = 0;
