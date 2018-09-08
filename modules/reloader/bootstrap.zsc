@@ -6,7 +6,10 @@ class UaS_Reloader_Bootstrap : EventHandler {
 		PlayerInfo player = players[e.PlayerNumber];
 		if(UaS_ReloaderEnabled == true) {
 			if(!player.mo.countinv("ReloaderInitialized")) {
-				player.mo.giveinventory("UaS_Reloader", 1);
+				player.mo.GiveInventory("ReloaderInitialized", 1);
+				if(player.mo.countinv("LiberatorRifle")) {
+					player.mo.giveinventory("UaS_Reloader", 1);
+				}
 			}
 		}
 		else {
