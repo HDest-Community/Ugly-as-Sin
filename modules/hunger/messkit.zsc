@@ -1,5 +1,5 @@
-class HDScav_MessKit : HDWoundFixer {
-	HDScav_HungerTracker tracker;
+class UaS_MessKit : HDWoundFixer {
+	UaS_HungerTracker tracker;
 	int biteSize;
 	int mealSize;
 	int drinkSize;
@@ -23,33 +23,33 @@ class HDScav_MessKit : HDWoundFixer {
 
 	override void DoEffect() {
 		//Set "amount" next to messkit as available food items
-		amount = owner.countinv("HDScav_Ration");
-		speedFactor = clamp(double(HDScav_TimeScale) / 10, 1, 12);
+		amount = owner.countinv("UaS_Ration");
+		speedFactor = clamp(double(UaS_HungerTimeScale) / 10, 1, 12);
 		super.DoEffect();
 	}
 
 	override inventory CreateTossable(int amt) {
 		//Drop both current meal and messkit if stunned
 		/*if(owner.stunned) {
-			HDScav_TossOpened();
+			UaS_TossOpened();
 			if(amount<=0) { amount = 1; }
 			return super.CreateTossable();
 		}*/
 		//Toss unopened rations
-		if(owner.countinv("HDScav_Ration") > 1) {
-			owner.TakeInventory("HDScav_Ration",1);
-			return inventory(Spawn("HDScav_Ration", owner.pos));
+		if(owner.countinv("UaS_Ration") > 1) {
+			owner.TakeInventory("UaS_Ration",1);
+			return inventory(Spawn("UaS_Ration", owner.pos));
 		}
-		else if(owner.countinv("HDScav_Ration") == 1) {
+		else if(owner.countinv("UaS_Ration") == 1) {
 			if(rationOpen == true) {
 				//Throw away uneaten portion
-				HDScav_TossOpened(true);
+				UaS_TossOpened(true);
 				return NULL;
 			}
 			else {
 				//Toss last unopened ration
-				owner.TakeInventory("HDScav_Ration",1);
-				return inventory(Spawn("HDScav_Ration", owner.pos));
+				owner.TakeInventory("UaS_Ration",1);
+				return inventory(Spawn("UaS_Ration", owner.pos));
 			}
 		}
 		//Toss messkit itself
@@ -65,7 +65,7 @@ class HDScav_MessKit : HDWoundFixer {
 			HSCV B -1;
 			Stop;
 		Select:
-			TNT1 A 10 HDScav_SelectText();
+			TNT1 A 10 UaS_SelectText();
 			goto Super::Select;
 		DeselectHold:
 			TNT1 A 1;
@@ -77,36 +77,36 @@ class HDScav_MessKit : HDWoundFixer {
 			goto nope;
 		Fire:
 		Eat:
-			TNT1 A 0 HDScav_CheckConsumables(1);
+			TNT1 A 0 UaS_CheckConsumables(1);
 			goto nope;
 		Scoop:
-			TNT1 A 0 HDScav_TakeScoop();
+			TNT1 A 0 UaS_TakeScoop();
 			TNT1 A random(15,20);
 			TNT1 A 0 A_Refire("Consume");
 			goto nope;
 		Consume:
-			TNT1 A 0 HDScav_Consume();
+			TNT1 A 0 UaS_Consume();
 			TNT1 A random(8,12);
 			TNT1 A 0 A_Refire("Consume");
 			goto Swallow;
 		AltFire:
 		Drink:
-			TNT1 A 0 HDScav_CheckConsumables(2);
+			TNT1 A 0 UaS_CheckConsumables(2);
 			goto nope;
 		Sip:
-			TNT1 A 0 HDScav_Sip();
+			TNT1 A 0 UaS_Sip();
 			TNT1 A 1;
 			TNT1 A 0 A_Refire("Sip");
 			goto Swallow;
 		Reload:
-			TNT1 A random(15,20) HDScav_OpenFood();
+			TNT1 A random(15,20) UaS_OpenFood();
 			goto nope;
 		Swallow:
 			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
 			goto nope;
 		User4:
 		Toss:
-			TNT1 A 1 { invoker.HDScav_TossOpened(true); }
+			TNT1 A 1 { invoker.UaS_TossOpened(true); }
 			goto nope;
 		Firemode:
 		DisplayStatus:
@@ -115,14 +115,14 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	action void DisplayStatus() {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		if(!invoker.tracker) { return; }
 		invoker.tracker.lastcalories = invoker.tracker.calories + 250;
 		invoker.tracker.lastwater = invoker.tracker.water + 200;
 	}
 
 	//Displayed when the messkit is opened for use
-	action void HDScav_SelectText() {
+	action void UaS_SelectText() {
 		DisplayStatus();
 		if(!getcvar("hd_helptext")) return;
 		A_WeaponMessage("\cjMESS KIT\c-\n\n\nHold Fire to eat,\nand AltFire to drink.\n\nReload opens a new ration,\nif one isn't already open.\n\nUnload dumps the current ration,\ndiscarding all remaining contents", 175);
@@ -130,8 +130,8 @@ class HDScav_MessKit : HDWoundFixer {
 
 	//Makes sure the player has a food item open and food available.
 	//If no food and open, toss empty. If not open, give message.
-	action state HDScav_CheckConsumables(int type = 1) {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+	action state UaS_CheckConsumables(int type = 1) {
+		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		if(invoker.rationOpen == true) {
 			if(type == 1 && invoker.mealSize > 0) {
 				if(invoker.tracker.calories >= 2500) {
@@ -148,7 +148,7 @@ class HDScav_MessKit : HDWoundFixer {
 				A_PlaySound("misc/smallslop");
 				return ResolveState("Sip");
 			}
-			invoker.HDScav_TossOpened(false);
+			invoker.UaS_TossOpened(false);
 		}
 		if(invoker.mealSize <=0 && invoker.drinkSize <=0 && getcvar("hd_helptext")) {
 			A_WeaponMessage("Nothing to eat or drink!\n\nHave you opened a ration?", 175);
@@ -157,17 +157,17 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	//Takes a random-sized "bite" of the food
-	action void HDScav_TakeScoop() {
+	action void UaS_TakeScoop() {
 		double difference = clamp(2500 - invoker.tracker.calories, 0, 500);
-		A_PlaySound("HDScav/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
+		A_PlaySound("UaS/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
 		invoker.biteSize  = min(invoker.mealsize, 75 * invoker.speedFactor) * frandom(0.75,1.0);;
 		invoker.biteSize *= (difference / 500.0);
 		invoker.biteSize  = clamp(invoker.biteSize, 1, 75 * invoker.speedFactor);
 	}
 
 	//"Chew" the food
-	action state HDScav_Consume() {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+	action state UaS_Consume() {
+		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		if(invoker.bitesize > 0) {
 			//Chew
 			int chunk = random(1,10) * invoker.speedFactor;
@@ -183,8 +183,8 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	//Consume a random amount of water "drops" to simulate drinking
-	action state HDScav_Sip() {
-		invoker.tracker = HDScav_HungerTracker(FindInventory("HDScav_HungerTracker", false));
+	action state UaS_Sip() {
+		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		int drops = random(1,2) * invoker.speedFactor;
 		for(int i = 1; i <= drops; i++) {
 			invoker.sipsize += 1;
@@ -200,8 +200,8 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	//Open a new food ration if one isn't already open
-	action void HDScav_OpenFood() {
-		if(countinv("HDScav_Ration") > 0) {
+	action void UaS_OpenFood() {
+		if(countinv("UaS_Ration") > 0) {
 			if(invoker.mealSize <= 0 && invoker.rationOpen == false) {
 				A_PlaySound("imp/melee");
 				invoker.mealSize = random(8,10)*50;
@@ -220,7 +220,7 @@ class HDScav_MessKit : HDWoundFixer {
 	}
 
 	//Toss opened ration
-	void HDScav_TossOpened(bool force = false) {
+	void UaS_TossOpened(bool force = false) {
 		if((drinkSize > 0 || mealSize > 0) && force == false) { return; }
 		if(rationOpen == false) { return; }
 		if(owner.getcvar("hd_helptext") && (mealsize > 0 || drinkSize > 0)) { A_WeaponMessage("Tossed leftovers. No 5-second rule here.", 175); }
@@ -230,11 +230,11 @@ class HDScav_MessKit : HDWoundFixer {
 		sipsize = 0;
 		flavor = "";
 		rationOpen = false;
-		let empty=spawn("HDScav_EmptyRation",owner.pos+(0,0,owner.height-8));
+		let empty=spawn("UaS_EmptyRation",owner.pos+(0,0,owner.height-8));
 		empty.angle=owner.angle+2;
 		empty.vel=owner.vel;
 		empty.A_ChangeVelocity(3,1,1,CVF_RELATIVE);
-		owner.TakeInventory("HDScav_Ration",1);
+		owner.TakeInventory("UaS_Ration",1);
 	}
 
 	//Generate literal flavortext

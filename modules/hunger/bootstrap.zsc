@@ -1,14 +1,14 @@
 class HungerInitialized : Inventory {}
 
-class HDScav_Hunger_Bootstrap : EventHandler {
+class UaS_Hunger_Bootstrap : EventHandler {
 	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
-		if(HDScav_TimeScale == 0) { return; }
+		if(UaS_HungerTimeScale == 0) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("HungerInitialized")) {
-			player.mo.giveinventory("HDScav_HungerTracker", 1);
-			player.mo.giveinventory("HDScav_MessKit", 1);
-			player.mo.giveinventory("HDScav_Ration", 3);
+			player.mo.giveinventory("UaS_HungerTracker", 1);
+			player.mo.giveinventory("UaS_MessKit", 1);
+			player.mo.giveinventory("UaS_Ration", 3);
 			player.mo.giveinventory("HungerInitialized", 1);
 		}
 	}

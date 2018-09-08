@@ -1,5 +1,5 @@
 // spare Second Flesh cartridges
-class HDScav_2FCartridge_Handler : Inventory {
+class UaS_2FCartridge_Handler : Inventory {
 	int cooldown;
 
 	override void DoEffect() {
@@ -7,19 +7,19 @@ class HDScav_2FCartridge_Handler : Inventory {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr || !ownr.player.ReadyWeapon) { return; }
 		if(cooldown == 0 && ownr.player.ReadyWeapon.GetClassName() == 'HDMedikitter') {
-			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('HDScav_2FCartridge') < 8) {
+			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('UaS_2FCartridge') < 8) {
 				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh > 0) {
 					HDMedikitter(ownr.player.ReadyWeapon).injectableflesh--;
-					owner.A_GiveInventory('HDScav_2FCartridge', 1);
+					owner.A_GiveInventory('UaS_2FCartridge', 1);
 					owner.A_PlaySound("weapons/rifleclick", volume: 0.5);
 					cooldown = 20;
 				}
 			}
 
-			else if((ownr.player.cmd.buttons & BT_USER1) && owner.countinv('HDScav_2FCartridge') > 0) {
+			else if((ownr.player.cmd.buttons & BT_USER1) && owner.countinv('UaS_2FCartridge') > 0) {
 				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh < 2) {
 					HDMedikitter(ownr.player.ReadyWeapon).injectableflesh++;
-					owner.A_TakeInventory('HDScav_2FCartridge', 1);
+					owner.A_TakeInventory('UaS_2FCartridge', 1);
 					owner.A_PlaySound("weapons/rifleload", volume: 0.75);
 					cooldown = 20;
 				}
@@ -29,7 +29,7 @@ class HDScav_2FCartridge_Handler : Inventory {
 	}
 }
 
-class HDScav_2FCartridge : HDPickup {
+class UaS_2FCartridge : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		inventory.pickupmessage "Picked up a second flesh cartridge.";
@@ -57,7 +57,7 @@ class HDScav_2FCartridge : HDPickup {
 }
 
 // Damaged automap
-class HDScav_Automap : HDPickup {
+class UaS_Automap : HDPickup {
 	int status;
 	int baseFrame;
 	double cycleProb;
@@ -83,11 +83,11 @@ class HDScav_Automap : HDPickup {
 					A_Log("\c-Local area map downloaded.");
 					A_PlaySound("misc/i_pkup",0,1,0,0);
 				}
-				if(HDScav.RandomChance(0.25)) { status = 2; }
+				if(UaS.RandomChance(0.25)) { status = 2; }
 				return;
 				break;
 			case 2: // Broken, might randomly fix
-				if(HDScav.RandomChance(0.25)) { status = 1; }
+				if(UaS.RandomChance(0.25)) { status = 1; }
 				return;
 				break;
 		}
@@ -101,7 +101,7 @@ class HDScav_Automap : HDPickup {
 				if(invoker.frame == invoker.baseFrame) { invoker.frame = invoker.baseFrame + 4; }
 				else { invoker.frame = invoker.baseFrame; }
 
-				if(HDScav.RandomChance(invoker.cycleProb)) {
+				if(UaS.RandomChance(invoker.cycleProb)) {
 					invoker.baseFrame = random(0,3);
 					invoker.cycleProb = 0;
 				}
@@ -120,9 +120,9 @@ class HDScav_Automap : HDPickup {
 					invoker.tics += random(0,5);
 				}
 
-				if(HDScav.RandomChance(0.1)) { invoker.working = !invoker.working; }
+				if(UaS.RandomChance(0.1)) { invoker.working = !invoker.working; }
 
-				if(HDScav.RandomChance(invoker.cycleProb)) {
+				if(UaS.RandomChance(invoker.cycleProb)) {
 					invoker.baseFrame = random(10,13);
 					invoker.cycleProb = 0;
 				}
@@ -144,7 +144,7 @@ class HDScav_Automap : HDPickup {
 }
 
 // Loose injector pickups
-class HDScav_StimInjector : Actor {
+class UaS_StimInjector : Actor {
 	default {
 		translation "176:191=80:95";
 	}
@@ -164,7 +164,7 @@ class HDScav_StimInjector : Actor {
 	}
 }
 
-class HDScav_ZerkInjector : Actor {
+class UaS_ZerkInjector : Actor {
 	default {
 		translation "112:127=107:111";
 	}
@@ -186,13 +186,13 @@ class HDScav_ZerkInjector : Actor {
 }
 
 // Can't actually pick these up, but they respond to the action
-class HDScav_FakePickup : HDPickup {
+class UaS_FakePickup : HDPickup {
 	override void actualpickup(actor other) {
 		return;
 	}
 }
 
-class HDScav_EmptyStimpack : HDScav_FakePickup {
+class UaS_EmptyStimpack : UaS_FakePickup {
 	default {
 		scale 0.3;
 	}
@@ -204,7 +204,7 @@ class HDScav_EmptyStimpack : HDScav_FakePickup {
 	}
 }
 
-class HDScav_EmptyMedikit : HDScav_FakePickup {
+class UaS_EmptyMedikit : UaS_FakePickup {
 	default {
 		scale 0.3;
 	}
@@ -216,7 +216,7 @@ class HDScav_EmptyMedikit : HDScav_FakePickup {
 	}
 }
 
-class HDScav_EmptyZerkpack : HDScav_FakePickup {
+class UaS_EmptyZerkpack : UaS_FakePickup {
 	default {
 		scale 0.3;
 	}
@@ -228,7 +228,7 @@ class HDScav_EmptyZerkpack : HDScav_FakePickup {
 	}
 }
 
-class HDScav_EmptyRocketBox : HDScav_FakePickup {
+class UaS_EmptyRocketBox : UaS_FakePickup {
 	default {
 		scale 0.5;
 	}
@@ -240,7 +240,7 @@ class HDScav_EmptyRocketBox : HDScav_FakePickup {
 	}
 }
 
-class HDScav_BrokenLiteAmp : HDScav_FakePickup {
+class UaS_BrokenLiteAmp : UaS_FakePickup {
 	default {
 		scale 0.5;
 	}

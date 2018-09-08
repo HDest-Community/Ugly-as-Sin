@@ -1,4 +1,4 @@
-class HDScav_WeaponSling : HDPickup {
+class UaS_WeaponSling : HDPickup {
 	int useDelay, holdingUse;
 	int slingPrep;
 	bool slingBraced;
@@ -29,7 +29,7 @@ class HDScav_WeaponSling : HDPickup {
 		if(attachedPoints < 2) { return; }
 		if(attachedWeapon != ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if the current weapon isn't the attached one
 
-		useDelay = CVar.GetCVar('hd_hudusedelay', owner.player).GetInt();
+		useDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
 
 		// Check for held [use] button and increment / decrement counters
 		if((ownr.player.cmd.buttons & BT_USE)) {
@@ -75,7 +75,7 @@ class HDScav_WeaponSling : HDPickup {
 		}
 	}
 
-	action void HDScav_AttachToWeapon() {
+	action void AttachToWeapon() {
 		let ownr = HDPlayerPawn(invoker.owner);
 		string weapName = ownr.player.ReadyWeapon.GetClassName();
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >=2) {
@@ -116,7 +116,7 @@ class HDScav_WeaponSling : HDPickup {
 			HSCV I -1;
 			stop;
 		Use:
-			HSCV I 1 HDScav_AttachToWeapon();
+			HSCV I 1 AttachToWeapon();
 			fail;
 	}
 }

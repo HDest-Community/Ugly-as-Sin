@@ -1,4 +1,4 @@
-class HDScav_Ration : HDPickup {
+class UaS_Ration : HDPickup {
 	default {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
@@ -15,7 +15,7 @@ class HDScav_Ration : HDPickup {
 	}
 }
 
-class HDScav_EmptyRation : HDDebris {
+class UaS_EmptyRation : HDDebris {
 	default {
 		scale 0.25;
 		bouncesound "misc/wallchunks";

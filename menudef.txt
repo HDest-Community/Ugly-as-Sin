@@ -1,4 +1,4 @@
-OptionValue "HDScav_Nice_Timescales" {
+OptionValue "UaS_Nice_Timescales" {
 	0,   "Disabled"
 	1,   "1x"
 	2,   "2x"
@@ -19,49 +19,70 @@ OptionValue "HDScav_Nice_Timescales" {
 
 AddOptionMenu "OptionsMenu" {
 	StaticText " "
-	Submenu "HD-Scavenger Settings", "HDScav_Options"
+	Submenu "Ugly as Sin Settings", "UaS_Options"
 }
 
-OptionMenu "HDScav_Options" {
-	Title "HD-Scavenger Settings"
+// ---------------
+// Main Options
+// ---------------
 
-	Option "Timescale","HDScav_TimeScale","HDScav_Nice_Timescales"
-	//SubMenu "Hunger Options", "HDScav_Hunger_Options"
-	//StaticText "Timescale changes will take effect", grey
-	//StaticText "immediately, but will not trigger new", grey
-	//StaticText "spawns until the next level is loaded.", grey
+OptionMenu "UaS_Options" {
+	Title "Ugly as Sin Settings"
+
+	Option "Hunger","UaS_HungerEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Hunger_Options"
 	StaticText " "
 
-	ScaleSlider "Scarcity rate","HDScav_ScarcityRate", 0, 100, 5, "Disabled"
-	SubMenu "Scarcity Options", "HDScav_Scarcity_Options"
-	//StaticText "Controls probability for spawns", grey
-	//StaticText "to be downsized or removed.", grey
-	//StaticText "Changes will apply on next level load.", grey
-	//StaticText "Rates above 75% may be unplayable.", grey
+	Option "Scarcity","UaS_ScarcityEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Scarcity_Options"
 	StaticText " "
 
-	SubMenu "Misc Options", "HDScav_Misc_Options"
+	Option "Reloading Kit","UaS_ReloaderEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Reloader_Options"
+	StaticText " "
+
+	Option "Weapon Sling","UaS_SlingEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Sling_Options"
+	StaticText " "
+
+	Option "Fragshard Reducer","UaS_FragReducerEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Frag_Options"
+	StaticText " "
+
+	//SubMenu "Misc Options", "UaS_Misc_Options"
 }
 
-OptionMenu "HDScav_Hunger_Options" {
-	Title "Hunger Options"
-	// Nothing here yet
+// ---------------
+// Submenus
+// ---------------
+
+OptionMenu "UaS_Hunger_Options" {
+	Title "Hunger Module"
+	Option "Timescale","UaS_HungerTimeScale","UaS_Nice_Timescales"
 }
 
-OptionMenu "HDScav_Scarcity_Options" {
-	Title "Scarcity Options"
-
-	Slider "Overspawn ratio","HDScav_ScarcityOverspawn", 0, 1, 0.05, 2
+OptionMenu "UaS_Scarcity_Options" {
+	Title "Scarcity Module"
+	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
+	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
 }
 
-OptionMenu "HDScav_Misc_Options" {
+OptionMenu "UaS_Reloader_Options" {
+	Title "Reloading Kit Module"
+	Option "Auto-Continue","UaS_ReloaderAutoContinue","OnOff"
+}
+
+OptionMenu "UaS_Sling_Options" {
+	Title "Weapon Sling Options"
+	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
+}
+
+OptionMenu "UaS_Frag_Options" {
+	Title "Fragshard Reducer Module"
+	Slider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, 0
+	Command "Remove Frag", "netevent UaS_RemoveFrag"
+}
+
+OptionMenu "UaS_Misc_Options" {
 	Title "Misc Options"
-
-	Slider "Frag spawn rate","HDScav_FragSpawnRate", 0, 100, 5, 0
-	Command "Remove Frag", "netevent HDScav_RemoveFrag"
-	StaticText " "
-
-	Option "Weapon Sling","HDScav_SlingEnabled","OnOff"
-	Option "Ammo Reloader","HDScav_ReloaderEnabled","OnOff"
-	Option "Reloader Auto-Continue","HDScav_ReloaderAutoContinue","OnOff"
 }
