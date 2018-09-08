@@ -25,7 +25,7 @@ class UaS_Reloader : HDWeapon {
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a portable field reloading kit.";
 		Inventory.Icon "HSCVQ0";
-		Scale 0.6;
+		Scale 0.5;
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
