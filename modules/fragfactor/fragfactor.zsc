@@ -1,14 +1,14 @@
-class HDScav_FragRemovalHandler : EventHandler {
+class UaS_FragRemovalHandler : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
-		if(HDScav_FragSpawnRate == 100) { return; }
-		double removeChance = 1.0 - (double(HDScav_FragSpawnRate) * 0.01);
+		if(UaS_FragSpawnRate == 100 || UaS_FragReducerEnabled == false) { return; }
+		double removeChance = 1.0 - (double(UaS_FragSpawnRate) * 0.01);
 		switch(e.Thing.GetClassName()) {
 			case 'FragShard':
 			case 'BFGVileShard':
 			case 'VileShard':
-				if(HDScav.RandomChance(removeChance)) {
-					if(HDScav_Debug >=1) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
+				if(UaS.RandomChance(removeChance)) {
+					if(UaS_Debug >=1) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
 					e.Thing.Destroy();
 				}
 				break;
@@ -16,7 +16,7 @@ class HDScav_FragRemovalHandler : EventHandler {
 	}
 
 	override void NetworkProcess(ConsoleEvent e) {
-		if(e.Name == "HDScav_RemoveFrag") {
+		if(e.Name == "UaS_RemoveFrag") {
 			int RemovedShards = RemoveLevelFrag();
 			console.printf("Removed "..RemovedShards.." frag shards.");
 		}

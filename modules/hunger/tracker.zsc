@@ -1,4 +1,4 @@
-class HDScav_HungerTracker : CustomInventory {
+class UaS_HungerTracker : CustomInventory {
 	double calories, lastcalories;
 	double water, lastwater;
 	double lastmeal, lastdrink;
@@ -25,7 +25,7 @@ class HDScav_HungerTracker : CustomInventory {
 		if(!ownr || !ownr.player) { return; }
 
 		//Time-scaled values
-		second = 35 / HDScav_TimeScale;
+		second = 35 / UaS_HungerTimeScale;
 		minute = (second * 60);
 		hour = (minute * 60);
 		day = (hour * 24);
@@ -65,10 +65,10 @@ class HDScav_HungerTracker : CustomInventory {
 		if(level.time % int(minute) == 1) {
 			HungerStatus();
 			ThirstStatus();
-			if(HDScav_Debug >= 1) {
+			if(UaS_Debug >= 1) {
 				A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
 			}
-			if(HDScav_Debug == 2) {
+			if(UaS_Debug == 2) {
 				A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
 				A_Log(string.format("MinFatigue: %i", minfatigue));
 			}

@@ -1,8 +1,17 @@
-server float HDScav_TimeScale = 60;
-server int HDScav_ScarcityRate = 50;
-server float HDScav_ScarcityOverspawn = 0.5;
-server int HDScav_Debug = 0;
-server int HDScav_FragSpawnRate = 100;
-server bool HDScav_SlingEnabled = true;
-server bool HDScav_ReloaderEnabled = true;
-server bool HDScav_ReloaderAutoContinue = false;
+server bool UaS_HungerEnabled = false;
+server float UaS_HungerTimeScale = 60;
+
+server bool UaS_ScarcityEnabled = false;
+server int UaS_ScarcityRate = 50;
+server float UaS_ScarcityOverspawn = 0.5;
+
+server bool UaS_ReloaderEnabled = false;
+server bool UaS_ReloaderAutoContinue = false;
+
+server bool UaS_SlingEnabled = false;
+user int UaS_SlingDelay = 35;
+
+server bool UaS_FragReducerEnabled = false;
+server int UaS_FragSpawnRate = 100;
+
+server int UaS_Debug = 0;

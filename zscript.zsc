@@ -1,30 +1,30 @@
-version "3.3"
+version "3.5"
 
 // Static functions
-#include "hdscav_zscript/static.zsc"
+#include "modules/static.zsc"
 
 // Hunger and Thirst scripts
-#include "hdscav_zscript/hunger/bootstrap.zsc"
-#include "hdscav_zscript/hunger/spawner.zsc"
-#include "hdscav_zscript/hunger/tracker.zsc"
-#include "hdscav_zscript/hunger/items.zsc"
-#include "hdscav_zscript/hunger/messkit.zsc"
+#include "modules/hunger/bootstrap.zsc"
+#include "modules/hunger/spawner.zsc"
+#include "modules/hunger/tracker.zsc"
+#include "modules/hunger/items.zsc"
+#include "modules/hunger/messkit.zsc"
 
 // Scarcity scripts
-#include "hdscav_zscript/scarcity/bootstrap.zsc"
-#include "hdscav_zscript/scarcity/spawner.zsc"
-#include "hdscav_zscript/scarcity/items.zsc"
+#include "modules/scarcity/bootstrap.zsc"
+#include "modules/scarcity/spawner.zsc"
+#include "modules/scarcity/items.zsc"
 
 // Debris spawner
-#include "hdscav_zscript/debris/spawner.zsc"
+#include "modules/debris/spawner.zsc"
 
 // Weapon Sling
-#include "hdscav_zscript/sling/bootstrap.zsc"
-#include "hdscav_zscript/sling/sling.zsc"
+#include "modules/sling/bootstrap.zsc"
+#include "modules/sling/sling.zsc"
 
 // Frag spawning factor
-#include "hdscav_zscript/fragfactor/fragfactor.zsc"
+#include "modules/fragfactor/fragfactor.zsc"
 
 // Field reloading kit
-#include "hdscav_zscript/reloader/bootstrap.zsc"
-#include "hdscav_zscript/reloader/reloader.zsc"
+#include "modules/reloader/bootstrap.zsc"
+#include "modules/reloader/reloader.zsc"

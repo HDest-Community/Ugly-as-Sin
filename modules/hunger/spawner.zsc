@@ -1,4 +1,4 @@
-class HDScav_Hunger_Spawner : EventHandler {
+class UaS_Hunger_Spawner : EventHandler {
 	int toSpawn_Rations;
 	int toSpawn_Messkit;
 	double spawnRate;
@@ -6,34 +6,34 @@ class HDScav_Hunger_Spawner : EventHandler {
 
 	override void WorldLoaded(WorldEvent e) {
 		if(e.IsSaveGame == true || e.IsReopen == true) { return; }
-		toSpawn_Rations += max(HDScav_TimeScale / 10, 1);
-		if(HDScav_Debug >=1) { console.printf("ToSpawn Messkit: %i", toSpawn_Messkit); }
-		if(HDScav_Debug >=1) { console.printf("ToSpawn Rations: %i", toSpawn_Rations); }
+		toSpawn_Rations += max(UaS_HungerTimeScale / 10, 1);
+		if(UaS_Debug >=1) { console.printf("ToSpawn Messkit: %i", toSpawn_Messkit); }
+		if(UaS_Debug >=1) { console.printf("ToSpawn Rations: %i", toSpawn_Rations); }
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
-		if(!player.mo.countinv("HDScav_Ration")) { toSpawn_Rations += 3; }
-		if(!player.mo.countinv("HDScav_MessKit")) { toSpawn_Messkit++; }
+		if(!player.mo.countinv("UaS_Ration")) { toSpawn_Rations += 3; }
+		if(!player.mo.countinv("UaS_MessKit")) { toSpawn_Messkit++; }
 	}
 
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
-		if(HDScav_TimeScale == 0) { return; }
+		if(UaS_HungerTimeScale == 0 || UaS_HungerEnabled == false) { return; }
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
 		if(toSpawn_Rations <= 0 && toSpawn_Messkit <= 0) { return; }
 		//if(e.Thing.bDROPPED) { return; }
 
-		spawnRate = HDScav_TimeScale * toSpawn_Rations;
+		spawnRate = UaS_HungerTimeScale * toSpawn_Rations;
 		spawnRate = max(spawnRate, 0);
 		spawnPos = e.Thing.pos;
 
 		//Messkit will also spawn on first opportunity, if player doesn't have one.
 		//Spawn rations on backpacks, with a chance of an extra ration
 		if(e.Thing.GetClassName() == "HDBP") {
-			HDScav.SpawnStuff('HDScav_Ration', 1, spawnPos);
+			UaS.SpawnStuff('UaS_Ration', 1, spawnPos);
 			MaybeSpawnRation(0.005 * spawnRate);
 			SpawnNeededMesskit();
 		}
@@ -64,18 +64,18 @@ class HDScav_Hunger_Spawner : EventHandler {
 	}
 
 	void MaybeSpawnRation(double spawnChance) {
-		if(HDScav.RandomChance(spawnChance)) {
-			//HDScav.SpawnStuff('HDScav_Ration', 1, spawnPos);
+		if(UaS.RandomChance(spawnChance)) {
+			//UaS.SpawnStuff('UaS_Ration', 1, spawnPos);
 			//toSpawn_Rations--;
-			if(HDScav_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
+			if(UaS_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
 		}
 	}
 
 	void SpawnNeededMesskit() {
 		if(toSpawn_Messkit > 0) {
-			HDScav.SpawnStuff('HDScav_MessKit', 1, spawnPos);
+			UaS.SpawnStuff('UaS_MessKit', 1, spawnPos);
 			toSpawn_Messkit--;
-			if(HDScav_Debug >=1) { console.printf("Spawned Messkit. \tToSpawn: %i", toSpawn_Messkit); }
+			if(UaS_Debug >=1) { console.printf("Spawned Messkit. \tToSpawn: %i", toSpawn_Messkit); }
 		}
 	}
 }

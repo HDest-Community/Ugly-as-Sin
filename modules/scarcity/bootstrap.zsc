@@ -1,11 +1,12 @@
 class ScarcityInitialized : Inventory {}
 
-class HDScav_Scarcity_Bootstrap : EventHandler {
+class UaS_Scarcity_Bootstrap : EventHandler {
 	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
+		if(UaS_ScarcityEnabled == false) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("ScarcityInitialized")) {
-			player.mo.giveinventory("HDScav_2FCartridge_Handler", 1);
+			player.mo.giveinventory("UaS_2FCartridge_Handler", 1);
 		}
 	}
 }

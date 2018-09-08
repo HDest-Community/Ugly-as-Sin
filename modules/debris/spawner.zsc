@@ -1,4 +1,4 @@
-class HDScav_Debris_Spawner : EventHandler {
+class UaS_Debris_Spawner : EventHandler {
 
 	//Spawn random debris as appropriate
 	override void WorldThingSpawned(WorldEvent e) {
@@ -8,7 +8,7 @@ class HDScav_Debris_Spawner : EventHandler {
 
 		switch(e.Thing.GetClassName()) {
 			case 'SpentStim':
-				HDScav.SpawnStuff('HDScav_EmptyStimpack', 1, e.Thing.pos);
+				UaS.SpawnStuff('UaS_EmptyStimpack', 1, e.Thing.pos);
 				break;
 		}
 	}

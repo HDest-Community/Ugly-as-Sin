@@ -1,4 +1,4 @@
-class HDScav_Reloader : HDWeapon {
+class UaS_Reloader : HDWeapon {
 	string statusMessage;
 	string lastStatus;
 	int reloadMode;
@@ -25,7 +25,7 @@ class HDScav_Reloader : HDWeapon {
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a portable field reloading kit.";
 		Inventory.Icon "HSCVQ0";
-		Scale 0.6;
+		Scale 0.5;
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
@@ -220,7 +220,7 @@ class HDScav_Reloader : HDWeapon {
 		Ready:
 			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
 			TNT1 A 1 { invoker.lastStatus = ""; }
-			TNT1 A 1 { if(HDScav_ReloaderAutoContinue) { A_Refire("Fire"); } }
+			TNT1 A 1 { if(UaS_ReloaderAutoContinue) { A_Refire("Fire"); } }
 			goto Super::Ready;
 		Fire:
 			TNT1 A 3 ProcessReload();
@@ -229,7 +229,7 @@ class HDScav_Reloader : HDWeapon {
 			goto aborted;
 		finished:
 			TNT1 A 1 { invoker.UpdateMessage(invoker.lastStatus); }
-			TNT1 A 1 { if(!HDScav_ReloaderAutoContinue) { A_Refire("finished"); } }
+			TNT1 A 1 { if(!UaS_ReloaderAutoContinue) { A_Refire("finished"); } }
 			TNT1 A 1 { invoker.lastStatus = ""; }
 			goto ready;
 		aborted:
