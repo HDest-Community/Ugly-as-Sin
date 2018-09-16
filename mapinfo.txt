@@ -10,3 +10,25 @@ GameInfo {
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_Killhouse_Randomizer"
 }
+
+episode uas_killhouse {
+	name="Ugly Killhouse"
+	noskillmenu
+}
+
+adddefaultmap {
+	sucktime=0
+	aircontrol=0
+	allowjump
+	allowcrouch
+	evenlighting
+}
+
+map uas_killhouse "Killhouse" {
+	music=""
+	resetinventory
+	nointermission
+	noautosavehint
+	allowrespawn
+	next="uas_killhouse"
+}
