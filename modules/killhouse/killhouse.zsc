@@ -1,0 +1,14 @@
+class UaS_Killhouse_Randomizer : EventHandler {
+	override void WorldLoaded(WorldEvent e) {
+		if(e.IsSaveGame || e.IsReopen) { return; }
+		for(int i = 0; i < Level.Sectors.Size(); i++) {
+			if(Level.Sectors[i].GetUDMFInt('user_uas_wall_type') == 1 && random(0,1) == 1) {
+				Level.Sectors[i].MoveFloor(96, -96, 0, 1, false);
+			}
+			if(Level.Sectors[i].GetUDMFInt('user_uas_wall_type') == 2 && random(0,2) == 1) {
+				Level.Sectors[i].MoveFloor(96, -32, 0, 1, false);
+			}
+			//console.printf("%i, %i, %g", Level.Sectors[i].Index(), Level.Sectors[i].GetUDMFInt('user_uas_wall_type'), Level.Sectors[i].floorplane.D);
+		}
+	}
+}

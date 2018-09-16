@@ -31,3 +31,6 @@ version "3.5"
 
 // Allied marine spawning
 #include "modules/allies/spawner.zsc"
+
+// Killhouse map randomizer
+#include "modules/killhouse/killhouse.zsc"
