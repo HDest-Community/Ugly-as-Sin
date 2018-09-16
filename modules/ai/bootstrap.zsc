@@ -1,0 +1,17 @@
+class UaS_AI_Bootstrap : EventHandler {
+	override void WorldThingSpawned(WorldEvent e) {
+		if(!e.Thing) { return; }
+		if(e.Thing.bISMONSTER) {
+			console.printf("Monster Found!");
+			e.thing.GiveInventory("UaS_AI_Handler", 1);
+		}
+	}
+}
+
+class UaS_AI_Handler : Inventory {
+	override void DoEffect() {
+		super.DoEffect();
+		if(!owner) { return; }
+		console.printf("Tracking "..owner.GetClassName());
+	}
+}

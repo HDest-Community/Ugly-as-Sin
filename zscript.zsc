@@ -31,3 +31,6 @@ version "3.5"
 
 // Allied marine spawning
 #include "modules/allies/spawner.zsc"
+
+// Monster AI
+#include "modules/ai/bootstrap.zsc"
