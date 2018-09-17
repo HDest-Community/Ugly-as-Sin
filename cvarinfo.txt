@@ -1,5 +1,5 @@
 server bool UaS_HungerEnabled = false;
-server float UaS_HungerTimeScale = 60;
+server float UaS_HungerTimeScale = 20;
 
 server bool UaS_ScarcityEnabled = false;
 server int UaS_ScarcityRate = 50;
