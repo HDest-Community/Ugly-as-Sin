@@ -33,7 +33,7 @@ class UaS_2FCartridge : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		inventory.pickupmessage "Picked up a second flesh cartridge.";
-		inventory.MaxAmount 8;
+		inventory.MaxAmount 16;
 		hdpickup.bulk 6;
 		Inventory.Icon "HSCVP0";
 		+INVENTORY.INVBAR;
