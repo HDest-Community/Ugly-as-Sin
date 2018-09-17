@@ -18,5 +18,7 @@ server bool UaS_AlliesEnabled = false;
 server int UaS_AllySpawnRate = 25;
 
 server bool UaS_AdvancedAIEnabled = false;
+server bool UaS_AI_Searching = true;
+server bool UaS_AI_Wounding = true;
 
 server int UaS_Debug = 0;

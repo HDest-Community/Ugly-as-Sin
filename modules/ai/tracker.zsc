@@ -36,6 +36,7 @@ extend class UaS_AI_Handler {
 	}
 
 	void WoundDebuff() {
+		if(!UaS_AI_Wounding) { return; }
 		if(owner.health < baseHealth) {
 			// Calculate health factor
 			healthFactor = owner.health / double(baseHealth / 2);
@@ -74,6 +75,7 @@ extend class UaS_AI_Handler {
 	};
 
 	void SearchBehavior() {
+		if(!UaS_AI_Searching) { return; }
 		switch(AIMode) {
 			// Standard AI mode, no changes to behavior
 			case normal:
