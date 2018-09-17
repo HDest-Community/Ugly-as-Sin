@@ -24,6 +24,8 @@ class UaS_AI_Handler : Inventory {
 		if(owner.health <=0) { return; }
 
 		switch(AIMode) {
+
+			// Standard AI mode, no changes to behavior
 			case normal:
 				if(!owner.target) { return; }
 				if(owner.target == lastKnown) {
@@ -31,11 +33,16 @@ class UaS_AI_Handler : Inventory {
 					return;
 				}
 				if(owner.CheckIfTargetInLOS()) {
-					countdown = 35;
+					// Add to countdown while in LOS, up to 5 seconds
+					// as a sort of soft aggro-cooldown  before monsters
+					// switch to more passive goal chase.
+					countdown = clamp(countdown + 1, 35, 175);
 					lastKnown.SetOrigin(owner.target.pos, true);
 					break;
 				}
 				if(countdown == 0) {
+					//set 1-2 minutes for chase + search time.
+					countdown = random(60, 120) * 35;
 					owner.A_ClearTarget();
 					owner.target = lastKnown;
 					owner.goal = lastKnown;
@@ -44,15 +51,18 @@ class UaS_AI_Handler : Inventory {
 					console.printf(owner.getclassname().." switch to chasing");
 				}
 				break;
+
+			// Player LOS, set goal to last known position.
 			case chasing:
+				// Simple check to see if the monster has aquired another target.
 				if(owner.target != lastKnown) {
 					AIMode = normal;
 					owner.goal = null;
 					owner.bchasegoal = false;
 					console.printf(owner.getclassname().." reacquired");
 				}
-				if(owner.Distance3D(lastKnown) <= 64) {
-					countdown = 35 * 30;
+				// Check if in search area or timer too low.
+				if(owner.Distance3D(lastKnown) <= 64 || countdown <= (30 * 35)) {
 					owner.A_ClearTarget();
 					owner.goal = null;
 					owner.bchasegoal = false;
@@ -60,15 +70,20 @@ class UaS_AI_Handler : Inventory {
 					console.printf(owner.getclassname().." switch to searching");
 				}
 				break;
+
+			// Reached last position or search timer dropped too low. Wander in area.
 			case searching:
+				// Abuse Hideous Destructor's monster-mover function.
 				if(countdown % 5 == 0) {
 					hdmobai.wander(owner, false);
 					console.printf(owner.getclassname().." searching for "..(countdown/35));
 				}
+				// Another simple check to return to normal if monster gets a target.
 				if(owner.target) {
 					AIMode = normal;
 					console.printf(owner.getclassname().." reacquired");
 				}
+				// Finish the search and return to normal mode.
 				if(countdown <= 0) {
 					AIMode = normal;
 					owner.A_ClearTarget();
