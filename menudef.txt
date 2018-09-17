@@ -60,33 +60,72 @@ OptionMenu "UaS_Options" {
 OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module"
 	Option "Timescale","UaS_HungerTimeScale","UaS_Nice_Timescales"
+	StaticText "Adds need to eat / drink, with messkit."
+	StaticText "Starvation / dehydration causes fatigue."
+	StaticText " "
+	StaticText "Hunger requires new map or game."
+	StaticText "Rations spawn only on new map."
+	StaticText "Messkit spawns on new map if lost."
 }
 
 OptionMenu "UaS_Scarcity_Options" {
 	Title "Scarcity Module"
 	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
 	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
+	StaticText "Removes or reduces map spawns, forcing"
+	StaticText "you to scavenge for your supplies."
+	StaticText " "
+	StaticText "Scarcity controls removal percentage."
+	StaticText "Overspawn controls what's left over."
+	StaticText " "
+	StaticText "Requires new map or game to take effect."
 }
 
 OptionMenu "UaS_Reloader_Options" {
 	Title "Reloading Kit Module"
 	Option "Auto-Continue","UaS_ReloaderAutoContinue","OnOff"
+	StaticText "A reloading kit for 7.76mm ammo."
+	StaticText "Requires 7.76mm brass and 4.26mm rounds."
+	StaticText " "
+	StaticText "Auto-Continue allows holding button"
+	StaticText "instead of pressing for each round."
+	StaticText " "
+	StaticText "Given to Lib/Boss loadouts on new game,"
+	StaticText "or spawns on those weapons in new map."
 }
 
 OptionMenu "UaS_Sling_Options" {
 	Title "Weapon Sling Options"
 	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
+	StaticText "Sling allows bracing weapon anywhere"
+	StaticText "with [use] key, even when standing."
+	StaticText " "
+	StaticText "Delay is how long [use] must be held."
+	StaticText " "
+	StaticText "Given on start of new game or map."
 }
 
 OptionMenu "UaS_Frag_Options" {
 	Title "Fragshard Reducer Module"
 	Slider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, 0
 	Command "Remove Frag", "netevent UaS_RemoveFrag"
+	StaticText "Reduce amount of revive shards spawned."
+	StaticText " "
+	StaticText "Rate is chance for new shard to despawn."
+	StaticText "Remove Frag clears all existing shards."
+	StaticText " "
+	StaticText "Takes effect immediately."
 }
 
 OptionMenu "UaS_Ally_Options" {
 	Title "Allies Module"
 	ScaleSlider "Ally spawn rate","UaS_AllySpawnRate", 0, 100, 5, "Disabled"
+	StaticText "Spawns friendly marines randomly on map,"
+	StaticText "mostly replacing decorative corpses."
+	StaticText " "
+	StaticText "Rate is random chance for spawn."
+	StaticText " "
+	StaticText "Requires new map to take effect."
 }
 
 
