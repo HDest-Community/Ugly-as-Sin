@@ -7,6 +7,11 @@ class UaS_AI_Handler : Inventory {
 		countdown = -1; // -1 = "no countdown", to prevent repeated triggering of zero conditions
 	}
 
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		WoundDebuffInit();
+	}
+
 	override void DoEffect() {
 		super.DoEffect();
 		if(!owner) { return; }
@@ -14,9 +19,48 @@ class UaS_AI_Handler : Inventory {
 		if(owner.health <=0) { return; }
 
 		SearchBehavior();
+		WoundDebuff();
 	}
 }
 
+// Wounded debuffs
+extend class UaS_AI_Handler {
+	int baseHealth;
+	double healthFactor;
+	double baseSpeed;
+	int painCountdown;
+
+	void WoundDebuffInit() {
+		baseHealth = max(1, owner.health);
+		baseSpeed = owner.speed;
+	}
+
+	void WoundDebuff() {
+		if(owner.health < baseHealth) {
+			// Calculate health factor
+			healthFactor = owner.health / double(baseHealth / 2);
+			healthFactor = clamp(healthFactor, 0.1, 1.0);
+
+			// Reduce speed
+			owner.speed = baseSpeed * healthFactor;
+
+			// Jitter angle / pitch
+			owner.A_SetAngle(owner.angle + (random(-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE);
+			owner.A_SetPitch(owner.pitch + (random(-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
+
+			// Occasionally cry out in pain
+			if(painCountdown == 0) {
+				owner.A_Pain();
+				painCountDown = random(10, 20) * 35 * healthFactor;
+			}
+			painCountdown = max(painCountDown - 1, 0);
+
+			if(level.maptime % 35 == 1) { console.printf(owner.GetClassName().." health factor"..healthFactor); }
+		}
+	}
+}
+
+// Searching behavior
 extend class UaS_AI_Handler {
 	int AIMode;
 	actor lastKnown;
