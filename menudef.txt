@@ -46,6 +46,10 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Ally_Options"
 	StaticText " "
 
+	Option "Advanced AI","UaS_AdvancedAIEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_AI_Options"
+	StaticText " "
+
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
 	StaticText "enabling, disabling, or changing module settings."
@@ -126,6 +130,10 @@ OptionMenu "UaS_Ally_Options" {
 	StaticText "Rate is random chance for spawn."
 	StaticText " "
 	StaticText "Requires new map to take effect."
+}
+
+OptionMenu "UaS_AI_Options" {
+	Title "Advanced AI Module"
 }
 
 
