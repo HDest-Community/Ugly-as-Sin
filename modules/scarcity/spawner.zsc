@@ -54,10 +54,10 @@ class UaS_Scarcity_Spawner : EventHandler {
 			DoReplacement(thingArray[index]);
 			thingArray[index].destroy();
 			thingArray.Delete(index);
-			console.printf("Removed "..checkClass);
+			if(UaS_Debug >= 1) { console.printf("Removed "..checkClass); }
 		}
 
-		console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount);
+		if(UaS_Debug >= 1) { console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount); }
 		thingArray.Clear();
 	}
 
