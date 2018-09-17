@@ -34,3 +34,4 @@ version "3.5"
 
 // Monster AI
 #include "modules/ai/bootstrap.zsc"
+#include "modules/ai/tracker.zsc"

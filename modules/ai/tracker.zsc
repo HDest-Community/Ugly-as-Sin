@@ -1,0 +1,139 @@
+class UaS_LastKnownMarker : PatrolPoint {}
+
+class UaS_AI_Handler : Inventory {
+	int AIMode;
+	actor lastKnown;
+	actor oldTarget;
+	int countdown;
+
+	enum modes {
+		normal = 0,
+		chasing = 1,
+		searching = 2,
+	};
+
+	override void BeginPlay() {
+		super.BeginPlay();
+		countdown = -1; // -1 = "no countdown", to prevent repeated triggering of zero conditions
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		if(!owner) { return; }
+		if(!lastKnown) { lastKnown = UaS_LastKnownMarker(actor.Spawn("UaS_LastKnownMarker", owner.pos)); }
+		if(owner.health <=0) { return; }
+
+		switch(AIMode) {
+			case normal:
+				if(!owner.target) { return; }
+				if(owner.target == lastKnown) {
+					owner.A_ClearTarget();
+					return;
+				}
+				if(owner.CheckIfTargetInLOS()) {
+					countdown = 35;
+					lastKnown.SetOrigin(owner.target.pos, true);
+					break;
+				}
+				if(countdown == 0) {
+					owner.A_ClearTarget();
+					owner.target = lastKnown;
+					owner.goal = lastKnown;
+					owner.bchasegoal = true;
+					AIMode = chasing;
+					console.printf(owner.getclassname().." switch to chasing");
+				}
+				break;
+			case chasing:
+				if(owner.target != lastKnown) {
+					AIMode = normal;
+					owner.goal = null;
+					owner.bchasegoal = false;
+					console.printf(owner.getclassname().." reacquired");
+				}
+				if(owner.Distance3D(lastKnown) <= 64) {
+					countdown = 35 * 30;
+					owner.A_ClearTarget();
+					owner.goal = null;
+					owner.bchasegoal = false;
+					AIMode = searching;
+					console.printf(owner.getclassname().." switch to searching");
+				}
+				break;
+			case searching:
+				if(countdown % 5 == 0) {
+					hdmobai.wander(owner, false);
+					console.printf(owner.getclassname().." searching for "..(countdown/35));
+				}
+				if(owner.target) {
+					AIMode = normal;
+					console.printf(owner.getclassname().." reacquired");
+				}
+				if(countdown <= 0) {
+					AIMode = normal;
+					owner.A_ClearTarget();
+					owner.goal = null;
+					console.printf(owner.getclassname().." gave up the search");
+				}
+				break;
+		}
+
+		countdown = max(countdown - 1, -1);
+	}
+}
+
+/*class UaS_AI_Handler : Inventory {
+	UaS_LastKnownMarker lastKnown;
+	int targetLoss;
+	int searchCountdown;
+	bool searchTrigger;
+	bool actuallySeen;
+
+	override void DoEffect() {
+		super.DoEffect();
+		if(!owner) { return; }
+		if(owner.health <=0) { return; }
+
+		if(lastKnown) {
+			if(owner.Distance3D(lastKnown) <= 128) {
+				searchCountdown = random(35 , 70) * 30;
+				searchTrigger == true;
+			}
+
+			if(searchCountdown > 0 && searchTrigger == true) {
+				searchCountdown = max(searchCountdown - 1, 0);
+				if(searchCountdown % 5) {
+					hdmobai.wander(owner, false);
+					console.printf(owner.GetClassName().." searching");
+				}
+			}
+
+			if(searchCountdown == 0 && searchTrigger == true) {
+				owner.goal = null;
+				lastKnown.Destroy();
+				searchTrigger = false;
+				console.printf(owner.GetClassName().." nothing here");
+			}
+		}
+
+		if(!owner.target) { return; }
+
+		if(owner.CheckIfTargetInLOS()) {
+			actuallySeen = true;
+			targetLoss = random(15, 25);
+		}
+		else {
+			targetLoss = max(targetLoss - 1, 0);
+		}
+
+		if(targetLoss == 0 && actuallySeen == true && owner.target) {
+			if(lastKnown) { lastKnown.Destroy(); }
+			lastKnown = UaS_LastKnownMarker(actor.spawn("UaS_LastKnownMarker", owner.target.pos));
+			lastKnown.vel = owner.target.vel * 2;
+			owner.A_ClearTarget();
+			actuallySeen = false;
+			owner.goal = lastKnown;
+			console.printf(owner.GetClassName().." lost target.");
+		}
+	}
+}/*
