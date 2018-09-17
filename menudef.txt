@@ -1,19 +1,13 @@
 OptionValue "UaS_Nice_Timescales" {
-	1,   "1x"
-	2,   "2x"
-	5,   "5x"
-	10,  "10x"
-	20,  "20x"
-	30,  "30x"
-	40,  "40x"
-	50,  "50x"
-	60,  "60x"
-	70,  "70x"
-	80,  "80x"
-	90,  "90x"
-	100, "100x"
-	110, "110x"
-	120, "120x"
+	1,   "1x Realtime"
+	2,   "2x Realtime"
+	5,   "5x  Realtime"
+	10,  "10x Realtime"
+	20,  "20x Realtime"
+	30,  "30x Realtime"
+	40,  "40x Realtime"
+	50,  "50x Realtime"
+	60,  "60x Realtime"
 }
 
 AddOptionMenu "OptionsMenu" {
