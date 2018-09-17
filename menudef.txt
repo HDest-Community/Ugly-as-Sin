@@ -134,6 +134,12 @@ OptionMenu "UaS_Ally_Options" {
 
 OptionMenu "UaS_AI_Options" {
 	Title "Advanced AI Module"
+	StaticText "Adds some flavor to AI behavior:"
+	StaticText "+ Searching players last known area."
+	StaticText "+ Can't see in darker areas."
+	StaticText "+ Clear / forget target if not found."
+	StaticText " "
+	StaticText "Requires new map or game."
 }
 
 
