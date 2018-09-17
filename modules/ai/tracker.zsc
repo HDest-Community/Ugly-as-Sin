@@ -1,16 +1,6 @@
 class UaS_LastKnownMarker : PatrolPoint {}
 
 class UaS_AI_Handler : Inventory {
-	int AIMode;
-	actor lastKnown;
-	actor oldTarget;
-	int countdown;
-
-	enum modes {
-		normal = 0,
-		chasing = 1,
-		searching = 2,
-	};
 
 	override void BeginPlay() {
 		super.BeginPlay();
@@ -23,8 +13,24 @@ class UaS_AI_Handler : Inventory {
 		if(!lastKnown) { lastKnown = UaS_LastKnownMarker(actor.Spawn("UaS_LastKnownMarker", owner.pos)); }
 		if(owner.health <=0) { return; }
 
-		switch(AIMode) {
+		SearchBehavior();
+	}
+}
 
+extend class UaS_AI_Handler {
+	int AIMode;
+	actor lastKnown;
+	actor oldTarget;
+	int countdown;
+
+	enum modes {
+		normal = 0,
+		chasing = 1,
+		searching = 2,
+	};
+
+	void SearchBehavior() {
+		switch(AIMode) {
 			// Standard AI mode, no changes to behavior
 			case normal:
 				if(!owner.target) { return; }
@@ -51,7 +57,6 @@ class UaS_AI_Handler : Inventory {
 					console.printf(owner.getclassname().." switch to chasing");
 				}
 				break;
-
 			// Player LOS, set goal to last known position.
 			case chasing:
 				// Simple check to see if the monster has aquired another target.
@@ -70,7 +75,6 @@ class UaS_AI_Handler : Inventory {
 					console.printf(owner.getclassname().." switch to searching");
 				}
 				break;
-
 			// Reached last position or search timer dropped too low. Wander in area.
 			case searching:
 				// Abuse Hideous Destructor's monster-mover function.
@@ -92,7 +96,7 @@ class UaS_AI_Handler : Inventory {
 				}
 				break;
 		}
-
 		countdown = max(countdown - 1, -1);
 	}
+
 }
