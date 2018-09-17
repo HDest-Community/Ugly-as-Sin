@@ -10,3 +10,4 @@ Features are implemented as configurable modules, any of which may be independen
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing. The sling must be attached to the weapon by activating the inventory item and may only be attached to one weapon at a time. Hold the [Use] key to brace.
 * **Fragshard Reducer** - Specifies chance for enemy-reviving fragshards to be allowed to spawn. There is also an option to remove all existing fragshards from the level.
 * **Friendly Marines** - Friendly marines may randomly replace human-type corpses, for some occasional much-needed reinforcements.
+* **Advanced AI** - Adds extra behavior to monsters, such as searching the player's last known position, forgetting the player, and debuffing speed / aim when wounded.
