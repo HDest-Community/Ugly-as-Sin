@@ -115,7 +115,7 @@ OptionMenu "UaS_Frag_Options" {
 	Command "Remove Frag", "netevent UaS_RemoveFrag"
 	StaticText "Reduce amount of revive shards spawned."
 	StaticText " "
-	StaticText "Rate is chance for new shard to despawn."
+	StaticText "Rate is chance to allow new shard spawn."
 	StaticText "Remove Frag clears all existing shards."
 	StaticText " "
 	StaticText "Takes effect immediately."
