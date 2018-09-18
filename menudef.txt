@@ -111,7 +111,7 @@ OptionMenu "UaS_Sling_Options" {
 
 OptionMenu "UaS_Frag_Options" {
 	Title "Fragshard Reducer Module"
-	Slider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, 0
+	ScaleSlider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, "Frag Disabled"
 	Command "Remove Frag", "netevent UaS_RemoveFrag"
 	StaticText "Reduce amount of revive shards spawned."
 	StaticText " "
