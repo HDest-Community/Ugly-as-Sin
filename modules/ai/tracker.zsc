@@ -90,6 +90,7 @@ extend class UaS_AI_Handler {
 					// switch to more passive goal chase.
 					countdown = clamp(countdown + 1, 35, 175);
 					lastKnown.SetOrigin(owner.target.pos, true);
+					lastKnown.vel = owner.target.vel;
 					break;
 				}
 				if(countdown == 0) {
