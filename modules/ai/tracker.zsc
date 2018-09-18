@@ -32,7 +32,11 @@ class UaS_AI_Handler : Inventory {
 	override void DoEffect() {
 		super.DoEffect();
 		if(!owner) { return; }
-		if(owner.health <=0) { return; }
+		if(owner.health <=0) {
+			if(lastKnown.size() > 0)
+				ClearPath();
+			return;
+		}
 
 		SearchBehavior();
 		WoundDebuff();
@@ -113,12 +117,12 @@ extend class UaS_AI_Handler {
 		ClearPath(); // Just in case
 		PushPath(pathPos);
 		lastKnown[0].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
-		PushPath(lastKnown[0].pos + Vec3Angle(data.distance, p_angle, 0, true));
+		PushPath(lastKnown[0].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		for (int i = 0; i < 6; i++)
 		{
-			p_angle += 360.0 / 6.0;
+			p_angle = frandom(0,360);
 			lastKnown[1].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
-			PushPath(lastKnown[1].pos + Vec3Angle(data.distance, p_angle, 0, true));
+			PushPath(lastKnown[1].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		}
 	}
 
