@@ -77,9 +77,10 @@ class UaS_WeaponSling : HDPickup {
 
 	action void AttachToWeapon() {
 		let ownr = HDPlayerPawn(invoker.owner);
-		string weapName = ownr.player.ReadyWeapon.GetClassName();
+		let currentWeapon = HDWeapon(ownr.player.ReadyWeapon);
+		string weapName = currentWeapon.GetClassName();
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >=2) {
-			if(getcvar("hd_helptext")) { console.printf("Sling already attached."); }
+			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling already attached.", 70); }
 			return;
 		}
 		else if (invoker.attachedWeapon != weapName) {
@@ -99,15 +100,15 @@ class UaS_WeaponSling : HDPickup {
 				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
 				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
 				invoker.attachedPoints++;
-				invoker.attachedWeapon = ownr.player.ReadyWeapon.GetClassName();
-				if(getcvar("hd_helptext")) { console.printf("Attached a sling point (%i of 2).", invoker.attachedPoints); }
+				invoker.attachedWeapon = currentWeapon.GetClassName();
+				if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Attached a sling point ("..invoker.attachedPoints.." of 2).", 70); }
 		}
 		else {
-			if(getcvar("hd_helptext")) { console.printf("Can't put a sling on this weapon.", invoker.attachedPoints); }
+			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Can't put a sling on this weapon.", 70); }
 		}
 		invoker.attachedPoints = clamp(invoker.attachedPoints, 0, 2);
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >= 2) {
-			if(getcvar("hd_helptext")) { console.printf("Sling ready."); }
+			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.", 70); }
 		}
 	}
 
