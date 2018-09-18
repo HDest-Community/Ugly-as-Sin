@@ -35,3 +35,7 @@ version "3.5"
 // Monster AI
 #include "modules/ai/bootstrap.zsc"
 #include "modules/ai/tracker.zsc"
+
+// Scavenger Pack
+//#include "modules/pack/bootstrap.zsc"
+#include "modules/pack/pack.zsc"
