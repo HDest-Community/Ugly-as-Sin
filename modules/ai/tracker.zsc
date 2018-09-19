@@ -1,4 +1,21 @@
-class UaS_LastKnownMarker : PatrolPoint {}
+class UaS_LastKnownMarker : Actor {
+
+	default {
+		+NOINTERACTION
+		Radius 1;
+		Height 1;
+	}
+	
+	states {
+	spawn:
+		TNT1 A 0 NoDelay {
+			SetOrigin((pos.xy, floorz),false);
+			if(UaS_Debug >= 1) sprite = GetSpriteIndex('AMRK');
+		}
+		"####" A -1;
+		stop;
+	}
+}
 
 class UaS_AI_Handler : Inventory {
 
@@ -15,8 +32,11 @@ class UaS_AI_Handler : Inventory {
 	override void DoEffect() {
 		super.DoEffect();
 		if(!owner) { return; }
-		if(!lastKnown) { lastKnown = UaS_LastKnownMarker(actor.Spawn("UaS_LastKnownMarker", owner.pos)); }
-		if(owner.health <=0) { return; }
+		if(owner.health <=0) {
+			if(lastKnown.size() > 0)
+				ClearPath();
+			return;
+		}
 
 		SearchBehavior();
 		WoundDebuff();
@@ -64,7 +84,8 @@ extend class UaS_AI_Handler {
 // Searching behavior
 extend class UaS_AI_Handler {
 	int AIMode;
-	actor lastKnown;
+	vector3 pathPos, pathHeading;
+	array<actor> lastKnown;
 	actor oldTarget;
 	int countdown;
 
@@ -73,6 +94,37 @@ extend class UaS_AI_Handler {
 		chasing = 1,
 		searching = 2,
 	};
+	
+	void ClearPath() {
+		for (int i = lastKnown.size() - 1; i >= 0; i--)
+			lastKnown[i].destroy();
+		lastKnown.clear();
+	}
+	
+	void PushPath(vector3 pathPos) {
+		let newPoint = Actor.Spawn('UaS_LastKnownMarker', pathPos);
+		lastKnown.push(newPoint);
+	}
+	
+	void PopPath() {
+		lastKnown[0].destroy();
+		lastKnown.delete(0);
+	}
+	
+	void CreateSearchPath() {
+		double p_angle = VectorAngle(pathHeading.x, pathHeading.y);
+		FLineTraceData data;
+		ClearPath(); // Just in case
+		PushPath(pathPos);
+		lastKnown[0].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
+		PushPath(lastKnown[0].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
+		for (int i = 0; i < 6; i++)
+		{
+			p_angle = frandom(0,360);
+			lastKnown[1].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
+			PushPath(lastKnown[1].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
+		}
+	}
 
 	void SearchBehavior() {
 		if(!UaS_AI_Searching) { return; }
@@ -80,8 +132,9 @@ extend class UaS_AI_Handler {
 			// Standard AI mode, no changes to behavior
 			case normal:
 				if(!owner.target) { return; }
-				if(owner.target == lastKnown) {
+				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
 					owner.A_ClearTarget();
+					ClearPath();
 					return;
 				}
 				if(owner.CheckIfTargetInLOS()) {
@@ -89,16 +142,17 @@ extend class UaS_AI_Handler {
 					// as a sort of soft aggro-cooldown  before monsters
 					// switch to more passive goal chase.
 					countdown = clamp(countdown + 1, 35, 175);
-					lastKnown.SetOrigin(owner.target.pos, true);
-					lastKnown.vel = owner.target.vel;
+					pathPos = owner.target.pos;
+					pathHeading = owner.target.vel;
 					break;
 				}
 				if(countdown == 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random(60, 120) * 35;
 					owner.A_ClearTarget();
-					owner.target = lastKnown;
-					owner.goal = lastKnown;
+					CreateSearchPath();
+					owner.target = lastKnown[0];
+					owner.goal = lastKnown[0];
 					owner.bchasegoal = true;
 					AIMode = chasing;
 					if(UaS_Debug >= 1) { console.printf(owner.getclassname().." switch to chasing"); }
@@ -107,19 +161,31 @@ extend class UaS_AI_Handler {
 			// Player LOS, set goal to last known position.
 			case chasing:
 				// Simple check to see if the monster has aquired another target.
-				if(owner.target != lastKnown) {
+				if(owner.target != lastKnown[0] && !(owner.target is "UaS_LastKnownMarker")) {
 					AIMode = normal;
 					owner.goal = null;
 					owner.bchasegoal = false;
 					if(UaS_Debug >= 1) { console.printf(owner.getclassname().." reacquired"); }
 				}
 				// Check if in search area or timer too low.
-				if(owner.Distance3D(lastKnown) <= 64 || countdown <= (30 * 35)) {
-					owner.A_ClearTarget();
-					owner.goal = null;
-					owner.bchasegoal = false;
-					AIMode = searching;
-					if(UaS_Debug >= 1) { console.printf(owner.getclassname().." switch to searching"); }
+				if(owner.Distance3D(lastKnown[0]) <= 64 || countdown <= (30 * 35)) {
+					if(lastKnown.size() > 1)
+					{
+						PopPath();
+						owner.target = lastKnown[0];
+						owner.goal = lastKnown[0];
+						countdown += 70;
+						if(UaS_Debug >= 1) { console.printf(owner.getclassname().." path marker reached; continuing"); }
+					}
+					else
+					{
+						owner.A_ClearTarget();
+						ClearPath();
+						owner.goal = null;
+						owner.bchasegoal = false;
+						AIMode = searching;
+						if(UaS_Debug >= 1) { console.printf(owner.getclassname().." switch to searching"); }
+					}
 				}
 				break;
 			// Reached last position or search timer dropped too low. Wander in area.
