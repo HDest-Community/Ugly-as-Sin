@@ -127,7 +127,7 @@ class UaS_Reloader : HDWeapon {
 			//Press shot and powder and brass into a new round
 			case HDSCAV_RELOAD_PRESS:
 				if((invoker.readyShot < 1 || invoker.readyPowder < 3 || invoker.readyBrass < 1) && invoker.pressProgress == 0) {
-					invoker.lastStatus = "\gNot enough prepped materials!";
+					invoker.lastStatus = "\cgNot enough prepped materials!";
 					return ResolveState(null);
 				}
 				if(invoker.lastStatus == "") {
