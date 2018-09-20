@@ -23,7 +23,6 @@ class UaS_Reloader_Bootstrap : EventHandler {
 		// Conditions for skipping spawns
 		if(UaS_ReloaderEnabled == false) { return; }
 		if(!e.Thing) { return; }
-		if(e.thing.owner) { return; }
 
 		switch(e.Thing.GetClassName()) {
 			case 'LiberatorRifle':
