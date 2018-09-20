@@ -1,3 +1,5 @@
+const UaS_2FCartridge_Max = 16;
+
 // spare Second Flesh cartridges
 class UaS_2FCartridge_Handler : Inventory {
 	int cooldown;
@@ -7,7 +9,7 @@ class UaS_2FCartridge_Handler : Inventory {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr || !ownr.player.ReadyWeapon) { return; }
 		if(cooldown == 0 && ownr.player.ReadyWeapon.GetClassName() == 'HDMedikitter') {
-			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('UaS_2FCartridge') < 8) {
+			if((ownr.player.cmd.buttons & BT_USER4) && owner.countinv('UaS_2FCartridge') < UaS_2FCartridge_Max) {
 				if(HDMedikitter(ownr.player.ReadyWeapon).injectableflesh > 0) {
 					HDMedikitter(ownr.player.ReadyWeapon).injectableflesh--;
 					owner.A_GiveInventory('UaS_2FCartridge', 1);
@@ -33,7 +35,7 @@ class UaS_2FCartridge : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		inventory.pickupmessage "Picked up a second flesh cartridge.";
-		inventory.MaxAmount 16;
+		inventory.MaxAmount UaS_2FCartridge_Max;
 		hdpickup.bulk 6;
 		Inventory.Icon "HSCVP0";
 		+INVENTORY.INVBAR;
