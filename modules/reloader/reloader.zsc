@@ -166,7 +166,7 @@ class UaS_Reloader : HDWeapon {
 				shotProgress = 0;
 				readyShot++;
 				lastStatus = "\cdShot reforged!";
-				A_PlaySound("misc/tink", volume: 0.15);
+				owner.A_PlaySound("misc/tink", volume: 0.15);
 				break;
 			case HDSCAV_RELOAD_PRESS:
 				pressProgress = 0;
