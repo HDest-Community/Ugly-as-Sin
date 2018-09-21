@@ -33,11 +33,6 @@ class UaS_AI_Handler : Inventory {
 	override void DoEffect() {
 		super.DoEffect();
 		if(!owner) { return; }
-		if(owner.health <=0) {
-			if(lastKnown.size() > 0)
-				ClearPath();
-			return;
-		}
 
 		SearchBehavior();
 		WoundDebuff();
@@ -58,6 +53,7 @@ extend class UaS_AI_Handler {
 
 	void WoundDebuff() {
 		if(!UaS_AI_Wounding) { return; }
+		if(owner.health <= 0 ) { return; }
 		if(owner.health < baseHealth) {
 			// Calculate health factor
 			healthFactor = owner.health / double(baseHealth / 2);
@@ -129,6 +125,14 @@ extend class UaS_AI_Handler {
 
 	void SearchBehavior() {
 		if(!UaS_AI_Searching) { return; }
+
+		// Reset AI mode, clear path (if needed) and skip AI checks if dead
+		if(owner.health <= 0 ) {
+			AIMode = normal;
+			if(lastKnown.size() > 0) { ClearPath(); }
+			return;
+		}
+
 		switch(AIMode) {
 			// Standard AI mode, no changes to behavior
 			case normal:
