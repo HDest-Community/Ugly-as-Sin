@@ -15,6 +15,7 @@
 * Matt: For HD obviously, and general code help interfacing with HD.
 * Josh771: Additional pathing code for AI module.
 * Major Cooke: Help getting visual weapons working.
+* Dawnbreeze: How to determine actor's current state label.
 
 # Testing
 * BeatCrazed: First long-play with the v0.1.0 release, proving it's playable.

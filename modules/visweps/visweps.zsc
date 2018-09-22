@@ -29,6 +29,11 @@ class UaS_VisWeps_Updater : Inventory {
 					ownr.sprite = GetSpriteIndex('PLA5');
 					break;
 			}
+			//Override if the marine is shooting their pistol
+			if(ownr.CurState == ownr.ResolveState("shootpistol")) {
+				console.printf("la pistola!");
+				ownr.sprite = GetSpriteIndex('PLA2');
+			}
 		}
 	}
 
@@ -36,6 +41,8 @@ class UaS_VisWeps_Updater : Inventory {
 		Precache:
 			PLA3 A 1;
 			PSMG A 1;
+			PLA2 A 1;
+			PLA5 A 1;
 			stop;
 	}
 }
