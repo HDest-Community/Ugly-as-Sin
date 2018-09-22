@@ -64,8 +64,12 @@ OptionMenu "UaS_Options" {
 OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module"
 	Option "Timescale","UaS_HungerTimeScale","UaS_Nice_Timescales"
+	Option "Eat/Drink Auto-Select","UaS_HungerAutoselect","OnOff"
 	StaticText "Adds need to eat / drink, with messkit."
 	StaticText "Starvation / dehydration causes fatigue."
+	StaticText " "
+	StaticText "Auto-Select automatically picks whether"
+	StaticText "to eat or drink, depending on need."
 	StaticText " "
 	StaticText "Hunger requires new map or game."
 	StaticText "Rations spawn only on new map."
