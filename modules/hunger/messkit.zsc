@@ -30,11 +30,12 @@ class UaS_MessKit : HDWoundFixer {
 
 	override inventory CreateTossable(int amt) {
 		//Drop both current meal and messkit if stunned
-		/*if(owner.stunned) {
-			UaS_TossOpened();
-			if(amount<=0) { amount = 1; }
+		let ownr = HDPlayerPawn(owner);
+		if(ownr.stunned) {
+			UaS_TossOpened(true);
+			amount = 1;
 			return super.CreateTossable();
-		}*/
+		}
 		//Toss unopened rations
 		if(owner.countinv("UaS_Ration") > 1) {
 			owner.TakeInventory("UaS_Ration",1);
