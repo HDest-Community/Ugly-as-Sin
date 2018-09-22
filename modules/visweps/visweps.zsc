@@ -29,7 +29,6 @@ class UaS_VisWeps_Updater : Inventory {
 					ownr.sprite = GetSpriteIndex('PLA5');
 					break;
 			}
-			console.printf("HDMW = "..ownr.wep);
 		}
 	}
 
