@@ -1,5 +1,14 @@
 # Graphics
 * BloodyAcid: Various pickup sprites (some edited by me).
+* Mark Quinn:
+  * Shotgun Marine sprite.
+* Xim:
+  * Shotgun Marine sprite, crouched.
+  * Rocket Marine sprite.
+  * SMG Marine sprite.
+* Ghastly_dragon:
+  * Rocket Marine sprite, crouched.
+  * SMG Marine sprite, crouched.
 
 # Code
 * Zhs2: Spawning code suggestion.
