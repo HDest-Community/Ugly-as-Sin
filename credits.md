@@ -4,6 +4,7 @@
 # Code
 * Zhs2: Spawning code suggestion.
 * Matt: For HD obviously, and general code help interfacing with HD.
+* Josh771: Additional pathing code for AI module.
 
 # Testing
 * BeatCrazed: First long-play with the v0.1.0 release, proving it's playable.
