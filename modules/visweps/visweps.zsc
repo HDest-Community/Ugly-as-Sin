@@ -9,6 +9,8 @@ class UaS_VisWeps_Bootstrap : EventHandler {
 }
 
 class UaS_VisWeps_Updater : Inventory {
+	bool usingPistol;
+
 	default {
 		Inventory.MaxAmount 1;
 		+INVENTORY.PERSISTENTPOWER;
@@ -18,19 +20,30 @@ class UaS_VisWeps_Updater : Inventory {
 		super.DoEffect();
 		let ownr = HDMarine(Owner);
 		if(ownr..CheckClass('HDMarine', AAPTR_DEFAULT, true) && ownr.health > 0) {
-			switch(ownr.wep) {
-				case 2: // HDMW_HUNTER
-					ownr.sprite = GetSpriteIndex('PLA3');
-					break;
-				case 3: // HDMW_SMG
-					ownr.sprite = GetSpriteIndex('PSMG');
-					break;
-				case 4: // HDMW_ROCKET
-					ownr.sprite = GetSpriteIndex('PLA5');
-					break;
-			}
-			//Override if the marine is shooting their pistol
+
+			// Check if the marine is using their pistol
 			if(ownr.CurState == ownr.ResolveState("shootpistol")) {
+				usingPistol = true;
+			}
+			else if(ownr.CurState == ownr.ResolveState("reload")) {
+				usingPistol = false;
+			}
+
+			// Override sprite accordingly
+			if(!usingPistol) {
+				switch(ownr.wep) {
+					case 2: // HDMW_HUNTER
+						ownr.sprite = GetSpriteIndex('PLA3');
+						break;
+					case 3: // HDMW_SMG
+						ownr.sprite = GetSpriteIndex('PSMG');
+						break;
+					case 4: // HDMW_ROCKET
+						ownr.sprite = GetSpriteIndex('PLA5');
+						break;
+				}
+			}
+			else {
 				ownr.sprite = GetSpriteIndex('PLA2');
 			}
 		}
