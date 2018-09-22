@@ -1,0 +1,27 @@
+class UaS_VisWeps_Bootstrap : EventHandler {
+	override void WorldThingSpawned(WorldEvent e) {
+		if(!e.Thing) { return; }
+		if(!UaS_VisWepsEnabled) { return; }
+		if(e.Thing.CheckClass('HDMarine', AAPTR_DEFAULT, true)) {
+			e.Thing.GiveInventory('UaS_VisWeps_Updater', 1);
+		}
+	}
+}
+
+class UaS_VisWeps_Updater : Inventory {
+	default {
+		Inventory.MaxAmount 1;
+		+INVENTORY.PERSISTENTPOWER;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let ownr = HDMarine(Owner);
+		if(ownr..CheckClass('HDMarine', AAPTR_DEFAULT, true) && ownr.health > 0) {
+			if(ownr.wep == 2) {
+				ownr.sprite = GetSpriteIndex('PLA3');
+			}
+			console.printf("HDMW = "..ownr.wep);
+		}
+	}
+}

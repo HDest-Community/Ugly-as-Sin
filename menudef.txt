@@ -58,8 +58,11 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Looting_Options"
 	StaticText " "
 
-	Option "Glowsticks","UaS_LightsEnabled","OnOff"
+	Option "Visual Weapons","UaS_VisWepsEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_VisWep_Options"
 	StaticText " "
+
+	Option "Glowsticks","UaS_LightsEnabled","OnOff"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
@@ -201,6 +204,15 @@ OptionMenu "UaS_Looting_Options" {
 	StaticText " "
 	StaticText "Loot Factor controls maximum"
 	StaticText "chance for finding loot."
+}
+
+OptionMenu "UaS_VisWep_Options" {
+	Title "Visual Weapons Module"
+	StaticText "Attempts to change marine and tango"
+	StaticText "sprites depending on the current weapon."
+	StaticText " "
+	StaticText "--Disclaimer--"
+	StaticText "This is not guaranteed to always work."
 }
 
 OptionMenu "UaS_Misc_Options" {
