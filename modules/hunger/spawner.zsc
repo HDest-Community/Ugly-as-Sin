@@ -6,14 +6,14 @@ class UaS_Hunger_Spawner : EventHandler {
 
 	override void WorldLoaded(WorldEvent e) {
 		if(e.IsSaveGame == true || e.IsReopen == true) { return; }
-		toSpawn_Rations += max(UaS_HungerTimeScale / 10, 1);
+		toSpawn_Rations += max(UaS_HungerTimeScale / 5, 1);
 		if(UaS_Debug >=1) { console.printf("ToSpawn Messkit: %i", toSpawn_Messkit); }
 		if(UaS_Debug >=1) { console.printf("ToSpawn Rations: %i", toSpawn_Rations); }
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
-		if(!player.mo.countinv("UaS_Ration")) { toSpawn_Rations += 3; }
+		if(!player.mo.countinv("UaS_FoodRation") || !player.mo.countinv("UaS_WaterRation")) { toSpawn_Rations += 3; }
 		if(!player.mo.countinv("UaS_MessKit")) { toSpawn_Messkit++; }
 	}
 
@@ -26,47 +26,50 @@ class UaS_Hunger_Spawner : EventHandler {
 		if(toSpawn_Rations <= 0 && toSpawn_Messkit <= 0) { return; }
 		//if(e.Thing.bDROPPED) { return; }
 
-		spawnRate = UaS_HungerTimeScale * toSpawn_Rations;
+		spawnRate = UaS_HungerTimeScale * toSpawn_Rations**2;
 		spawnRate = max(spawnRate, 0);
 		spawnPos = e.Thing.pos;
+
+		name toSpawnClass = 'UaS_FoodRation';
+		if(UaS.RandomChance(0.5)) { toSpawnClass = 'UaS_WaterRation'; }
 
 		//Messkit will also spawn on first opportunity, if player doesn't have one.
 		//Spawn rations on backpacks, with a chance of an extra ration
 		if(e.Thing.GetClassName() == "HDBP") {
-			UaS.SpawnStuff('UaS_Ration', 1, spawnPos);
-			MaybeSpawnRation(0.005 * spawnRate);
+			UaS.SpawnStuff('UaS_FoodRation', 1, spawnPos);
+			UaS.SpawnStuff('UaS_WaterRation', 1, spawnPos);
 			SpawnNeededMesskit();
 		}
 
 		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			MaybeSpawnRation(0.005 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.005 * spawnRate);
 			SpawnNeededMesskit();
 		}
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			MaybeSpawnRation(0.0025 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.0025 * spawnRate);
 			SpawnNeededMesskit();
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			MaybeSpawnRation(0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
 			SpawnNeededMesskit();
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			MaybeSpawnRation(0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
 			SpawnNeededMesskit();
 		}
 	}
 
-	void MaybeSpawnRation(double spawnChance) {
+	void MaybeSpawnRation(name spawnClass, double spawnChance) {
 		if(UaS.RandomChance(spawnChance)) {
-			//UaS.SpawnStuff('UaS_Ration', 1, spawnPos);
-			//toSpawn_Rations--;
+			UaS.SpawnStuff(spawnClass, 1, spawnPos);
+			toSpawn_Rations--;
 			if(UaS_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
 		}
 	}

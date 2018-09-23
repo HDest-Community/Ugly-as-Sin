@@ -6,7 +6,6 @@ class UaS_MessKit : HDWoundFixer {
 	int sipSize;
 	double speedFactor;
 	string flavor;
-	bool rationOpen;
 
 	default {
 		Scale 0.5;
@@ -23,7 +22,7 @@ class UaS_MessKit : HDWoundFixer {
 
 	override void DoEffect() {
 		//Set "amount" next to messkit as available food items
-		amount = owner.countinv("UaS_Ration");
+		amount = owner.countinv("UaS_FoodRation") + owner.countinv("UaS_WaterRation");
 		speedFactor = clamp(double(UaS_HungerTimeScale) / 10, 1, 12);
 		super.DoEffect();
 	}
@@ -36,25 +35,15 @@ class UaS_MessKit : HDWoundFixer {
 			amount = 1;
 			return super.CreateTossable();
 		}
-		//Toss unopened rations
-		if(owner.countinv("UaS_Ration") > 1) {
-			owner.TakeInventory("UaS_Ration",1);
-			return inventory(Spawn("UaS_Ration", owner.pos));
+		if(owner.countinv("UaS_FoodRation") > 0 || owner.countinv("UaS_WaterRation") > 0) {
+			//Toss 1 each of unopened rations
+			if(owner.countinv("UaS_FoodRation") > 0) { owner.DropInventory(owner.FindInventory("UaS_FoodRation"), 1); }
+			if(owner.countinv("UaS_WaterRation") > 0) { owner.DropInventory(owner.FindInventory("UaS_WaterRation"), 1); }
+			return NULL;
 		}
-		else if(owner.countinv("UaS_Ration") == 1) {
-			if(rationOpen == true) {
-				//Throw away uneaten portion
-				UaS_TossOpened(true);
-				return NULL;
-			}
-			else {
-				//Toss last unopened ration
-				owner.TakeInventory("UaS_Ration",1);
-				return inventory(Spawn("UaS_Ration", owner.pos));
-			}
-		}
-		//Toss messkit itself
 		else {
+			//Toss messkit itself and uneaten portion
+			UaS_TossOpened(true);
 			//Can't toss the original unless there's at least one!
 			amount++;
 		}
@@ -104,7 +93,12 @@ class UaS_MessKit : HDWoundFixer {
 			TNT1 A 0 A_Refire("Sip");
 			goto Swallow;
 		Reload:
+		OpenFood:
 			TNT1 A random(15,20) UaS_OpenFood();
+			goto nope;
+		User1:
+		OpenWater:
+			TNT1 A random(15,20) UaS_OpenWater();
 			goto nope;
 		Swallow:
 			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
@@ -137,9 +131,11 @@ class UaS_MessKit : HDWoundFixer {
 			message = message.."and AltFire to drink.\n\n";
 		}
 		message = message.."Reload opens a new ration.\n\n";
-		//message = message.."AltReload opens a water ration.\n\n";
+		message = message.."AltReload opens a water ration.\n\n";
 		message = message.."Unload dumps the current ration,\n";
-		message = message.."discarding all remaining contents";
+		message = message.."discarding all remaining contents\n\n\n";
+		message = message.."Food Rations: "..invoker.owner.countinv("UaS_FoodRation").."\n";
+		message = message.."Water Rations: "..invoker.owner.countinv("UaS_WaterRation").."\n";
 		A_WeaponMessage(message, 175);
 	}
 
@@ -148,10 +144,15 @@ class UaS_MessKit : HDWoundFixer {
 		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		if(!invoker.tracker) { return ResolveState(null); }
 
+		//Check if anything's left at all
+		if(invoker.mealSize <=0 && invoker.drinkSize <=0) {
+			A_WeaponMessage("Nothing to eat or drink!\n\nHave you opened a ration?", 175);
+		}
+
 		// If CVar set, prioritize depending on which one the player needs more.
 		if(CVar.GetCVar('UaS_HungerAutoselect', invoker.owner.player).GetBool()) {
-			if(invoker.tracker.calories <= invoker.tracker.water || invoker.drinkSize <= 0) { return ResolveState("Eat"); }
-			else if (invoker.tracker.water < invoker.tracker.calories || invoker.mealSize <= 0) { return ResolveState("Drink"); }
+			if(invoker.mealSize > 0 && (invoker.tracker.calories <= invoker.tracker.water || invoker.drinkSize <= 0)) { return ResolveState("Eat"); }
+			if(invoker.drinkSize > 0 && (invoker.tracker.water < invoker.tracker.calories || invoker.mealSize <= 0)) { return ResolveState("Drink"); }
 		}
 
 		// Otherwise let the player pick
@@ -165,7 +166,6 @@ class UaS_MessKit : HDWoundFixer {
 	//If no food and open, toss empty. If not open, give message.
 	action state UaS_CheckConsumables(int type = 1) {
 		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
-		if(invoker.rationOpen == true) {
 			if(type == 1 && invoker.mealSize > 0) {
 				if(invoker.tracker.calories >= 2500) {
 					A_WeaponMessage("You're full.\nCouldn't eat another bite.", 175);
@@ -182,10 +182,6 @@ class UaS_MessKit : HDWoundFixer {
 				return ResolveState("Sip");
 			}
 			invoker.UaS_TossOpened(false);
-		}
-		if(invoker.mealSize <=0 && invoker.drinkSize <=0) {
-			A_WeaponMessage("Nothing to eat or drink!\n\nHave you opened a ration?", 175);
-		}
 		return ResolveState(null);
 	}
 
@@ -232,42 +228,52 @@ class UaS_MessKit : HDWoundFixer {
 		return ResolveState(null);
 	}
 
-	//Open a new food ration if one isn't already open
+	//Open a new food ration and add it to the meal
 	action void UaS_OpenFood() {
-		if(countinv("UaS_Ration") > 0) {
-			if(invoker.mealSize <= 0 && invoker.rationOpen == false) {
+		if(countinv("UaS_FoodRation") > 0) {
+			if(invoker.mealSize < 500) {
+				invoker.owner.TakeInventory("UaS_FoodRation",1);
 				A_PlaySound("imp/melee");
-				invoker.mealSize = random(8,10)*50;
-				invoker.drinkSize = 500;
-				invoker.rationOpen = true;
-				invoker.flavor = RandomFlavor();
-				A_WeaponMessage(string.format("%s", invoker.flavor), 175);
+				invoker.mealSize += random(5, 10) * 25;
+				//invoker.flavor = RandomFlavor();
+				A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175);
 			}
 			else {
-				A_WeaponMessage("You already have an opened ration!", 175);
+				A_WeaponMessage("Your plate is full!", 175);
 			}
 		}
 		else {
-			A_WeaponMessage("You have no more rations!", 175);
+			A_WeaponMessage("You have no more food rations!", 175);
+		}
+	}
+
+	//Open a new water ration and add it to the meal
+	action void UaS_OpenWater() {
+		if(countinv("UaS_WaterRation") > 0) {
+			if(invoker.drinksize < 500) {
+				invoker.owner.TakeInventory("UaS_WaterRation",1);
+				A_PlaySound("misc/smallslop");
+				invoker.drinkSize += random(40, 50) * 5;
+				A_WeaponMessage(string.format("%s\n\n\nFood left: %i\nWater left: %i", invoker.flavor, invoker.mealSize, invoker.drinkSize), 175);
+			}
+			else {
+				A_WeaponMessage("Your cup is full!", 175);
+			}
+		}
+		else {
+			A_WeaponMessage("You have no more water rations!", 175);
 		}
 	}
 
 	//Toss opened ration
 	void UaS_TossOpened(bool force = false) {
 		if((drinkSize > 0 || mealSize > 0) && force == false) { return; }
-		if(rationOpen == false) { return; }
 		if(owner.getcvar("hd_helptext") && (mealsize > 0 || drinkSize > 0)) { A_WeaponMessage("Tossed leftovers. No 5-second rule here.", 175); }
 		biteSize = 0;
 		mealSize = 0;
 		drinksize = 0;
 		sipsize = 0;
 		flavor = "";
-		rationOpen = false;
-		let empty=spawn("UaS_EmptyRation",owner.pos+(0,0,owner.height-8));
-		empty.angle=owner.angle+2;
-		empty.vel=owner.vel;
-		empty.A_ChangeVelocity(3,1,1,CVF_RELATIVE);
-		owner.TakeInventory("UaS_Ration",1);
 	}
 
 	//Generate literal flavortext

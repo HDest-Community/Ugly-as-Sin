@@ -97,4 +97,10 @@ Sprite "HSCVQ0", 13, 14
 	Patch "HSCVQ0", 0, 0
 }
 
+Sprite "HSCVR0", 23, 12
+{
+	Offset 11, 11
+	Patch "HSCVR0", 0, 0
+}
+
 // End of texture definitions

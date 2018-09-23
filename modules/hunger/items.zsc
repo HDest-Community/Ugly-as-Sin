@@ -1,9 +1,9 @@
-class UaS_Ration : HDPickup {
+class UaS_FoodRation : HDPickup {
 	default {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
-		hdpickup.bulk 6;
-		scale 0.3;
+		hdpickup.bulk 4;
+		scale 0.2;
 		-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
@@ -14,6 +14,25 @@ class UaS_Ration : HDPickup {
 			stop;
 	}
 }
+
+class UaS_WaterRation : HDPickup {
+	default {
+		inventory.pickupmessage "Picked up some water.";
+		inventory.MaxAmount 16;
+		hdpickup.bulk 8;
+		XScale 0.3;
+		YScale 0.4;
+		-INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+	}
+
+	States {
+		Spawn:
+			HSCV R -1;
+			stop;
+	}
+}
+
 
 class UaS_EmptyRation : HDDebris {
 	default {

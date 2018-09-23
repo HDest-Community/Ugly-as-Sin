@@ -8,7 +8,8 @@ class UaS_Hunger_Bootstrap : EventHandler {
 		if(!player.mo.countinv("HungerInitialized")) {
 			player.mo.giveinventory("UaS_HungerTracker", 1);
 			player.mo.giveinventory("UaS_MessKit", 1);
-			player.mo.giveinventory("UaS_Ration", 3);
+			player.mo.giveinventory("UaS_FoodRation", 2);
+			player.mo.giveinventory("UaS_WaterRation", 2);
 			player.mo.giveinventory("HungerInitialized", 1);
 		}
 	}
