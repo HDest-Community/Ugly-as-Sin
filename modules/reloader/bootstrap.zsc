@@ -1,39 +1,34 @@
 class ReloaderInitialized : Inventory {}
 
 class UaS_Reloader_Bootstrap : EventHandler {
-	//initialize additional player inventory
-	override void PlayerEntered(PlayerEvent e) {
-		PlayerInfo player = players[e.PlayerNumber];
-		if(UaS_ReloaderEnabled == true) {
-			if(!player.mo.countinv("ReloaderInitialized")) {
-				player.mo.GiveInventory("ReloaderInitialized", 1);
-				if(player.mo.countinv("LiberatorRifle") || player.mo.countinv("BossRifle")) {
-					player.mo.giveinventory("UaS_Reloader", 1);
-				}
-			}
-		}
-		else {
-			player.mo.TakeInventory("ReloaderInitialized", 1);
-			player.mo.TakeInventory("UaS_Reloader", 1);
-		}
-	}
 
 	override void WorldThingSpawned(WorldEvent e) {
-
 		// Conditions for skipping spawns
 		if(UaS_ReloaderEnabled == false) { return; }
 		if(!e.Thing) { return; }
 
 		switch(e.Thing.GetClassName()) {
 			case 'LiberatorRifle':
-				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
+				GiveOrSpawn(e);
 				break;
 			case 'LiberatorNoGL':
-				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
+				GiveOrSpawn(e);
 				break;
 			case 'BossRifle':
-				UaS.SpawnStuff('UaS_Reloader', 1, e.Thing.pos);
+				GiveOrSpawn(e);
 				break;
+		}
+	}
+
+	// Check if spawned item part of inventory, and if so give instead of spawning
+	void GiveOrSpawn(WorldEvent e) {
+		let mo = inventory(e.Thing);
+		if(mo.owner && !mo.Owner.countinv("ReloaderInitialized")) {
+			mo.Owner.GiveInventory("UaS_Reloader", 1);
+			mo.Owner.GiveInventory("ReloaderInitialized", 1);
+		}
+		else {
+			UaS.SpawnStuff('UaS_Reloader', 1, mo.pos);
 		}
 	}
 }
