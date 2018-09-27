@@ -1,0 +1,57 @@
+class UaS_Incap_Handler : Inventory {
+	int bleedout;
+	bool incap;
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		let owner = HDPlayerPawn(owner);
+
+		switch(incap) {
+
+			// Normal
+			case false:
+				bleedout = min(bleedout + 1, 4200);
+
+				// Activate incap shield
+				if(bleedout == 4200 && owner.bBUDDHA == false) {
+					owner.bBUDDHA = true;
+					owner.A_Log("Incap shield active");
+				}
+
+				// Enter incap state
+				if(owner.health == 1 && owner.stimcount < 20) {
+					incap = true;
+					owner.A_Log("Incapacitated");
+				}
+				break;
+
+			// Incapacitation
+			case true:
+				bleedout = max(bleedout - 1, 0);
+
+				// Clamp health
+				owner.health = clamp(owner.health, 1, 1);
+
+				// Deactivate incap shield
+				if(bleedout == 0 && owner.bBUDDHA == true) {
+					owner.bBUDDHA = false;
+					owner.A_Log("Incap shield down");
+				}
+
+				// Exit incap state
+				if(owner.stimcount >= 20) {
+					incap = false;
+					owner.health += 5;
+					owner.bBUDDHA = false;
+					owner.A_Log("Revived");
+				}
+				break;
+		}
+	}
+}
