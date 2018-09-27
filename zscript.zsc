@@ -3,6 +3,9 @@ version "3.5"
 // Static functions
 #include "modules/static.zsc"
 
+// Debugging
+#include "modules/debug.zsc"
+
 // Hunger and Thirst scripts
 #include "modules/hunger/bootstrap.zsc"
 #include "modules/hunger/spawner.zsc"

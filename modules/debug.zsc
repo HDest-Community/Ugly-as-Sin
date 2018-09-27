@@ -1,0 +1,10 @@
+enum UaS_Debug_Flags {
+	Hunger = 1,
+	Scarcity = 2,
+	Debris = 4,
+	Sling = 8,
+	Frag = 16,
+	Reloader = 32,
+	Allies = 64,
+	AI = 128,
+};

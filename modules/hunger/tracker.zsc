@@ -65,10 +65,10 @@ class UaS_HungerTracker : CustomInventory {
 		if(level.time % int(minute) == 1) {
 			HungerStatus();
 			ThirstStatus();
-			if(UaS_Debug >= 1) {
+			if(UaS_Debug & Hunger) {
 				A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
 			}
-			if(UaS_Debug == 2) {
+			if(UaS_Debug & Hunger) {
 				A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
 				A_Log(string.format("MinFatigue: %i", minfatigue));
 			}

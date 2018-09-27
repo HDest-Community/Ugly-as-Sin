@@ -7,8 +7,8 @@ class UaS_Hunger_Spawner : EventHandler {
 	override void WorldLoaded(WorldEvent e) {
 		if(e.IsSaveGame == true || e.IsReopen == true) { return; }
 		toSpawn_Rations += max(UaS_HungerTimeScale / 5, 1);
-		if(UaS_Debug >=1) { console.printf("ToSpawn Messkit: %i", toSpawn_Messkit); }
-		if(UaS_Debug >=1) { console.printf("ToSpawn Rations: %i", toSpawn_Rations); }
+		if(UaS_Debug & Hunger) { console.printf("ToSpawn Messkit: %i", toSpawn_Messkit); }
+		if(UaS_Debug & Hunger) { console.printf("ToSpawn Rations: %i", toSpawn_Rations); }
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
@@ -70,7 +70,7 @@ class UaS_Hunger_Spawner : EventHandler {
 		if(UaS.RandomChance(spawnChance)) {
 			UaS.SpawnStuff(spawnClass, 1, spawnPos);
 			toSpawn_Rations--;
-			if(UaS_Debug >=1) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
+			if(UaS_Debug & Hunger) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
 		}
 	}
 
@@ -78,7 +78,7 @@ class UaS_Hunger_Spawner : EventHandler {
 		if(toSpawn_Messkit > 0) {
 			UaS.SpawnStuff('UaS_MessKit', 1, spawnPos);
 			toSpawn_Messkit--;
-			if(UaS_Debug >=1) { console.printf("Spawned Messkit. \tToSpawn: %i", toSpawn_Messkit); }
+			if(UaS_Debug & Hunger) { console.printf("Spawned Messkit. \tToSpawn: %i", toSpawn_Messkit); }
 		}
 	}
 }

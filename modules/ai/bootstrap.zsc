@@ -4,7 +4,7 @@ class UaS_AI_Bootstrap : EventHandler {
 		if(!UaS_AdvancedAIEnabled) { return; }
 		if(e.Thing.bISMONSTER) {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
-			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug >= 1) { console.printf("Gave AI tracker to "..e.Thing.GetClassName()); }
+			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) { console.printf("Gave AI tracker to "..e.Thing.GetClassName()); }
 		}
 	}
 }

@@ -54,10 +54,10 @@ class UaS_Scarcity_Spawner : EventHandler {
 			DoReplacement(thingArray[index]);
 			thingArray[index].destroy();
 			thingArray.Delete(index);
-			if(UaS_Debug >= 1) { console.printf("Removed "..checkClass); }
+			if(UaS_Debug & Scarcity) { console.printf("Removed "..checkClass); }
 		}
 
-		if(UaS_Debug >= 1) { console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount); }
+		if(UaS_Debug & Scarcity) { console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount); }
 		thingArray.Clear();
 	}
 
@@ -153,7 +153,7 @@ class UaS_Scarcity_Spawner : EventHandler {
 				avgbroke += 400 + random(-400 * UaS_ScarcityOverspawn, 100 * (1.0 - UaS_ScarcityOverspawn));
 				avgbroke /= 3;
 				PortableLiteAmp(spawnedLiteAmp).brokenness = int(avgbroke);
-				if(UaS_Debug >=1) { console.printf("Liteamp brokenness %i", PortableLiteAmp(spawnedLiteAmp).brokenness); }
+				if(UaS_Debug & Scarcity) { console.printf("Liteamp brokenness %i", PortableLiteAmp(spawnedLiteAmp).brokenness); }
 				if(PortableLiteAmp(spawnedLiteAmp).brokenness > 450) {
 					UaS.SpawnStuff('UaS_BrokenLiteAmp', 1, spawnedLiteAmp.pos);
 					spawnedLiteAmp.Destroy();
@@ -217,7 +217,7 @@ class UaS_ArmorReducer : Actor {
 	action void ReduceArmor() {
 		if(invoker.target) {
 			Inventory(invoker.target).amount *= frandom(1.0 - invoker.ScarcityFactor, 1.0);
-			if(UaS_Debug >=1) { console.printf("%s reduced to %i", Inventory(invoker.target).GetClassName(), Inventory(invoker.target).amount); }
+			if(UaS_Debug & Scarcity) { console.printf("%s reduced to %i", Inventory(invoker.target).GetClassName(), Inventory(invoker.target).amount); }
 		}
 		Destroy();
 	}

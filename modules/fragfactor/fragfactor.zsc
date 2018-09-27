@@ -8,7 +8,7 @@ class UaS_FragRemovalHandler : EventHandler {
 			case 'BFGVileShard':
 			case 'VileShard':
 				if(UaS.RandomChance(removeChance)) {
-					if(UaS_Debug >=1) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
+					if(UaS_Debug & Frag) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
 					e.Thing.Destroy();
 				}
 				break;
