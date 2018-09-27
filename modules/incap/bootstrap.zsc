@@ -1,7 +1,6 @@
 class IncapInitialized : Inventory {}
 
 class UaS_Incap_Bootstrap : EventHandler {
-	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
 		Initialize(e);
 	}

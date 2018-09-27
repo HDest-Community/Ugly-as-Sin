@@ -9,4 +9,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Reloader_Bootstrap"
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_AI_Bootstrap"
+	AddEventHandlers = "UaS_Incap_Bootstrap"
 }
