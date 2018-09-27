@@ -8,6 +8,10 @@ class UaS_Incap_Handler : Inventory {
 		-INVENTORY.INVBAR;
 	}
 
+	override void PostBeginPlay() {
+		bleedout = 4200;
+	}
+
 	override void DoEffect() {
 		super.DoEffect();
 		let owner = HDPlayerPawn(owner);
@@ -21,13 +25,13 @@ class UaS_Incap_Handler : Inventory {
 				// Activate incap shield
 				if(bleedout == 4200 && owner.bBUDDHA == false) {
 					owner.bBUDDHA = true;
-					owner.A_Log("Incap shield active");
+					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Incap shield active"); }
 				}
 
 				// Enter incap state
 				if(owner.health == 1 && owner.stimcount < 20) {
 					incap = true;
-					owner.A_Log("Incapacitated");
+					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Incapacitated"); }
 				}
 				break;
 
@@ -35,21 +39,24 @@ class UaS_Incap_Handler : Inventory {
 			case true:
 				bleedout = max(bleedout - 1, 0);
 
-				// Clamp health
+				// Clamp important attributes
 				owner.health = clamp(owner.health, 1, 1);
+				owner.player.CrouchFactor = clamp(owner.player.CrouchFactor, 0.5, 0.5);
+				owner.A_SelectWeapon("Ring");
 
-				// Deactivate incap shield
-				if(bleedout == 0 && owner.bBUDDHA == true) {
+				// Kill player if they bleed out
+				if(bleedout == 0 ) {
+					incap = false;
 					owner.bBUDDHA = false;
-					owner.A_Log("Incap shield down");
+					owner.A_Die('bleedout');
 				}
 
 				// Exit incap state
 				if(owner.stimcount >= 20) {
 					incap = false;
-					owner.health += 5;
+					owner.health += 1;
 					owner.bBUDDHA = false;
-					owner.A_Log("Revived");
+					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Revived"); }
 				}
 				break;
 		}
