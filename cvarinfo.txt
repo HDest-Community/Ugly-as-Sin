@@ -22,4 +22,6 @@ server bool UaS_AdvancedAIEnabled = false;
 server bool UaS_AI_Searching = true;
 server bool UaS_AI_Wounding = true;
 
+server bool UaS_IncapEnabled = false;
+
 server int UaS_Debug = 0;
