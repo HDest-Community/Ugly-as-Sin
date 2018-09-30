@@ -31,7 +31,7 @@ class UaS_Incap_Handler : Inventory {
 				// Activate incap shield
 				if(bleedout == 4200 && owner.bBUDDHA == false) {
 					owner.bBUDDHA = true;
-					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Incap shield active"); }
+					if(UaS_Debug & Incap) { owner.A_Log("Incap shield active"); }
 				}
 
 				// Enter incap state
@@ -72,7 +72,7 @@ class UaS_Incap_Handler : Inventory {
 					incap = false;
 					owner.health += 1;
 					owner.bBUDDHA = false;
-					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Revived"); }
+					if(UaS_Debug & incap) { owner.A_Log("Revived"); }
 				}
 				break;
 		}
