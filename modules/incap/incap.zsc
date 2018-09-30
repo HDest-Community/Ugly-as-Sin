@@ -14,8 +14,9 @@ class UaS_Incap_Handler : Inventory {
 
 	override void DoEffect() {
 		super.DoEffect();
-		let owner = HDPlayerPawn(owner);
+		if(!multiplayer || deathmatch) { return; }
 
+		let owner = HDPlayerPawn(owner);
 		switch(incap) {
 
 			// Normal
