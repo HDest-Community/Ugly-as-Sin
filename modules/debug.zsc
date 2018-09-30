@@ -7,4 +7,5 @@ enum UaS_Debug_Flags {
 	Reloader = 32,
 	Allies = 64,
 	AI = 128,
+	InCap = 256,
 };

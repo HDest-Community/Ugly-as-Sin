@@ -23,5 +23,6 @@ server bool UaS_AI_Searching = true;
 server bool UaS_AI_Wounding = true;
 
 server bool UaS_IncapEnabled = false;
+server bool UaS_IncapWoundClamp = true;
 
 server int UaS_Debug = 0;

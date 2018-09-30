@@ -1,6 +1,11 @@
 class UaS_Incap_Handler : Inventory {
 	int bleedout;
 	bool incap;
+	int incap_woundcount;
+	int incap_burncount;
+	int incap_unstablewoundcount;
+	int incap_oldwoundcount;
+	int incap_aggravateddamage;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -32,7 +37,12 @@ class UaS_Incap_Handler : Inventory {
 				// Enter incap state
 				if(owner.health == 1 && owner.stimcount < 20) {
 					incap = true;
-					if(UaS_Debug & UDF_INCAP) { owner.A_Log("Incapacitated"); }
+					incap_woundcount = owner.woundcount;
+					incap_burncount = owner.burncount;
+					incap_unstablewoundcount = owner.unstablewoundcount;
+					incap_oldwoundcount = owner.oldwoundcount;
+					incap_aggravateddamage = owner.aggravateddamage;
+					if(UaS_Debug & InCap) { owner.A_Log("Incapacitated"); }
 				}
 				break;
 
@@ -43,6 +53,11 @@ class UaS_Incap_Handler : Inventory {
 				// Clamp important attributes
 				owner.health = clamp(owner.health, 1, 1);
 				owner.player.CrouchFactor = clamp(owner.player.CrouchFactor, 0.5, 0.5);
+				owner.woundcount = incap_woundcount;
+				owner.burncount = incap_burncount;
+				owner.unstablewoundcount = incap_unstablewoundcount;
+				owner.oldwoundcount = incap_oldwoundcount;
+				owner.aggravateddamage = incap_aggravateddamage;
 				owner.A_SelectWeapon("Ring");
 
 				// Kill player if they bleed out
