@@ -68,7 +68,7 @@ class UaS_Incap_Handler : Inventory {
 				}
 
 				// Exit incap state
-				if(owner.stimcount >= 20) {
+				if(owner.stimcount >= 10) {
 					incap = false;
 					owner.health += 1;
 					owner.bBUDDHA = false;
