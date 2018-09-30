@@ -15,11 +15,13 @@ class UaS_Incap_Handler : Inventory {
 
 	override void PostBeginPlay() {
 		bleedout = 4200;
+		incap = false;
 	}
 
 	override void DoEffect() {
 		super.DoEffect();
 		if(!multiplayer || deathmatch) { return; }
+		if(!owner) { return; }
 
 		let owner = HDPlayerPawn(owner);
 		switch(incap) {
