@@ -42,6 +42,7 @@ class UaS_Incap_Handler : Inventory {
 					incap_unstablewoundcount = owner.unstablewoundcount;
 					incap_oldwoundcount = owner.oldwoundcount;
 					incap_aggravateddamage = owner.aggravateddamage;
+					owner.stimcount = 0;
 					if(UaS_Debug & InCap) { owner.A_Log("Incapacitated"); }
 				}
 				break;
@@ -72,6 +73,7 @@ class UaS_Incap_Handler : Inventory {
 					incap = false;
 					owner.health += 1;
 					owner.bBUDDHA = false;
+					owner.stimcount = 0;
 					if(UaS_Debug & incap) { owner.A_Log("Revived"); }
 				}
 				break;
