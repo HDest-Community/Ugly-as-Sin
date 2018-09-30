@@ -23,6 +23,12 @@ class UaS_Incap_Handler : Inventory {
 		if(!multiplayer || deathmatch) { return; }
 		if(!owner) { return; }
 
+		//Handle dead players
+		if(owner.health <= 0) {
+			bleedout = 4200;
+			incap = false;
+		}
+
 		let owner = HDPlayerPawn(owner);
 		switch(incap) {
 
