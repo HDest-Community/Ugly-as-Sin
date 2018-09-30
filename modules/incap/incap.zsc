@@ -53,11 +53,11 @@ class UaS_Incap_Handler : Inventory {
 				// Clamp important attributes
 				owner.health = clamp(owner.health, 1, 1);
 				owner.player.CrouchFactor = clamp(owner.player.CrouchFactor, 0.5, 0.5);
-				owner.woundcount = incap_woundcount;
-				owner.burncount = incap_burncount;
-				owner.unstablewoundcount = incap_unstablewoundcount;
-				owner.oldwoundcount = incap_oldwoundcount;
-				owner.aggravateddamage = incap_aggravateddamage;
+				owner.woundcount = clamp(owner.woundcount, 0, incap_woundcount);
+				owner.burncount = clamp(owner.burncount, 0, incap_burncount);
+				owner.unstablewoundcount = clamp(owner.unstablewoundcount, 0, incap_unstablewoundcount);
+				owner.oldwoundcount = clamp(owner.oldwoundcount, 0, incap_oldwoundcount);
+				owner.aggravateddamage = clamp(owner.aggravateddamage, 0, incap_aggravateddamage);
 				owner.A_SelectWeapon("Ring");
 
 				// Kill player if they bleed out
