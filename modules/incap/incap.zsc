@@ -1,5 +1,7 @@
+const UaS_Incap_Bleedout = 4200;
+
 class UaS_Incap_Handler : Inventory {
-	int bleedout;
+	double bleedout;
 	bool incap;
 	int incap_woundcount;
 	int incap_burncount;
@@ -14,7 +16,7 @@ class UaS_Incap_Handler : Inventory {
 	}
 
 	override void PostBeginPlay() {
-		bleedout = 4200;
+		bleedout = UaS_Incap_Bleedout;
 		incap = false;
 	}
 
@@ -25,7 +27,7 @@ class UaS_Incap_Handler : Inventory {
 
 		//Handle dead players
 		if(owner.health <= 0) {
-			bleedout = 4200;
+			bleedout = UaS_Incap_Bleedout;
 			incap = false;
 		}
 
@@ -34,10 +36,10 @@ class UaS_Incap_Handler : Inventory {
 
 			// Normal
 			case false:
-				bleedout = min(bleedout + 1, 4200);
+				bleedout = min(bleedout + 0.5, UaS_Incap_Bleedout);
 
 				// Activate incap shield
-				if(bleedout == 4200 && owner.bBUDDHA == false) {
+				if(bleedout == UaS_Incap_Bleedout && owner.bBUDDHA == false) {
 					owner.bBUDDHA = true;
 					if(UaS_Debug & Incap) { owner.A_Log("Incap shield active"); }
 				}
