@@ -13,6 +13,7 @@ class UaS_Incap_Handler : Inventory {
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.UNDROPPABLE;
 		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
 	}
 
 	override void PostBeginPlay() {

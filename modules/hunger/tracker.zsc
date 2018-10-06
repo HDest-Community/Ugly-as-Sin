@@ -10,6 +10,7 @@ class UaS_HungerTracker : CustomInventory {
 	default {
 		+INVENTORY.AUTOACTIVATE;
 		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNTOSSABLE;
 	}
 
 	override void PostBeginPlay() {
