@@ -21,8 +21,6 @@ class UaS_MessKit : HDWoundFixer {
 	}
 
 	override void DoEffect() {
-		//Set "amount" next to messkit as available food items
-		amount = owner.countinv("UaS_FoodRation") + owner.countinv("UaS_WaterRation");
 		speedFactor = clamp(double(UaS_HungerTimeScale) / 10, 1, 12);
 		super.DoEffect();
 	}
@@ -32,7 +30,6 @@ class UaS_MessKit : HDWoundFixer {
 		let ownr = HDPlayerPawn(owner);
 		if(ownr.stunned) {
 			UaS_TossOpened(true);
-			amount = 1;
 			return super.CreateTossable();
 		}
 		if(owner.countinv("UaS_FoodRation") > 0 || owner.countinv("UaS_WaterRation") > 0) {
@@ -44,8 +41,6 @@ class UaS_MessKit : HDWoundFixer {
 		else {
 			//Toss messkit itself and uneaten portion
 			UaS_TossOpened(true);
-			//Can't toss the original unless there's at least one!
-			amount++;
 		}
 		return super.CreateTossable();
 	}
