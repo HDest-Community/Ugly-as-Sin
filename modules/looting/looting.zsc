@@ -1,0 +1,292 @@
+class UaS_SearchedCorpseMarker : Inventory {
+	double searchedAmount;
+}
+
+class UaS_Looting_Handler : Inventory {
+	int cooldown;
+	double anglevel, pitchvel;
+	FLineTraceData trace;
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	override void BeginPlay() {
+		super.BeginPlay();
+		InitializeLootTables();
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		if (!owner) { return; }
+
+		if (TryingToSearch()) {
+			owner.LineTrace(owner.angle, 32, owner.pitch, offsetz: (owner.height / 2), data: trace);
+			if (trace.HitActor && trace.HitActor.bCorpse) {
+				DoSearch(trace.HitActor);
+				cooldown = max(cooldown - 1, 0);
+			}
+		}
+
+		// Nudge owner angle/pitch
+		owner.angle += anglevel;
+		owner.pitch += pitchvel;
+		anglevel *= 0.75;
+		pitchvel *= 0.75;
+	}
+
+	bool TryingToSearch() {
+		return (
+			(owner.player.cmd.buttons & BT_USE) &&
+			owner.player.ReadyWeapon.GetClassName() == "Ring" &&
+			owner.player.CrouchFactor <= 0.5);
+	}
+
+	void DoSearch(actor searchTarget) {
+		UaS_SearchedCorpseMarker searchMarker;
+		if (!searchTarget) { return; }
+		if (searchTarget.countinv("UaS_SearchedCorpseMarker") == 0) { searchTarget.GiveInventory("UaS_SearchedCorpseMarker", 1); }
+		searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
+		if (!searchMarker) { return; }
+
+		if (searchMarker.SearchedAmount >= 1.0) {
+			if(CVar.GetCvar("hd_helptext", owner.player).GetInt() >= 1) {
+				HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
+				currentWeapon.A_WeaponMessage("Nothing here.");
+			}
+			return;
+		}
+
+		//Actually do the search
+		if (cooldown == 0) {
+			owner.A_PlaySound("weapons/pocket", frandom(0.0, 0.5));
+			searchMarker.searchedAmount += frandom(0.05, 0.1);
+			anglevel += frandom(-1, 1);
+			pitchvel += frandom(-1, 1);
+			cooldown = random(10,35);
+			if (UaS.RandomChance(searchMarker.searchedAmount * 0.5)) {
+				SpawnLoot(searchTarget);
+				searchMarker.searchedAmount += frandom(0.2, 0.5);
+			}
+		}
+	}
+
+	void SpawnLoot(actor spawnTarget) {
+		int tableSize;
+		int lootIndex;
+		string LootClass;
+		int minAmount;
+		int maxAmount;
+		double rarityFactor;
+
+		if(spawnTarget.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true)) {
+			tableSize = ZombieStormtrooperLoot.className.Size() - 1;
+			lootIndex = random(0, tableSize);
+			LootClass = ZombieStormtrooperLoot.className[lootIndex];
+			minAmount = ZombieStormtrooperLoot.minAmount[lootIndex];
+			maxAmount = ZombieStormtrooperLoot.maxAmount[lootIndex];
+			rarityFactor = ZombieStormtrooperLoot.rarityFactor[lootIndex];
+		}
+		if(spawnTarget.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true)) {
+			tableSize = HideousShotgunGuyLoot.className.Size() - 1;
+			lootIndex = random(0, tableSize);
+			LootClass = HideousShotgunGuyLoot.className[lootIndex];
+			minAmount = HideousShotgunGuyLoot.minAmount[lootIndex];
+			maxAmount = HideousShotgunGuyLoot.maxAmount[lootIndex];
+			rarityFactor = HideousShotgunGuyLoot.rarityFactor[lootIndex];
+		}
+		if(spawnTarget.CheckClass("DragonGuard", AAPTR_DEFAULT, true)) {
+			tableSize = DragonGuardLoot.className.Size() - 1;
+			lootIndex = random(0, tableSize);
+			LootClass = DragonGuardLoot.className[lootIndex];
+			minAmount = DragonGuardLoot.minAmount[lootIndex];
+			maxAmount = DragonGuardLoot.maxAmount[lootIndex];
+			rarityFactor = DragonGuardLoot.rarityFactor[lootIndex];
+		}
+		if(spawnTarget.CheckClass("HDMarine", AAPTR_DEFAULT, true)) {
+			tableSize = HDMarineLoot.className.Size() - 1;
+			lootIndex = random(0, tableSize);
+			LootClass = HDMarineLoot.className[lootIndex];
+			minAmount = HDMarineLoot.minAmount[lootIndex];
+			maxAmount = HDMarineLoot.maxAmount[lootIndex];
+			rarityFactor = HDMarineLoot.rarityFactor[lootIndex];
+		}
+
+		// Actually spawn the picked thing
+		if (UaS.RandomChance(rarityFactor)) {
+			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), (spawnTarget.pos.x, spawnTarget.pos.y, spawnTarget.pos.z + 1), true);
+		}
+		else {
+			for (int i = 0; i < 3; i++) {
+				spawnTarget.A_SpawnItemEx("TinyWallChunk", 0, 0, 4, random(4, 7), random(-2, 2), random(-2, 1), 0, SXF_NOCHECKPOSITION);
+			}
+		}
+	}
+}
+
+struct UaS_LootTable {
+	array<string> className;
+	array<int> minAmount;
+	array<int> maxAmount;
+	array<double> rarityFactor;
+}
+
+extend class UaS_Looting_Handler {
+	UaS_LootTable ZombieStormtrooperLoot;
+	UaS_LootTable HideousShotgunGuyLoot;
+	UaS_LootTable DragonGuardLoot;
+	UaS_LootTable HDMarineLoot;
+
+	void InitializeLootTables() {
+		// ZombieStormtrooper Loot Table
+		// 4mm ammo
+		ZombieStormtrooperLoot.className.Push("FourMilAmmo");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(10);
+		ZombieStormtrooperLoot.rarityFactor.Push(1);
+		// 9mm ammo
+		ZombieStormtrooperLoot.className.Push("HDPistolAmmo");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(5);
+		ZombieStormtrooperLoot.rarityFactor.Push(1);
+		// Stimpack
+		ZombieStormtrooperLoot.className.Push("PortableStimpack");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(1);
+		ZombieStormtrooperLoot.rarityFactor.Push(0.5);
+		// Grenade
+		ZombieStormtrooperLoot.className.Push("HDFragGrenadeAmmo");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(1);
+		ZombieStormtrooperLoot.rarityFactor.Push(0.5);
+		// 4mm mag
+		ZombieStormtrooperLoot.className.Push("HD4mMag");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(1);
+		ZombieStormtrooperLoot.rarityFactor.Push(0.5);
+		// 9mm mag 15
+		ZombieStormtrooperLoot.className.Push("HD9mMag15");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(1);
+		ZombieStormtrooperLoot.rarityFactor.Push(0.5);
+		// 9mm mag 30
+		ZombieStormtrooperLoot.className.Push("HD9mMag30");
+		ZombieStormtrooperLoot.minAmount.Push(1);
+		ZombieStormtrooperLoot.maxAmount.Push(1);
+		ZombieStormtrooperLoot.rarityFactor.Push(0.5);
+
+		// HideousShotgunGuy Loot Table
+		// 4mm ammo
+		HideousShotgunGuyLoot.className.Push("HDShellAmmo");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(5);
+		HideousShotgunGuyLoot.rarityFactor.Push(1);
+		// 9mm ammo
+		HideousShotgunGuyLoot.className.Push("HDPistolAmmo");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(5);
+		HideousShotgunGuyLoot.rarityFactor.Push(1);
+		// Stimpack
+		HideousShotgunGuyLoot.className.Push("PortableStimpack");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(1);
+		HideousShotgunGuyLoot.rarityFactor.Push(0.5);
+		// Grenade
+		HideousShotgunGuyLoot.className.Push("HDFragGrenadeAmmo");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(1);
+		HideousShotgunGuyLoot.rarityFactor.Push(0.5);
+		// 4mm mag
+		HideousShotgunGuyLoot.className.Push("ShellPickup");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(1);
+		HideousShotgunGuyLoot.rarityFactor.Push(0.5);
+		// 9mm mag
+		HideousShotgunGuyLoot.className.Push("HD9mMag15");
+		HideousShotgunGuyLoot.minAmount.Push(1);
+		HideousShotgunGuyLoot.maxAmount.Push(1);
+		HideousShotgunGuyLoot.rarityFactor.Push(0.5);
+
+		// DragonGuard Loot Table
+		// 9mm ammo
+		DragonGuardLoot.className.Push("HDPistolAmmo");
+		DragonGuardLoot.minAmount.Push(1);
+		DragonGuardLoot.maxAmount.Push(5);
+		DragonGuardLoot.rarityFactor.Push(1);
+		// Stimpack
+		DragonGuardLoot.className.Push("PortableStimpack");
+		DragonGuardLoot.minAmount.Push(1);
+		DragonGuardLoot.maxAmount.Push(1);
+		DragonGuardLoot.rarityFactor.Push(0.5);
+		// Grenade
+		DragonGuardLoot.className.Push("HDFragGrenadeAmmo");
+		DragonGuardLoot.minAmount.Push(1);
+		DragonGuardLoot.maxAmount.Push(1);
+		DragonGuardLoot.rarityFactor.Push(0.5);
+		// 4mm mag
+		DragonGuardLoot.className.Push("HD4mMag");
+		DragonGuardLoot.minAmount.Push(2);
+		DragonGuardLoot.maxAmount.Push(1);
+		DragonGuardLoot.rarityFactor.Push(0.5);
+		// 9mm mag 15
+		DragonGuardLoot.className.Push("HD9mMag15");
+		DragonGuardLoot.minAmount.Push(1);
+		DragonGuardLoot.maxAmount.Push(1);
+		DragonGuardLoot.rarityFactor.Push(0.5);
+		// Battery
+		DragonGuardLoot.className.Push("HDBattery");
+		DragonGuardLoot.minAmount.Push(1);
+		DragonGuardLoot.maxAmount.Push(1);
+		DragonGuardLoot.rarityFactor.Push(0.5);
+
+		// Marine/Tango Loot Table
+		// 9mm ammo
+		HDMarineLoot.className.Push("HDPistolAmmo");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(5);
+		HDMarineLoot.rarityFactor.Push(1);
+		// 7mm ammo
+		HDMarineLoot.className.Push("SevenMilAmmo");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(10);
+		HDMarineLoot.rarityFactor.Push(0.8);
+		// Stimpack
+		HDMarineLoot.className.Push("PortableStimpack");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.5);
+		// Grenade
+		HDMarineLoot.className.Push("HDFragGrenadeAmmo");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.5);
+		// 4mm mag
+		HDMarineLoot.className.Push("HD4mMag");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.5);
+		// 7mm mag
+		HDMarineLoot.className.Push("HD7mMag");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.4);
+		// 7mm mag (empty)
+		HDMarineLoot.className.Push("LiberatorEmptyMag");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.4);
+		// 7mm clip
+		HDMarineLoot.className.Push("HD7mClip");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.4);
+		// 9mm mag 15
+		HDMarineLoot.className.Push("HD9mMag15");
+		HDMarineLoot.minAmount.Push(1);
+		HDMarineLoot.maxAmount.Push(1);
+		HDMarineLoot.rarityFactor.Push(0.5);
+	}
+}

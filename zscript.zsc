@@ -42,3 +42,7 @@ version "3.5"
 // Player Incapacitation
 #include "modules/incap/bootstrap.zsc"
 #include "modules/incap/incap.zsc"
+
+// Corpse Looting
+#include "modules/looting/bootstrap.zsc"
+#include "modules/looting/looting.zsc"

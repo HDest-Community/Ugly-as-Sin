@@ -10,4 +10,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_AI_Bootstrap"
 	AddEventHandlers = "UaS_Incap_Bootstrap"
+	AddEventHandlers = "UaS_Looting_Bootstrap"
 }
