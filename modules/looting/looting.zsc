@@ -5,7 +5,6 @@ class UaS_SearchedCorpseMarker : Inventory {
 class UaS_Looting_Handler : Inventory {
 	int cooldown;
 	double anglevel, pitchvel;
-	FLineTraceData trace;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -24,6 +23,7 @@ class UaS_Looting_Handler : Inventory {
 		if (!owner) { return; }
 
 		if (TryingToSearch()) {
+			FLineTraceData trace;
 			owner.LineTrace(owner.angle, 32, owner.pitch, offsetz: (owner.height / 2), data: trace);
 			if (trace.HitActor && trace.HitActor.bCorpse) {
 				DoSearch(trace.HitActor);
