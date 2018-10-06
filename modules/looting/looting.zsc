@@ -55,10 +55,8 @@ class UaS_Looting_Handler : Inventory {
 		if (!searchMarker) { return; }
 
 		if (searchMarker.SearchedAmount >= 1.0) {
-			if(CVar.GetCvar("hd_helptext", owner.player).GetInt() >= 1) {
-				HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
-				currentWeapon.A_WeaponMessage("Nothing here.");
-			}
+			HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
+			currentWeapon.A_WeaponMessage("Nothing here.");
 			return;
 		}
 
