@@ -178,7 +178,11 @@ OptionMenu "UaS_Incap_Options" {
 
 OptionMenu "UaS_Looting_Options" {
 	Title "Corpse Looting Module"
+	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
 	StaticText "Allows searching corpses for supplies."
+	StaticText " "
+	StaticText "Loot Factor controls maximum"
+	StaticText "chance for finding loot."
 }
 
 OptionMenu "UaS_Misc_Options" {

@@ -27,5 +27,6 @@ server bool UaS_IncapEnabled = false;
 server bool UaS_IncapWoundClamp = true;
 
 server bool UaS_LootingEnabled = false;
+server float UaS_LootingFactor = 0.5;
 
 server int UaS_Debug = 0;
