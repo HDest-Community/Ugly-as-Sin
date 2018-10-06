@@ -158,7 +158,6 @@ class UaS_MessKit : HDWoundFixer {
 	}
 
 	//Makes sure the player has a food item open and food available.
-	//If no food and open, toss empty. If not open, give message.
 	action state UaS_CheckConsumables(int type = 1) {
 		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 			if(type == 1 && invoker.mealSize > 0) {
@@ -269,30 +268,5 @@ class UaS_MessKit : HDWoundFixer {
 		drinksize = 0;
 		sipsize = 0;
 		flavor = "";
-	}
-
-	//Generate literal flavortext
-	action string RandomFlavor() {
-		switch(random(0,5))	{
-			case 0:
-				return "\cb'Chili w/Beans'\c-\n\nThe cheese will back you up for a month...\n";
-				break;
-			case 1:
-				return "\cb'Shredded Barbeque Beef'\c-\n\nAnd 'Carb Fortified Beverage Powder'\nto wash it down.\n";
-				break;
-			case 2:
-				return "\cb'Meatballs in Marinara Sauce'\c-\n\nIts-a me, Doomguy!\n";
-				break;
-			case 3:
-				return "\cb'Chili and Macaroni'\c-\n\nOh boy, that means Skittles for desert!\n";
-				break;
-			case 4:
-				return "\cb'Spinach Mushrooms & Fettuccine'\c-\n\nMmm, eatin' fancy in the warzone tonight.\n";
-				break;
-			case 5:
-				return "\cb' Rib Shaped BBQ Pork Patty'\c-\n\nJust like mamma used to make back home...\n";
-				break;
-		}
-		return "'Generic Military Ration'";
 	}
 }
