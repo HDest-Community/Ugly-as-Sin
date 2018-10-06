@@ -33,6 +33,7 @@ class UaS_Incap_Handler : Inventory {
 		}
 
 		let owner = HDPlayerPawn(owner);
+		if(!owner) { return; }
 		switch(incap) {
 
 			// Normal
