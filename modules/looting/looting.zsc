@@ -65,10 +65,9 @@ class UaS_Looting_Handler : Inventory {
 			searchMarker.searchedAmount += frandom(0.05, 0.1);
 			anglevel += frandom(-1, 1);
 			pitchvel += frandom(-1, 1);
-			cooldown = random(10,35);
-			if (UaS.RandomChance(searchMarker.searchedAmount * 0.5)) {
-				SpawnLoot(searchTarget);
-				searchMarker.searchedAmount += frandom(0.2, 0.5);
+			cooldown = random(10,25);
+			if (UaS.RandomChance(clamp(searchMarker.searchedAmount * UaS_LootingFactor), 0, 1)) {
+				if(SpawnLoot(searchTarget)) { searchMarker.searchedAmount += frandom(0.0, 1.0 - UaS_LootingFactor); }
 			}
 		}
 	}
