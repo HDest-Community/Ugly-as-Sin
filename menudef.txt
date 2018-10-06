@@ -54,6 +54,10 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Incap_Options"
 	StaticText " "
 
+	Option "Corpse Looting","UaS_LootingEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Looting_Options"
+	StaticText " "
+
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
 	StaticText "enabling, disabling, or changing module settings."
@@ -172,6 +176,10 @@ OptionMenu "UaS_Incap_Options" {
 	StaticText "from increasing while players are down."
 }
 
+OptionMenu "UaS_Looting_Options" {
+	Title "Corpse Looting Module"
+	StaticText "Allows searching corpses for supplies."
+}
 
 OptionMenu "UaS_Misc_Options" {
 	Title "Misc Options"
