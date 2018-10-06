@@ -54,14 +54,13 @@ class UaS_Looting_Handler : Inventory {
 		searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
 		if (!searchMarker) { return; }
 
-		if (searchMarker.SearchedAmount >= 1.0) {
-			HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
-			currentWeapon.A_WeaponMessage("Nothing here.");
-			return;
-		}
-
 		//Actually do the search
 		if (cooldown == 0) {
+			if (searchMarker.SearchedAmount >= 1.0) {
+				HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
+				currentWeapon.A_WeaponMessage("Nothing here.");
+				return;
+			}
 			owner.A_PlaySound("weapons/pocket", frandom(0.0, 0.5));
 			searchMarker.searchedAmount += frandom(0.05, 0.1);
 			anglevel += frandom(-1, 1);
