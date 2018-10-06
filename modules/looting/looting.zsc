@@ -72,29 +72,55 @@ class UaS_Looting_Handler : Inventory {
 		}
 	}
 
-	void SpawnLoot(actor spawnTarget) {
-		int tableSize;
-		int lootIndex;
-		string LootClass;
-		int minAmount;
-		int maxAmount;
-		double rarityFactor;
+	bool SpawnLoot(actor spawnTarget) {
+		int tableSize = 0;
+		int lootIndex = 0;
+		string LootClass = "";
+		int minAmount = 0;
+		int maxAmount = 0;
+		double rarityFactor = 0;
 
 		if(spawnTarget.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true)) {
-			tableSize = ZombieStormtrooperLoot.Size() - 1;
-			lootIndex = random(0, tableSize);
-			LootClass = ZombieStormtrooperLoot[lootIndex].itemName;
-			minAmount = ZombieStormtrooperLoot[lootIndex].minAmount;
-			maxAmount = ZombieStormtrooperLoot[lootIndex].maxAmount;
-			rarityFactor = ZombieStormtrooperLoot[lootIndex].rarityFactor;
+			int weapontype = ZombieStormtrooper(spawnTarget).firemode;
+			switch(weapontype) {
+				case -2:
+					tableSize = ZombieStormtrooperSMGLoot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = ZombieStormtrooperSMGLoot[lootIndex].itemName;
+					minAmount = ZombieStormtrooperSMGLoot[lootIndex].minAmount;
+					maxAmount = ZombieStormtrooperSMGLoot[lootIndex].maxAmount;
+					rarityFactor = ZombieStormtrooperSMGLoot[lootIndex].rarityFactor;
+					break;
+				default:
+					tableSize = ZombieStormtrooperZM66Loot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = ZombieStormtrooperZM66Loot[lootIndex].itemName;
+					minAmount = ZombieStormtrooperZM66Loot[lootIndex].minAmount;
+					maxAmount = ZombieStormtrooperZM66Loot[lootIndex].maxAmount;
+					rarityFactor = ZombieStormtrooperZM66Loot[lootIndex].rarityFactor;
+					break;
+			}
 		}
 		if(spawnTarget.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true)) {
-			tableSize = HideousShotgunGuyLoot.Size() - 1;
-			lootIndex = random(0, tableSize);
-			LootClass = HideousShotgunGuyLoot[lootIndex].itemName;
-			minAmount = HideousShotgunGuyLoot[lootIndex].minAmount;
-			maxAmount = HideousShotgunGuyLoot[lootIndex].maxAmount;
-			rarityFactor = HideousShotgunGuyLoot[lootIndex].rarityFactor;
+			int weapontype = HideousShotgunGuy(spawnTarget).wep;
+			switch(weapontype) {
+				case -1:
+					tableSize = ZombieStormtrooperZM66Loot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = ZombieStormtrooperZM66Loot[lootIndex].itemName;
+					minAmount = ZombieStormtrooperZM66Loot[lootIndex].minAmount;
+					maxAmount = ZombieStormtrooperZM66Loot[lootIndex].maxAmount;
+					rarityFactor = ZombieStormtrooperZM66Loot[lootIndex].rarityFactor;
+					break;
+				default:
+					tableSize = HideousShotgunGuyLoot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = HideousShotgunGuyLoot[lootIndex].itemName;
+					minAmount = HideousShotgunGuyLoot[lootIndex].minAmount;
+					maxAmount = HideousShotgunGuyLoot[lootIndex].maxAmount;
+					rarityFactor = HideousShotgunGuyLoot[lootIndex].rarityFactor;
+					break;
+			}
 		}
 		if(spawnTarget.CheckClass("DragonGuard", AAPTR_DEFAULT, true)) {
 			tableSize = DragonGuardLoot.Size() - 1;
@@ -105,23 +131,52 @@ class UaS_Looting_Handler : Inventory {
 			rarityFactor = DragonGuardLoot[lootIndex].rarityFactor;
 		}
 		if(spawnTarget.CheckClass("HDMarine", AAPTR_DEFAULT, true)) {
-			tableSize = HDMarineLoot.Size() - 1;
-			lootIndex = random(0, tableSize);
-			LootClass = HDMarineLoot[lootIndex].itemName;
-			minAmount = HDMarineLoot[lootIndex].minAmount;
-			maxAmount = HDMarineLoot[lootIndex].maxAmount;
-			rarityFactor = HDMarineLoot[lootIndex].rarityFactor;
-		}
-
-		// Actually spawn the picked thing
-		if (UaS.RandomChance(rarityFactor)) {
-			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), (spawnTarget.pos.x, spawnTarget.pos.y, spawnTarget.pos.z + 1), true);
-		}
-		else {
-			for (int i = 0; i < 3; i++) {
-				spawnTarget.A_SpawnItemEx("TinyWallChunk", 0, 0, 4, random(4, 7), random(-2, 2), random(-2, 1), 0, SXF_NOCHECKPOSITION);
+			int weapontype = HDMarine(spawnTarget).wep;
+			switch(weapontype) {
+				case 1:
+					tableSize = HDMarineZM66Loot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = HDMarineZM66Loot[lootIndex].itemName;
+					minAmount = HDMarineZM66Loot[lootIndex].minAmount;
+					maxAmount = HDMarineZM66Loot[lootIndex].maxAmount;
+					rarityFactor = HDMarineZM66Loot[lootIndex].rarityFactor;
+					break;
+				case 2:
+					tableSize = HDMarineHunterLoot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = HDMarineHunterLoot[lootIndex].itemName;
+					minAmount = HDMarineHunterLoot[lootIndex].minAmount;
+					maxAmount = HDMarineHunterLoot[lootIndex].maxAmount;
+					rarityFactor = HDMarineHunterLoot[lootIndex].rarityFactor;
+					break;
+				case 3:
+					tableSize = HDMarineSMGLoot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = HDMarineSMGLoot[lootIndex].itemName;
+					minAmount = HDMarineSMGLoot[lootIndex].minAmount;
+					maxAmount = HDMarineSMGLoot[lootIndex].maxAmount;
+					rarityFactor = HDMarineSMGLoot[lootIndex].rarityFactor;
+					break;
+				case 4:
+					tableSize = HDMarineRocketLoot.Size() - 1;
+					lootIndex = random(0, tableSize);
+					LootClass = HDMarineRocketLoot[lootIndex].itemName;
+					minAmount = HDMarineRocketLoot[lootIndex].minAmount;
+					maxAmount = HDMarineRocketLoot[lootIndex].maxAmount;
+					rarityFactor = HDMarineRocketLoot[lootIndex].rarityFactor;
+					break;
 			}
 		}
+
+		// Actually spawn the picked thing and return true
+		if (UaS.RandomChance(rarityFactor)) {
+			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), (spawnTarget.pos.x, spawnTarget.pos.y, spawnTarget.pos.z + 1), true);
+			return true;
+		}
+
+		// Otherwise spawn some random debris and return false
+		for (int i = 0; i < 3; i++) { spawnTarget.A_SpawnItemEx("TinyWallChunk", 0, 0, 4, random(4, 7), random(-2, 2), random(-2, 1), 0, SXF_NOCHECKPOSITION); }
+		return false;
 	}
 }
 
@@ -141,46 +196,73 @@ class UaS_LootEntry {
 }
 
 extend class UaS_Looting_Handler {
-	Array<UaS_LootEntry> ZombieStormtrooperLoot;
+	Array<UaS_LootEntry> ZombieStormtrooperZM66Loot;
+	Array<UaS_LootEntry> ZombieStormtrooperSMGLoot;
 	Array<UaS_LootEntry> HideousShotgunGuyLoot;
 	Array<UaS_LootEntry> DragonGuardLoot;
-	Array<UaS_LootEntry> HDMarineLoot;
+	Array<UaS_LootEntry> HDMarineZM66Loot;
+	Array<UaS_LootEntry> HDMarineHunterLoot;
+	Array<UaS_LootEntry> HDMarineSMGLoot;
+	Array<UaS_LootEntry> HDMarineRocketLoot;
 
 	void InitializeLootTables() {
 		// ZombieStormtrooper Loot Table
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create('FourMilAmmo',1,10,1.0));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("HDPistolAmmo",1,5,1.0));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("PortableStimpack",1,1,0.5));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo",1,1,0.5));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("HD4mMag",1,1,0.5));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("HD9mMag15",1,1,0.5));
-		ZombieStormtrooperLoot.push(UaS_LootEntry.create("HD9mMag30",1,1,0.5));
+		// ZM66 (also ZM66 Jackboot)
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create('FourMilAmmo', 1, 15, 1.0));
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HD4mMag", 1, 1, 0.75));
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		// SMG
+		ZombieStormtrooperSMGLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 15, 1.0));
+		ZombieStormtrooperSMGLoot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
+		ZombieStormtrooperSMGLoot.push(UaS_LootEntry.create("HD9mMag30", 1, 1, 0.75));
+		ZombieStormtrooperSMGLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		ZombieStormtrooperSMGLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
 
 		// HideousShotgunGuy Loot Table
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("HDShellAmmo",1,5,1.0));
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("HDPistolAmmo",1,5,1.0));
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("PortableStimpack",1,1,0.5));
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo",1,1,0.5));
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("ShellPickup",1,1,0.5));
-		HideousShotgunGuyLoot.push(UaS_LootEntry.create("HD9mMag15",1,1,0.5));
+		// Hunter and Slayer
+		HideousShotgunGuyLoot.push(UaS_LootEntry.create("HDShellAmmo", 1, 8, 1.0));
+		HideousShotgunGuyLoot.push(UaS_LootEntry.create("ShellPickup", 1, 1, 0.75));
+		HideousShotgunGuyLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 
 		// DragonGuard Loot Table
-		DragonGuardLoot.push(UaS_LootEntry.create("HDPistolAmmo",1,5,1.0));
-		DragonGuardLoot.push(UaS_LootEntry.create("PortableStimpack",1,1,0.5));
-		DragonGuardLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo",1,1,0.5));
-		DragonGuardLoot.push(UaS_LootEntry.create("HD4mMag",2,1,0.5));
-		DragonGuardLoot.push(UaS_LootEntry.create("HD9mMag15",1,1,0.5));
-		DragonGuardLoot.push(UaS_LootEntry.create("HDBattery",1,1,0.5));
+		DragonGuardLoot.push(UaS_LootEntry.create("HD4mMag", 1, 2, 1.0));
+		DragonGuardLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.5));
+		DragonGuardLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 
 		// Marine/Tango Loot Table
-		HDMarineLoot.push(UaS_LootEntry.create("HDPistolAmmo",1,5,1.0));
-		HDMarineLoot.push(UaS_LootEntry.create("SevenMilAmmo",1,10,0.8));
-		HDMarineLoot.push(UaS_LootEntry.create("PortableStimpack",1,1,0.5));
-		HDMarineLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo",1,1,0.5));
-		HDMarineLoot.push(UaS_LootEntry.create("HD4mMag",1,1,0.5));
-		HDMarineLoot.push(UaS_LootEntry.create("HD7mMag",1,1,0.4));
-		HDMarineLoot.push(UaS_LootEntry.create("LiberatorEmptyMag",1,1,0.4));
-		HDMarineLoot.push(UaS_LootEntry.create("HD7mClip",1,1,0.4));
-		HDMarineLoot.push(UaS_LootEntry.create("HD9mMag15",1,1,0.5));
+		// ZM66
+		HDMarineZM66Loot.push(UaS_LootEntry.create('FourMilAmmo', 1, 15, 1.0));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HD4mMag", 1, 1, 0.75));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		// Hunter
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDShellAmmo", 2, 8, 1.0));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("ShellPickup", 1, 1, 0.75));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		// SMG
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HDPistolAmmo", 5, 15, 1.0));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HD9mMag30", 1, 1, 0.75));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		//Rocket
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 4, 1.0));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
 	}
 }
