@@ -21,6 +21,8 @@ class UaS_Looting_Handler : Inventory {
 	override void DoEffect() {
 		super.DoEffect();
 		if (!owner) { return; }
+		if (owner.health <= 0) { return; }
+		if (!owner.player.ReadyWeapon) { return; }
 
 		if (TryingToSearch()) {
 			FLineTraceData trace;
