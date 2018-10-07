@@ -171,7 +171,7 @@ class UaS_Looting_Handler : Inventory {
 
 		// Actually spawn the picked thing and return true
 		if (UaS.RandomChance(rarityFactor)) {
-			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), (spawnTarget.pos.x, spawnTarget.pos.y, spawnTarget.pos.z + 1), true);
+			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), spawnTarget.pos, true);
 			return true;
 		}
 
