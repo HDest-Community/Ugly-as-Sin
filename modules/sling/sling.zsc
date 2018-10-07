@@ -21,7 +21,6 @@ class UaS_WeaponSling : HDPickup {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return; }
 		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
-		if((ownr.gunbraced && !slingBraced)) { return; } // Skip if already braced on something
 		// Break attachment if dropped
 		if(ownr.countinv(attachedWeapon) == 0) {
 			attachedWeapon = "";
@@ -75,7 +74,6 @@ class UaS_WeaponSling : HDPickup {
 			slingBraced = true;
 		}
 		else {
-			ownr.gunbraced = false;
 			slingBraced = false;
 		}
 
