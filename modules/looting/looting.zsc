@@ -209,7 +209,7 @@ extend class UaS_Looting_Handler {
 	void InitializeLootTables() {
 		// ZombieStormtrooper Loot Table
 		// ZM66 (also ZM66 Jackboot)
-		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create('FourMilAmmo', 1, 15, 1.0));
+		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("FourMilAmmo", 1, 15, 1.0));
 		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
 		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HD4mMag", 1, 1, 0.75));
 		ZombieStormtrooperZM66Loot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
@@ -234,7 +234,7 @@ extend class UaS_Looting_Handler {
 
 		// Marine/Tango Loot Table
 		// ZM66
-		HDMarineZM66Loot.push(UaS_LootEntry.create('FourMilAmmo', 1, 15, 1.0));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("FourMilAmmo", 1, 15, 1.0));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD4mMag", 1, 1, 0.75));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
