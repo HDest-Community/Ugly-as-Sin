@@ -130,7 +130,7 @@ class UaS_WeaponSling : HDPickup {
 		}
 		invoker.attachedPoints = clamp(invoker.attachedPoints, 0, 2);
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >= 2) {
-			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.", 70); }
+			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.\n\nHold \caZOOM\cu to toggle."); }
 		}
 	}
 
