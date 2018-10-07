@@ -1,6 +1,7 @@
 class UaS_WeaponSling : HDPickup {
-	int useDelay, holdingUse;
+	int toggleDelay, holdingToggle;
 	int slingPrep;
+	bool slingActive;
 	bool slingBraced;
 	string attachedWeapon;
 	int attachedPoints;
@@ -29,27 +30,24 @@ class UaS_WeaponSling : HDPickup {
 		if(attachedPoints < 2) { return; }
 		if(attachedWeapon != ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if the current weapon isn't the attached one
 
-		useDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
+		toggleDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
 
-		// Check for held [use] button and increment / decrement counters
-		if((ownr.player.cmd.buttons & BT_USE)) {
-			holdingUse++;
-			if(holdingUse >= useDelay) {
-				slingPrep += 20;
-			}
+		// Check for held button and increment / decrement counters
+		if((ownr.player.cmd.buttons & BT_ZOOM)) {
+			holdingToggle = min(holdingToggle + 1, toggleDelay+1);
 		}
 		else {
-			holdingUse = 0;
-			slingPrep -= 45;
+			holdingToggle = 0;
 		}
 
-		// Keep values sane
-		slingPrep = clamp(slingPrep, 0, 360);
-		holdingUse = clamp(holdingUse, 0, useDelay);
+		// Latch the sling to active state
+		if(holdingToggle == toggleDelay) {
+			slingActive = !slingActive;
+		}
 
 		// "Animation" for preparing or stoping the sling
 		if(slingPrep > 0 && slingPrep < 360) {
-			if(holdingUse > 0) {
+			if(slingActive) {
 				owner.A_SetPitch(owner.pitch + sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 				owner.A_SetAngle(owner.angle + cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 
@@ -58,6 +56,13 @@ class UaS_WeaponSling : HDPickup {
 				owner.A_SetPitch(owner.pitch - sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 				owner.A_SetAngle(owner.angle - cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
 			}
+		}
+
+		if(slingActive) {
+			slingPrep = min(slingPrep + 20, 360);
+		}
+		else {
+			slingPrep = max(slingPrep - 45, 0);
 		}
 
 		if(slingPrep == 40 || slingPrep == 315) { owner.A_PlaySound("weapons/pocket", CHAN_WEAPON, 0.25); }
@@ -69,9 +74,21 @@ class UaS_WeaponSling : HDPickup {
 			ownr.gunbraced = true;
 			slingBraced = true;
 		}
-		else if(slingPrep == 0) {
+		else {
 			ownr.gunbraced = false;
 			slingBraced = false;
+		}
+
+		switch(ownr.runwalksprint) {
+			case -1:
+				break;
+			case 0:
+				slingPrep = -540;
+				break;
+			case 1:
+				slingActive = 0;
+				slingPrep = 0;
+				break;
 		}
 	}
 
@@ -96,7 +113,8 @@ class UaS_WeaponSling : HDPickup {
 			weapName == "zm66regular" ||
 			weapName == "vulcanette" ||
 			weapName == "liberatorrifle" ||
-			weapName == "liberatornogl") {
+			weapName == "liberatornogl" ||
+			weapName == "bossrifle") {
 				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
 				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
 				invoker.attachedPoints++;
