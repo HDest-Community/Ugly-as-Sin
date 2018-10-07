@@ -26,7 +26,13 @@ class UaS_WeaponSling : HDPickup {
 			attachedWeapon = "";
 			attachedPoints = 0;
 		}
-		if(attachedPoints < 2) { return; }
+		if(attachedPoints < 2) {
+			slingPrep = 0;
+			holdingToggle = 0;
+			slingBraced = false;
+			slingActive = false;
+			return;
+		}
 		if(attachedWeapon != ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if the current weapon isn't the attached one
 
 		toggleDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
