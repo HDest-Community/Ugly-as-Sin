@@ -8,6 +8,7 @@ class UaS_Incap_Handler : Inventory {
 	int incap_unstablewoundcount;
 	int incap_oldwoundcount;
 	int incap_aggravateddamage;
+	int incap_oldstimcount;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -47,14 +48,14 @@ class UaS_Incap_Handler : Inventory {
 				}
 
 				// Enter incap state
-				if(owner.health == 1 && owner.stimcount < 20) {
+				if(owner.health == 1) {
 					incap = true;
 					incap_woundcount = owner.woundcount;
 					incap_burncount = owner.burncount;
 					incap_unstablewoundcount = owner.unstablewoundcount;
 					incap_oldwoundcount = owner.oldwoundcount;
 					incap_aggravateddamage = owner.aggravateddamage;
-					owner.stimcount = 0;
+					incap_oldstimcount = owner.stimcount;
 					if(UaS_Debug & InCap) { owner.A_Log("Incapacitated"); }
 				}
 				break;
@@ -81,13 +82,13 @@ class UaS_Incap_Handler : Inventory {
 				}
 
 				// Exit incap state
-				if(owner.stimcount >= 10) {
+				if(owner.stimcount > incap_oldstimcount) {
 					incap = false;
 					owner.health += 1;
 					owner.bBUDDHA = false;
-					owner.stimcount = 0;
 					if(UaS_Debug & incap) { owner.A_Log("Revived"); }
 				}
+				else { incap_oldstimcount = owner.stimcount + 1; }
 				break;
 		}
 	}
