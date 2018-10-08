@@ -235,14 +235,32 @@ extend class UaS_Looting_Handler {
 
 		// Marine/Tango Loot Table
 		// ZM66
-		HDMarineZM66Loot.push(UaS_LootEntry.create("FourMilAmmo", 1, 15, 1.0));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("FourMilAmmo", 5, 20, 1.0));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD4mMag", 1, 1, 0.75));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+			//Generic
 		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("SevenMilAmmo", 2, 10, 0.2));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("SevenMilBrass", 2, 10, 0.2));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HD7mMag", 1, 1, 0.15));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HD7mClip", 1, 1, 0.15));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableBerserkPack", 1, 1, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("GreenArmour", 1, 1, 0.2));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("BlueArmour", 1, 1, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HEATAmmo", 1, 2, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("BrontornisRound", 1, 1, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableLiteAmp", 1, 1, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
+		HDMarineZM66Loot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
+		if (UaS_HungerEnabled) {
+			HDMarineZM66Loot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
+			HDMarineZM66Loot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
+		}
 		// Hunter
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDShellAmmo", 2, 8, 1.0));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
@@ -251,7 +269,26 @@ extend class UaS_Looting_Handler {
 		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+			//Generic
 		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("SevenMilAmmo", 2, 10, 0.2));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("SevenMilBrass", 2, 10, 0.2));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HD7mMag", 1, 1, 0.15));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HD7mClip", 1, 1, 0.15));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableBerserkPack", 1, 1, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("GreenArmour", 1, 1, 0.2));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("BlueArmour", 1, 1, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HEATAmmo", 1, 2, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("BrontornisRound", 1, 1, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableLiteAmp", 1, 1, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
+		HDMarineHunterLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
+		if (UaS_HungerEnabled) {
+			HDMarineHunterLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
+			HDMarineHunterLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
+		}
+
 		// SMG
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDPistolAmmo", 5, 15, 1.0));
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HD9mMag15", 1, 1, 0.75));
@@ -259,12 +296,50 @@ extend class UaS_Looting_Handler {
 		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 1, 0.5));
+			//Generic
 		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("SevenMilAmmo", 2, 10, 0.2));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("SevenMilBrass", 2, 10, 0.2));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HD7mMag", 1, 1, 0.15));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HD7mClip", 1, 1, 0.15));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableBerserkPack", 1, 1, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("GreenArmour", 1, 1, 0.2));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("BlueArmour", 1, 1, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HEATAmmo", 1, 2, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("BrontornisRound", 1, 1, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableLiteAmp", 1, 1, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
+		HDMarineSMGLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
+		if (UaS_HungerEnabled) {
+			HDMarineSMGLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
+			HDMarineSMGLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
+		}
+
 		//Rocket
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDRocketAmmo", 1, 4, 1.0));
 		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableStimpack", 1, 1, 0.5));
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDFragGrenadeAmmo", 1, 1, 0.5));
+			//Generic
 		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableMedikit", 1, 1, 0.25));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("SevenMilAmmo", 2, 10, 0.2));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("SevenMilBrass", 2, 10, 0.2));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HD7mMag", 1, 1, 0.15));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HD7mClip", 1, 1, 0.15));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableBerserkPack", 1, 1, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("GreenArmour", 1, 1, 0.2));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("BlueArmour", 1, 1, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HEATAmmo", 1, 2, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("BrontornisRound", 1, 1, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableLiteAmp", 1, 1, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
+		HDMarineRocketLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
+		if (UaS_HungerEnabled) {
+			HDMarineRocketLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
+			HDMarineRocketLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
+		}
+
 	}
 }
