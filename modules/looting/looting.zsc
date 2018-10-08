@@ -171,6 +171,7 @@ class UaS_Looting_Handler : Inventory {
 
 		// Actually spawn the picked thing and return true
 		if (UaS.RandomChance(rarityFactor)) {
+			if(UaS_Debug & Looting) { console.printf("Loot spawn: "..LootClass); }
 			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), spawnTarget.pos, true);
 			return true;
 		}
