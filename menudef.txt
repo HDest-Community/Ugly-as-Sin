@@ -109,11 +109,16 @@ OptionMenu "UaS_Reloader_Options" {
 OptionMenu "UaS_Sling_Options" {
 	Title "Weapon Sling Options"
 	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
-	StaticText "Sling allows bracing weapon anywhere"
-	StaticText "with [use] key, even when standing."
+	StaticText "Sling allows bracing weapon anywhere."
 	StaticText " "
-	StaticText "Delay is how long [use] must be held."
+	StaticText "Must first be attached to weapon"
+	StaticText "by using inventory item."
 	StaticText " "
+	StaticText "Once attached, Hold [Zoom] to toggle."
+	StaticText "Delay is how long [Zoom]  must be held."
+	StaticText " "
+	StaticText "Jogging will temporarily disable sling."
+	StaticText "Sprinting will deactivate it entirely."
 	StaticText "Given on start of new game or map."
 }
 
