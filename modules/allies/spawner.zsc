@@ -25,11 +25,21 @@ class UaS_Ally_Spawner : EventHandler {
 	}
 
 	bool SpawnAlly(vector3 pos) {
-		Actor ally = actor.spawn('HDMarine', pos);
+		HDMarine ally = HDMarine(actor.spawn('HDMarine', pos));
 		if(!ally) { return false; }
 		if(!ally.CheckPosition(pos.xy)) {
 			ally.Destroy();
 			return false;
+		}
+		switch(UaS_AllyPreferred) {
+			case 1:
+				ally.painsound="marine/pain";
+				ally.deathsound="marine/death";
+				break;
+			case 2:
+				ally.painsound="marinef/pain";
+				ally.deathsound="marinef/death";
+				break;
 		}
 		return true;
 	}

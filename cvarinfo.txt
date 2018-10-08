@@ -17,6 +17,7 @@ server int UaS_FragSpawnRate = 100;
 
 server bool UaS_AlliesEnabled = false;
 server int UaS_AllySpawnRate = 25;
+server int UaS_AllyPreferred = 0;
 
 server bool UaS_AdvancedAIEnabled = false;
 server bool UaS_AI_Searching = true;
