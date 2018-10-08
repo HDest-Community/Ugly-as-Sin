@@ -72,9 +72,13 @@ OptionMenu "UaS_Options" {
 OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module"
 	Option "Timescale","UaS_HungerTimeScale","UaS_Nice_Timescales"
+	Slider "Ration Spawn Multiplier","UaS_HungerRationRate", 0, 5, 0.1, 1
 	Option "Eat/Drink Auto-Select","UaS_HungerAutoselect","OnOff"
 	StaticText "Adds need to eat / drink, with messkit."
 	StaticText "Starvation / dehydration causes fatigue."
+	StaticText " "
+	StaticText "Ration spawn multiplier increases or"
+	StaticText "decreases chance for ration spawns"
 	StaticText " "
 	StaticText "Auto-Select automatically picks whether"
 	StaticText "to eat or drink, depending on need."

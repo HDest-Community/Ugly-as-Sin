@@ -26,7 +26,7 @@ class UaS_Hunger_Spawner : EventHandler {
 		if(toSpawn_Rations <= 0 && toSpawn_Messkit <= 0) { return; }
 		//if(e.Thing.bDROPPED) { return; }
 
-		spawnRate = UaS_HungerTimeScale * toSpawn_Rations**2;
+		spawnRate = UaS_HungerTimeScale * (toSpawn_Rations**2) * UaS_HungerRationRate;
 		spawnRate = max(spawnRate, 0);
 		spawnPos = e.Thing.pos;
 
@@ -67,7 +67,7 @@ class UaS_Hunger_Spawner : EventHandler {
 	}
 
 	void MaybeSpawnRation(name spawnClass, double spawnChance) {
-		if(UaS.RandomChance(spawnChance)) {
+		if(UaS.RandomChance(clamp(spawnChance, 0, 1))) {
 			UaS.SpawnStuff(spawnClass, 1, spawnPos);
 			toSpawn_Rations--;
 			if(UaS_Debug & Hunger) { console.printf("Spawned Ration. \tToSpawn: %i, \spawnChance: %f", toSpawn_Rations, spawnChance); }
