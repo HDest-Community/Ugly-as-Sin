@@ -28,7 +28,7 @@ class UaS_WeaponSling : HDPickup {
 		}
 		if(attachedPoints < 2) {
 			slingPrep = 0;
-			holdingToggle = 0;
+			holdingToggle = -1;
 			slingBraced = false;
 			slingActive = false;
 			return;
@@ -42,7 +42,7 @@ class UaS_WeaponSling : HDPickup {
 			holdingToggle = min(holdingToggle + 1, toggleDelay+1);
 		}
 		else {
-			holdingToggle = 0;
+			holdingToggle = -1;
 		}
 
 		// Latch the sling to active state
