@@ -87,7 +87,7 @@ class UaS_WeaponSling : HDPickup {
 			case -1:
 				break;
 			case 0:
-				slingPrep = -360;
+				slingPrep = 0;
 				break;
 			case 1:
 				slingActive = 0;
