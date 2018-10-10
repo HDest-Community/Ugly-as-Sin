@@ -4,6 +4,7 @@ class UaS_Hunger_Bootstrap : EventHandler {
 	//initialize additional player inventory
 	override void PlayerEntered(PlayerEvent e) {
 		if(UaS_HungerTimeScale == 0 || UaS_HungerEnabled == false) { return; }
+		if(!UaS_HungerStart) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo.countinv("HungerInitialized")) {
 			player.mo.giveinventory("UaS_HungerTracker", 1);
