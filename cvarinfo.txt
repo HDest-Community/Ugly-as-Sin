@@ -12,6 +12,7 @@ server bool UaS_ReloaderAutoContinue = false;
 
 server bool UaS_SlingEnabled = false;
 user int UaS_SlingDelay = 35;
+server bool UaS_SlingStart = true;
 
 server bool UaS_FragReducerEnabled = false;
 server int UaS_FragSpawnRate = 100;
