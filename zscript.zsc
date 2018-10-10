@@ -46,3 +46,5 @@ version "3.5"
 // Corpse Looting
 #include "modules/looting/bootstrap.zsc"
 #include "modules/looting/looting.zsc"
+#include "modules/looting/loottables.zsc"
+#include "modules/looting/flavortext.zsc"
