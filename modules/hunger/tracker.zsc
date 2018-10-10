@@ -79,9 +79,10 @@ class UaS_HungerTracker : CustomInventory {
 	void HungerStatus() {
 		//Hunger status messages
 		statusMessage = "";
-		if(calories >= 1500) { statusMessage = statusMessage.."Your stomach feels full. "; }
+		if(calories >= 2000) { statusMessage = statusMessage.."Your stomach feels full. "; }
 		else if(calories >= 500 && calories < 1000) { statusMessage = statusMessage.."Your stomach grumbles. "; }
-		else if(calories >= 0 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
+		else if(calories >= 250 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
+		else if(calories >= 0 && calories < 250) { statusMessage = statusMessage.."Your stomach clenches. "; }
 		//Last meal messages
 		int mealdelta = (lastmeal - calories);
 		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
@@ -103,6 +104,7 @@ class UaS_HungerTracker : CustomInventory {
 	void ThirstStatus() {
 		//Thirst status messages
 		statusMessage = "";
+		if(water >= 2000) { statusMessage = statusMessage.."Your stomach feels sloshy. "; }
 		if(water >= 500 && water < 1000) { statusMessage = statusMessage.."You feel a bit thirsty. "; }
 		else if(water >= 250 && water < 500) { statusMessage = statusMessage.."Your mouth is dry. "; }
 		else if(water >= 0 && water < 250) { statusMessage = statusMessage.."Your throat is parched. "; }
