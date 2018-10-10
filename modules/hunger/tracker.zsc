@@ -103,9 +103,9 @@ class UaS_HungerTracker : CustomInventory {
 	void ThirstStatus() {
 		//Thirst status messages
 		statusMessage = "";
-		if(water >= 1000 && water < 1500) { statusMessage = statusMessage.."You feel a bit thirsty. "; }
-		else if(water >= 500 && water < 1000) { statusMessage = statusMessage.."Your mouth is dry. "; }
-		else if(water >= 0 && water < 500) { statusMessage = statusMessage.."Your throat is parched. "; }
+		if(water >= 500 && water < 1000) { statusMessage = statusMessage.."You feel a bit thirsty. "; }
+		else if(water >= 250 && water < 500) { statusMessage = statusMessage.."Your mouth is dry. "; }
+		else if(water >= 0 && water < 250) { statusMessage = statusMessage.."Your throat is parched. "; }
 		//Last drink messages
 		int drinkdelta = (lastdrink - water);
 		if(drinkdelta >= 500 && drinkdelta <1000) { statusMessage = statusMessage.."Time for another drink?"; }
