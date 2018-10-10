@@ -9,7 +9,7 @@ Features are implemented as configurable modules, any of which may be independen
 * **Reloading Kit** - Allows manual reloading of 7.76mm rounds while in the map, instead of consolidating between maps. The `Auto-Continue` option lets the player hold down the action button instead of clicking at each step.
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing. The sling must be attached to the weapon by activating the inventory item. Hold the [Zoom] key to activate the sling. Sprinting will deactivate the sling.
 * **Fragshard Reducer** - Specifies chance for enemy-reviving fragshards to be allowed to spawn. There is also an option to remove all existing fragshards from the level.
-* **Friendly Marines** - Friendly marines may randomly replace human-type corpses, for some occasional much-needed reinforcements.
+* **Friendly Marines** - Friendly marines may randomly replace human-type corpses, for some occasional much-needed reinforcements. Spawn rate is adjustable.
 * **Advanced AI** - Adds extra behavior to monsters, such as searching the player's last known position, forgetting the player, and debuffing speed / aim when wounded.
-* **Incapacitation** - A multiplayer-only module to improve the co-op experince, allows players to be soft-killed, requiring medical treatment and revives from other players, instead of respawning.
+* **Incapacitation** - A multiplayer-only module to improve the co-op experince. Allows players to be soft-killed, requiring medical treatment and revives from other players instead of respawning. Low frag limits recommended.
 * **Looting** - Corpses of human-type enemies can be searched for useful items, such as ammunition or medical equipment. The `Loot Factor` rate is adjustable.
