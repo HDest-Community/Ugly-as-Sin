@@ -41,6 +41,34 @@ class UaS_Ally_Spawner : EventHandler {
 				ally.deathsound="marinef/death";
 				break;
 		}
+		ally.GiveInventory("UaS_Ally_Activator", 1);
 		return true;
+	}
+}
+
+class UaS_Ally_Activator : Inventory {
+	int closestPlayer;
+	bool LoSPlayer;
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		owner.SetStateLabel("xdead");
+		owner.bInvisible = true;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		closestPlayer = 32767;
+		LoSPlayer = false;
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if(!playerInGame[i]) continue;
+			closestPlayer = min(owner.distance2D(players[i].mo), closestPlayer);
+			LoSPlayer = owner.CheckSight(players[i].mo);
+		}
+		if (closestPlayer <= (random(16, 24) * 128) || LoSPlayer) {
+			owner.SetStateLabel("spawn");
+			owner.bInvisible = false;
+			destroy();
+		}
 	}
 }
