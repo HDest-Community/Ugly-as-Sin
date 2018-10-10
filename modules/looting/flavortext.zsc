@@ -1,0 +1,49 @@
+extend class UaS_Looting_Handler {
+	array<string> FunnyItems;
+	array<string> JoinerWords;
+
+	string FlavorText(bool foundSomething) {
+		string returnMessage = "";
+		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.."There's"; }
+		returnMessage = returnMessage.." nothing";
+		if (foundSomething) { returnMessage = returnMessage.." else"; }
+		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.." here"; }
+		if (UaS.RandomChance(0.5)) {
+			returnMessage = returnMessage..".";
+			return returnMessage;
+		}
+		returnMessage = returnMessage..JoinerWords[random(0, JoinerWords.Size() - 1)];
+		returnMessage = returnMessage..FunnyItems[random(0, FunnyItems.Size() - 1)];
+		return returnMessage;
+	}
+
+	void InitializeStrings() {
+		FunnyItems.Push(" an empty ration.");
+		FunnyItems.Push(" a crusty ration wrapper.");
+		FunnyItems.Push(" a small collection of grenade pins.");
+		FunnyItems.Push(" a revenant finger bone.");
+		FunnyItems.Push(" a wad of chewing gum.");
+		FunnyItems.Push(" an oily gun part.");
+		FunnyItems.Push(" a coin.");
+		FunnyItems.Push(" some empty brass casings.");
+		FunnyItems.Push(" some pocket lint.");
+		FunnyItems.Push(" an empty potion bottle.");
+		FunnyItems.Push(" a broken PDA.");
+		FunnyItems.Push(" a pinup poster.");
+		FunnyItems.Push(" two floppy disks, labeled DOOM.");
+		FunnyItems.Push(" a paper labeled 'TPS REPORT'.");
+		FunnyItems.Push(" a movie script.");
+		FunnyItems.Push(" some electrical cables.");
+		FunnyItems.Push(" an empty beer bottle.");
+		FunnyItems.Push(" a family photo.");
+		FunnyItems.Push(" an action figure.");
+		FunnyItems.Push(" an action figure.");
+
+		JoinerWords.Push(", except");
+		JoinerWords.Push(", except for");
+		JoinerWords.Push(", aside from");
+		JoinerWords.Push(", apart from");
+		JoinerWords.Push(", besides");
+		JoinerWords.Push(", beyond");
+	}
+}
