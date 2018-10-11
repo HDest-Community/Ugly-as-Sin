@@ -3,6 +3,7 @@ extend class UaS_Looting_Handler {
 	array<string> JoinerWords;
 
 	string FlavorText(bool foundSomething) {
+		if (FunnyItems.Size() == 0 || JoinerWords.Size() == 0) { InitializeStrings(); }
 		string returnMessage = "";
 		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.."There's"; }
 		returnMessage = returnMessage.." nothing";
