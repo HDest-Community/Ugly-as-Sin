@@ -38,7 +38,7 @@ class UaS_WeaponSling : HDPickup {
 		toggleDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
 
 		// Check for held button and increment / decrement counters
-		if((ownr.player.cmd.buttons & BT_ZOOM)) {
+		if((ownr.player.cmd.buttons & BT_ZOOM) && (ownr.player.cmd.buttons & BT_USE)) {
 			holdingToggle = min(holdingToggle + 1, toggleDelay+1);
 		}
 		else {
@@ -130,7 +130,7 @@ class UaS_WeaponSling : HDPickup {
 		}
 		invoker.attachedPoints = clamp(invoker.attachedPoints, 0, 2);
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >= 2) {
-			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.\n\nHold \caZOOM\cu to toggle."); }
+			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.\n\nHold \caZOOM + USE\cu to toggle."); }
 		}
 	}
 
