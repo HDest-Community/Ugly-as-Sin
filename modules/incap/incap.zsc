@@ -8,13 +8,13 @@ class UaS_Incap_Handler : Inventory {
 	int incap_unstablewoundcount;
 	int incap_oldwoundcount;
 	int incap_aggravateddamage;
-	int incap_oldstimcount;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.UNDROPPABLE;
 		-INVENTORY.INVBAR;
 		+INVENTORY.UNTOSSABLE;
+		+INVENTORY.KEEPDEPLETED;
 	}
 
 	override void PostBeginPlay() {
@@ -56,7 +56,10 @@ class UaS_Incap_Handler : Inventory {
 					incap_unstablewoundcount = owner.unstablewoundcount;
 					incap_oldwoundcount = owner.oldwoundcount;
 					incap_aggravateddamage = owner.aggravateddamage;
-					incap_oldstimcount = owner.stimcount;
+					owner.stimcount = 0;
+					owner.zerk = 0;
+					owner.haszerked = 0;
+					UaS.EnableVignette(owner.player, 5, 0.5);
 					if(UaS_Debug & InCap) { owner.A_Log("Incapacitated"); }
 				}
 				break;
@@ -74,6 +77,9 @@ class UaS_Incap_Handler : Inventory {
 				//owner.oldwoundcount = clamp(owner.oldwoundcount, 0, incap_oldwoundcount);
 				owner.aggravateddamage = clamp(owner.aggravateddamage, 0, incap_aggravateddamage);
 				owner.A_SelectWeapon("Ring");
+				HDWeapon rw = HDWeapon(owner.player.ReadyWeapon);
+				owner.vel *= 0.8;
+				if (rw.GetClassName() == "Ring") { rw.A_WeaponMessage("\crINCAPACITATED", 5); }
 
 				// Kill player if they bleed out
 				if(bleedout == 0 ) {
@@ -83,13 +89,13 @@ class UaS_Incap_Handler : Inventory {
 				}
 
 				// Exit incap state
-				if(owner.stimcount > incap_oldstimcount) {
+				if(owner.stimcount > 15 || owner.zerk > 4000) {
 					incap = false;
 					owner.health += 1;
 					owner.bBUDDHA = false;
+					UaS.DisableVignette(owner.player);
 					if(UaS_Debug & incap) { owner.A_Log("Revived"); }
 				}
-				//else { incap_oldstimcount = owner.stimcount + 1; }
 				break;
 		}
 	}

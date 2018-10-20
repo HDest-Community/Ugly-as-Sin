@@ -19,4 +19,14 @@ class UaS {
 			spawneditem.vel.z += frandom[spawnstuff](1,2);
 		}
 	}
+
+	static play void EnableVignette(PlayerInfo p, double i = 120, double f = 0.08) {
+		Shader.SetUniform1f(p, "vignetteshader", "intensity", i);
+		Shader.SetUniform1f(p, "vignetteshader", "falloff", f);
+		Shader.SetEnabled(p, "vignetteshader", true);
+	}
+
+	static play void DisableVignette(PlayerInfo p) {
+		Shader.SetEnabled(p, "vignetteshader", false);
+	}
 }
