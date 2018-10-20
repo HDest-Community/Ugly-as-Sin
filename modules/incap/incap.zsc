@@ -67,7 +67,6 @@ class UaS_Incap_Handler : Inventory {
 			// Incapacitation
 			case true:
 				bleedout = max(bleedout - 1, 0);
-				if(UaS_Debug & incap) { o.A_Log("Stimcount: "..o.stimcount); }
 
 				// Clamp important attributes
 				o.health = clamp(o.health, 1, 1);
@@ -92,8 +91,9 @@ class UaS_Incap_Handler : Inventory {
 				}
 
 				// Exit incap state
-				if(o.stimcount > 15 || o.zerk > 4000) {
+				if(o.stimcount >= 1 || o.zerk >= 1) {
 					incap = false;
+					bleedout = 0;
 					o.health += 1;
 					o.bBUDDHA = false;
 					UaS.DisableVignette(o.player);
