@@ -23,7 +23,6 @@ class UaS_Incap_Handler : Inventory {
 	}
 
 	override void DoEffect() {
-		super.DoEffect();
 		if(!multiplayer || deathmatch) { return; }
 		if(!owner) { return; }
 
@@ -31,11 +30,12 @@ class UaS_Incap_Handler : Inventory {
 		if(owner.health <= 0) {
 			bleedout = UaS_Incap_Bleedout;
 			incap = false;
+			UaS.DisableVignette(owner.player);
 			return;
 		}
 
-		let owner = HDPlayerPawn(owner);
-		if(!owner) { return; }
+		HDPlayerPawn o = HDPlayerPawn(owner);
+		if(!o) { return; }
 		switch(incap) {
 
 			// Normal
@@ -43,58 +43,61 @@ class UaS_Incap_Handler : Inventory {
 				bleedout = min(bleedout + 1, UaS_Incap_Bleedout);
 
 				// Activate incap shield
-				if(bleedout == UaS_Incap_Bleedout && owner.bBUDDHA == false) {
-					owner.bBUDDHA = true;
-					if(UaS_Debug & Incap) { owner.A_Log("Incap shield active"); }
+				if(bleedout == UaS_Incap_Bleedout && o.bBUDDHA == false) {
+					o.bBUDDHA = true;
+					if(UaS_Debug & Incap) { o.A_Log("Incap shield active"); }
 				}
 
 				// Enter incap state
-				if(owner.health == 1 && owner.bBUDDHA == true) {
+				if(o.health == 1 && o.bBUDDHA == true) {
 					incap = true;
-					incap_woundcount = owner.woundcount;
-					incap_burncount = owner.burncount;
-					incap_unstablewoundcount = owner.unstablewoundcount;
-					incap_oldwoundcount = owner.oldwoundcount;
-					incap_aggravateddamage = owner.aggravateddamage;
-					owner.stimcount = 0;
-					owner.zerk = 0;
-					owner.haszerked = 0;
-					UaS.EnableVignette(owner.player, 5, 0.5);
-					if(UaS_Debug & InCap) { owner.A_Log("Incapacitated"); }
+					incap_woundcount = o.woundcount;
+					incap_burncount = o.burncount;
+					incap_unstablewoundcount = o.unstablewoundcount;
+					incap_oldwoundcount = o.oldwoundcount;
+					incap_aggravateddamage = o.aggravateddamage;
+					o.stimcount = 0;
+					o.zerk = 0;
+					o.haszerked = 0;
+					UaS.EnableVignette(o.player, 5, 0.5);
+					if(UaS_Debug & InCap) { o.A_Log("Incapacitated"); }
 				}
 				break;
 
 			// Incapacitation
 			case true:
 				bleedout = max(bleedout - 1, 0);
+				if(UaS_Debug & incap) { o.A_Log("Stimcount: "..o.stimcount); }
 
 				// Clamp important attributes
-				owner.health = clamp(owner.health, 1, 1);
-				owner.player.CrouchFactor = clamp(owner.player.CrouchFactor, 0.5, 0.5);
-				owner.woundcount = clamp(owner.woundcount, 0, incap_woundcount);
-				owner.burncount = clamp(owner.burncount, 0, incap_burncount);
-				//owner.unstablewoundcount = clamp(owner.unstablewoundcount, 0, incap_unstablewoundcount);
-				//owner.oldwoundcount = clamp(owner.oldwoundcount, 0, incap_oldwoundcount);
-				owner.aggravateddamage = clamp(owner.aggravateddamage, 0, incap_aggravateddamage);
-				owner.A_SelectWeapon("Ring");
-				HDWeapon rw = HDWeapon(owner.player.ReadyWeapon);
-				owner.vel *= 0.8;
+				o.health = clamp(o.health, 1, 1);
+				o.player.CrouchFactor = clamp(o.player.CrouchFactor, 0.5, 0.5);
+				o.woundcount = clamp(o.woundcount, 0, incap_woundcount);
+				o.burncount = clamp(o.burncount, 0, incap_burncount);
+				//o.unstablewoundcount = clamp(o.unstablewoundcount, 0, incap_unstablewoundcount);
+				//o.oldwoundcount = clamp(o.oldwoundcount, 0, incap_oldwoundcount);
+				o.aggravateddamage = clamp(o.aggravateddamage, 0, incap_aggravateddamage);
+				o.A_SelectWeapon("Ring");
+				HDWeapon rw = HDWeapon(o.player.ReadyWeapon);
+				o.vel *= 0.8;
 				if (rw.GetClassName() == "Ring") { rw.A_WeaponMessage("\crINCAPACITATED", 5); }
 
 				// Kill player if they bleed out
-				if(bleedout == 0 ) {
+				if(bleedout == 0) {
 					incap = false;
-					owner.bBUDDHA = false;
-					owner.A_Die('bleedout');
+					o.bBUDDHA = false;
+					UaS.DisableVignette(o.player);
+					o.A_Die('bleedout');
+					if(UaS_Debug & incap) { o.A_Log("Bled out"); }
 				}
 
 				// Exit incap state
-				if(owner.stimcount > 15 || owner.zerk > 4000) {
+				if(o.stimcount > 15 || o.zerk > 4000) {
 					incap = false;
-					owner.health += 1;
-					owner.bBUDDHA = false;
-					UaS.DisableVignette(owner.player);
-					if(UaS_Debug & incap) { owner.A_Log("Revived"); }
+					o.health += 1;
+					o.bBUDDHA = false;
+					UaS.DisableVignette(o.player);
+					if(UaS_Debug & incap) { o.A_Log("Revived"); }
 				}
 				break;
 		}
