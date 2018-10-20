@@ -63,8 +63,8 @@ extend class UaS_AI_Handler {
 			owner.speed = baseSpeed * healthFactor;
 
 			// Jitter angle / pitch
-			owner.A_SetAngle(owner.angle + (random(-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE);
-			owner.A_SetPitch(owner.pitch + (random(-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
+			owner.A_SetAngle(owner.angle + (random[ai](-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE);
+			owner.A_SetPitch(owner.pitch + (random[ai](-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
 
 			// Occasionally cry out in pain and select a random fear state
 			// (more likely to be frightened the lower heathFactor is)
@@ -72,7 +72,7 @@ extend class UaS_AI_Handler {
 				owner.A_Pain();
 				if(UaS.randomChance(1.0 - healthFactor)) { owner.bFRIGHTENED = true; }
 				else { owner.bFRIGHTENED = false; }
-				painCountDown = random(10, 20) * 35 * healthFactor;
+				painCountDown = random[ai](10, 20) * 35 * healthFactor;
 			}
 			painCountdown = max(painCountDown - 1, 0);
 
@@ -120,7 +120,7 @@ extend class UaS_AI_Handler {
 		PushPath(lastKnown[0].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		for (int i = 0; i < 6; i++)
 		{
-			p_angle = frandom(0,360);
+			p_angle = frandom[ai](0,360);
 			lastKnown[1].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
 			PushPath(lastKnown[1].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		}
@@ -156,7 +156,7 @@ extend class UaS_AI_Handler {
 				}
 				if(countdown == 0) {
 					//set 1-2 minutes for chase + search time.
-					countdown = random(60, 120) * 35;
+					countdown = random[ai](60, 120) * 35;
 					owner.A_ClearTarget();
 					CreateSearchPath();
 					owner.target = lastKnown[0];

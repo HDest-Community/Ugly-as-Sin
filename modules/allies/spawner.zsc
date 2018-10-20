@@ -60,7 +60,7 @@ class UaS_Ally_Activator : Inventory {
 			closestPlayer = min(owner.distance2D(players[i].mo), closestPlayer);
 			LoSPlayer = owner.CheckSight(players[i].mo);
 		}
-		if (closestPlayer <= (random(8, 16) * 128) || LoSPlayer) {
+		if (closestPlayer <= (random[ally](8, 16) * 128) || LoSPlayer) {
 			destroy();
 		}
 	}

@@ -53,13 +53,13 @@ class UaS_WeaponSling : HDPickup {
 		// "Animation" for preparing or stoping the sling
 		if(slingPrep > 0 && slingPrep < 360) {
 			if(slingActive) {
-				owner.A_SetPitch(owner.pitch + sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle + cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
+				owner.A_SetPitch(owner.pitch + sin(slingPrep), SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle + cos(slingPrep), SPF_INTERPOLATE);
 
 			}
 			else {
-				owner.A_SetPitch(owner.pitch - sin(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle - cos(slingPrep) * frandom(0.25, 0.75), SPF_INTERPOLATE);
+				owner.A_SetPitch(owner.pitch - sin(slingPrep), SPF_INTERPOLATE);
+				owner.A_SetAngle(owner.angle - cos(slingPrep), SPF_INTERPOLATE);
 			}
 		}
 

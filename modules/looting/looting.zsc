@@ -68,13 +68,13 @@ class UaS_Looting_Handler : Inventory {
 			}
 			owner.A_PlaySound("weapons/pocket", frandom(0.0, 0.5));
 			searchMarker.searchedAmount += frandom(0.05, 0.1);
-			anglevel += frandom(-1, 1);
-			pitchvel += frandom(-1, 1);
-			cooldown = random(10,25);
+			anglevel += frandom[loot](-1, 1);
+			pitchvel += frandom[loot](-1, 1);
+			cooldown = random[loot](10,25);
 			double chance = clamp(searchMarker.searchedAmount, 0, UaS_LootingFactor);
 			if (UaS.RandomChance(chance)) {
 				if(SpawnLoot(searchTarget)) {
-					searchMarker.searchedAmount += frandom(0.0, 1.0 - UaS_LootingFactor);
+					searchMarker.searchedAmount += frandom[loot](0.0, 1.0 - UaS_LootingFactor);
 					searchMarker.foundSomething = true;
 				}
 			}
@@ -180,12 +180,12 @@ class UaS_Looting_Handler : Inventory {
 		// Actually spawn the picked thing and return true
 		if (UaS.RandomChance(rarityFactor)) {
 			if(UaS_Debug & Looting) { console.printf("Loot spawn: "..LootClass); }
-			UaS.SpawnStuff(LootClass, random(minAmount, maxAmount), spawnTarget.pos, true);
+			UaS.SpawnStuff(LootClass, random[loot](minAmount, maxAmount), spawnTarget.pos, true);
 			return true;
 		}
 
 		// Otherwise spawn some random debris and return false
-		for (int i = 0; i < 3; i++) { spawnTarget.A_SpawnItemEx("TinyWallChunk", 0, 0, 4, random(4, 7), random(-2, 2), random(-2, 1), 0, SXF_NOCHECKPOSITION); }
+		for (int i = 0; i < 3; i++) { spawnTarget.A_SpawnItemEx("TinyWallChunk", 0, 0, 4, random[loot](4, 7), random[loot](-2, 2), random[loot](-2, 1), 0, SXF_NOCHECKPOSITION); }
 		return false;
 	}
 }
