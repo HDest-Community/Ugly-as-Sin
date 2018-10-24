@@ -38,6 +38,9 @@ version "3.5"
 // Monster AI
 #include "modules/ai/bootstrap.zsc"
 #include "modules/ai/tracker.zsc"
+#include "modules/ai/wounded.zsc"
+#include "modules/ai/searching.zsc"
+#include "modules/ai/flashlight.zsc"
 
 // Player Incapacitation
 #include "modules/incap/bootstrap.zsc"
