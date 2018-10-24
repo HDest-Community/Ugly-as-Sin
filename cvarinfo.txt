@@ -25,6 +25,7 @@ server int UaS_AllyPreferred = 0;
 server bool UaS_AdvancedAIEnabled = false;
 server bool UaS_AI_Searching = true;
 server bool UaS_AI_Wounding = true;
+server bool UaS_AI_Flashlights = true;
 
 server bool UaS_IncapEnabled = false;
 server bool UaS_IncapWoundClamp = true;

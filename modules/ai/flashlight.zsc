@@ -16,7 +16,11 @@ extend class UaS_AI_Handler {
 		if (!monsterlight) {
 			monsterlight = UaS_Monster_Flashlight(actor.spawn("UaS_Monster_Flashlight", owner.pos, false));
 			monsterlight.followTarget = owner;
-			//monsterlight.active = true;
+		}
+
+		if(!UaS_AI_Flashlights) {
+			monsterlight.active = false;
+			return;
 		}
 
 		if (recheck <= 0) {
