@@ -1,12 +1,18 @@
 class UaS_Ally_Spawner : EventHandler {
+	double spawnChance;
+
+	override void WorldLoaded(WorldEvent e) {
+		spawnChance = UaS_AllySpawnRate;
+		spawnChance /= 100.0;
+		if (UaS_Debug & Allies) { console.printf("Ally spawn debugging on. Spawnchance = "..spawnChance); }
+	}
 
 	//Spawn allied marines randomly
 	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
-		double spawnChance = (double(UaS_AllySpawnRate) * 0.01);
 
 		// Conditions for skipping spawns
-		if(UaS_AlliesEnabled == false) { return; }
+		if(!UaS_AlliesEnabled) { return; }
 		if(!UaS.RandomChance(spawnChance)) { return; }
 		if(level.maptime > 5) { return; }
 		if(!e.Thing) { return; }
@@ -20,18 +26,21 @@ class UaS_Ally_Spawner : EventHandler {
 
 		if(corpseType) {
 			replaced = SpawnAlly(e.Thing.pos);
-			if(replaced) { e.Thing.Destroy(); }
+			if (replaced) {
+				if (UaS_Debug & Allies) { console.printf("Spawned ally"); }
+				e.Thing.Destroy();
+			}
 		}
 	}
 
 	bool SpawnAlly(vector3 pos) {
 		HDMarine ally = HDMarine(actor.spawn('HDMarine', pos));
-		if(!ally) { return false; }
-		if(!ally.CheckPosition(pos.xy)) {
+		if (!ally) { return false; }
+		if (!ally.CheckPosition(pos.xy)) {
 			ally.Destroy();
 			return false;
 		}
-		switch(UaS_AllyPreferred) {
+		switch (UaS_AllyPreferred) {
 			case 1:
 				ally.painsound="marine/pain";
 				ally.deathsound="marine/death";
