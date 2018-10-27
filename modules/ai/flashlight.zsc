@@ -1,6 +1,9 @@
 extend class UaS_AI_Handler {
 	UaS_Monster_Flashlight monsterlight;
 	int	Recheck;
+	bool Flashing;
+	int flashrate;
+
 
 	void Flashlight() {
 		bool validClass = (
@@ -24,14 +27,28 @@ extend class UaS_AI_Handler {
 		}
 
 		if (recheck <= 0) {
-			double lightlevel = owner.cursector.LightLevel;
+			FLineTraceData lookSpot;
+			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
+			double lightlevel = lookSpot.HitSector.LightLevel;
 			if (frandom(0, 1) >= (lightlevel / 128)) {
 				monsterlight.active = true; }
 			else {
 				monsterlight.active = false;
 			}
-			recheck = random(35,175);
+			recheck = max(random(35,175), lightlevel );
+			flashrate = random(1, 4);
 		}
+
+		Flashing = (owner.target &&
+			owner.CheckClass("HDMarine", AAPTR_DEFAULT, true) &&
+			(owner.frame == 4 || owner.frame == 5)
+		);
+
+		if (Flashing && level.maptime & flashrate == 0) { monsterlight.active = !monsterlight.active; }
+
+		if (owner.frame != 4 && owner.frame != 5) { monsterlight.offsetPitch = 35; }
+		else { monsterlight.offsetPitch = 0; }
+
 		recheck--;
 	}
 }
@@ -68,11 +85,15 @@ class UaS_Monster_Flashlight : Actor {
 	bool targetKilled;
 	actor actualLight;
 	bool active;
+	int offsetAngle, offsetPitch;
 
 	default {
 		radius 2;
 		height 4;
 		+THRUACTORS;
+		scale 0.25;
+		friction 0.1;
+		RenderStyle "Add";
 	}
 
 	override void Tick() {
@@ -88,32 +109,32 @@ class UaS_Monster_Flashlight : Actor {
 		}
 		else if (!active && actualLight) {
 			actualLight.Destroy();
+			SetStateLabel("LightOff");
 		}
-
-		if(!actuallight) { return; }
 
 		if(followtarget.health <= 0) {
 			if(!targetKilled) {
 				vel.x = frandom(-5, 5);
 				vel.y = frandom(-5, 5);
 				vel.z = frandom(0, 5);
-				rot.a = frandom(-65, 65);
-				rot.p = frandom(-65, 65);
+				rot.a = frandom(-50, 50);
+				rot.p = frandom(-50, 50);
 				targetKilled = true;
 			}
 			if(pos.z - floorz <=0) {
-				rot.a *= 0.98;
-				rot.p *= 0.9;
-				pitch = clamp(pitch, 0, -80);
+				rot.a *= 0.95;
+				vel.xy += RotateVector(vel.xy, angle - rot.a);
+				rot.p = 0;
+				pitch = 0;
 			}
 		}
 		else if (followtarget.health > 0) {
 			targetpos = followTarget.vec3Angle(8, followTarget.angle, followTarget.height * 0.75, false);
-			targetRot.a = followTarget.angle;
-			targetRot.p = followTarget.pitch;
-			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
-			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
-			vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
+			targetRot.a = followTarget.angle + offsetAngle;
+			targetRot.p = followTarget.pitch + offsetPitch;
+			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 0.5, 0.75);
+			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 0.5, 0.75);
+			vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 0.5, 0.75);
 			rot.a += DampedSpring(angle, targetRot.a, rot.a, 0.25, 0.2);
 			rot.p += DampedSpring(pitch, targetRot.p, rot.p, 0.25, 0.2);
 		}
@@ -121,18 +142,31 @@ class UaS_Monster_Flashlight : Actor {
 		A_SetAngle(angle + (rot.a / 4), true);
 		A_SetPitch(pitch + (rot.p / 4), true);
 
+		if(!actuallight) { return; }
+
+		SetStateLabel("LightOn");
 		actualLight.A_SetAngle(angle, true);
 		actualLight.A_SetPitch(pitch, true);
 
 		//Particles
-		for (double i = 1; i < 12; i++) {
+		for (double d = 4; d < 48; d = d + 2) {
 			A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
-				1, (sin(70) * i * 18), 0,
-				cos(pitch) * cos(angle) * 4 * i, cos(pitch) * sin(angle) * 4 * i, sin(-pitch) * 4 * i,
+				1, (sin(35) * d * 5), 0,
+				cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
 				vel.x, vel.y, vel.z,
 				0, 0, 0,
-				0.5 / (i ** 2), 0, 0);
+				4.0 / (d ** 2), 0, 0);
 		}
+	}
+
+	states {
+		Spawn:
+			UGSI A 0;
+		LightOn:
+			#### A 35 BRIGHT;
+		LightOff:
+			#### B 35;
+			loop;
 	}
 
 	double DampedSpring(double p, double r, double v, double k, double d) {
