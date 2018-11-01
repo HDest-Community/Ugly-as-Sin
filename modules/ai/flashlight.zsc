@@ -4,22 +4,41 @@ extend class UaS_AI_Handler {
 	bool Flashing;
 	int flashrate;
 
-
 	void Flashlight() {
+		// Only do light for human-type classes
 		bool validClass = (
 			owner.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("DragonGuard", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("HDMarine", AAPTR_DEFAULT, true)
 		);
-
 		if (!validClass) { return; }
-		if (owner.health <= 0) { return; }
 
+		// Toss and disconnect if owner dies
+		if (owner.health <= 0) {
+			if (monsterLight) {
+				monsterLight.vel.x = frandom(-5, 5);
+				monsterLight.vel.y = frandom(-5, 5);
+				monsterLight.vel.z = frandom(2, 5);
+				monsterLight.rot.a = frandom(-75, 75);
+				monsterLight.rot.p = frandom(-25, 25);
+				monsterLight.followTarget = null;
+				monsterLight = null;
+			}
+			// Abort since owner dead.
+			return;
+		}
+
+		// Create new light if owner alive and there isn't one.
 		if (!monsterlight) {
 			monsterlight = UaS_Monster_Flashlight(actor.spawn("UaS_Monster_Flashlight", owner.pos, false));
 			monsterlight.followTarget = owner;
+			monsterLight.brightness = 1.0;
 		}
+
+		// Point down if not aiming
+		if (owner.frame != 4 && owner.frame != 5) { monsterlight.offsetPitch = 35; }
+		else { monsterlight.offsetPitch = 0; }
 
 		if(!UaS_AI_Flashlights) {
 			monsterlight.active = false;
@@ -46,10 +65,8 @@ extend class UaS_AI_Handler {
 
 		if (Flashing && level.maptime & flashrate == 0) { monsterlight.active = !monsterlight.active; }
 
-		if (owner.frame != 4 && owner.frame != 5) { monsterlight.offsetPitch = 35; }
-		else { monsterlight.offsetPitch = 0; }
-
 		recheck--;
+
 	}
 }
 
@@ -71,7 +88,7 @@ class UaS_Monster_Flashlight_Light : DynamicLight {
 		args[DynamicLight.LIGHT_RED] = 255;
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
-		args[DynamicLight.LIGHT_INTENSITY] = 192;
+		args[DynamicLight.LIGHT_INTENSITY] = 128;
 		SpotInnerAngle = 15;
 		SpotOuterAngle = 35;
 	}
@@ -86,6 +103,7 @@ class UaS_Monster_Flashlight : Actor {
 	actor actualLight;
 	bool active;
 	int offsetAngle, offsetPitch;
+	double brightness;
 
 	default {
 		radius 2;
@@ -98,37 +116,13 @@ class UaS_Monster_Flashlight : Actor {
 
 	override void Tick() {
 		super.Tick();
-		if(!followTarget) {
-			destroy();
-			return;
-		}
 
-		if(active && !actualLight) {
-			actualLight = actor.spawn("UaS_Monster_Flashlight_Light", pos, false);
-			actualLight.target = self;
-		}
-		else if (!active && actualLight) {
-			actualLight.Destroy();
-			SetStateLabel("LightOff");
-		}
+		// Update rotation/pitcj
+		A_SetAngle(angle + (rot.a / 4), true);
+		A_SetPitch(pitch + (rot.p / 4), true);
 
-		if(followtarget.health <= 0) {
-			if(!targetKilled) {
-				vel.x = frandom(-5, 5);
-				vel.y = frandom(-5, 5);
-				vel.z = frandom(0, 5);
-				rot.a = frandom(-50, 50);
-				rot.p = frandom(-50, 50);
-				targetKilled = true;
-			}
-			if(pos.z - floorz <=0) {
-				rot.a *= 0.95;
-				vel.xy += RotateVector(vel.xy, angle - rot.a);
-				rot.p = 0;
-				pitch = 0;
-			}
-		}
-		else if (followtarget.health > 0) {
+		// Handle held or loose light
+		if (followTarget) {
 			targetpos = followTarget.vec3Angle(8, followTarget.angle, followTarget.height * 0.75, false);
 			targetRot.a = followTarget.angle + offsetAngle;
 			targetRot.p = followTarget.pitch + offsetPitch;
@@ -138,30 +132,49 @@ class UaS_Monster_Flashlight : Actor {
 			rot.a += DampedSpring(angle, targetRot.a, rot.a, 0.25, 0.2);
 			rot.p += DampedSpring(pitch, targetRot.p, rot.p, 0.25, 0.2);
 		}
+		else {
+			brightness += frandom(brightness * -0.2, brightness * 0.2);
+			brightness = clamp(brightness * 0.999, 0, 1);
+			if (brightness <= 0.1) { destroy(); }
+			if (pos.z - floorz <= 0) {
+				rot.a *= 0.95;
+				vel.xy += RotateVector(vel.xy, angle - rot.a);
+				rot.p = 0;
+				pitch = 0;
+			}
+		}
 
-		A_SetAngle(angle + (rot.a / 4), true);
-		A_SetPitch(pitch + (rot.p / 4), true);
+		switch(active) {
+			case true:
+				SetStateLabel("LightOn");
+				if (!actualLight) {
+					actualLight = actor.spawn("UaS_Monster_Flashlight_Light", pos, false);
+					actualLight.target = self;
+				}
+				actualLight.A_SetAngle(angle, true);
+				actualLight.A_SetPitch(pitch, true);
+				actualLight.args[DynamicLight.LIGHT_INTENSITY] = 128 * brightness;
 
-		if(!actuallight) { return; }
-
-		SetStateLabel("LightOn");
-		actualLight.A_SetAngle(angle, true);
-		actualLight.A_SetPitch(pitch, true);
-
-		//Particles
-		for (double d = 4; d < 48; d = d + 2) {
-			A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
-				1, (sin(35) * d * 5), 0,
-				cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
-				vel.x, vel.y, vel.z,
-				0, 0, 0,
-				4.0 / (d ** 2), 0, 0);
+				// Draw particle beam
+				for (double d = 1; d < 48; d = d + (d / 2)) {
+					A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
+						1, (sin(35) * d * 8), 0,
+						cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+						vel.x, vel.y, vel.z,
+						0, 0, 0,
+						(4.0 * brightness) / (d ** 2), 0, 0);
+				}
+				break;
+			case false:
+				SetStateLabel("LightOff");
+				if (actualLight) { actualLight.Destroy(); }
+				break;
 		}
 	}
 
 	states {
 		Spawn:
-			UGSI A 0;
+			TNT1 A 0;
 		LightOn:
 			#### A 35 BRIGHT;
 		LightOff:
