@@ -33,7 +33,15 @@ extend class UaS_AI_Handler {
 		if (!monsterlight) {
 			monsterlight = UaS_Monster_Flashlight(actor.spawn("UaS_Monster_Flashlight", owner.pos, false));
 			monsterlight.followTarget = owner;
-			monsterLight.brightness = 1.0;
+			if (UaS.RandomChance(0.5)) {
+				monsterLight.laser = false;
+				monsterLight.brightness = 1.0;
+			}
+			else {
+				monsterLight.laser = true;
+				monsterLight.laserColor = "RED";
+				if (owner.bFRIENDLY == true) { monsterLight.laserColor = "GREEN"; }
+			}
 		}
 
 		// Point down if not aiming
@@ -104,6 +112,8 @@ class UaS_Monster_Flashlight : Actor {
 	bool active;
 	int offsetAngle, offsetPitch;
 	double brightness;
+	color laserColor;
+	bool laser;
 
 	default {
 		radius 2;
@@ -147,35 +157,46 @@ class UaS_Monster_Flashlight : Actor {
 		switch(active) {
 			case true:
 				SetStateLabel("LightOn");
-				if (!actualLight) {
-					actualLight = actor.spawn("UaS_Monster_Flashlight_Light", pos, false);
-					actualLight.target = self;
-				}
-				actualLight.A_SetAngle(angle, true);
-				actualLight.A_SetPitch(pitch, true);
-				actualLight.args[DynamicLight.LIGHT_INTENSITY] = 128 * brightness;
 
-				// Draw particle beam
-				for (double d = 1; d < 48; d = d + (d / 2)) {
-					A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
-						1, (sin(35) * d * 8), 0,
-						cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
-						vel.x, vel.y, vel.z,
-						0, 0, 0,
-						(4.0 * brightness) / (d ** 2), 0, 0);
-				}
-
-				// Draw laser
-				/*FLineTraceData laserTrace;
-				LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
-				for (double d = 1; d < laserTrace.distance; d = d + random(1, 8)) {
-					A_SpawnParticle("GREEN", SPF_FULLBRIGHT|SPF_RELANG,
-						1, 1, 0,
-						cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+				if (laser == TRUE) {
+					// Draw laser
+					FLineTraceData laserTrace;
+					LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
+					for (double d = 8; d < laserTrace.distance; d = d + frandom(1, d / 128)) {
+						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
+							1, 0.75, 0,
+							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+							frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
+							0, 0, 0,
+							frandom(0.1, 1.0), -1, 0);
+					}
+					double dotdist = laserTrace.distance - 1;
+					// Laserdot
+					A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
+						1, 2, 0,
+						cos(pitch) * cos(angle) * dotdist, cos(pitch) * sin(angle) * dotdist, sin(-pitch) * dotdist,
 						frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 						0, 0, 0,
-						1.0, -1, 0);
-				}*/
+						0.9, -1, 0);
+				}
+				else {
+					if (!actualLight) {
+						actualLight = actor.spawn("UaS_Monster_Flashlight_Light", pos, false);
+						actualLight.target = self;
+					}
+					actualLight.A_SetAngle(angle, true);
+					actualLight.A_SetPitch(pitch, true);
+					actualLight.args[DynamicLight.LIGHT_INTENSITY] = 128 * brightness;
+					// Draw flashlight particle beam
+					for (double d = 1; d < 48; d = d + (d / 2)) {
+						A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
+							1, (sin(35) * d * 8), 0,
+							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+							vel.x, vel.y, vel.z,
+							0, 0, 0,
+							(4.0 * brightness) / (d ** 2), 0, 0);
+					}
+				}
 				break;
 			case false:
 				SetStateLabel("LightOff");
