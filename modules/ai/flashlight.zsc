@@ -1,8 +1,10 @@
 extend class UaS_AI_Handler {
 	UaS_Monster_Flashlight monsterlight;
 	int	Recheck;
+	double activateChance;
 	bool Flashing;
 	int flashrate;
+	int minlightlevel;
 
 	void Flashlight() {
 		// Only do light for human-type classes
@@ -57,7 +59,10 @@ extend class UaS_AI_Handler {
 			FLineTraceData lookSpot;
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
 			double lightlevel = lookSpot.HitSector.LightLevel;
-			if (frandom(0, 1) >= (lightlevel / 128)) {
+			if (owner.bAMBUSH) { minlightlevel = 16; }
+			else { minlightlevel = 128; }
+			activateChance = (lightlevel / minlightlevel);
+			if (frandom(0, 1) >= activateChance) {
 				monsterlight.active = true; }
 			else {
 				monsterlight.active = false;
@@ -68,7 +73,8 @@ extend class UaS_AI_Handler {
 
 		Flashing = (owner.target &&
 			owner.CheckClass("HDMarine", AAPTR_DEFAULT, true) &&
-			(owner.frame == 4 || owner.frame == 5)
+			(owner.frame == 4 || owner.frame == 5) &&
+			monsterlight.laser == false
 		);
 
 		if (Flashing && level.maptime & flashrate == 0) { monsterlight.active = !monsterlight.active; }
@@ -164,7 +170,7 @@ class UaS_Monster_Flashlight : Actor {
 					LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
 					for (double d = 8; d < laserTrace.distance; d = d + frandom(1, d / 128)) {
 						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-							1, 0.75, 0,
+							1, 0.5, 0,
 							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
 							frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 							0, 0, 0,
@@ -174,7 +180,7 @@ class UaS_Monster_Flashlight : Actor {
 					// Laserdot
 					A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
 						1, 2, 0,
-						cos(pitch) * cos(angle) * dotdist, cos(pitch) * sin(angle) * dotdist, sin(-pitch) * dotdist,
+						(cos(pitch) * cos(angle) * dotdist), (cos(pitch) * sin(angle) * dotdist), (sin(-pitch) * dotdist),
 						frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 						0, 0, 0,
 						0.9, -1, 0);
