@@ -59,8 +59,7 @@ extend class UaS_AI_Handler {
 			FLineTraceData lookSpot;
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
 			double lightlevel = lookSpot.HitSector.LightLevel;
-			if (owner.bAMBUSH) { minlightlevel = 16; }
-			else { minlightlevel = 128; }
+			minlightlevel = 128;
 			activateChance = (lightlevel / minlightlevel);
 			if (frandom(0, 1) >= activateChance) {
 				monsterlight.active = true; }
