@@ -60,12 +60,10 @@ extend class UaS_AI_Handler {
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
 			double lightlevel = lookSpot.HitSector.LightLevel;
 			minlightlevel = 128;
+			if (monsterlight.laser) { minlightlevel = 512; }
 			activateChance = (lightlevel / minlightlevel);
-			if (frandom(0, 1) >= activateChance) {
-				monsterlight.active = true; }
-			else {
-				monsterlight.active = false;
-			}
+			monsterlight.active = false;
+			if (frandom(0, 1) >= activateChance) { monsterlight.active = true; }
 			recheck = max(random(35,175), lightlevel );
 			flashrate = random(1, 4);
 		}
@@ -107,6 +105,18 @@ class UaS_Monster_Flashlight_Light : DynamicLight {
 	}
 }
 
+class UaS_Monster_Laserdot : DynamicLight {
+	default {
+		DynamicLight.Type "Point";
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		args[DynamicLight.LIGHT_INTENSITY] = 2;
+	}
+}
+
+
 class UaS_Monster_Flashlight : Actor {
 	actor followTarget;
 	rotationinfo rot;
@@ -119,6 +129,7 @@ class UaS_Monster_Flashlight : Actor {
 	double brightness;
 	color laserColor;
 	bool laser;
+	actor laserdot;
 
 	default {
 		radius 2;
@@ -167,7 +178,7 @@ class UaS_Monster_Flashlight : Actor {
 					// Draw laser
 					FLineTraceData laserTrace;
 					LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
-					for (double d = 8; d < laserTrace.distance; d = d + frandom(1, d / 128)) {
+					for (double d = 8; d < laserTrace.distance; d = d + frandom(1, d / 64)) {
 						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
 							1, frandom(0.5, 1.0), 0,
 							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
@@ -176,10 +187,17 @@ class UaS_Monster_Flashlight : Actor {
 							frandom(0.5, 1.0), -1, 0);
 					}
 					double dotdist = laserTrace.distance - 1;
+					vector3 dotpos = ((cos(pitch) * cos(angle) * dotdist), (cos(pitch) * sin(angle) * dotdist), (sin(-pitch) * dotdist)); // relative!
 					// Laserdot
+					if (!laserdot) {
+						laserdot = actor.spawn("UaS_Monster_Laserdot", pos + dotpos, false);
+						laserdot.args[DynamicLight.LIGHT_RED] = lasercolor.r;
+						laserdot.args[DynamicLight.LIGHT_GREEN] = lasercolor.g;
+					}
+					laserdot.SetOrigin(pos + dotpos, true);
 					A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-						1, 4, 0,
-						(cos(pitch) * cos(angle) * dotdist), (cos(pitch) * sin(angle) * dotdist), (sin(-pitch) * dotdist),
+						1, 1, 0,
+						dotpos.x, dotpos.y, dotpos.z,
 						frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 						0, 0, 0,
 						0.9, -1, 0);
