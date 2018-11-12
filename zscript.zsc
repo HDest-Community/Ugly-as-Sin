@@ -44,6 +44,7 @@ version "3.5"
 #include "modules/ai/wounded.zsc"
 #include "modules/ai/searching.zsc"
 #include "modules/ai/flashlight.zsc"
+#include "modules/ai/stealth.zsc"
 
 // Player Incapacitation
 #include "modules/incap/bootstrap.zsc"

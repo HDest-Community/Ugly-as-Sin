@@ -1,0 +1,36 @@
+class UaS_StealthHandler : Inventory {
+	int recheck;
+	int threshold;
+	int stealth;
+
+	default {
+		+INVENTORY.AUTOACTIVATE;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	/*override void DoEffect() {
+		super.DoEffect();
+		if(!owner || !owner.player) { return; }
+
+		threshold  = owner.cursector.lightlevel;
+		threshold += owner.vel.length();
+		if (owner.frame == 4) { threshold += 128; }
+
+		if (random[stealth](16, 64) > threshold) {
+						owner.bSHADOW = false;
+					}
+
+		if (recheck > threshold) {
+			recheck = 0;
+			owner.bSHADOW = false;
+
+		}
+
+		recheck++;
+
+		owner.A_Log("Light: "..owner.cursector.lightlevel.."\tShadow: "..owner.bSHADOW);
+
+		//if (level.maptime % 35 == 0) { console.printf("threshold: "..threshold.."\tShadow: "..owner.bSHADOW); }
+	}*/
+}
