@@ -1,0 +1,4 @@
+const UAS_HDLD_RELOADKIT = "rld";
+const UAS_HDLD_MESSKIT = "msk";
+const UAS_HDLD_SLING = "slg";
+const UAS_HDLD_2FMOD = "2fm";

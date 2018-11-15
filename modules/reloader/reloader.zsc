@@ -31,6 +31,9 @@ class UaS_Reloader : HDWeapon {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
+		hdweapon.nicename "Reloading Kit";
+		hdweapon.fitsinbackpack true;
+		hdweapon.refid UAS_HDLD_RELOADKIT;
 	}
 
 	override double, int weaponbulk(){

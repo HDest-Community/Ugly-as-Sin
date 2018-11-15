@@ -6,6 +6,9 @@ version "3.5"
 // Debugging
 #include "modules/debug.zsc"
 
+// Constants
+#include "modules/constants.zsc"
+
 // Hunger and Thirst scripts
 #include "modules/hunger/bootstrap.zsc"
 #include "modules/hunger/spawner.zsc"

@@ -14,6 +14,9 @@ class UaS_MessKit : HDWeapon {
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
+		hdweapon.nicename "Messkit";
+		hdweapon.fitsinbackpack true;
+		hdweapon.refid UAS_HDLD_MESSKIT;
 	}
 
 	override double, int weaponbulk(){

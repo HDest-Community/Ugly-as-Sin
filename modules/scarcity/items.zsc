@@ -42,6 +42,8 @@ class UaS_2FCartridge : HDPickup {
 		+INVENTORY.IGNORESKILL;
 		+Inventory.KEEPDEPLETED;
 		scale 0.25;
+		hdpickup.nicename "Second Flesh Cartridge";
+		hdpickup.refid UAS_HDLD_2FMOD;
 	}
 
 	action void HelpMessage() {
