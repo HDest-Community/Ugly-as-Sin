@@ -83,7 +83,7 @@ extend class UaS_AI_Handler {
 					ClearPath();
 					return;
 				}
-				if(owner.CheckIfTargetInLOS() && !owner.target.bSHADOW) {
+				if(owner.target.bSHADOW == false && owner.CheckIfTargetInLOS()) {
 					// Add to countdown while in LOS, up to 5 seconds
 					// as a sort of soft aggro-cooldown  before monsters
 					// switch to more passive goal chase.
