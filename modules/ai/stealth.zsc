@@ -40,6 +40,7 @@ class UaS_StealthHandler : Inventory {
 		// Iterate lights
 		while (currentLight = DynamicLight(LightFinder.Next())) {
 			if (currentLight.CheckClass("VisorLight")) { continue; } // Skip HD's nightvision visor light
+			if (!currentLight.CheckSight(owner)) { continue; } //Skip if the light isn't in LoS
 
 			vector3 posdiff = levellocals.Vec3Diff((owner.pos.x, owner.pos.y, owner.pos.z + (owner.height / 2)), currentlight.pos);
 			double currentDistance = posdiff.length(); //owner.Distance3D(currentLight);
