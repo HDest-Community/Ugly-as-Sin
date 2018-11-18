@@ -22,12 +22,12 @@ class UaS_StealthHandler : Inventory {
 
 		if (stealth == 100) {
 			owner.bSHADOW = true;
-			Shader.SetEnabled(owner.player,"stealthvision", true);
 		}
 		if (stealth == 0) {
 			owner.bSHADOW = false;
-			Shader.SetEnabled(owner.player,"stealthvision", false);
 		}
+		Shader.SetUniform1f(owner.player, "stealthvision", "stealth", double(stealth * 0.01));
+		Shader.SetEnabled(owner.player, "stealthvision", true);
 	}
 
 	int GetLightLevel() {

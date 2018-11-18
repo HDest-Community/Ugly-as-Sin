@@ -9,4 +9,5 @@ HardwareShader PostProcess scene
 {
 	Name "stealthvision"
 	Shader "shaders/uas_stealth.fp" 330
+	Uniform float stealth
 }
