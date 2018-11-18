@@ -92,7 +92,7 @@ extend class UaS_AI_Handler {
 					pathHeading = owner.target.vel;
 					break;
 				}
-				if(countdown == 0) {
+				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
 					owner.A_ClearTarget();
