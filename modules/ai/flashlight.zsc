@@ -135,6 +135,7 @@ class UaS_Monster_Flashlight : Actor {
 		radius 2;
 		height 4;
 		+THRUACTORS;
+		+NOBLOCKMONST;
 		scale 0.25;
 		friction 0.1;
 		RenderStyle "Add";
