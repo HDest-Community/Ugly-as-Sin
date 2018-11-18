@@ -7,4 +7,11 @@ class UaS_AI_Bootstrap : EventHandler {
 			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) { console.printf("Gave AI tracker to "..e.Thing.GetClassName()); }
 		}
 	}
+
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(!UaS_AdvancedAIEnabled) { return; }
+		if(!UaS_AI_Stealth) { return; }
+		player.mo.Giveinventory("UaS_StealthHandler", 1);
+	}
 }

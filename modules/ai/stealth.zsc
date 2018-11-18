@@ -1,7 +1,9 @@
 class UaS_StealthHandler : Inventory {
-	int recheck;
 	int threshold;
 	int stealth;
+	int trueLightLevel;
+	ThinkerIterator LightFinder;
+	DynamicLight currentLight;
 
 	default {
 		+INVENTORY.AUTOACTIVATE;
@@ -9,28 +11,53 @@ class UaS_StealthHandler : Inventory {
 		+INVENTORY.UNTOSSABLE;
 	}
 
-	/*override void DoEffect() {
-		super.DoEffect();
-		if(!owner || !owner.player) { return; }
+	override void DoEffect() {
+		if (!owner || !owner.player) { return; }
+		if (!UaS_AI_Stealth) { return; }
 
-		threshold  = owner.cursector.lightlevel;
-		threshold += owner.vel.length();
-		if (owner.frame == 4) { threshold += 128; }
+		threshold = (24 / owner.player.crouchfactor) - owner.vel.length();
 
-		if (random[stealth](16, 64) > threshold) {
-						owner.bSHADOW = false;
-					}
+		stealth -= clamp(GetLightLevel() - threshold, -5, 5);
+		stealth = clamp(stealth, 0, 100);
 
-		if (recheck > threshold) {
-			recheck = 0;
-			owner.bSHADOW = false;
+		if (stealth == 100) { owner.bSHADOW = true; }
+		if (stealth == 0) { owner.bSHADOW = false; }
 
+		//owner.A_Log("Stealth "..stealth);
+	}
+
+	int GetLightLevel() {
+		// Set up light iterator
+		LightFinder = ThinkerIterator.Create("DynamicLight", Thinker.STAT_DLIGHT);
+
+		// Initial "base" lightlevel
+		int trueLightLevel = owner.cursector.lightlevel;
+
+		// Iterate lights
+		while (currentLight = DynamicLight(LightFinder.Next())) {
+			if (currentLight.CheckClass("VisorLight")) { continue; } // Skip HD's nightvision visor light
+
+			double currentDistance = owner.Distance3D(currentLight);
+
+			double distanceFactor = currentDistance / double(currentLight.args[DynamicLight.LIGHT_INTENSITY] * 2);
+
+			double avgIntensity = (currentLight.args[DynamicLight.LIGHT_RED] +
+				currentLight.args[DynamicLight.LIGHT_GREEN] +
+				currentLight.args[DynamicLight.LIGHT_BLUE]) / 3;
+
+			avgIntensity *= 1.0 - distanceFactor;
+
+			if (currentlight.bSPOT) {
+				double offangle = abs(deltaangle(currentlight.AngleTo(owner), currentlight.angle));
+				if (offangle > currentlight.SpotInnerAngle) { avgIntensity *= 0.5; }
+				if (offangle > currentlight.SpotOuterAngle) { avgIntensity *= 0.0; }
+			}
+
+			if (currentDistance < owner.radius * 3) { avgIntensity = 255; }
+
+			trueLightLevel = max(trueLightLevel, avgIntensity);
 		}
-
-		recheck++;
-
-		owner.A_Log("Light: "..owner.cursector.lightlevel.."\tShadow: "..owner.bSHADOW);
-
-		//if (level.maptime % 35 == 0) { console.printf("threshold: "..threshold.."\tShadow: "..owner.bSHADOW); }
-	}*/
+		//owner.A_Log("lightlevel "..trueLightLevel);
+		return trueLightLevel;
+	}
 }

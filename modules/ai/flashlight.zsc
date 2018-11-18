@@ -159,7 +159,7 @@ class UaS_Monster_Flashlight : Actor {
 			rot.p += DampedSpring(pitch, targetRot.p, rot.p, 0.25, 0.2);
 		}
 		else {
-			brightness += frandom(brightness * -0.2, brightness * 0.2);
+			brightness += frandom(brightness * -0.1, brightness * 0.1);
 			brightness = clamp(brightness * 0.999, 0, 1);
 			if (brightness <= 0.1) {
 				if (actuallight) { actualLight.destroy(); }
