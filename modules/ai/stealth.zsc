@@ -20,8 +20,14 @@ class UaS_StealthHandler : Inventory {
 		stealth -= clamp(GetLightLevel() - threshold, -5, 5);
 		stealth = clamp(stealth, 0, 100);
 
-		if (stealth == 100) { owner.bSHADOW = true; }
-		if (stealth == 0) { owner.bSHADOW = false; }
+		if (stealth == 100) {
+			owner.bSHADOW = true;
+			Shader.SetEnabled(owner.player,"stealthvision", true);
+		}
+		if (stealth == 0) {
+			owner.bSHADOW = false;
+			Shader.SetEnabled(owner.player,"stealthvision", false);
+		}
 	}
 
 	int GetLightLevel() {

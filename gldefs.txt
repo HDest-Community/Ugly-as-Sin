@@ -4,3 +4,9 @@ HardwareShader PostProcess scene {
 	Uniform float intensity
 	Uniform float falloff
 }
+
+HardwareShader PostProcess scene
+{
+	Name "stealthvision"
+	Shader "shaders/uas_stealth.fp" 330
+}
