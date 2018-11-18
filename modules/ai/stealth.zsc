@@ -2,7 +2,6 @@ class UaS_StealthHandler : Inventory {
 	int threshold;
 	int stealth;
 	int trueLightLevel;
-	ThinkerIterator LightFinder;
 	DynamicLight currentLight;
 
 	default {
@@ -32,7 +31,7 @@ class UaS_StealthHandler : Inventory {
 
 	int GetLightLevel() {
 		// Set up light iterator
-		LightFinder = ThinkerIterator.Create("DynamicLight", Thinker.STAT_DLIGHT);
+		ThinkerIterator LightFinder = ThinkerIterator.Create("DynamicLight", Thinker.STAT_DLIGHT);
 
 		// Initial "base" lightlevel
 		int trueLightLevel = owner.cursector.lightlevel;
