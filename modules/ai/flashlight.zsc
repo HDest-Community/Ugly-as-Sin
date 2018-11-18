@@ -150,7 +150,9 @@ class UaS_Monster_Flashlight : Actor {
 
 		// Handle held or loose light
 		if (followTarget) {
-			targetpos = followTarget.vec3Angle(8, followTarget.angle, followTarget.height * 0.75, false);
+			targetpos = followTarget.vec3Angle(6 * cos(followtarget.pitch),
+				followTarget.angle,
+				(6 * sin(followtarget.pitch)) + followTarget.height * 0.75, false);
 			targetRot.a = followTarget.angle + offsetAngle;
 			targetRot.p = followTarget.pitch + offsetPitch;
 			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 0.5, 0.75);
