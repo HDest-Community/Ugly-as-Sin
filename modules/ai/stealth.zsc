@@ -55,9 +55,10 @@ class UaS_StealthHandler : Inventory {
 			if (currentlight.bSPOT) {
 				double offangle = abs(deltaangle(currentlight.AngleTo(owner), currentlight.angle));
 				if (offangle > currentlight.SpotInnerAngle) { avgIntensity *= 0.5; }
-				if (offangle > currentlight.SpotOuterAngle) { avgIntensity *= 0.0; }
-				if (currentDistance < owner.radius) { avgIntensity = 255; }
+				if (offangle > currentlight.SpotOuterAngle) { avgIntensity *= 0.1; }
 			}
+
+			if (currentDistance < owner.radius * 2) { avgIntensity *= 10; }
 
 			trueLightLevel = max(trueLightLevel, avgIntensity);
 		}
