@@ -190,7 +190,7 @@ class UaS_Monster_Flashlight : Actor {
 						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
 							1, frandom(1.0, 2.0), 0,
 							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
-							frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
+							-rot.a * cos(pitch) * sin(angle) * (d/256), rot.a * cos(pitch) * cos(angle) * (d/256), -rot.p * cos(pitch) * (d/256),
 							0, 0, 0,
 							frandom(0.5, 1.0), -1, 0);
 					}
