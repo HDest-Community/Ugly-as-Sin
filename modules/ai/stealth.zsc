@@ -50,15 +50,26 @@ class UaS_StealthHandler : Inventory {
 				currentLight.args[DynamicLight.LIGHT_GREEN] +
 				currentLight.args[DynamicLight.LIGHT_BLUE]) / 3;
 
+			// Invert cuz math
 			avgIntensity *= 1.0 - distanceFactor;
 
+			// Handle spotlights
 			if (currentlight.bSPOT) {
 				double offangle = abs(deltaangle(currentlight.AngleTo(owner), currentlight.angle));
 				if (offangle > currentlight.SpotInnerAngle) { avgIntensity *= 0.5; }
 				if (offangle > currentlight.SpotOuterAngle) { avgIntensity *= 0.1; }
 			}
 
-			if (currentDistance < owner.radius * 2) { avgIntensity *= 10; }
+			// Intensify lights close to player
+			if (currentDistance < owner.radius) { avgIntensity *= 10; }
+
+			// Special handling for Steve's Flashlight
+			// This is a disgusting hack, BTW
+			string steves = "ActorHeadLight";
+			if (currentLight.CheckClass(steves) && posdiff.xy.length() < owner.radius) { avgIntensity *= 10; }
+
+			// Handle dormant lights
+			if (currentLight.bDORMANT) { avgIntensity = 0; }
 
 			trueLightLevel = max(trueLightLevel, avgIntensity);
 		}
