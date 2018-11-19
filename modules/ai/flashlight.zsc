@@ -186,9 +186,9 @@ class UaS_Monster_Flashlight : Actor {
 					// Draw laser
 					FLineTraceData laserTrace;
 					LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
-					for (double d = 8; d < laserTrace.distance; d = d + frandom(1, d / 64)) {
+					for (double d = 8; d < laserTrace.distance; d = d + frandom(2.0, d / 128)) {
 						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-							1, frandom(0.5, 1.0), 0,
+							1, frandom(1.0, 2.0), 0,
 							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
 							frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 							0, 0, 0,
@@ -204,7 +204,7 @@ class UaS_Monster_Flashlight : Actor {
 					}
 					laserdot.SetOrigin(pos + dotpos, true);
 					A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-						1, 1, 0,
+						1, 2, 0,
 						dotpos.x, dotpos.y, dotpos.z,
 						frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1),
 						0, 0, 0,
