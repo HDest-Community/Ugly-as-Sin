@@ -85,6 +85,7 @@ class UaS_WeaponSling : HDPickup {
 			slingBraced = false;
 		}
 
+		// Movement debuffs
 		switch(ownr.runwalksprint) {
 			case -1:
 				break;
@@ -93,8 +94,15 @@ class UaS_WeaponSling : HDPickup {
 				break;
 			case 1:
 				slingBraced = false;
-				slingPrep = 0;
+				slingPrep = -15;
 				break;
+		}
+
+		// Stunning makes you lose sling
+		if (ownr.stunned > 0) {
+			slingActive = 0;
+			slingBraced = false;
+			slingPrep = 0;
 		}
 	}
 
