@@ -65,7 +65,7 @@ class UaS_WeaponSling : HDPickup {
 			}
 		}
 
-		if(slingActive && !(ownr.player.cmd.buttons & BT_ATTACK)) {
+		if(slingActive) {
 			slingPrep = min(slingPrep + 20, 360);
 		}
 		else {
