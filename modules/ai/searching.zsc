@@ -25,7 +25,7 @@ extend class UaS_AI_Handler {
 	vector3 pathPos, pathHeading;
 	array<actor> lastKnown;
 	actor oldTarget;
-	int countdown;
+	int countdown, seeTics;
 
 	enum modes {
 		normal = 0,
@@ -50,16 +50,83 @@ extend class UaS_AI_Handler {
 	}
 
 	void CreateSearchPath() {
+		if (pathHeading.length() == 0)
+			pathHeading = Vec3Angle(8.0, frandom(0,360), absolute: true);
+		else if (pathHeading.length() < 8.0)
+			pathHeading = pathHeading.unit() * 8.0;
 		double p_angle = VectorAngle(pathHeading.x, pathHeading.y);
+		double path_mult = frandom(17.5, 52.5);
 		FLineTraceData data;
 		ClearPath(); // Just in case
 		PushPath(pathPos);
-		lastKnown[0].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
+		lastKnown[0].LineTrace(p_angle,pathHeading.length()*path_mult,0,TRF_THRUACTORS,25,0,0,data);
 		PushPath(lastKnown[0].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		for (int i = 0; i < 6; i++)
 		{
-			p_angle = frandom[ai](0,360);
-			lastKnown[1].LineTrace(p_angle,pathHeading.length()*105,0,TRF_THRUACTORS,25,0,0,data);
+			p_angle = frandom(0,360);
+			lastKnown[1].LineTrace(p_angle,pathHeading.length()*path_mult,0,TRF_THRUACTORS,25,0,0,data);
+			PushPath(lastKnown[1].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
+		}
+		GetHelp();
+	}
+	
+	bool HasDifferentTarget(Actor other)
+	{
+		if (other.target && !UaS_LastKnownMarker(other.target) && other.target != owner.target)
+			return true;
+		return false;
+	}
+
+	void GetHelp()
+	{
+		BlockThingsIterator iterator = BlockThingsIterator.Create(owner, 512);
+		Actor next;
+		while(iterator.Next())
+		{
+			next = iterator.Thing;
+			if (!next.bIsMonster || next.bAmbush || next.health <= 0 || next == owner || !next.IsVisible(owner,True)) continue;
+			
+			if(UaS_Debug >= 1) { console.printf(owner.getclassname().."[A] found ally "..next.getclassname().."[B]"); }
+			UaS_AI_Handler nextAI = UaS_AI_Handler(next.FindInventory('UaS_AI_Handler'));
+			if (!nextAI || nextAI.seeTics < seeTics || HasDifferentTarget(next))
+			{
+				if(UaS_Debug >= 1) Console.PrintF("...but "..next.GetClassName().."[B] had better intel.");
+				continue;
+			}
+			if(UaS_Debug >= 1) { console.printf("...and shared intel with them!"); }
+			nextAI.seeTics = seeTics;
+			nextAI.pathPos = pathPos;
+			nextAI.pathHeading = pathHeading;
+			nextAI.countdown = random(60, 120) * 35;
+			next.A_ClearTarget();
+			nextAI.CreateGroupSearchPath(owner);
+			next.target = nextAI.lastKnown[0];
+			next.goal = nextAI.lastKnown[0];
+			next.bChaseGoal = true;
+			nextAI.AIMode = chasing;
+			if(UaS_Debug >= 1) { console.printf(next.getclassname().." switch to chasing"); }
+		}
+	}
+	
+	void CreateGroupSearchPath(Actor ally)
+	{
+		if (pathHeading.length() == 0)
+			pathHeading = Vec3Angle(8.0, frandom(0,360), absolute: true);
+		else if (pathHeading.length() < 8.0)
+			pathHeading = pathHeading.unit() * 8.0;
+		double p_angle = VectorAngle(pathHeading.x, pathHeading.y);
+		double path_mult = frandom(17.5, 52.5);
+		FLineTraceData data;
+		ClearPath(); // Just in case
+		if ((ally.pos - pathPos).length() < (owner.pos - pathPos).length())
+			PushPath(ally.pos);
+		PushPath(pathPos);
+		lastKnown[0].LineTrace(p_angle,pathHeading.length()*path_mult,0,TRF_THRUACTORS,25,0,0,data);
+		PushPath(lastKnown[0].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
+		for (int i = 0; i < 6; i++)
+		{
+			p_angle = frandom(0,360);
+			lastKnown[1].LineTrace(p_angle,pathHeading.length()*path_mult,0,TRF_THRUACTORS,25,0,0,data);
 			PushPath(lastKnown[1].pos + Vec3Angle(data.distance - 8, p_angle, 0, true));
 		}
 	}
@@ -90,6 +157,14 @@ extend class UaS_AI_Handler {
 					countdown = clamp(countdown + 1, 35, 175);
 					pathPos = owner.target.pos;
 					pathHeading = owner.target.vel;
+					if (owner.bAmbush) owner.bAmbush = false;
+					if (seeTics >= 18)
+					{
+						seeTics = 0;
+						GetHelp();
+					}
+					else
+						seeTics = 0;
 					break;
 				}
 				if(countdown <= 0) {
@@ -133,6 +208,7 @@ extend class UaS_AI_Handler {
 						if(UaS_Debug & AI) { console.printf(owner.getclassname().." switch to searching"); }
 					}
 				}
+				seeTics++;
 				break;
 			// Reached last position or search timer dropped too low. Wander in area.
 			case searching:
@@ -153,6 +229,7 @@ extend class UaS_AI_Handler {
 					owner.goal = null;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname().." gave up the search"); }
 				}
+				seeTics++;
 				break;
 		}
 		countdown = max(countdown - 1, -1);
