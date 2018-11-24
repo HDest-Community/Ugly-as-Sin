@@ -9,4 +9,5 @@ enum UaS_Debug_Flags {
 	AI = 128,
 	InCap = 256,
 	Looting = 512,
+	stealth = 1024,
 };

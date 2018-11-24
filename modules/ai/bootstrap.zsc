@@ -1,10 +1,17 @@
 class UaS_AI_Bootstrap : EventHandler {
+	int givenAIHandlers;
+
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
 		if(!UaS_AdvancedAIEnabled) { return; }
 		if(e.Thing.bISMONSTER) {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
-			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) { console.printf("Gave AI tracker to "..e.Thing.GetClassName()); }
+			actor givenHandler = e.thing.FindInventory("UaS_AI_Handler");
+			givenHandler.score = givenAIHandlers;
+			givenAIHandlers++;
+			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) {
+				console.printf("Gave AI tracker "..givenHandler.score.." to "..e.Thing.GetClassName());
+			}
 		}
 	}
 
