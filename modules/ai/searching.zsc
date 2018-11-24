@@ -100,6 +100,7 @@ extend class UaS_AI_Handler {
 			nextAI.pathHeading = pathHeading;
 			nextAI.countdown = random(60, 120) * 35;
 			next.A_ClearTarget();
+			next.A_ClearSoundTarget();
 			nextAI.CreateGroupSearchPath(owner);
 			next.target = nextAI.lastKnown[0];
 			next.goal = nextAI.lastKnown[0];
@@ -148,6 +149,7 @@ extend class UaS_AI_Handler {
 				if(!owner.target) { return; }
 				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
 					owner.A_ClearTarget();
+					owner.A_ClearSoundTarget();
 					ClearPath();
 					return;
 				}
@@ -172,6 +174,7 @@ extend class UaS_AI_Handler {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
 					owner.A_ClearTarget();
+					owner.A_ClearSoundTarget();
 					CreateSearchPath();
 					owner.target = lastKnown[0];
 					owner.goal = lastKnown[0];
@@ -202,6 +205,7 @@ extend class UaS_AI_Handler {
 					else
 					{
 						owner.A_ClearTarget();
+						owner.A_ClearSoundTarget();
 						ClearPath();
 						owner.goal = null;
 						owner.bchasegoal = false;
@@ -227,6 +231,7 @@ extend class UaS_AI_Handler {
 				if(countdown <= 0) {
 					AIMode = normal;
 					owner.A_ClearTarget();
+					owner.A_ClearSoundTarget();
 					owner.goal = null;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." gave up the search"); }
 				}
