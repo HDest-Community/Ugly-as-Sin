@@ -133,7 +133,7 @@ extend class UaS_AI_Handler {
 		}
 	}
 
-	void ForgetAll(actor which = owner) {
+	void ForgetAll(actor which) {
 		which.A_ClearTarget();
 		which.A_ClearSoundTarget();
 		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
@@ -157,7 +157,7 @@ extend class UaS_AI_Handler {
 			case normal:
 				if(!owner.target) { return; }
 				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
-					ForgetAll();
+					ForgetAll(owner);
 					ClearPath();
 					return;
 				}
@@ -181,7 +181,7 @@ extend class UaS_AI_Handler {
 				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
-					ForgetAll();
+					ForgetAll(owner);
 					CreateSearchPath();
 					owner.target = lastKnown[0];
 					owner.goal = lastKnown[0];
@@ -211,7 +211,7 @@ extend class UaS_AI_Handler {
 					}
 					else
 					{
-						ForgetAll();
+						ForgetAll(owner);
 						ClearPath();
 						owner.goal = null;
 						owner.bchasegoal = false;
@@ -236,7 +236,7 @@ extend class UaS_AI_Handler {
 				// Finish the search and return to normal mode.
 				if(countdown <= 0) {
 					AIMode = normal;
-					ForgetAll();
+					ForgetAll(owner);
 					owner.goal = null;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." gave up the search"); }
 				}
