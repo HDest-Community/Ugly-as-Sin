@@ -99,8 +99,7 @@ extend class UaS_AI_Handler {
 			nextAI.pathPos = pathPos;
 			nextAI.pathHeading = pathHeading;
 			nextAI.countdown = random(60, 120) * 35;
-			next.A_ClearTarget();
-			next.A_ClearSoundTarget();
+			ForgetAll(next);
 			nextAI.CreateGroupSearchPath(owner);
 			next.target = nextAI.lastKnown[0];
 			next.goal = nextAI.lastKnown[0];
@@ -133,6 +132,15 @@ extend class UaS_AI_Handler {
 		}
 	}
 
+	void ForgetAll(actor which = owner) {
+		which.A_ClearTarget();
+		which.A_ClearSoundTarget();
+		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
+		while (currentMobster = mobit.Next()) {
+			if (currentMobster.master == which) { currentMobster.target = null; }
+		}
+	}
+
 	void SearchBehavior() {
 		if(!UaS_AI_Searching) { return; }
 
@@ -148,8 +156,7 @@ extend class UaS_AI_Handler {
 			case normal:
 				if(!owner.target) { return; }
 				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
-					owner.A_ClearTarget();
-					owner.A_ClearSoundTarget();
+					ForgetAll();
 					ClearPath();
 					return;
 				}
@@ -173,8 +180,7 @@ extend class UaS_AI_Handler {
 				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
-					owner.A_ClearTarget();
-					owner.A_ClearSoundTarget();
+					ForgetAll();
 					CreateSearchPath();
 					owner.target = lastKnown[0];
 					owner.goal = lastKnown[0];
@@ -204,8 +210,7 @@ extend class UaS_AI_Handler {
 					}
 					else
 					{
-						owner.A_ClearTarget();
-						owner.A_ClearSoundTarget();
+						ForgetAll();
 						ClearPath();
 						owner.goal = null;
 						owner.bchasegoal = false;
@@ -230,8 +235,7 @@ extend class UaS_AI_Handler {
 				// Finish the search and return to normal mode.
 				if(countdown <= 0) {
 					AIMode = normal;
-					owner.A_ClearTarget();
-					owner.A_ClearSoundTarget();
+					ForgetAll();
 					owner.goal = null;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." gave up the search"); }
 				}
