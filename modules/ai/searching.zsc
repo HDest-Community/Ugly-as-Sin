@@ -137,7 +137,7 @@ extend class UaS_AI_Handler {
 		which.A_ClearTarget();
 		which.A_ClearSoundTarget();
 		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
-		while (currentMobster = mobit.Next()) {
+		while (currentMobster = actor(mobit.Next())) {
 			if (currentMobster.master == which) { currentMobster.target = null; }
 		}
 	}
