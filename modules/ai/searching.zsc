@@ -197,6 +197,7 @@ extend class UaS_AI_Handler {
 					lastTarget = owner.target;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." acquired a new target!"); }
 				}
+				else { seeTics++; }
 				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
