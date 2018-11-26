@@ -7,6 +7,7 @@ class UaS_LastKnownMarker : Actor {
 		+FLATSPRITE;
 		Radius 1;
 		Height 1;
+		Health 0;
 	}
 
 	states {
@@ -26,6 +27,7 @@ extend class UaS_AI_Handler {
 	array<actor> lastKnown;
 	actor oldTarget;
 	int countdown, seeTics;
+	// score variable used as an identifier
 
 	enum modes {
 		normal = 0,
@@ -69,7 +71,7 @@ extend class UaS_AI_Handler {
 		}
 		GetHelp();
 	}
-	
+
 	bool HasDifferentTarget(Actor other)
 	{
 		if (other.target && !UaS_LastKnownMarker(other.target) && other.target != owner.target)
@@ -85,8 +87,8 @@ extend class UaS_AI_Handler {
 		{
 			next = iterator.Thing;
 			if (!next.bIsMonster || next.bAmbush || next.health <= 0 || next == owner || !next.IsVisible(owner,True)) continue;
-			
-			if(UaS_Debug >= 1) { console.printf(owner.getclassname().."[A] found ally "..next.getclassname().."[B]"); }
+
+			if(UaS_Debug >= 1) { console.printf(owner.getclassname()..score.."[A] found ally "..next.getclassname().."[B]"); }
 			UaS_AI_Handler nextAI = UaS_AI_Handler(next.FindInventory('UaS_AI_Handler'));
 			if (!nextAI || nextAI.seeTics < seeTics || HasDifferentTarget(next))
 			{
@@ -98,7 +100,7 @@ extend class UaS_AI_Handler {
 			nextAI.pathPos = pathPos;
 			nextAI.pathHeading = pathHeading;
 			nextAI.countdown = random(60, 120) * 35;
-			next.A_ClearTarget();
+			ForgetAll(next);
 			nextAI.CreateGroupSearchPath(owner);
 			next.target = nextAI.lastKnown[0];
 			next.goal = nextAI.lastKnown[0];
@@ -107,7 +109,7 @@ extend class UaS_AI_Handler {
 			if(UaS_Debug >= 1) { console.printf(next.getclassname().." switch to chasing"); }
 		}
 	}
-	
+
 	void CreateGroupSearchPath(Actor ally)
 	{
 		if (pathHeading.length() == 0)
@@ -131,6 +133,15 @@ extend class UaS_AI_Handler {
 		}
 	}
 
+	void ForgetAll(actor which) {
+		which.A_ClearTarget();
+		which.A_ClearSoundTarget();
+		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
+		while (currentMobster = actor(mobit.Next())) {
+			if (currentMobster.master == which) { currentMobster.target = null; }
+		}
+	}
+
 	void SearchBehavior() {
 		if(!UaS_AI_Searching) { return; }
 
@@ -146,7 +157,7 @@ extend class UaS_AI_Handler {
 			case normal:
 				if(!owner.target) { return; }
 				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
-					owner.A_ClearTarget();
+					ForgetAll(owner);
 					ClearPath();
 					return;
 				}
@@ -170,13 +181,13 @@ extend class UaS_AI_Handler {
 				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
-					owner.A_ClearTarget();
+					ForgetAll(owner);
 					CreateSearchPath();
 					owner.target = lastKnown[0];
 					owner.goal = lastKnown[0];
 					owner.bchasegoal = true;
 					AIMode = chasing;
-					if(UaS_Debug & AI) { console.printf(owner.getclassname().." switch to chasing"); }
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." switch to chasing"); }
 				}
 				break;
 			// Player LOS, set goal to last known position.
@@ -186,7 +197,7 @@ extend class UaS_AI_Handler {
 					AIMode = normal;
 					owner.goal = null;
 					owner.bchasegoal = false;
-					if(UaS_Debug & AI) { console.printf(owner.getclassname().." reacquired"); }
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." reacquired"); }
 				}
 				// Check if in search area or timer too low.
 				if(owner.Distance3D(lastKnown[0]) <= 64 || countdown <= (30 * 35)) {
@@ -196,16 +207,16 @@ extend class UaS_AI_Handler {
 						owner.target = lastKnown[0];
 						owner.goal = lastKnown[0];
 						countdown += 70;
-						if(UaS_Debug & AI) { console.printf(owner.getclassname().." path marker reached; continuing"); }
+						if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." path marker reached; continuing"); }
 					}
 					else
 					{
-						owner.A_ClearTarget();
+						ForgetAll(owner);
 						ClearPath();
 						owner.goal = null;
 						owner.bchasegoal = false;
 						AIMode = searching;
-						if(UaS_Debug & AI) { console.printf(owner.getclassname().." switch to searching"); }
+						if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." switch to searching"); }
 					}
 				}
 				seeTics++;
@@ -215,19 +226,19 @@ extend class UaS_AI_Handler {
 				// Abuse Hideous Destructor's monster-mover function.
 				if(countdown % 5 == 0) {
 					hdmobai.wander(owner, false);
-					if(UaS_Debug & AI) { console.printf(owner.getclassname().." searching for "..(countdown/35)); }
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." searching for "..(countdown/35)); }
 				}
 				// Another simple check to return to normal if monster gets a target.
 				if(owner.target) {
 					AIMode = normal;
-					if(UaS_Debug & AI) { console.printf(owner.getclassname().." reacquired"); }
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." reacquired"); }
 				}
 				// Finish the search and return to normal mode.
 				if(countdown <= 0) {
 					AIMode = normal;
-					owner.A_ClearTarget();
+					ForgetAll(owner);
 					owner.goal = null;
-					if(UaS_Debug & AI) { console.printf(owner.getclassname().." gave up the search"); }
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." gave up the search"); }
 				}
 				seeTics++;
 				break;

@@ -73,7 +73,7 @@ class UaS_StealthHandler : Inventory {
 
 			trueLightLevel = max(trueLightLevel, avgIntensity);
 		}
-		if (UaS_Debug & AI) { owner.A_Log("Stealth "..stealth.." - LightLevel "..trueLightLevel.." - threshold "..threshold); }
+		if (UaS_Debug & Stealth) { owner.A_Log("Stealth "..stealth.." - LightLevel "..trueLightLevel.." - threshold "..threshold); }
 		return trueLightLevel;
 	}
 }
