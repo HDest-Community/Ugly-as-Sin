@@ -25,7 +25,7 @@ extend class UaS_AI_Handler {
 	int AIMode;
 	vector3 pathPos, pathHeading;
 	array<actor> lastKnown;
-	actor oldTarget;
+	actor lastTarget;
 	int countdown, seeTics;
 	// score variable used as an identifier
 
@@ -136,8 +136,19 @@ extend class UaS_AI_Handler {
 	void ForgetAll(actor which) {
 		which.A_ClearTarget();
 		which.A_ClearSoundTarget();
+		if(which == owner) lastTarget = null;
+		else {
+			UaS_AI_Handler uaih = UaS_AI_Handler(which.FindInventory('UaS_AI_Handler'));
+			if(uaih)
+				uaih.lastTarget = null;
+		}
+		if(which.FindState("idle"))
+			which.SetStateLabel("idle");
+		else
+			which.SetStateLabel("spawn");
 		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
-		while (currentMobster = actor(mobit.Next())) {
+		Actor currentMobster;
+		while (currentMobster = Actor(mobit.Next())) {
 			if (currentMobster.master == which) { currentMobster.target = null; }
 		}
 	}
@@ -155,11 +166,11 @@ extend class UaS_AI_Handler {
 		switch(AIMode) {
 			// Standard AI mode, no changes to behavior
 			case normal:
-				if(!owner.target) { return; }
+				if(!owner.target) { break; }
 				if(lastKnown.size() > 0 && owner.target == lastKnown[0]) {
 					ForgetAll(owner);
 					ClearPath();
-					return;
+					break;
 				}
 				if(owner.target.bSHADOW == false && owner.CheckIfTargetInLOS()) {
 					// Add to countdown while in LOS, up to 5 seconds
@@ -178,6 +189,14 @@ extend class UaS_AI_Handler {
 						seeTics = 0;
 					break;
 				}
+				else if(owner.target != lastTarget) {
+					double soundAngle = owner.AngleTo(owner.target) + frandom(-90,90);
+					pathPos = owner.target.pos;
+					pathHeading = (AngleToVector(soundAngle, 8), 0);
+					countdown = max(countdown, 35);
+					lastTarget = owner.target;
+					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." acquired a new target!"); }
+				}
 				if(countdown <= 0) {
 					//set 1-2 minutes for chase + search time.
 					countdown = random[ai](60, 120) * 35;
@@ -193,14 +212,14 @@ extend class UaS_AI_Handler {
 			// Player LOS, set goal to last known position.
 			case chasing:
 				// Simple check to see if the monster has aquired another target.
-				if(owner.target != lastKnown[0] && !(owner.target is "UaS_LastKnownMarker")) {
+				if(owner.target && owner.target.health > 0) {
 					AIMode = normal;
 					owner.goal = null;
 					owner.bchasegoal = false;
 					if(UaS_Debug & AI) { console.printf(owner.getclassname()..score.." reacquired"); }
 				}
 				// Check if in search area or timer too low.
-				if(owner.Distance3D(lastKnown[0]) <= 64 || countdown <= (30 * 35)) {
+				if(owner.Distance3D(lastKnown[0]) <= owner.radius * 2 || countdown <= (30 * 35)) {
 					if(lastKnown.size() > 1)
 					{
 						PopPath();
