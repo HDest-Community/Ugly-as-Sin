@@ -19,8 +19,8 @@ class UaS_MessKit : HDWeapon {
 		hdweapon.refid UAS_HDLD_MESSKIT;
 	}
 
-	override double, int weaponbulk(){
-		return 15,0;
+	override double weaponbulk(){
+		return 15;
 	}
 
 	override void DoEffect() {

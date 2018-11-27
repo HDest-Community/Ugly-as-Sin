@@ -36,8 +36,8 @@ class UaS_Reloader : HDWeapon {
 		hdweapon.refid UAS_HDLD_RELOADKIT;
 	}
 
-	override double, int weaponbulk(){
-		return 20,0;
+	override double weaponbulk(){
+		return 20;
 	}
 
 	override void PostBeginPlay() {
