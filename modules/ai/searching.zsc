@@ -25,7 +25,7 @@ extend class UaS_AI_Handler {
 	int AIMode;
 	vector3 pathPos, pathHeading;
 	array<actor> lastKnown;
-	actor lastTarget;
+	actor lastTarget
 	int countdown, seeTics;
 	// score variable used as an identifier
 
