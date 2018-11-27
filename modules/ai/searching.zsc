@@ -17,8 +17,6 @@ extend class UaS_AI_Handler {
 		if(!UaS_AI_Searching) { return; }
 		if(owner.health <= 0) { return; }
 
-		//if (!owner.target) { return; }
-
 		if (owner.target && owner.target.CheckClass("HDPlayerPawn", AAPTR_DEFAULT, true)) {
 			countdown = random(30*35, 60*35);
 
@@ -35,7 +33,7 @@ extend class UaS_AI_Handler {
 		if (isSearching && !owner.target) {
 			if (lastknown) { lastKnown.destroy(); }
 			FLineTraceData nextNode;
-			owner.LineTrace(random(0, 360), 512, 0, TRF_THRUACTORS|TRF_THRUHITSCAN, owner.height/2, data: nextNode);
+			owner.LineTrace(random(0, 360), 256, 0, TRF_THRUACTORS|TRF_THRUHITSCAN, owner.height/2, data: nextNode);
 			lastKnown = actor.spawn("UaS_LastKnownMarker", nextNode.HitLocation, ALLOW_REPLACE);
 			owner.goal = lastKnown;
 			owner.target = lastKnown;
@@ -101,7 +99,7 @@ class UaS_LastKnownMarker : Actor {
 			SetOrigin((pos.xy, floorz),false);
 			if(UaS_Debug & Searching) { sprite = GetSpriteIndex('AMRK'); }
 		}
-		"####" A 700;
+		"####" A 700 BRIGHT;
 		stop;
 	}
 }
