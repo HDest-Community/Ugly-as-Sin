@@ -1,22 +1,16 @@
 // Searching behavior
 
 extend class UaS_AI_Handler {
-	int AIMode;
 	int countdown;
 	actor lastKnown;
 	bool isSearching;
-
-	enum UaS_Nice_AI_Modes {
-		mode_normal = 0,
-		mode_chasing = 1,
-		mode_searching = 2,
-	};
 
 	void SearchBehavior() {
 		// Return conditions
 		if(!UaS_AI_Searching) { return; }
 		if(owner.health <= 0) { return; }
 
+		// Normal following behavior plus visibility checks
 		if (owner.target && owner.target.CheckClass("HDPlayerPawn", AAPTR_DEFAULT, true)) {
 			countdown = random(30*35, 60*35);
 			if (lastknown) { lastKnown.destroy(); }
@@ -32,6 +26,7 @@ extend class UaS_AI_Handler {
 			}
 		}
 
+		// Spawn new path nodes as reached
 		if (isSearching && !owner.target) {
 			double nextAngle;
 			if (lastKnown) {
@@ -48,12 +43,14 @@ extend class UaS_AI_Handler {
 			if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." picked new pathnode."); }
 		}
 
+		// Give up the search when the countdown runs out
 		if (countdown == 0) {
 			isSearching = false;
 			if (lastknown) { lastKnown.destroy(); }
 			if (UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." gave up the search"); }
 		}
 
+		// Decrement timer
 		countdown = max(countdown - 1, -1);
 		if ((UaS_Debug & Searching) && (countdown % 175 == 1)) { A_Log(owner.GetClassName()..score.." searching for "..(countdown/35)); }
 	}
@@ -84,9 +81,6 @@ extend class UaS_AI_Handler {
 				currentMobster.target = null;
 			}
 		}
-
-		// Debug
-		//if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." cleared all target info"); }
 	}
 }
 
