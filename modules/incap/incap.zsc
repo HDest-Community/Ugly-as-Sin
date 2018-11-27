@@ -69,7 +69,7 @@ class UaS_Incap_Handler : Inventory {
 				bleedout = max(bleedout - 1, 0);
 
 				// Clamp important attributes
-				o.health = clamp(o.health, 1, 1);
+				o.A_SetHealth(1);
 				o.player.CrouchFactor = clamp(o.player.CrouchFactor, 0.5, 0.5);
 				o.woundcount = clamp(o.woundcount, 0, incap_woundcount);
 				o.burncount = clamp(o.burncount, 0, incap_burncount);
@@ -94,7 +94,7 @@ class UaS_Incap_Handler : Inventory {
 				if(o.stimcount >= 1 || o.zerk >= 1) {
 					incap = false;
 					bleedout = 0;
-					o.health += 1;
+					o.A_SetHealth(o.health + 1);
 					o.bBUDDHA = false;
 					UaS.DisableVignette(o.player);
 					if(UaS_Debug & incap) { o.A_Log("Revived"); }
