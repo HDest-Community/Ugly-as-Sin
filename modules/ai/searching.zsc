@@ -4,27 +4,52 @@ extend class UaS_AI_Handler {
 	int AIMode;
 	int countdown;
 	actor lastKnown;
+	bool isSearching;
 
-	enum modes {
-		normal = 0,
-		chasing = 1,
-		searching = 2,
+	enum UaS_Nice_AI_Modes {
+		mode_normal = 0,
+		mode_chasing = 1,
+		mode_searching = 2,
 	};
 
 	void SearchBehavior() {
 		// Return conditions
 		if(!UaS_AI_Searching) { return; }
 		if(owner.health <= 0) { return; }
-		if (!owner.target) { return; }
-		if (!owner.CheckClass("HDPlayerPawn", AAPTR_TARGET, true)) { return; }
 
-		// Testing
-		if (owner.target.bShadow || !owner.CheckIfTargetInLOS()) {
-			lastKnown = actor.spawn("UaS_LastKnownMarker", owner.target.pos, ALLOW_REPLACE);
-			ForgetTarget(owner);
+		//if (!owner.target) { return; }
+
+		if (owner.target && owner.target.CheckClass("HDPlayerPawn", AAPTR_DEFAULT, true)) {
+			countdown = random(30*35, 60*35);
+
+			if (owner.target.bShadow || !owner.CheckIfTargetInLOS()) {
+				isSearching = true;
+				lastKnown = actor.spawn("UaS_LastKnownMarker", owner.target.pos, ALLOW_REPLACE);
+				ForgetTarget(owner);
+				owner.goal = lastKnown;
+				owner.target = lastKnown;
+				if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." lost target!"); }
+			}
+		}
+
+		if (isSearching && !owner.target) {
+			if (lastknown) { lastKnown.destroy(); }
+			FLineTraceData nextNode;
+			owner.LineTrace(random(0, 360), 512, 0, TRF_THRUACTORS|TRF_THRUHITSCAN, owner.height/2, data: nextNode);
+			lastKnown = actor.spawn("UaS_LastKnownMarker", nextNode.HitLocation, ALLOW_REPLACE);
 			owner.goal = lastKnown;
 			owner.target = lastKnown;
+			if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." picked new pathnode."); }
 		}
+
+		if (countdown == 0) {
+			isSearching = false;
+			if (lastknown) { lastKnown.destroy(); }
+			if (UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." gave up the search"); }
+		}
+
+		countdown = max(countdown - 1, -1);
+		if ((UaS_Debug & Searching) && (countdown % 175 == 1)) { A_Log(owner.GetClassName()..score.." searching for "..(countdown/35)); }
 	}
 
 	void ForgetTarget(actor which) {
@@ -55,7 +80,7 @@ extend class UaS_AI_Handler {
 		}
 
 		// Debug
-		if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." cleared all target info"); }
+		//if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." cleared all target info"); }
 	}
 }
 
@@ -76,7 +101,7 @@ class UaS_LastKnownMarker : Actor {
 			SetOrigin((pos.xy, floorz),false);
 			if(UaS_Debug & Searching) { sprite = GetSpriteIndex('AMRK'); }
 		}
-		"####" A -1;
+		"####" A 700;
 		stop;
 	}
 }
