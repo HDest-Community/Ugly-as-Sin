@@ -24,10 +24,13 @@ extend class UaS_AI_Handler {
 				owner.target = lastKnown;
 				if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." lost target!"); }
 			}
+			else if (owner.CheckIfTargetInLOS()) {
+				owner.bAMBUSH = false;
+			}
 		}
 
 		// Spawn new path nodes as reached
-		if (isSearching && !owner.target) {
+		if (isSearching && !owner.target && !owner.bAMBUSH) {
 			double nextAngle;
 			if (lastKnown) {
 				nextAngle = lastKnown.angle + random(-90, 90);
