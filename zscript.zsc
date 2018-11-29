@@ -45,6 +45,7 @@ version "3.5"
 #include "modules/ai/searching.zsc"
 #include "modules/ai/flashlight.zsc"
 #include "modules/ai/stealth.zsc"
+#include "modules/ai/orders.zsc"
 
 // Player Incapacitation
 #include "modules/incap/bootstrap.zsc"

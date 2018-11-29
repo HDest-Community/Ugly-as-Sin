@@ -1,0 +1,26 @@
+class UaS_AI_Orders : Inventory {
+	HDMarine orderTarget;
+
+	override bool Use(bool pickup) {
+		FLineTraceData TraceData;
+		owner.LineTrace(owner.angle, 512, owner.pitch, TRF_THRUHITSCAN, owner.height/2, data: TraceData);
+		if (ValidOrderTarget(TraceData.HitActor)) {
+			orderTarget = HDMarine(TraceData.HitActor);
+		}
+		else {
+			owner.A_Log("Can only order friendly marines!");
+		}
+		if(orderTarget) {
+			string msg = string.format("%s\cd: Orders?", orderTarget.nickname);
+			HDMarine.HDTeamSay(orderTarget, msg);
+			//owner.A_Log(msg, true);
+		 }
+		return false;
+	}
+
+	bool ValidOrderTarget(actor checkTarget) {
+		return (checkTarget &&
+			checkTarget.CheckClass("HDMarine", AAPTR_DEFAULT, true) &&
+			checkTarget.bFRIENDLY);
+	}
+}
