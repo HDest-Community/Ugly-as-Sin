@@ -136,7 +136,9 @@ class UaS_Monster_Flashlight : Actor {
 		height 4;
 		+THRUACTORS;
 		+NOBLOCKMONST;
-		scale 0.25;
+		+ROLLSPRITE;
+		+FORCEXYBILLBOARD;
+		scale 1;
 		friction 0.1;
 		RenderStyle "Add";
 	}
@@ -147,6 +149,8 @@ class UaS_Monster_Flashlight : Actor {
 		// Update rotation/pitcj
 		A_SetAngle(angle + (rot.a / 4), true);
 		A_SetPitch(pitch + (rot.p / 4), true);
+
+		roll += (rot.a + rot.p);
 
 		// Handle held or loose light
 		if (followTarget) {
@@ -180,8 +184,6 @@ class UaS_Monster_Flashlight : Actor {
 
 		switch(active) {
 			case true:
-				SetStateLabel("LightOn");
-
 				if (laser == TRUE) {
 					// Draw laser
 					FLineTraceData laserTrace;
@@ -211,6 +213,7 @@ class UaS_Monster_Flashlight : Actor {
 						0.9, -1, 0);
 				}
 				else {
+					SetStateLabel("LightOn");
 					if (!actualLight) {
 						actualLight = actor.spawn("UaS_Monster_Flashlight_Light", pos, false);
 						actualLight.target = self;
@@ -241,9 +244,9 @@ class UaS_Monster_Flashlight : Actor {
 		Spawn:
 			TNT1 A 0;
 		LightOn:
-			#### A 35 BRIGHT;
+			TNT1 A 35 BRIGHT;
 		LightOff:
-			#### B 35;
+			TNT1 A 35;
 			loop;
 	}
 
