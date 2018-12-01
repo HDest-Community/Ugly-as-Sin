@@ -29,22 +29,7 @@ class UaS_MessKit : HDWeapon {
 	}
 
 	override inventory CreateTossable(int amt) {
-		//Drop both current meal and messkit if stunned
-		let ownr = HDPlayerPawn(owner);
-		if(ownr.stunned) {
-			UaS_TossOpened(true);
-			return super.CreateTossable();
-		}
-		if(owner.countinv("UaS_FoodRation") > 0 || owner.countinv("UaS_WaterRation") > 0) {
-			//Toss 1 each of unopened rations
-			if(owner.countinv("UaS_FoodRation") > 0) { owner.DropInventory(owner.FindInventory("UaS_FoodRation"), 1); }
-			if(owner.countinv("UaS_WaterRation") > 0) { owner.DropInventory(owner.FindInventory("UaS_WaterRation"), 1); }
-			return NULL;
-		}
-		else {
-			//Toss messkit itself and uneaten portion
-			UaS_TossOpened(true);
-		}
+		UaS_TossOpened(true);
 		return super.CreateTossable();
 	}
 

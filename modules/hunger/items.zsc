@@ -3,8 +3,10 @@ class UaS_FoodRation : HDPickup {
 		inventory.pickupmessage "Picked up some food.";
 		inventory.MaxAmount 16;
 		hdpickup.bulk 4;
+		hdpickup.nicename "Food Ration";
+		hdpickup.refid UAS_HDLD_FRATION;
 		scale 0.2;
-		-INVENTORY.INVBAR;
+		//-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
 
@@ -20,9 +22,11 @@ class UaS_WaterRation : HDPickup {
 		inventory.pickupmessage "Picked up some water.";
 		inventory.MaxAmount 16;
 		hdpickup.bulk 8;
+		hdpickup.nicename "Water Ration";
+		hdpickup.refid UAS_HDLD_WRATION;
 		XScale 0.3;
 		YScale 0.4;
-		-INVENTORY.INVBAR;
+		//-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
 
