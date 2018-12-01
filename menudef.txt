@@ -30,9 +30,9 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Scarcity_Options"
 	StaticText " "
 
-	Option "Reloading Kit","UaS_ReloaderEnabled","OnOff"
-	SubMenu "Settings and Info", "UaS_Reloader_Options"
-	StaticText " "
+	//Option "Reloading Kit","UaS_ReloaderEnabled","OnOff"
+	//SubMenu "Settings and Info", "UaS_Reloader_Options"
+	//StaticText " "
 
 	Option "Weapon Sling","UaS_SlingEnabled","OnOff"
 	SubMenu "Settings and Info", "UaS_Sling_Options"
