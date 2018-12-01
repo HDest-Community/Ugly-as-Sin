@@ -5,8 +5,6 @@ class UaS_FoodRation : HDPickup {
 		hdpickup.bulk 4;
 		hdpickup.nicename "Food Ration";
 		hdpickup.refid UAS_HDLD_FRATION;
-		scale 0.2;
-		//-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
 
@@ -24,9 +22,6 @@ class UaS_WaterRation : HDPickup {
 		hdpickup.bulk 8;
 		hdpickup.nicename "Water Ration";
 		hdpickup.refid UAS_HDLD_WRATION;
-		XScale 0.3;
-		YScale 0.4;
-		//-INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 	}
 
