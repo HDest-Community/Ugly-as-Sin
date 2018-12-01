@@ -108,6 +108,7 @@ class UaS_WeaponSling : HDPickup {
 
 	action void AttachToWeapon() {
 		let ownr = HDPlayerPawn(invoker.owner);
+		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
 		let currentWeapon = HDWeapon(ownr.player.ReadyWeapon);
 		string weapName = currentWeapon.GetClassName();
 		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >=2) {
