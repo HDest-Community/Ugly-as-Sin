@@ -55,3 +55,6 @@ version "3.5"
 #include "modules/looting/looting.zsc"
 #include "modules/looting/loottables.zsc"
 #include "modules/looting/flavortext.zsc"
+
+// Flares and glowsticks
+#include "modules/lights/items.zsc"
