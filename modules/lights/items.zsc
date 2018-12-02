@@ -1,0 +1,65 @@
+class UaS_Glowstick : HDPickup {
+	bool Activated;
+	DynamicLight GlowLight;
+	UaS_Glowstick DroppedGlowStick;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.PickupMessage "Picked up a glowstick.";
+		Inventory.Icon "CLIPA0";
+		HDPickup.Bulk 2;
+		HDPickup.NiceName "Glowstick";
+		HDPickup.refid UAS_HDLD_GLOWSTICK;
+		+FLATSPRITE;
+		+FORCEXYBILLBOARD;
+	}
+
+	override void Tick() {
+		if(!owner && level.maptime % 35 == 1) { console.printf("I am ticking and activated="..Activated); }
+		switch(Activated) {
+			case true:
+				if (!GlowLight) {
+					GlowLight = DynamicLight(Actor.Spawn("DynamicLight"));
+					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
+					GlowLight.args[DynamicLight.LIGHT_GREEN] = 128;
+					GlowLight.args[DynamicLight.LIGHT_BLUE] = 32;
+					GlowLight.args[DynamicLight.LIGHT_INTENSITY] = 64;
+				}
+				if (owner) { GlowLight.target = owner; }
+				else { GlowLight.target = self; }
+				break;
+			case false:
+				if (GlowLight) { glowLight.Destroy(); }
+				break;
+		}
+		super.Tick();
+	}
+
+	override bool Use(bool pickup) {
+		console.printf("Used the glowstick");
+		Activated = true;;
+		return false;
+	}
+
+	override inventory CreateTossable(int amt) {
+		DroppedGlowStick = null;
+		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
+		if (DroppedGlowStick) {
+			DroppedGlowStick.Activated = Activated;
+			//DroppedGlowStick.GlowLight.Destroy();
+			if(owner) { Activated = false; }
+		}
+		return DroppedGlowStick;
+	}
+
+	override void ActualPickup(Actor toucher) {
+		if (Activated) { return; }
+		super.ActualPickup(toucher);
+	}
+
+	States {
+		Spawn:
+			CLIP A -1;
+			stop;
+	}
+}
