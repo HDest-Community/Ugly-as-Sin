@@ -2,37 +2,48 @@ class UaS_Glowstick : HDPickup {
 	bool Activated;
 	DynamicLight GlowLight;
 	UaS_Glowstick DroppedGlowStick;
+	int spindir;
+	int brightness;
+	int age;
 
 	Default {
-		Inventory.Amount 1;
 		Inventory.PickupMessage "Picked up a glowstick.";
 		Inventory.Icon "UGSIB0";
 		HDPickup.Bulk 2;
 		HDPickup.NiceName "Glowstick";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
+		HDPickup.DropTranslation false;
+		HDPickup.FitsInBackpack true;
 		+FLATSPRITE;
 		+FORCEXYBILLBOARD;
+		+INVENTORY.IGNORESKILL;
 	}
 
 	override void Tick() {
 		switch(Activated) {
 			case true:
 				SetStateLabel("LightOn");
+				if (level.maptime % 5 == 1) { brightness = min(brightness + 1, 64); }
+				if (level.maptime % 700 == 1) { age++; }
 				if (!GlowLight) {
 					GlowLight = DynamicLight(Actor.Spawn("DynamicLight"));
 					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
 					GlowLight.args[DynamicLight.LIGHT_GREEN] = 128;
 					GlowLight.args[DynamicLight.LIGHT_BLUE] = 32;
-					GlowLight.args[DynamicLight.LIGHT_INTENSITY] = 64;
 				}
+				GlowLight.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age);
 				if (owner) { GlowLight.target = owner; }
 				else { GlowLight.target = self; }
 				break;
 			case false:
 				SetStateLabel("LightOff");
 				if (GlowLight) { glowLight.Destroy(); }
+				brightness = 0;
+				age = 0;
 				break;
 		}
+		if (vel.length() == 0) { spindir = randompick(-1,1); }
+		A_SetAngle(angle + vel.length() * 3 * spindir);
 		super.Tick();
 	}
 
@@ -47,25 +58,22 @@ class UaS_Glowstick : HDPickup {
 	override inventory CreateTossable(int amt) {
 		DroppedGlowStick = null;
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
-		if (DroppedGlowStick) {
-			DroppedGlowStick.Activated = Activated;
+		if (DroppedGlowStick && Activated) {
+			DroppedGlowStick.Activated = true;
 			if(owner) { Activated = false; }
 		}
 		return DroppedGlowStick;
 	}
 
-	override void ActualPickup(Actor toucher) {
-		if (Activated) { return; }
-		super.ActualPickup(toucher);
+	override bool TryPickup(in out Actor toucher) {
+		if (Activated) { return false; }
+		return super.TryPickup(toucher);
 	}
 
-	States {
+	states {
 		Spawn:
 			UGSI B -1;
 			stop;
-	}
-	states {
-		Spawn:
 		LightOff:
 			UGSI B 35;
 			loop;
@@ -73,5 +81,4 @@ class UaS_Glowstick : HDPickup {
 			UGSI C 35 BRIGHT;
 			loop;
 	}
-
 }
