@@ -5,3 +5,5 @@ $random UaS/FoodScoop {
 	UaS/FoodScoop1
 	UaS/FoodScoop2
 }
+
+UaS/Glowstick	dsrifclk
