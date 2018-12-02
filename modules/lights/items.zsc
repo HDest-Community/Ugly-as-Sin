@@ -6,7 +6,7 @@ class UaS_Glowstick : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		Inventory.PickupMessage "Picked up a glowstick.";
-		Inventory.Icon "CLIPA0";
+		Inventory.Icon "UGSIB0";
 		HDPickup.Bulk 2;
 		HDPickup.NiceName "Glowstick";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
@@ -15,9 +15,9 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override void Tick() {
-		if(!owner && level.maptime % 35 == 1) { console.printf("I am ticking and activated="..Activated); }
 		switch(Activated) {
 			case true:
+				SetStateLabel("LightOn");
 				if (!GlowLight) {
 					GlowLight = DynamicLight(Actor.Spawn("DynamicLight"));
 					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
@@ -29,6 +29,7 @@ class UaS_Glowstick : HDPickup {
 				else { GlowLight.target = self; }
 				break;
 			case false:
+				SetStateLabel("LightOff");
 				if (GlowLight) { glowLight.Destroy(); }
 				break;
 		}
@@ -36,8 +37,10 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override bool Use(bool pickup) {
-		console.printf("Used the glowstick");
-		Activated = true;;
+		if (!Activated) {
+			owner.A_PlaySound("UaS/Glowstick", 0.15);
+			Activated = true;;
+		}
 		return false;
 	}
 
@@ -46,7 +49,6 @@ class UaS_Glowstick : HDPickup {
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
 		if (DroppedGlowStick) {
 			DroppedGlowStick.Activated = Activated;
-			//DroppedGlowStick.GlowLight.Destroy();
 			if(owner) { Activated = false; }
 		}
 		return DroppedGlowStick;
@@ -59,7 +61,17 @@ class UaS_Glowstick : HDPickup {
 
 	States {
 		Spawn:
-			CLIP A -1;
+			UGSI B -1;
 			stop;
 	}
+	states {
+		Spawn:
+		LightOff:
+			UGSI B 35;
+			loop;
+		LightOn:
+			UGSI C 35 BRIGHT;
+			loop;
+	}
+
 }
