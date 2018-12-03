@@ -22,11 +22,11 @@ class UaS_Glowstick : HDPickup {
 	override void Tick() {
 		switch(Activated) {
 			case true:
-				SetStateLabel("LightOn");
+				frame = 2;
 				if (level.maptime % 5 == 1) { brightness = min(brightness + 1, 64); }
 				if (level.maptime % 700 == 1) { age++; }
 				if (!GlowLight) {
-					GlowLight = DynamicLight(Actor.Spawn("DynamicLight"));
+					GlowLight = DynamicLight(Actor.Spawn("UaS_GlowstickLight"));
 					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
 					GlowLight.args[DynamicLight.LIGHT_GREEN] = 128;
 					GlowLight.args[DynamicLight.LIGHT_BLUE] = 32;
@@ -36,13 +36,12 @@ class UaS_Glowstick : HDPickup {
 				else { GlowLight.target = self; }
 				break;
 			case false:
-				SetStateLabel("LightOff");
+				frame = 1;
 				if (GlowLight) { glowLight.Destroy(); }
 				brightness = 0;
 				age = 0;
 				break;
 		}
-		if (vel.length() == 0) { spindir = randompick(-1,1); }
 		A_SetAngle(angle + vel.length() * 3 * spindir);
 		super.Tick();
 	}
@@ -60,25 +59,29 @@ class UaS_Glowstick : HDPickup {
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
 		if (DroppedGlowStick && Activated) {
 			DroppedGlowStick.Activated = true;
+			DroppedGlowstick.Brightness = Brightness;
+			DroppedGlowstick.Age = Age;
+			DroppedGlowstick.Spindir = randompick(-1,1);
 			if(owner) { Activated = false; }
 		}
 		return DroppedGlowStick;
 	}
 
-	override bool TryPickup(in out Actor toucher) {
-		if (Activated) { return false; }
-		return super.TryPickup(toucher);
+	override void actualpickup(actor other){
+		if(Activated)return;
+		super.actualpickup(other);
 	}
 
 	states {
 		Spawn:
 			UGSI B -1;
 			stop;
-		LightOff:
-			UGSI B 35;
-			loop;
-		LightOn:
-			UGSI C 35 BRIGHT;
-			loop;
+	}
+}
+
+class UaS_GlowstickLight : DynamicLight {
+	override void Tick() {
+		super.Tick();
+		if (target) { SetXYZ((target.pos.x, target.pos.y, target.pos.z + target.height/2)); }
 	}
 }
