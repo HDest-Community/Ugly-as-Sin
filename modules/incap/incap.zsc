@@ -78,7 +78,7 @@ class UaS_Incap_Handler : Inventory {
 				o.aggravateddamage = clamp(o.aggravateddamage, 0, incap_aggravateddamage);
 				o.A_SelectWeapon("HDFist");
 				HDWeapon rw = HDWeapon(o.player.ReadyWeapon);
-				o.vel *= 0.8;
+				o.vel.xy *= 0.8;
 				if (rw.GetClassName() == "HDFist") { rw.A_WeaponMessage("\crINCAPACITATED", 5); }
 
 				// Kill player if they bleed out
