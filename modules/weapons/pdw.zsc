@@ -12,7 +12,6 @@ class UaS_ZM66K : ZM66AssaultRifle {
 		weapon.bobspeed 2.5;
 		scale 0.7;
 		inventory.pickupmessage "You got the ZM66K PDW!";
-		hdweapon.barrelsize 16,1,1;
 		hdweapon.refid UAS_HDLD_PDW;
 		hdweapon.nicename "ZM66K PDW";
 		hdweapon.fitsinbackpack true;
@@ -36,9 +35,9 @@ class UaS_ZM66K : ZM66AssaultRifle {
 
 	override void postbeginplay() {
 		super.PostBeginPlay();
-		barrellength=18;
+		barrellength=13;
 		barrelwidth=1;
-		barreldepth=3;
+		barreldepth=2;
 		weaponstatus[0]&=~(ZM66F_GLMODE|ZM66F_GRENADELOADED);
 		if(owner&&owner.player){
 			weaponstatus[ZM66S_AUTO]=
