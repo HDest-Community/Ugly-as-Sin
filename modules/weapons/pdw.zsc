@@ -39,6 +39,7 @@ class UaS_ZM66K : ZM66AssaultRifle {
 		barrelwidth=1;
 		barreldepth=2;
 		weaponstatus[0]&=~(ZM66F_GLMODE|ZM66F_GRENADELOADED);
+		weaponstatus[0]|=ZM66F_NOLAUNCHER;
 		if(owner&&owner.player){
 			weaponstatus[ZM66S_AUTO]=
 				clamp(cvar.getcvar("hd_zmfiremode",owner.player).getint(),0,1);
