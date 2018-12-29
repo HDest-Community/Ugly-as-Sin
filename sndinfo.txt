@@ -5,3 +5,5 @@ $random UaS/FoodScoop {
 	UaS/FoodScoop1
 	UaS/FoodScoop2
 }
+
+UaS/weapons/zm66k dsrifle

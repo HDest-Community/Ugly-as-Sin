@@ -55,3 +55,6 @@ version "3.5"
 #include "modules/looting/looting.zsc"
 #include "modules/looting/loottables.zsc"
 #include "modules/looting/flavortext.zsc"
+
+// Weapons
+#include "modules/weapons/pdw.zsc"
