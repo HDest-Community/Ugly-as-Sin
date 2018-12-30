@@ -19,7 +19,7 @@ class UaS_ZM66K : ZM66AssaultRifle {
 	}
 
 	override void DoEffect() {
-		super.tick();
+		super.DoEffect();
 		if(owner.player.ReadyWeapon.GetClassName() != "UaS_ZM66K") { return; }
 		psprite pweapon;
 		pweapon = owner.player.FindPSprite(PSprite.WEAPON);
