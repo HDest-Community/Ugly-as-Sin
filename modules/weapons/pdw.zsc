@@ -18,6 +18,14 @@ class UaS_ZM66K : ZM66AssaultRifle {
 		inventory.icon "UPDWQ0";
 	}
 
+	override void DoEffect() {
+		psprite pweapon;
+		pweapon = owner.player.FindPSprite(PSprite.WEAPON);
+		pweapon.sprite = GetSpriteIndex('UPDW');
+		super.tick();
+		pweapon.sprite = GetSpriteIndex('UPDW');
+	}
+
 	override double gunmass(){
 		return 4.0+weaponstatus[ZM66S_MAG]*0.02;
 	}
