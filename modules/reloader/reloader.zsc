@@ -32,7 +32,7 @@ class UaS_Reloader : HDWeapon {
 		+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
 		hdweapon.nicename "Reloading Kit";
-		hdweapon.fitsinbackpack true;
+		+hdweapon.fitsinbackpack;
 		hdweapon.refid UAS_HDLD_RELOADKIT;
 	}
 
