@@ -1,0 +1,10 @@
+class UaS_Clothing_Handler : Inventory {
+
+	override void DoEffect() {
+		if(!owner) { return; }
+		HDPlayerPawn owner = HDPlayerPawn(owner);
+
+		owner.maxpocketspace = 1;
+		//console.printf(""..owner.maxpocketspace);
+	}
+}

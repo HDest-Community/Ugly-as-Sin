@@ -62,3 +62,6 @@ version "3.5"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
+
+// Clothing
+#include "modules/clothing/tracker.zsc"
