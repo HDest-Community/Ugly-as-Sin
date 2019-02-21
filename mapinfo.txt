@@ -13,4 +13,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Looting_Bootstrap"
 	AddEventHandlers = "UaS_Glowstick_Spawner"
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
+	AddEventHandlers = "UaS_Clothing_Bootstrap"
 }

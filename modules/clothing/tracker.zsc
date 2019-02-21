@@ -1,10 +1,16 @@
 class UaS_Clothing_Handler : Inventory {
+	int basepocketspace;
+	property BasePocketSpace: basepocketspace;
+
+	default {
+		UaS_Clothing_Handler.BasePocketSpace 10;
+	}
 
 	override void DoEffect() {
 		if(!owner) { return; }
 		HDPlayerPawn owner = HDPlayerPawn(owner);
 
-		owner.maxpocketspace = 1;
+		owner.maxpocketspace = basepocketspace;
 		//console.printf(""..owner.maxpocketspace);
 	}
 }

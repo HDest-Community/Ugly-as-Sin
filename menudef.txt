@@ -62,6 +62,11 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_VisWep_Options"
 	StaticText " "
 
+	Option "Clothing","UaS_ClothingEnabled","OnOff"
+	SubMenu "Settings and Info", "UaS_Clothing_Options"
+	StaticText " "
+
+
 	Option "Glowsticks","UaS_LightsEnabled","OnOff"
 
 	StaticText "Changing module configuration mid-game may cause"
@@ -213,6 +218,12 @@ OptionMenu "UaS_VisWep_Options" {
 	StaticText " "
 	StaticText "--Disclaimer--"
 	StaticText "This is not guaranteed to always work."
+}
+
+OptionMenu "UaS_Clothing_Options" {
+	Title "Clothing Module"
+	StaticText "Adds wearable clothes and equipment."
+	StaticText "This affects pocket carrying capacity!"
 }
 
 OptionMenu "UaS_Misc_Options" {

@@ -1,0 +1,16 @@
+class ClothingInitialized : Inventory {}
+
+class UaS_Clothing_Bootstrap : EventHandler {
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(!UaS_ClothingEnabled) {
+			player.mo.TakeInventory("ClothingInitialized", 1);
+			player.mo.TakeInventory("UaS_Clothing_Handler", 1);
+			return;
+		}
+		if(player.mo.countinv("ClothingInitialized") > 0) { return; }
+		player.mo.GiveInventory("UaS_Clothing_Handler", 1);
+		player.mo.GiveInventory("ClothingInitialized", 1);
+		console.printf("gave clothing handler");
+	}
+}

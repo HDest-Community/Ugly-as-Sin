@@ -37,5 +37,6 @@ server float UaS_LootingFactor = 0.5;
 server bool UaS_LightsEnabled = false;
 
 server bool UaS_VisWepsEnabled = false;
+server bool UaS_ClothingEnabled = false;
 
 server int UaS_Debug = 0;
