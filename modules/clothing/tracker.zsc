@@ -1,4 +1,4 @@
-class UaS_Clothing_Handler : Inventory {
+class UaS_Clothing_Handler : HDWeapon {
 	int basepocketspace;
 	property BasePocketSpace: basepocketspace;
 
@@ -10,7 +10,28 @@ class UaS_Clothing_Handler : Inventory {
 		if(!owner) { return; }
 		HDPlayerPawn owner = HDPlayerPawn(owner);
 
-		owner.maxpocketspace = basepocketspace;
-		//console.printf(""..owner.maxpocketspace);
+		int extrapocketspace;
+		for (let invprobe = owner.inv; invprobe != NULL; invprobe = invprobe.inv) {
+			if (invprobe is 'UaS_Clothing') {
+				let founditem = UaS_Clothing(invprobe);
+				extrapocketspace += founditem.PocketSpace;
+				//console.printf("found clothing item!");
+			}
+		}
+
+		owner.maxpocketspace = basepocketspace + extrapocketspace;
+		//if (level.time % 35 == 1) { console.printf(""..owner.maxpocketspace); }
+	}
+}
+
+class UaS_Clothing : HDPickup {
+	int PocketSpace;
+	property PocketSpace: PocketSpace;
+}
+
+class UaS_Clothing_BDUPants : UaS_Clothing {
+	default {
+		UaS_Clothing.PocketSpace 200;
+		HDPickup.Bulk 4;
 	}
 }
