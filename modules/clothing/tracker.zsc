@@ -1,4 +1,4 @@
-class UaS_Clothing_Handler : HDWeapon {
+class UaS_Clothing_Handler : Inventory {
 	int basepocketspace;
 	property BasePocketSpace: basepocketspace;
 
@@ -7,7 +7,7 @@ class UaS_Clothing_Handler : HDWeapon {
 	}
 
 	override void DoEffect() {
-		if(!owner) { return; }
+		if (!owner) { return; }
 		HDPlayerPawn owner = HDPlayerPawn(owner);
 
 		int extrapocketspace;
@@ -21,17 +21,5 @@ class UaS_Clothing_Handler : HDWeapon {
 
 		owner.maxpocketspace = basepocketspace + extrapocketspace;
 		//if (level.time % 35 == 1) { console.printf(""..owner.maxpocketspace); }
-	}
-}
-
-class UaS_Clothing : HDPickup {
-	int PocketSpace;
-	property PocketSpace: PocketSpace;
-}
-
-class UaS_Clothing_BDUPants : UaS_Clothing {
-	default {
-		UaS_Clothing.PocketSpace 200;
-		HDPickup.Bulk 4;
 	}
 }

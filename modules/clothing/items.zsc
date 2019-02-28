@@ -1,0 +1,32 @@
+//Generic parent class, do not use directly.
+class UaS_Clothing : HDPickup {
+	int PocketSpace;
+	property PocketSpace: PocketSpace;
+
+	default {
+		inventory.pickupmessage "Picked up an item of clothing.";
+		-INVENTORY.INVBAR;
+	}
+}
+
+class UaS_Clothing_BDUPants : UaS_Clothing {
+	default {
+		UaS_Clothing.PocketSpace 200;
+		HDPickup.Bulk 10;
+	}
+}
+
+class UaS_Clothing_BDUShirt : UaS_Clothing {
+	default {
+		UaS_Clothing.PocketSpace 200;
+		HDPickup.Bulk 12;
+	}
+}
+
+class UaS_Clothing_TacticalVest : UaS_Clothing {
+	default {
+		UaS_Clothing.PocketSpace 200;
+		HDPickup.Bulk 20;
+	}
+}
+
