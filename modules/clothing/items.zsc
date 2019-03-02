@@ -1,7 +1,7 @@
 //Generic parent class, do not use directly.
 class UaS_Clothing : HDPickup {
-	int PocketSpace;
-	property PocketSpace: PocketSpace;
+	int PocketSpace; property PocketSpace: PocketSpace;
+	string nicename; property NiceName: nicename;
 
 	default {
 		inventory.pickupmessage "Picked up an item of clothing.";
@@ -12,6 +12,7 @@ class UaS_Clothing : HDPickup {
 class UaS_Clothing_BDUPants : UaS_Clothing {
 	default {
 		UaS_Clothing.PocketSpace 200;
+		UaS_Clothing.NiceName "BDU Pants";
 		HDPickup.Bulk 10;
 	}
 }
@@ -19,6 +20,7 @@ class UaS_Clothing_BDUPants : UaS_Clothing {
 class UaS_Clothing_BDUShirt : UaS_Clothing {
 	default {
 		UaS_Clothing.PocketSpace 200;
+		UaS_Clothing.NiceName "BDU Shirt";
 		HDPickup.Bulk 12;
 	}
 }
@@ -26,6 +28,7 @@ class UaS_Clothing_BDUShirt : UaS_Clothing {
 class UaS_Clothing_TacticalVest : UaS_Clothing {
 	default {
 		UaS_Clothing.PocketSpace 200;
+		UaS_Clothing.NiceName "Tactical Vest";
 		HDPickup.Bulk 20;
 	}
 }

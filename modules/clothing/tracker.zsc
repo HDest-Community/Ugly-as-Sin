@@ -1,6 +1,7 @@
-class UaS_Clothing_Handler : Inventory {
-	int basepocketspace;
-	property BasePocketSpace: basepocketspace;
+class UaS_Clothing_Handler : HDWeapon {
+	int basepocketspace; property BasePocketSpace: basepocketspace;
+	string heldclothing;
+	array<name> wornclothing;
 
 	default {
 		UaS_Clothing_Handler.BasePocketSpace 10;
@@ -8,18 +9,32 @@ class UaS_Clothing_Handler : Inventory {
 
 	override void DoEffect() {
 		if (!owner) { return; }
-		HDPlayerPawn owner = HDPlayerPawn(owner);
 
-		int extrapocketspace;
+		CheckHeldClothing();
+		DisplayStatus();
+
+		//if (level.time % 35 == 1) { console.printf(""..owner.maxpocketspace); }
+	}
+
+	void CheckHeldClothing() {
+		HDPlayerPawn owner = HDPlayerPawn(owner);
+		heldclothing = "";
+
 		for (let invprobe = owner.inv; invprobe != NULL; invprobe = invprobe.inv) {
 			if (invprobe is 'UaS_Clothing') {
 				let founditem = UaS_Clothing(invprobe);
-				extrapocketspace += founditem.PocketSpace;
-				//console.printf("found clothing item!");
+				heldclothing = heldclothing..founditem.nicename.." ";
+				heldclothing = heldclothing.."x"..founditem.amount.."\n";
 			}
 		}
+		//owner.maxpocketspace = basepocketspace + extrapocketspace;
+	}
 
-		owner.maxpocketspace = basepocketspace + extrapocketspace;
-		//if (level.time % 35 == 1) { console.printf(""..owner.maxpocketspace); }
+	void DisplayStatus() {
+		if (!owner.player.ReadyWeapon) { return; }
+		if (!(owner.player.ReadyWeapon is 'UaS_Clothing_Handler')) { return; }
+		string message = "\cjCLOTHING\c-\n\n\n";
+		message = message.."Available\n"..heldclothing;
+		A_WeaponMessage(message);
 	}
 }
