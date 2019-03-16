@@ -11,7 +11,7 @@ extend class UaS_AI_Handler {
 		bool validClass = (
 			owner.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true) ||
-			owner.CheckClass("DragonGuard", AAPTR_DEFAULT, true) ||
+			owner.CheckClass("RedPillbox", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("HDMarine", AAPTR_DEFAULT, true)
 		);
 		if (!validClass) { return; }
