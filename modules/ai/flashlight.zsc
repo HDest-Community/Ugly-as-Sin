@@ -47,7 +47,12 @@ extend class UaS_AI_Handler {
 		}
 
 		// Point down if not aiming
-		if (owner.frame != 4 && owner.frame != 5) { monsterlight.offsetPitch = 35; }
+		bool isowneraiming = (
+			owner.frame ==  4 || owner.frame ==  5 ||
+			owner.frame == 23 || owner.frame == 24
+		);
+
+		if (!isowneraiming) { monsterlight.offsetPitch = 35; }
 		else { monsterlight.offsetPitch = 0; }
 
 		if(!UaS_AI_Flashlights) {
