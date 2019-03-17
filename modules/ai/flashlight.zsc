@@ -195,13 +195,17 @@ class UaS_Monster_Flashlight : Actor {
 					// Draw laser
 					FLineTraceData laserTrace;
 					LineTrace(angle, 8192, pitch, TRF_THRUACTORS, data: laserTrace);
-					for (double d = 8; d < laserTrace.distance; d = d + frandom(2.0, d / 128)) {
-						A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-							1, frandom(1.0, 2.0) + (d/1024), 0,
-							cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
-							-rot.a * cos(pitch) * sin(angle) * (d/256), rot.a * cos(pitch) * cos(angle) * (d/256), -rot.p * cos(pitch) * (d/256),
-							0, 0, 0,
-							frandom(0.5, 1.0), -1, 0);
+					for (double f = 8; f < laserTrace.distance; f = f + frandom(2.0, f / 32)) {
+						double bliplength = frandom(4.0, 16.0);
+						for (double d = f - bliplength; d < f + bliplength; d = d + frandom(bliplength / 4, bliplength)) {
+							A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
+								1, frandom(0.75, 1.5) + (f / 2048), 0,
+								cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+								-rot.a * cos(pitch) * sin(angle) * (d/256), rot.a * cos(pitch) * cos(angle) * (d/256), -rot.p * cos(pitch) * (d/256),
+								0, 0, 0,
+								frandom(0.5, 1.0), -1, 0);
+						}
+						f += bliplength;
 					}
 					double dotdist = laserTrace.distance - 1;
 					vector3 dotpos = ((cos(pitch) * cos(angle) * dotdist), (cos(pitch) * sin(angle) * dotdist), (sin(-pitch) * dotdist)); // relative!
