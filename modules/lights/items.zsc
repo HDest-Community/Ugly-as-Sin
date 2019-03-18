@@ -12,8 +12,8 @@ class UaS_Glowstick : HDPickup {
 		HDPickup.Bulk 2;
 		HDPickup.NiceName "Glowstick";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
-		HDPickup.DropTranslation false;
-		HDPickup.FitsInBackpack true;
+		-HDPickup.DropTranslation;
+		+HDPickup.FitsInBackpack;
 		+FLATSPRITE;
 		+FORCEXYBILLBOARD;
 		+INVENTORY.IGNORESKILL;
