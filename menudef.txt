@@ -58,6 +58,9 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Looting_Options"
 	StaticText " "
 
+	Option "Glowsticks","UaS_LightsEnabled","OnOff"
+	StaticText " "
+
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
 	StaticText "enabling, disabling, or changing module settings."

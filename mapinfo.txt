@@ -11,4 +11,5 @@ GameInfo {
 	AddEventHandlers = "UaS_AI_Bootstrap"
 	AddEventHandlers = "UaS_Incap_Bootstrap"
 	AddEventHandlers = "UaS_Looting_Bootstrap"
+	AddEventHandlers = "UaS_Glowstick_Spawner"
 }
