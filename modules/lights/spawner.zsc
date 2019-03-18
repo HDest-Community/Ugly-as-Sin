@@ -1,0 +1,20 @@
+class UaS_Glowstick_Spawner : EventHandler {
+	//Set up spawns
+	override void WorldThingSpawned(WorldEvent e) {
+		if(UaS_LightsEnabled == false) { return; }
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "PortableStimpack" ||
+			e.Thing.GetClassName() == "PortableMedikit" ||
+			e.Thing.GetClassName() == "HDBP");
+
+		if(spawnable) {
+			console.printf("spawned glowsticks");
+			UaS.SpawnStuff('UaS_Glowstick', random(0, 3), e.Thing.pos);
+		}
+	}
+}
