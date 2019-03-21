@@ -45,7 +45,7 @@ class UaS_HungerTracker : CustomInventory {
 
 		//Reduce calories
 		calories -= (1 / minute) * max(calories / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		calories -= ((ownr.fatigue) / day);
+		calories -= ((ownr.fatigue - minfatigue) / day);
 		if(calories < 0) {
 			calories = 0;
 			lastcalories += (1 / minute);
@@ -54,7 +54,7 @@ class UaS_HungerTracker : CustomInventory {
 
 		//Reduce water
 		water -= (1 / minute) * max(water / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		water -= ((ownr.fatigue - minfatigue) / minute);
+		water -= ((ownr.fatigue - minfatigue) / day);
 		if(water < 0) {
 			water = 0;
 			lastwater += (1 / minute);
