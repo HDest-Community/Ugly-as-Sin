@@ -12,7 +12,7 @@ extend class UaS_AI_Handler {
 
 	void WoundDebuff() {
 		if(!UaS_AI_Wounding) { return; }
-		if(owner.health <= 0 ) { return; }
+		if(!owner || owner.health <= 0 ) { return; }
 		if(owner.health < baseHealth) {
 			// Calculate health factor
 			healthFactor = owner.health / double(baseHealth / 2);
