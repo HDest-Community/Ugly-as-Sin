@@ -44,7 +44,8 @@ class UaS_StealthHandler : Inventory {
 			vector3 posdiff = levellocals.Vec3Diff((owner.pos.x, owner.pos.y, owner.pos.z + (owner.height / 2)), currentlight.pos);
 			double currentDistance = posdiff.length(); //owner.Distance3D(currentLight);
 
-			double distanceFactor = currentDistance / (double(currentLight.args[DynamicLight.LIGHT_INTENSITY]+1) * 2);
+			double lightIntensity = max(currentLight.args[DynamicLight.LIGHT_INTENSITY], 1);
+			double distanceFactor = currentDistance / (lightIntensity * 2);
 
 			double avgIntensity = (currentLight.args[DynamicLight.LIGHT_RED] +
 				currentLight.args[DynamicLight.LIGHT_GREEN] +
