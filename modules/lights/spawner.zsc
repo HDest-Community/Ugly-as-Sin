@@ -13,8 +13,7 @@ class UaS_Glowstick_Spawner : EventHandler {
 			e.Thing.GetClassName() == "HDBP");
 
 		if(spawnable) {
-			console.printf("spawned glowsticks");
-			UaS.SpawnStuff('UaS_Glowstick', random(0, 3), e.Thing.pos);
+			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 1, 2), e.Thing.pos);
 		}
 	}
 }
