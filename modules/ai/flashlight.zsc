@@ -133,7 +133,7 @@ class UaS_Monster_Flashlight : Actor {
 	bool active;
 	int offsetAngle, offsetPitch;
 	double brightness;
-	color laserColor;
+	color laserColor, templasercolor;
 	bool laser;
 	actor laserdot;
 
@@ -195,12 +195,19 @@ class UaS_Monster_Flashlight : Actor {
 					// Draw laser
 					FLineTraceData laserTrace;
 					LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
-					for (double f = 8; f < laserTrace.distance; f = f + f / frandom(16, 64)) {
-						double bliplength = frandom(8.0, 32.0);
-						for (double d = f; d < f + bliplength; d = d + frandom(0.1, 2.0)) {
-							A_SpawnParticle(laserColor, SPF_FULLBRIGHT|SPF_RELANG,
-								1, frandom(0.5, 1.0) + (f / 8192), 0,
-								cos(pitch) * cos(angle) * d, cos(pitch) * sin(angle) * d, sin(-pitch) * d,
+					for (double f = 8; f < laserTrace.distance; f = f + f / random(16, 128)) {
+						double bliplength = random(8, 32);
+						for (double d = f; d < f + bliplength; d = d + frandom(0.25, 3.0)) {
+							float coloroffset = random(0, 128);
+							templasercolor = lasercolor;
+							templasercolor.r = clamp(templasercolor.r + coloroffset, 0, 255);
+							templasercolor.g = clamp(templasercolor.g + coloroffset, 0, 255);
+							templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
+							A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
+								1, frandom(0.25, 0.5) + (f / 8192), 0,
+								(cos(pitch) * cos(angle) * d) + frandom(0.1, 0.5),
+								(cos(pitch) * sin(angle) * d) + frandom(0.1, 0.5),
+								(sin(-pitch) * d) + frandom(0.1, 0.5),
 								-rot.a * cos(pitch) * sin(angle) * (d/256), rot.a * cos(pitch) * cos(angle) * (d/256), -rot.p * cos(pitch) * (d/256),
 								0, 0, 0,
 								frandom(0.5, 1.0), -1, 0);
