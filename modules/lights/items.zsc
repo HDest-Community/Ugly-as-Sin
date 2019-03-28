@@ -48,7 +48,7 @@ class UaS_Glowstick : HDPickup {
 
 	override bool Use(bool pickup) {
 		if (!Activated) {
-			owner.A_PlaySound("UaS/Glowstick", 0.15);
+			owner.A_PlaySound("UaS/Glowstick", CHAN_AUTO, 0.15);
 			Activated = true;;
 		}
 		return false;
