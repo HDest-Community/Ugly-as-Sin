@@ -195,16 +195,16 @@ class UaS_Monster_Flashlight : Actor {
 					// Draw laser
 					FLineTraceData laserTrace;
 					LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
-					for (double f = 8; f < laserTrace.distance; f = f + f / random(16, 128)) {
+					for (double f = 8; f < laserTrace.distance; f = f + random(8, 128)) {
 						double bliplength = random(8, 32);
-						for (double d = f; d < f + bliplength; d = d + frandom(0.25, 3.0)) {
+						for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
 							float coloroffset = random(0, 128);
 							templasercolor = lasercolor;
 							templasercolor.r = clamp(templasercolor.r + coloroffset, 0, 255);
 							templasercolor.g = clamp(templasercolor.g + coloroffset, 0, 255);
 							templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
 							A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
-								1, frandom(0.25, 0.5) + (f / 8192), 0,
+								1, frandom(0.25, 1.0), 0,
 								(cos(pitch) * cos(angle) * d) + frandom(0.1, 0.5),
 								(cos(pitch) * sin(angle) * d) + frandom(0.1, 0.5),
 								(sin(-pitch) * d) + frandom(0.1, 0.5),
