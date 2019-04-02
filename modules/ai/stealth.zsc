@@ -14,9 +14,9 @@ class UaS_StealthHandler : Inventory {
 		if (!owner || !owner.player) { return; }
 		if (!UaS_AI_Stealth) { return; }
 
-		threshold = (24 / owner.player.crouchfactor) - owner.vel.length();
+		threshold = (24 / owner.player.crouchfactor) - (owner.vel.length() * 5);
 
-		stealth -= clamp(GetLightLevel() - threshold, -5, 5);
+		stealth -= clamp((GetLightLevel() - threshold), -3, 3);
 		stealth = clamp(stealth, 0, 100);
 
 		if (stealth == 100) {
