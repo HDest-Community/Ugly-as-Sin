@@ -109,6 +109,14 @@ class UaS_Monster_Flashlight_Light : DynamicLight {
 		SpotInnerAngle = 15;
 		SpotOuterAngle = 35;
 	}
+
+	override void Tick() {
+		Super.Tick();
+		if (target) {
+			SetOrigin(target.pos, true);
+			Prev = target.Prev;
+		}
+	}
 }
 
 class UaS_Monster_Laserdot : DynamicLight {
