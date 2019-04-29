@@ -5,6 +5,7 @@ class UaS_WeaponSling : HDPickup {
 	bool slingBraced;
 	string attachedWeapon;
 	int attachedPoints;
+	array<string> weaponList;
 
 	Default {
 		Inventory.Amount 1;
@@ -16,6 +17,20 @@ class UaS_WeaponSling : HDPickup {
 		+FLATSPRITE;
 		hdpickup.nicename "Weapon Sling";
 		hdpickup.refid UAS_HDLD_SLING;
+	}
+
+	override void BeginPlay() {
+		weaponList.push("hdsmg");
+		weaponList.push("hunter");
+		weaponList.push("slayer");
+		weaponList.push("zm66assaultrifle");
+		weaponList.push("zm66semi");
+		weaponList.push("zm66regular");
+		weaponList.push("vulcanette");
+		weaponList.push("liberatorrifle");
+		weaponList.push("liberatornogl");
+		weaponList.push("bossrifle");
+		super.BeginPlay();
 	}
 
 	override void DoEffect() {
@@ -120,16 +135,11 @@ class UaS_WeaponSling : HDPickup {
 			invoker.attachedPoints = 0;
 			//if(getcvar("hd_helptext")) { console.printf("Removed sling from previous weapon."); }
 		}
-		if(weapName == "hdsmg" ||
-			weapName == "hunter" ||
-			weapName == "slayer" ||
-			weapName == "zm66assaultrifle" ||
-			weapName == "zm66semi" ||
-			weapName == "zm66regular" ||
-			weapName == "vulcanette" ||
-			weapName == "liberatorrifle" ||
-			weapName == "liberatornogl" ||
-			weapName == "bossrifle") {
+		bool validWeapon;
+		for(int i = 0; i < invoker.weaponList.size(); i++) {
+			if(weapName == invoker.weaponList[i]) { validWeapon = true; }
+		}
+		if(validWeapon) {
 				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
 				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
 				invoker.attachedPoints++;
