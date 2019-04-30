@@ -139,7 +139,7 @@ class UaS_WeaponSling : HDPickup {
 		for(int i = 0; i < invoker.weaponList.size(); i++) {
 			if(weapName == invoker.weaponList[i]) { validWeapon = true; }
 		}
-		if(validWeapon) {
+		if(validWeapon || currentWeapon.weaponspecial == 1337) {
 				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
 				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
 				invoker.attachedPoints++;
