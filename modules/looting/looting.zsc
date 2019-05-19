@@ -131,7 +131,7 @@ class UaS_Looting_Handler : Inventory {
 					break;
 			}
 		}
-		if(spawnTarget.CheckClass("RedPillbox", AAPTR_DEFAULT, true)) {
+		if(spawnTarget.CheckClass("VulcanetteGuy", AAPTR_DEFAULT, true)) {
 			tableSize = DragonGuardLoot.Size() - 1;
 			lootIndex = random(0, tableSize);
 			LootClass = DragonGuardLoot[lootIndex].itemName;
