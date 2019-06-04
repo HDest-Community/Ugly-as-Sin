@@ -47,7 +47,7 @@ class UaS_Looting_Handler : Inventory {
 	bool TryingToSearch() {
 		return (
 			(owner.player.cmd.buttons & BT_USE) &&
-			owner.player.ReadyWeapon.GetClassName() == "HDFist" &&
+			owner.player.ReadyWeapon is "HDFist" &&
 			owner.player.CrouchFactor <= 0.5);
 	}
 
