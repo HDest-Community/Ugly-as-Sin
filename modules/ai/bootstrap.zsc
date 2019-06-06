@@ -4,7 +4,7 @@ class UaS_AI_Bootstrap : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
 		if(!UaS_AdvancedAIEnabled) { return; }
-		if(e.Thing is HDMobBase) {
+		if(e.Thing is 'HDMobBase') {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
 			actor givenHandler = e.thing.FindInventory("UaS_AI_Handler");
 			givenHandler.score = givenAIHandlers;
