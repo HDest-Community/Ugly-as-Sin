@@ -1,0 +1,100 @@
+class UaS_Shield_Segment : Actor {
+	int column, row;
+	actor followtarget;
+
+	default {
+		Health 2000;
+		Radius 4;
+		Height 8;
+		+SOLID;
+		+SHOOTABLE;
+		+NOBLOOD;
+		+WALLSPRITE;
+		+DONTTHRUST;
+		+NOGRAVITY;
+	}
+
+	override void Tick() {
+		super.Tick();
+		if (followtarget) {
+			SetOrigin(followtarget.Vec3Angle(column * 8, followtarget.angle + 90, (followtarget.pos.z - followtarget.floorz) + (row * 8)), true);
+			A_SetAngle(followtarget.angle, true);
+		}
+		frame = int((2000 - health)/400);
+	}
+
+	States {
+		Spawn:
+			UGSS A 1;
+		Spawnloop:
+			UGSS # 35;
+			loop;
+		Death:
+			UGSS F -1;
+			stop;
+	}
+}
+
+class UaS_Shield_Base : Actor {
+	array<Actor> SegmentList;
+	default {
+		+NOGRAVITY;
+		Radius 1;
+		Height 1;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		for (int column = -1; column <= 1; column++) {
+			for (int row = 0; row <= 4; row++) {
+				//vector3 offsetpos = pos;
+				//if (row == 3 && column == 0) { continue; }
+				UaS_Shield_Segment segment = UaS_Shield_Segment(actor.spawn('UaS_Shield_Segment', pos));
+				segment.followtarget = self;
+				segment.column = column;
+				segment.row = row;
+				segment.A_GiveInventory("BulletResistance",100);
+			}
+		}
+	}
+
+	override void Tick() {
+		super.tick();
+		//angle++;
+	}
+}
+
+class UaS_Shield : hdpickup {
+	actor ShieldBase;
+	default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a portable shield.";
+		Inventory.Icon "UGSSA0";
+		HDPickup.Bulk 800;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		ShieldBase = actor.spawn('UaS_Shield_Base', pos);
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		ShieldBase.vel += DampedSpring(
+			ShieldBase.pos,
+			owner.vec3angle(28, owner.angle + 30, (owner.pos.z - owner.floorz) + 5),
+			ShieldBase.vel,
+			1.0,
+			1.0);
+		ShieldBase.A_SetAngle(owner.angle + 25, true);
+	}
+
+	vector3 DampedSpring(vector3 p, vector3 r, vector3 v, double k, double d) {
+		return (
+			-(d * v.x) - (k * (p.x - r.x)),
+			-(d * v.y) - (k * (p.y - r.y)),
+			-(d * v.z) - (k * (p.z - r.z))
+		);
+	}
+}

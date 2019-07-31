@@ -62,3 +62,6 @@ version "3.5"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
+
+// Ballistic Shield
+#include "modules/shield/shield.zsc"
