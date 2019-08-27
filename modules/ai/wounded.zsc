@@ -15,23 +15,29 @@ extend class UaS_AI_Handler {
 		if(!owner || owner.health <= 0 ) { return; }
 		if(owner.health < baseHealth) {
 			// Calculate health factor
-			healthFactor = owner.health / double(baseHealth / 2);
+			healthFactor = owner.health / double(baseHealth);
 			healthFactor = clamp(healthFactor, 0.1, 1.0);
 
 			// Reduce speed
 			owner.speed = baseSpeed * healthFactor;
 
 			// Jitter angle / pitch
-			owner.A_SetAngle(owner.angle + (random[ai](-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE);
-			owner.A_SetPitch(owner.pitch + (random[ai](-6, 6) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
+			owner.A_SetAngle(owner.angle + (random[ai](-15, 15) * (1.0 - healthFactor)), SPF_INTERPOLATE);
+			owner.A_SetPitch(owner.pitch + (random[ai](-10, 10) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
 
 			// Occasionally cry out in pain and select a random fear state
 			// (more likely to be frightened the lower heathFactor is)
 			if(painCountdown == 0) {
-				owner.A_Pain();
+				HDMobBase ownr;
+				if (owner is 'HDMobBase') {
+					HDMobBase ownr = HDMobBase(owner);
+					ownr.forcepain();
+				}
+				//owner.A_Pain();
+
 				if(UaS.randomChance(1.0 - healthFactor)) { owner.bFRIGHTENED = true; }
 				else { owner.bFRIGHTENED = false; }
-				painCountDown = random[ai](10, 20) * 35 * healthFactor;
+				painCountDown = random[ai](5, 10) * 35 * healthFactor;
 			}
 			painCountdown = max(painCountDown - 1, 0);
 
