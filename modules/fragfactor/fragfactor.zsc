@@ -5,8 +5,9 @@ class UaS_FragRemovalHandler : EventHandler {
 		double removeChance = 1.0 - (double(UaS_FragSpawnRate) * 0.01);
 		switch(e.Thing.GetClassName()) {
 			case 'FragShard':
-			case 'BFGVileShard':
-			case 'VileShard':
+			case 'BFGNecroShard':
+			case 'NecroShard':
+			case 'NecroGhostShard':
 				if(UaS.RandomChance(removeChance)) {
 					if(UaS_Debug & Frag) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
 					e.Thing.Destroy();
@@ -26,9 +27,11 @@ class UaS_FragRemovalHandler : EventHandler {
 		int count = 0;
 		let iterator1 = ThinkerIterator.Create("FragShard");
 		for (Thinker mo; (mo = iterator1.Next());) { mo.Destroy(); count++; }
-		let iterator2 = ThinkerIterator.Create("BFGVileShard");
+		let iterator2 = ThinkerIterator.Create("BFGNecroShard");
 		for (Thinker mo; (mo = iterator2.Next());) { mo.Destroy(); count++;}
-		let iterator3 = ThinkerIterator.Create("VileShard");
+		let iterator3 = ThinkerIterator.Create("NecroShard");
+		for (Thinker mo; (mo = iterator3.Next());) { mo.Destroy(); count++;}
+		let iterator4 = ThinkerIterator.Create("NecroGhostShard");
 		for (Thinker mo; (mo = iterator3.Next());) { mo.Destroy(); count++;}
 		return count;
 	}
