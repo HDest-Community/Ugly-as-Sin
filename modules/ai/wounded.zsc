@@ -30,8 +30,7 @@ extend class UaS_AI_Handler {
 			if(painCountdown == 0) {
 				HDMobBase ownr;
 				if (owner is 'HDMobBase') {
-					HDMobBase ownr = HDMobBase(owner);
-					ownr.forcepain();
+					hdmobbase.forcepain(owner);
 				}
 				//owner.A_Pain();
 
