@@ -130,10 +130,8 @@ class UaS_Scarcity_Spawner : EventHandler {
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', 2 - spawnedMedikit.injectableflesh, targetActor.pos); }
 				break;
 			case 'PortableBerserkPack':
-				for(int i = 1; i <= 4; i++) {
-					if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_ZerkInjector', 1, targetActor.pos); }
-					else { UaS.SpawnStuff('SpentZerk', random(0, 1), targetActor.pos); }
-				}
+				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_ZerkInjector', 1, targetActor.pos); }
+				else { UaS.SpawnStuff('SpentZerk', random(0, 1), targetActor.pos); }
 				UaS.SpawnStuff('UaS_EmptyZerkpack', 1, targetActor.pos);
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', random(0, 1), targetActor.pos); }
 				break;
