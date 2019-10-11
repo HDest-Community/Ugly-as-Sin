@@ -124,10 +124,10 @@ class UaS_Scarcity_Spawner : EventHandler {
 				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', targetActor.pos));
 				if(!spawnedMedikit) { break; }
 				//assume 7 auto-sutures per module, default 42 sutures = 6 modules
-				int maxmodules = max(1, (42 * UaS_ScarcityOverspawn) / 6);
+				int maxmodules = max(1, (MEDIKIT_MAXFLESH * UaS_ScarcityOverspawn) / 6);
 				int kitmodules = max(1, random(1, maxmodules));
-				spawnedMedikit.weaponstatus[1] = 7 * kitmodules;
-				if(spawnedMedikit.weaponstatus[1] < 42) { spawnedMedikit.frame = 2; }
+				spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] = 7 * kitmodules;
+				if(spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] < MEDIKIT_MAXFLESH) { spawnedMedikit.frame = 2; }
 				UaS.SpawnStuff('UaS_EmptyMedikit', 1, targetActor.pos);
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', maxmodules - kitmodules, targetActor.pos); }
 				break;
