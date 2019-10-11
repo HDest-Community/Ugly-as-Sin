@@ -123,11 +123,13 @@ class UaS_Scarcity_Spawner : EventHandler {
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('PortableStimpack', 1, targetActor.pos); }
 				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', targetActor.pos));
 				if(!spawnedMedikit) { break; }
-				spawnedMedikit.injectableflesh = random(0, 2 * UaS_ScarcityOverspawn);
-				spawnedMedikit.usedpatches = random(HD_MEDPATCHLIMIT * (1 - UaS_ScarcityOverspawn), HD_MEDPATCHLIMIT * ScarcityFactor);
-				if(spawnedMedikit.injectableflesh < 2 || spawnedMedikit.usedpatches > 0) { spawnedMedikit.frame = 2; }
+				//assume 7 auto-sutures per module, default 42 sutures = 6 modules
+				int maxmodules = max(1, (42 * UaS_ScarcityOverspawn) / 6);
+				int kitmodules = max(1, random(1, maxmodules));
+				spawnedMedikit.weaponstatus[1] = 7 * kitmodules;
+				if(spawnedMedikit.weaponstatus[1] < 42) { spawnedMedikit.frame = 2; }
 				UaS.SpawnStuff('UaS_EmptyMedikit', 1, targetActor.pos);
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', 2 - spawnedMedikit.injectableflesh, targetActor.pos); }
+				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', maxmodules - kitmodules, targetActor.pos); }
 				break;
 			case 'PortableBerserkPack':
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_ZerkInjector', 1, targetActor.pos); }
