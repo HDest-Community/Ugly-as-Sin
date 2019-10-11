@@ -41,7 +41,7 @@ class UaS_2FCartridge : HDPickup {
 		+INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 		+Inventory.KEEPDEPLETED;
-		scale 0.25;
+		scale 0.2;
 		hdpickup.nicename "Auto-Suture Cartridge";
 		hdpickup.refid UAS_HDLD_2FMOD;
 	}
