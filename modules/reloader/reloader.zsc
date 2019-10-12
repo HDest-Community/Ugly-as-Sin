@@ -31,7 +31,7 @@ class UaS_Reloader : HDWeapon {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
-		hdweapon.nicename "Reloading Kit";
+		tag "Reloading Kit";
 		+hdweapon.fitsinbackpack;
 		hdweapon.refid UAS_HDLD_RELOADKIT;
 	}

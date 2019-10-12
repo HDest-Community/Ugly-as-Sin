@@ -14,7 +14,7 @@ class UaS_MessKit : HDWeapon {
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
-		hdweapon.nicename "Messkit";
+		tag "Messkit";
 		+hdweapon.fitsinbackpack;
 		hdweapon.refid UAS_HDLD_MESSKIT;
 	}

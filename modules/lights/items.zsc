@@ -10,7 +10,7 @@ class UaS_Glowstick : HDPickup {
 		Inventory.PickupMessage "Picked up a glowstick.";
 		Inventory.Icon "UGSIB0";
 		HDPickup.Bulk 2;
-		HDPickup.NiceName "Glowstick";
+		tag "Glowstick";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
 		-HDPickup.DropTranslation;
 		+HDPickup.FitsInBackpack;
