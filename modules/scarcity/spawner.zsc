@@ -49,12 +49,12 @@ class UaS_Scarcity_Spawner : EventHandler {
 
 		int targetAmount = thingArray.Size() * targetPercent;
 		while(thingArray.Size() > targetAmount) {
+			if(UaS_Debug & Scarcity) { console.printf("Modified or removed "..checkClass); }
 			int index = random(0, thingArray.Size()-1);
 			//actor mo = thingArray[index];
 			DoReplacement(thingArray[index]);
 			thingArray[index].destroy();
 			thingArray.Delete(index);
-			if(UaS_Debug & Scarcity) { console.printf("Removed "..checkClass); }
 		}
 
 		if(UaS_Debug & Scarcity) { console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount); }
@@ -148,16 +148,14 @@ class UaS_Scarcity_Spawner : EventHandler {
 				break;
 			case 'PortableLiteAmp':
 				let spawnedLiteAmp = PortableLiteAmp(actor.Spawn('PortableLiteAmp', targetActor.pos));
-				double avgbroke = 400 + random(-400 * UaS_ScarcityOverspawn, 100 * (1.0 - UaS_ScarcityOverspawn));
-				avgbroke += 400 + random(-400 * UaS_ScarcityOverspawn, 100 * (1.0 - UaS_ScarcityOverspawn));
-				avgbroke += 400 + random(-400 * UaS_ScarcityOverspawn, 100 * (1.0 - UaS_ScarcityOverspawn));
-				avgbroke /= 3;
-				PortableLiteAmp(spawnedLiteAmp).brokenness = int(avgbroke);
-				if(UaS_Debug & Scarcity) { console.printf("Liteamp brokenness %i", PortableLiteAmp(spawnedLiteAmp).brokenness); }
-				if(PortableLiteAmp(spawnedLiteAmp).brokenness > 450) {
-					UaS.SpawnStuff('UaS_BrokenLiteAmp', 1, spawnedLiteAmp.pos);
-					spawnedLiteAmp.Destroy();
-				}
+				double avgint = random(200, 800);
+				avgint += random(200, 800);
+				avgint += random(200, 800);
+				avgint /= 3;
+				avgint *= UaS_ScarcityOverspawn;
+				avgint  = clamp(avgint,0,400);
+				PortableLiteAmp(spawnedLiteAmp).setintegrity(avgint);
+				if(UaS_Debug & Scarcity) { console.printf("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()); }
 				break;
 		}
 
