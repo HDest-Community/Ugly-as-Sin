@@ -18,8 +18,8 @@ class UaS_Ally_Spawner : EventHandler {
 		if(!e.Thing) { return; }
 
 		bool corpseType = (
-			e.Thing.GetClassName() == 'DeadZombieMan' ||
-			e.Thing.GetClassName() == 'DeadShotgunGuy' ||
+			e.Thing.GetClassName() == 'DeadZombieStormtrooper' ||
+			e.Thing.GetClassName() == 'DeadHideousShotgunGuy' ||
 			e.Thing.GetClassName() == 'DeadRifleman' ||
 			e.Thing.GetClassName() == 'ReallyDeadRifleman'
 		);
