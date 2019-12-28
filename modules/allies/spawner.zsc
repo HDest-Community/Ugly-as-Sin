@@ -25,11 +25,16 @@ class UaS_Ally_Spawner : EventHandler {
 		);
 
 		if(corpseType) {
+			//Make CheckPosition ignore the corpse
+			bool prevNoclip = e.Thing.bNOCLIP;
+			e.Thing.bNOCLIP = true;
+
 			replaced = SpawnAlly(e.Thing.pos);
 			if (replaced) {
 				if (UaS_Debug & Allies) { console.printf("Spawned ally"); }
 				e.Thing.Destroy();
 			}
+			else { e.Thing.bNOCLIP = prevNoclip; }
 		}
 	}
 
