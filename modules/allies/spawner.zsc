@@ -18,18 +18,23 @@ class UaS_Ally_Spawner : EventHandler {
 		if(!e.Thing) { return; }
 
 		bool corpseType = (
-			e.Thing.GetClassName() == 'DeadZombieMan' ||
-			e.Thing.GetClassName() == 'DeadShotgunGuy' ||
+			e.Thing.GetClassName() == 'DeadZombieStormtrooper' ||
+			e.Thing.GetClassName() == 'DeadHideousShotgunGuy' ||
 			e.Thing.GetClassName() == 'DeadRifleman' ||
 			e.Thing.GetClassName() == 'ReallyDeadRifleman'
 		);
 
 		if(corpseType) {
+			//Make CheckPosition ignore the corpse
+			bool prevNoclip = e.Thing.bNOCLIP;
+			e.Thing.bNOCLIP = true;
+
 			replaced = SpawnAlly(e.Thing.pos);
 			if (replaced) {
 				if (UaS_Debug & Allies) { console.printf("Spawned ally"); }
 				e.Thing.Destroy();
 			}
+			else { e.Thing.bNOCLIP = prevNoclip; }
 		}
 	}
 
