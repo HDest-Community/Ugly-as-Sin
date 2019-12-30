@@ -11,6 +11,7 @@ class UaS_Incap_Bootstrap : EventHandler {
 
 	void Initialize(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
+		if(!player.mo) { return; } // Players 5-8 don't have a PlayerPawn here
 		if(UaS_IncapEnabled == true) {
 			if(!player.mo.countinv("IncapInitialized")) {
 				player.mo.giveinventory("UaS_Incap_Handler", 1);

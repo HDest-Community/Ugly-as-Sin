@@ -5,6 +5,7 @@ class UaS_Scarcity_Bootstrap : EventHandler {
 	override void PlayerEntered(PlayerEvent e) {
 		if(UaS_ScarcityEnabled == false) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
+		if(!player.mo) { return; } // Players 5-8 don't have a PlayerPawn here
 		if(!player.mo.countinv("ScarcityInitialized")) {
 			player.mo.giveinventory("UaS_2FCartridge_Handler", 1);
 		}
