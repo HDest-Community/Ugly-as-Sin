@@ -18,6 +18,10 @@ class UaS_AI_Bootstrap : EventHandler {
 	override void PlayerEntered(PlayerEvent e) {
 		PlayerInfo player = players[e.PlayerNumber];
 		if(!player.mo) { return; } // Players 5-8 don't have a PlayerPawn here
+		Initialize(player);
+	}
+
+	void Initialize(PlayerInfo player) {
 		if(!UaS_AdvancedAIEnabled) { return; }
 		if(!UaS_AI_Stealth) { return; }
 		player.mo.Giveinventory("UaS_StealthHandler", 1);

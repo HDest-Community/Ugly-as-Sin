@@ -2,16 +2,16 @@ class IncapInitialized : Inventory {}
 
 class UaS_Incap_Bootstrap : EventHandler {
 	override void PlayerEntered(PlayerEvent e) {
-		Initialize(e);
+		PlayerInfo player = players[e.PlayerNumber];
+		if(!player.mo) { return; } // Players 5-8 don't have a PlayerPawn here
+		Initialize(player);
 	}
 
 	override void PlayerRespawned(PlayerEvent e) {
-		Initialize(e);
+		Initialize(players[e.PlayerNumber]);
 	}
 
-	void Initialize(PlayerEvent e) {
-		PlayerInfo player = players[e.PlayerNumber];
-		if(!player.mo) { return; } // Players 5-8 don't have a PlayerPawn here
+	void Initialize(PlayerInfo player) {
 		if(UaS_IncapEnabled == true) {
 			if(!player.mo.countinv("IncapInitialized")) {
 				player.mo.giveinventory("UaS_Incap_Handler", 1);

@@ -62,3 +62,6 @@ version "3.5"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
+
+// 5+ player multiplayer crash workaround
+#include "modules/delayed-init.zsc"

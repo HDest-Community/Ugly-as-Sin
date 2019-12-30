@@ -1,0 +1,32 @@
+// Players 5-8 don't have a PlayerPawn in PlayerEntered; this works around that.
+class UaS_DelayedInitHack_Bootstrap : EventHandler {
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(player.mo) { return; }
+
+		let hack = new("UaS_DelayedInitHack");
+		hack.player = player;
+	}
+}
+
+
+
+class UaS_DelayedInitHack : Thinker {
+	PlayerInfo player;
+
+	override void PostBeginPlay() {
+		let scarcity = new("UaS_Scarcity_Bootstrap");
+		let looting = new("UaS_Looting_Bootstrap");
+		let hunger = new("UaS_Hunger_Bootstrap");
+		let sling = new("UaS_Sling_Bootstrap");
+		let ai = new("UaS_AI_Bootstrap");
+
+		scarcity.Initialize(player);
+		looting.Initialize(player);
+		hunger.Initialize(player);
+		sling.Initialize(player);
+		ai.Initialize(player);
+
+		Destroy();
+	}
+}
