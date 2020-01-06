@@ -10,6 +10,7 @@ extend class UaS_AI_Handler {
 		if (globalfreeze || level.Frozen) { return; }
 		// Only do light for human-type classes
 		bool validClass = (
+			owner.CheckClass("HERPBot", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true) ||
 			owner.CheckClass("VulcanetteGuy", AAPTR_DEFAULT, true) ||
@@ -45,6 +46,11 @@ extend class UaS_AI_Handler {
 				monsterLight.laserColor = "RED";
 				if (owner.bFRIENDLY == true) { monsterLight.laserColor = "GREEN"; }
 			}
+			if(owner is "HERPBot") {
+				monsterLight.laser = true;
+				monsterLight.laserColor = "RED";
+				if (owner.bFRIENDLY == true) { monsterLight.laserColor = "GREEN"; }
+			}
 		}
 
 		// Point down if not aiming
@@ -53,7 +59,7 @@ extend class UaS_AI_Handler {
 			owner.frame == 23 || owner.frame == 24
 		);
 
-		if (!isowneraiming) { monsterlight.offsetPitch = 35; }
+		if (!isowneraiming && !(owner is "HERPBot")) { monsterlight.offsetPitch = 35; }
 		else { monsterlight.offsetPitch = 0; }
 
 		if(!UaS_AI_Flashlights) {
@@ -72,6 +78,7 @@ extend class UaS_AI_Handler {
 			if (frandom(0, 1) >= activateChance) { monsterlight.active = true; }
 			recheck = max(random(35,175), lightlevel );
 			flashrate = random(1, 4);
+			if (owner is "HERPBot") { monsterlight.active = true; }
 		}
 
 		Flashing = (owner.target &&
