@@ -50,7 +50,7 @@ class UaS_Glowstick : HDPickup {
 		if (!Activated) {
 			owner.A_PlaySound("UaS/Glowstick", CHAN_AUTO, 0.15);
 			Activated = true;;
-		}
+		} else { owner.DropInventory(self); }
 		return false;
 	}
 
