@@ -46,10 +46,6 @@ version "3.5"
 #include "modules/ai/flashlight.zsc"
 #include "modules/ai/stealth.zsc"
 
-// Player Incapacitation
-#include "modules/incap/bootstrap.zsc"
-#include "modules/incap/incap.zsc"
-
 // Corpse Looting
 #include "modules/looting/bootstrap.zsc"
 #include "modules/looting/looting.zsc"

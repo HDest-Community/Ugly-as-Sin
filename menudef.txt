@@ -50,10 +50,6 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_AI_Options"
 	StaticText " "
 
-	Option "Incapacitation","UaS_IncapEnabled","OnOff"
-	SubMenu "Settings and Info", "UaS_Incap_Options"
-	StaticText " "
-
 	Option "Corpse Looting","UaS_LootingEnabled","OnOff"
 	SubMenu "Settings and Info", "UaS_Looting_Options"
 	StaticText " "
@@ -184,17 +180,6 @@ OptionMenu "UaS_AI_Options" {
 	StaticText " "
 	StaticText "Toggling module requires new map or game."
 	StaticText "Behaviors can be toggled when AI active."
-}
-
-OptionMenu "UaS_Incap_Options" {
-	Title "Incapacitation Module"
-	Option "Clamp Wounds","UaS_IncapWoundClamp","OnOff"
-	StaticText "Incapacitates players that otherwise"
-	StaticText "Would be killed, allowing revives."
-	StaticText "Co-op multiplayer only!"
-	StaticText " "
-	StaticText "Clamp Wounds prevents wounds and burns"
-	StaticText "from increasing while players are down."
 }
 
 OptionMenu "UaS_Looting_Options" {

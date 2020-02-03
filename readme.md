@@ -10,5 +10,4 @@ Features are implemented as configurable modules, any of which may be independen
 * **Fragshard Reducer** - Specifies chance for enemy-reviving fragshards to spawn.
 * **Friendly Marines** - Friendly marine reinforcements that randomly replace human-type corpses.
 * **Advanced AI** - Extra monster behaviors, such as searching, wounding, and flashlights/lasers.
-* **Incapacitation** - Multiplayer-only module, allows players to be revived ingame.
 * **Looting** - Human-type corpses can be searched for useful items.
