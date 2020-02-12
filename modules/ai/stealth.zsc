@@ -14,10 +14,11 @@ class UaS_StealthHandler : Inventory {
 		if (!owner || !owner.player) { return; }
 		if (!UaS_AI_Stealth) { return; }
 
-		threshold = (24 / owner.player.crouchfactor) - (owner.vel.length() * 5);
+		threshold = (56.0 / owner.player.crouchfactor) - (owner.vel.length() * 5);
 
 		stealth -= clamp((GetLightLevel() - threshold), -3, 3);
 		stealth = clamp(stealth, 0, 100);
+		if(owner.frame == 5) { stealth = 0; }
 
 		if (stealth == 100) {
 			owner.bSHADOW = true;
@@ -62,12 +63,12 @@ class UaS_StealthHandler : Inventory {
 			}
 
 			// Intensify lights close to player
-			if (currentDistance < owner.radius) { avgIntensity *= 10; }
+			if (currentDistance < owner.radius) { avgIntensity *= 100; }
 
 			// Special handling for Steve's Flashlight
 			// This is a disgusting hack, BTW
 			string steves = "ActorHeadLight";
-			if (currentLight.CheckClass(steves) && posdiff.xy.length() < owner.radius) { avgIntensity *= 10; }
+			if (currentLight.CheckClass(steves) && posdiff.xy.length() < owner.radius) { avgIntensity *= 100; }
 
 			// Handle dormant lights
 			if (currentLight.bDORMANT) { avgIntensity = 0; }
