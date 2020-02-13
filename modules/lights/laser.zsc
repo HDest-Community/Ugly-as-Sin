@@ -1,0 +1,105 @@
+class UaS_PlayerLaser : HDPickup {
+	UaS_PlayerLaser_actual laseractual;
+
+	default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a laser sight.";
+		Inventory.Icon "CLIPA0";
+		HDPickup.Bulk 5;
+		-INVENTORY.INVBAR;
+		-HDPickup.FitsInBackpack;
+		+HDPickup.NotInPockets;
+		+HDPickup.NeverShowInPickupManager;
+	}
+
+	override bool Use(bool pickup) {
+		laseractual.active = !laseractual.active;
+		return false;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		if(!laseractual) {
+			laseractual = UaS_PlayerLaser_actual(actor.spawn('UaS_PlayerLaser_actual', owner.pos));
+			laseractual.followtarget = HDPlayerPawn(owner);
+		}
+	}
+}
+
+class UaS_PlayerLaser_actual : Actor {
+	actor followTarget;
+	rotationinfo rot;
+	vector3 targetPos;
+	rotationInfo targetRot;
+	bool targetKilled;
+	actor actualLight;
+	bool active;
+	int offsetAngle, offsetPitch;
+	double brightness;
+	color laserColor, templasercolor;
+	bool laser;
+	actor laserdot;
+
+	default {
+		radius 2;
+		height 4;
+		+THRUACTORS;
+		+NOBLOCKMONST;
+	}
+
+	override void Tick() {
+		super.Tick();
+
+		// Update rotation/pitch
+		A_SetAngle(angle + (rot.a / 2), true);
+		A_SetPitch(pitch + (rot.p / 2), true);
+
+		if (followTarget) {
+			targetpos = followTarget.vec3Angle(
+				6 * cos(followtarget.pitch),
+				followTarget.angle + 8,
+				(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.85, false);;
+
+			targetRot.a = HDPlayerPawn(followTarget).scopecamera.angle;
+			targetRot.p = HDPlayerPawn(followTarget).scopecamera.pitch;
+			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
+			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
+			vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
+			rot.a += DampedSpring(angle, targetRot.a, rot.a, 0.5, 1);
+			rot.p += DampedSpring(pitch, targetRot.p, rot.p, 0.5, 1);;
+		}
+
+		if (active) {
+			lasercolor = "GREEN";
+			// Draw laser
+			FLineTraceData laserTrace;
+			LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
+			for (double f = 1; f < laserTrace.distance; f = f + random(1, f)) {
+				double bliplength = random(8, 32);
+				for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
+					float coloroffset = random(0, 128);
+					templasercolor = lasercolor;
+					templasercolor.r = clamp(templasercolor.r + coloroffset, 0, 255);
+					templasercolor.g = clamp(templasercolor.g + coloroffset, 0, 255);
+					templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
+					A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
+						1, frandom(0.5, 1.0), 0,
+						(cos(pitch) * cos(angle) * d) + frandom(0.01, 0.05),
+						(cos(pitch) * sin(angle) * d) + frandom(0.01, 0.05),
+						(sin(-pitch) * d) + frandom(0.01, 0.05),
+						-rot.a * cos(pitch) * sin(angle) * (d/256) + vel.x,
+						rot.a * cos(pitch) * cos(angle) * (d/256) + vel.y,
+						-rot.p * cos(pitch) * (d/256) + vel.z,
+						0, 0, 0,
+						frandom(0.5, 1.0), -1, 0);
+				}
+				f += bliplength;
+			}
+		}
+	}
+
+	double DampedSpring(double p, double r, double v, double k, double d) {
+		return -(d * v) - (k * (p - r));
+	}
+}

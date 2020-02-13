@@ -55,6 +55,7 @@ version "3.5"
 // Flares and glowsticks
 #include "modules/lights/items.zsc"
 #include "modules/lights/spawner.zsc"
+#include "modules/lights/laser.zsc"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"

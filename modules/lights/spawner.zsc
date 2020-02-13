@@ -16,4 +16,11 @@ class UaS_Glowstick_Spawner : EventHandler {
 			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 1, 2), e.Thing.pos);
 		}
 	}
+
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(!player.mo.countinv("UaS_PlayerLaser")) {
+			player.mo.Giveinventory("UaS_PlayerLaser", 1);
+		}
+	}
 }

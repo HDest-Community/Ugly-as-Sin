@@ -59,6 +59,7 @@ OptionMenu "UaS_Options" {
 	StaticText " "
 
 	Option "Glowsticks","UaS_LightsEnabled","OnOff"
+	Control "Laser Sight", "use uas_playerlaser"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
