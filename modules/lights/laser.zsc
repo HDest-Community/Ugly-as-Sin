@@ -6,7 +6,7 @@ class UaS_PlayerLaser : HDPickup {
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a laser sight.";
 		Inventory.Icon "CLIPA0";
-		HDPickup.Bulk 5;
+		//HDPickup.Bulk 5;
 		-INVENTORY.INVBAR;
 		-HDPickup.FitsInBackpack;
 		+HDPickup.NotInPockets;
