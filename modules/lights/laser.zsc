@@ -50,8 +50,6 @@ class UaS_PlayerLaser_actual : Actor {
 	}
 
 	override void Tick() {
-		super.Tick();
-
 		// Update rotation/pitch
 
 		if (followTarget) {
@@ -59,9 +57,9 @@ class UaS_PlayerLaser_actual : Actor {
 			rot.p = -deltaangle(HDPlayerPawn(followTarget).scopecamera.pitch, oldrot.p);
 
 			targetpos = followTarget.vec3Angle(
-				6 * cos(followtarget.pitch),
-				followTarget.angle + 8,
-				(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.9, false);;
+				6 * cos(followtarget.pitch) + 2 * sin(-followtarget.pitch),
+				followTarget.angle + 8 * sin(-followtarget.pitch),
+				(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.90, false);;
 
 			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
 			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
@@ -82,12 +80,12 @@ class UaS_PlayerLaser_actual : Actor {
 						templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
 						A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
 							1, frandom(0.5, 1.0), 0,
-							(cos(pitch) * cos(angle) * d) + frandom(0.01, 0.05),
-							(cos(pitch) * sin(angle) * d) + frandom(0.01, 0.05),
-							(sin(-pitch) * d) + frandom(0.01, 0.05),
-							-rot.a * cos(pitch) * sin(angle) * (d/64.0) + vel.x,
-							rot.a * cos(pitch) * cos(angle) * (d/64.0) + vel.y,
-							-rot.p * cos(pitch) * (d/64.0) + vel.z,
+							(cos(pitch) * cos(angle) * d),// + frandom(0.01, 0.05),
+							(cos(pitch) * sin(angle) * d),// + frandom(0.01, 0.05),
+							(sin(-pitch) * d),// + frandom(0.01, 0.05),
+							-rot.a * cos(pitch) * sin(angle) * (d/56.0) + vel.x,
+							rot.a * cos(pitch) * cos(angle) * (d/56.0) + vel.y,
+							-rot.p * cos(pitch) * (d/56.0) + vel.z,
 							0, 0, 0,
 							frandom(0.5, 1.0), -1, 0);
 					}
@@ -98,10 +96,13 @@ class UaS_PlayerLaser_actual : Actor {
 			A_SetAngle(HDPlayerPawn(followTarget).scopecamera.angle, true);
 			A_SetPitch(HDPlayerPawn(followTarget).scopecamera.pitch, true);
 
-			oldrot.a = angle;
-			oldrot.p = pitch;
+			oldrot.a = HDPlayerPawn(followTarget).scopecamera.angle;
+			oldrot.p = HDPlayerPawn(followTarget).scopecamera.pitch;
+
 		}
 		else { destroy(); }
+
+		super.Tick();
 	}
 
 	double DampedSpring(double p, double r, double v, double k, double d) {
