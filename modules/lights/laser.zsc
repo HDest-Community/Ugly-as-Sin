@@ -50,59 +50,55 @@ class UaS_PlayerLaser_actual : Actor {
 	}
 
 	override void Tick() {
-		// Update rotation/pitch
-
-		if (followTarget) {
-			rot.a = -deltaangle(HDPlayerPawn(followTarget).scopecamera.angle, oldrot.a);
-			rot.p = -deltaangle(HDPlayerPawn(followTarget).scopecamera.pitch, oldrot.p);
-
-			targetpos = followTarget.vec3Angle(
-				6 * cos(followtarget.pitch) + 2 * sin(-followtarget.pitch),
-				followTarget.angle + 8 * sin(-followtarget.pitch),
-				(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.90, false);;
-
-			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
-			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
-			vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
-
-			if (active) {
-				lasercolor = "GREEN";
-				// Draw laser
-				FLineTraceData laserTrace;
-				LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
-				for (double f = 1; f < laserTrace.distance; f = f + random(1, f)) {
-					double bliplength = random(8, 32);
-					for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
-						float coloroffset = random(0, 128);
-						templasercolor = lasercolor;
-						templasercolor.r = clamp(templasercolor.r + coloroffset, 0, 255);
-						templasercolor.g = clamp(templasercolor.g + coloroffset, 0, 255);
-						templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
-						A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
-							1, frandom(0.5, 1.0), 0,
-							(cos(pitch) * cos(angle) * d),// + frandom(0.01, 0.05),
-							(cos(pitch) * sin(angle) * d),// + frandom(0.01, 0.05),
-							(sin(-pitch) * d),// + frandom(0.01, 0.05),
-							-rot.a * cos(pitch) * sin(angle) * (d/56.0) + vel.x,
-							rot.a * cos(pitch) * cos(angle) * (d/56.0) + vel.y,
-							-rot.p * cos(pitch) * (d/56.0) + vel.z,
-							0, 0, 0,
-							frandom(0.5, 1.0), -1, 0);
-					}
-					f += bliplength;
-				}
-			}
-
-			A_SetAngle(HDPlayerPawn(followTarget).scopecamera.angle, true);
-			A_SetPitch(HDPlayerPawn(followTarget).scopecamera.pitch, true);
-
-			oldrot.a = HDPlayerPawn(followTarget).scopecamera.angle;
-			oldrot.p = HDPlayerPawn(followTarget).scopecamera.pitch;
-
-		}
-		else { destroy(); }
-
 		super.Tick();
+		if (!followtarget) { destroy(); return; }
+		if (!HDPlayerPawn(followtarget).scopecamera) { destroy(); return; }
+
+		rot.a = -deltaangle(HDPlayerPawn(followTarget).scopecamera.angle, oldrot.a);
+		rot.p = -deltaangle(HDPlayerPawn(followTarget).scopecamera.pitch, oldrot.p);
+
+		targetpos = followTarget.vec3Angle(
+			6 * cos(followtarget.pitch) + 2 * sin(-followtarget.pitch),
+			followTarget.angle + 8 * sin(-followtarget.pitch),
+			(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.90, false);;
+
+		vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
+		vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
+		vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
+
+		if (active) {
+			lasercolor = "GREEN";
+			// Draw laser
+			FLineTraceData laserTrace;
+			LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
+			for (double f = 1; f < laserTrace.distance; f = f + random(1, f)) {
+				double bliplength = random(8, 32);
+				for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
+					float coloroffset = random(0, 128);
+					templasercolor = lasercolor;
+					templasercolor.r = clamp(templasercolor.r + coloroffset, 0, 255);
+					templasercolor.g = clamp(templasercolor.g + coloroffset, 0, 255);
+					templasercolor.b = clamp(templasercolor.b + coloroffset, 0, 255);
+					A_SpawnParticle(templasercolor, SPF_FULLBRIGHT|SPF_RELANG,
+						1, frandom(0.5, 1.0), 0,
+						(cos(pitch) * cos(angle) * d),// + frandom(0.01, 0.05),
+						(cos(pitch) * sin(angle) * d),// + frandom(0.01, 0.05),
+						(sin(-pitch) * d),// + frandom(0.01, 0.05),
+						-rot.a * cos(pitch) * sin(angle) * (d/56.0) + vel.x,
+						rot.a * cos(pitch) * cos(angle) * (d/56.0) + vel.y,
+						-rot.p * cos(pitch) * (d/56.0) + vel.z,
+						0, 0, 0,
+						frandom(0.5, 1.0), -1, 0);
+				}
+				f += bliplength;
+			}
+		}
+
+		A_SetAngle(HDPlayerPawn(followTarget).scopecamera.angle, true);
+		A_SetPitch(HDPlayerPawn(followTarget).scopecamera.pitch, true);
+
+		oldrot.a = HDPlayerPawn(followTarget).scopecamera.angle;
+		oldrot.p = HDPlayerPawn(followTarget).scopecamera.pitch;
 	}
 
 	double DampedSpring(double p, double r, double v, double k, double d) {

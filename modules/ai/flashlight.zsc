@@ -159,6 +159,8 @@ class UaS_Monster_Flashlight : Actor {
 		+NOBLOCKMONST;
 		+ROLLSPRITE;
 		+FORCEXYBILLBOARD;
+		+NOBLOCKMAP;
+		+NOINTERACTION;
 		scale 1;
 		friction 0.1;
 		RenderStyle "Add";
