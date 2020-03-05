@@ -47,6 +47,7 @@ class UaS_PlayerLaser_actual : Actor {
 		height 4;
 		+THRUACTORS;
 		+NOBLOCKMONST;
+		+NOINTERACTION;
 	}
 
 	override void Tick() {
