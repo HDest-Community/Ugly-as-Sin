@@ -50,8 +50,6 @@ extend class UaS_Looting_Handler {
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD7mMag", 1, 1, 0.15));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HD7mClip", 1, 1, 0.15));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableBerserkPack", 1, 1, 0.1));
-		HDMarineZM66Loot.push(UaS_LootEntry.create("GreenArmour", 1, 1, 0.2));
-		HDMarineZM66Loot.push(UaS_LootEntry.create("BlueArmour", 1, 1, 0.1));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HEATAmmo", 1, 2, 0.1));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("BrontornisRound", 1, 1, 0.1));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableLiteAmp", 1, 1, 0.1));
