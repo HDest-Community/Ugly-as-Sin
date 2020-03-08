@@ -190,6 +190,7 @@ class UaS_Monster_Flashlight : Actor {
 			rot.p += DampedSpring(pitch, targetRot.p, rot.p, 0.75, 0.5); // + (frandom(-3, 3) + frandom(-2, 2) + frandom(-1, 1)) / 6;
 		}
 		else {
+			bNOINTERACTION = false;
 			if (laserdot) { laserdot.Destroy(); }
 			brightness += frandom(brightness * -0.1, brightness * 0.1);
 			brightness = clamp(brightness * 0.999, 0, 1);

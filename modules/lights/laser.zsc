@@ -55,19 +55,41 @@ class UaS_PlayerLaser_actual : Actor {
 		if (!followtarget) { destroy(); return; }
 		if (!HDPlayerPawn(followtarget).scopecamera) { destroy(); return; }
 
+		// lower laser in response to weapon lowering
+		// commenting out, don't really like this as it messes up the scope camera tracking
+		/*double temppitch = HDPlayerPawn(followTarget).scopecamera.pitch;
+		let rw=hdplayerpawn(followtarget).player.readyweapon;
+		if(rw && (rw.InStateSequence(CurState, ResolveState("deselect")) || rw.InStateSequence(CurState, ResolveState("select")))) {
+			let psp = hdplayerpawn(followtarget).player.GetPSprite(PSP_WEAPON);
+			if(psp) temppitch += (psp.y - 32) / 2.0;
+			console.printf(""..psp.y);
+		}*/
+
 		rot.a = -deltaangle(HDPlayerPawn(followTarget).scopecamera.angle, oldrot.a);
 		rot.p = -deltaangle(HDPlayerPawn(followTarget).scopecamera.pitch, oldrot.p);
 
 		targetpos = followTarget.vec3Angle(
 			6 * cos(followtarget.pitch) + 2 * sin(-followtarget.pitch),
 			followTarget.angle + 8 * sin(-followtarget.pitch),
-			(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.90, false);;
+			(6 * sin(-followtarget.pitch)) + (HDPlayerPawn(followTarget).player.viewz - followtarget.pos.z) * 0.90, false);
+
+		targetpos.z = min(
+			targetpos.z,
+			followtarget.pos.z + HDWeapon(HDPlayerPawn(followtarget).player.readyweapon).GetShootOffset(followtarget));
+		//console.printf(""..HDWeapon(HDPlayerPawn(followtarget).player.readyweapon).GetShootOffset(followtarget));
 
 		vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
 		vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
 		vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
 
-		if (active) {
+		bool validweapon = (
+			!(hdplayerpawn(followtarget).player.readyweapon is 'NullWeapon') &&
+			!(hdplayerpawn(followtarget).player.readyweapon is 'HDFist') &&
+			!(hdplayerpawn(followtarget).player.readyweapon is 'HDGrenadeThrower') &&
+			!(hdplayerpawn(followtarget).player.readyweapon is 'Tripwire') &&
+			!(hdplayerpawn(followtarget).player.readyweapon is 'Lumberjack'));
+
+		if (active && validweapon) {
 			lasercolor = "GREEN";
 			// Draw laser
 			FLineTraceData laserTrace;
