@@ -63,7 +63,7 @@ class UaS_StealthHandler : Inventory {
 			}
 
 			// Intensify lights close to player
-			if (currentDistance < owner.radius) { avgIntensity *= 100; }
+			if (currentDistance < owner.radius * 3) { avgIntensity *= 100; }
 
 			// Special handling for Steve's Flashlight
 			// This is a disgusting hack, BTW
