@@ -79,7 +79,6 @@ OptionMenu "UaS_Hunger_Options" {
 	Option "Timescale","UaS_HungerTimeScale","UaS_Nice_Timescales"
 	Option "Eat/Drink Auto-Select","UaS_HungerAutoselect","OnOff"
 	Slider "Ration Spawn Multiplier","UaS_HungerRationRate", 0, 5, 0.1, 1
-	Option "Start with Messkit/Rations","UaS_HungerStart","OnOff"
 	StaticText "Adds need to eat / drink, with messkit."
 	StaticText "Starvation / dehydration causes fatigue."
 	StaticText " "
