@@ -16,8 +16,8 @@ class UaS_HungerTracker : CustomInventory {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		//Initial starting calories
-		calories = random(1500,2000);
-		water = random(1500,2000);
+		calories = random[hunger](1500,2000);
+		water = random[hunger](1500,2000);
 	}
 
 	override void DoEffect() {
