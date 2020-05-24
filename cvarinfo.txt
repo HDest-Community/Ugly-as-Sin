@@ -26,8 +26,6 @@ server bool UaS_AI_Stealth = true;
 server bool UaS_LootingEnabled = false;
 server float UaS_LootingFactor = 0.5;
 
-server bool UaS_LightsEnabled = false;
-
 server bool UaS_VisWepsEnabled = false;
 
 server int UaS_Debug = 0;

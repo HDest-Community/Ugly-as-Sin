@@ -60,7 +60,6 @@ OptionMenu "UaS_Options" {
 
 	Option "Focus Zoom","UaS_FocusZoomEnabled","OnOff"
 	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
-	Option "Glowsticks","UaS_LightsEnabled","OnOff"
 	Control "Laser Sight", "use uas_playerlaser"
 
 	StaticText "Changing module configuration mid-game may cause"

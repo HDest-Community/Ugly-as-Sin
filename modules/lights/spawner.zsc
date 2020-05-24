@@ -1,7 +1,6 @@
 class UaS_Glowstick_Spawner : EventHandler {
 	//Set up spawns
 	override void WorldThingSpawned(WorldEvent e) {
-		if(UaS_LightsEnabled == false) { return; }
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
