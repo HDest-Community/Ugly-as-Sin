@@ -20,6 +20,7 @@ class UaS_Scarcity_Spawner : EventHandler {
 		ExactScarcity('HD7mBoxPickup', 1.0 - ScarcityFactor);
 		ExactScarcity('HD7mClip', 1.0 - ScarcityFactor);
 		ExactScarcity('ShellPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('HDShellAmmo', 1.0 - ScarcityFactor);
 		ExactScarcity('ShellBoxPickup', 1.0 - ScarcityFactor);
 		ExactScarcity('HDBattery', 1.0 - ScarcityFactor);
 		ExactScarcity('RocketBigPickup', 1.0 - ScarcityFactor);
@@ -86,10 +87,11 @@ class UaS_Scarcity_Spawner : EventHandler {
 				MagReplacer('HD7mClip', 'SevenMilAmmo', 10, targetActor);
 				break;
 			case 'ShellPickup':
-				UaS.SpawnStuff('HDShellAmmo', random(0, 4 * min(OverspawnFactor-ScarcityFactor, 1.0)), targetActor.pos, true);
+			case 'HDShellAmmo':
+				UaS.SpawnStuff('HDFumblingShell', random(0, 4 * min(OverspawnFactor-ScarcityFactor, 1.0)), targetActor.pos, true);
 				break;
 			case 'ShellBoxPickup':
-				BoxReplacer('ShellBoxPickup', 'HDShellAmmo', 20, targetActor);
+				BoxReplacer('ShellBoxPickup', 'HDFumblingShell', 20, targetActor);
 				break;
 			case 'HDBattery':
 				int MagCap = 20 * min(OverspawnFactor - ScarcityFactor, 1.0);
