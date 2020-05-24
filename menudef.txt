@@ -122,7 +122,6 @@ OptionMenu "UaS_Reloader_Options" {
 
 OptionMenu "UaS_Sling_Options" {
 	Title "Weapon Sling Options"
-	Option "Spawn with Sling","UaS_SlingStart","OnOff"
 	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
 	StaticText "Sling allows bracing weapon anywhere."
 	StaticText " "

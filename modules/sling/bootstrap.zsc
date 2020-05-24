@@ -1,18 +1,4 @@
-class SlingInitialized : Inventory {}
-
 class UaS_Sling_Bootstrap : EventHandler {
-	//initialize additional player inventory
-	override void PlayerEntered(PlayerEvent e) {
-		PlayerInfo player = players[e.PlayerNumber];
-		if(level.time > 1) { return; }
-		if(!UaS_SlingEnabled) { return;	}
-		if(player.mo.countinv("SlingInitialized")) { return; }
-		if(UaS_SlingStart == true) {
-			player.mo.Giveinventory("UaS_WeaponSling", 1);
-		}
-		player.mo.GiveInventory("SlingInitialized", 1);
-	}
-
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!UaS_SlingEnabled) { return; }
 		if(level.maptime > 1) { return; }
