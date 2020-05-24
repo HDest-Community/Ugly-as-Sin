@@ -32,13 +32,23 @@ extend class UaS_Looting_Handler {
 		FunnyItems.Push(" a broken PDA.");
 		FunnyItems.Push(" a pinup poster.");
 		FunnyItems.Push(" two floppy disks, labeled DOOM.");
-		FunnyItems.Push(" a paper labeled 'TPS REPORT'.");
+		FunnyItems.Push(" a paper labeled \"TPS REPORT.\"");
 		FunnyItems.Push(" a movie script.");
 		FunnyItems.Push(" some electrical cables.");
 		FunnyItems.Push(" an empty beer bottle.");
 		FunnyItems.Push(" a family photo.");
 		FunnyItems.Push(" an action figure.");
-		FunnyItems.Push(" an action figure.");
+		FunnyItems.Push(" a VHS tape titled \"Demolition Man.\"");
+		FunnyItems.Push(" the secret Ugly as Sin feature.");
+		FunnyItems.Push(" a glass jar.");
+		FunnyItems.Push(" an SD card.");
+		FunnyItems.Push(" some old paper currency.");
+		FunnyItems.Push(" a plush emoji toy.");
+		FunnyItems.Push(" a Rainbow Dash figurine.");
+		FunnyItems.Push(" a delicate gold chain.");
+		FunnyItems.Push(" two AA batteries.");
+		FunnyItems.Push(" a tape player.");
+		FunnyItems.Push(" a cassete tape.");
 
 		JoinerWords.Push(", except");
 		JoinerWords.Push(", except for");
