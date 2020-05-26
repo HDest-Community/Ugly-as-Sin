@@ -30,10 +30,6 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_Scarcity_Options"
 	StaticText " "
 
-	Option "Weapon Sling","UaS_SlingEnabled","OnOff"
-	SubMenu "Settings and Info", "UaS_Sling_Options"
-	StaticText " "
-
 	Option "Fragshard Reducer","UaS_FragReducerEnabled","OnOff"
 	SubMenu "Settings and Info", "UaS_Frag_Options"
 	StaticText " "
@@ -112,22 +108,6 @@ OptionMenu "UaS_Reloader_Options" {
 	StaticText " "
 	StaticText "Given to Lib/Boss loadouts on new game,"
 	StaticText "or spawns on those weapons in new map."
-}
-
-OptionMenu "UaS_Sling_Options" {
-	Title "Weapon Sling Options"
-	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
-	StaticText "Sling allows bracing weapon anywhere."
-	StaticText " "
-	StaticText "Must first be attached to weapon"
-	StaticText "by using inventory item."
-	StaticText " "
-	StaticText "Once attached, Hold [Zoom] to toggle."
-	StaticText "Delay is how long [Zoom]  must be held."
-	StaticText " "
-	StaticText "Jogging will temporarily disable sling."
-	StaticText "Sprinting will deactivate it entirely."
-	StaticText "Given on start of new game or map."
 }
 
 OptionMenu "UaS_Frag_Options" {
