@@ -1,3 +1,29 @@
+class UaS_Glowstick_Spawner : EventHandler {
+	//Set up spawns
+	override void WorldThingSpawned(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "PortableStimpack" ||
+			e.Thing.GetClassName() == "PortableMedikit" ||
+			e.Thing.GetClassName() == "HDBP");
+
+		if(spawnable) {
+			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 1, 2), e.Thing.pos);
+		}
+	}
+
+	override void PlayerEntered(PlayerEvent e) {
+		PlayerInfo player = players[e.PlayerNumber];
+		if(!player.mo.countinv("UaS_PlayerLaser")) {
+			player.mo.Giveinventory("UaS_PlayerLaser", 1);
+		}
+	}
+}
+
 class UaS_Glowstick : HDPickup {
 	bool Activated;
 	DynamicLight GlowLight;

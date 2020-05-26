@@ -17,16 +17,11 @@ version "3.5"
 #include "modules/hunger/messkit.zsc"
 
 // Scarcity scripts
-#include "modules/scarcity/bootstrap.zsc"
 #include "modules/scarcity/spawner.zsc"
 #include "modules/scarcity/items.zsc"
 
 // Debris spawner
 #include "modules/debris/spawner.zsc"
-
-// Weapon Sling
-#include "modules/sling/bootstrap.zsc"
-#include "modules/sling/sling.zsc"
 
 // Frag spawning factor
 #include "modules/fragfactor/fragfactor.zsc"
@@ -48,12 +43,15 @@ version "3.5"
 #include "modules/looting/loottables.zsc"
 #include "modules/looting/flavortext.zsc"
 
-// Flares and glowsticks
-#include "modules/lights/items.zsc"
-#include "modules/lights/spawner.zsc"
+// Player laser
 #include "modules/lights/laser.zsc"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
+
+// Standalone items
+#include "modules/items/2f.zsc"
+#include "modules/items/sling.zsc"
+#include "modules/items/glowstick.zsc"
 
 #include "modules/aimsway/bootstrap.zsc"
