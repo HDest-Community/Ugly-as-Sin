@@ -20,6 +20,22 @@ class UaS_AimSway_Bootstrap : Eventhandler {
 class UaS_AimSway_Thinker : Thinker {
 	HDPlayerPawn plr;
 
+	// aim offseting variables
+	vector2 bob, bobspeed;
+	vector2 bobrandom, bobspeedrandom;
+	vector2 oldhudbob;
+	vector2 lookspeed;
+
+	override void Tick() {
+		if(!plr) { return; }
+		if (UaS_FocusZoomEnabled) { FocusZoom(); }
+	}
+
+	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
+	double DampedSpring(double p, double r, double v, double k, double d) { return -(d * v) - (k * (p - r)); }
+}
+
+extend class UaS_AimSway_Thinker {
 	// focus-zooming external default variables
 	double zoomdefault;
 	double zoomtarget;
@@ -30,18 +46,6 @@ class UaS_AimSway_Thinker : Thinker {
 	// focus-zooming internal variables
 	double zoomspeed;
 	int zoomcountdown;
-
-	// aim offseting variables
-	vector2 bob, bobspeed;
-	vector2 bobrandom, bobspeedrandom;
-	vector2 oldhudbob;
-	vector2 lookspeed;
-
-	override void Tick() {
-		if(!plr) { return; }
-
-		if (UaS_FocusZoomEnabled) { FocusZoom(); }
-	}
 
 	void FocusZoom() {
 		// Ensure a brief delay before focus zoom takes effect
@@ -73,6 +77,4 @@ class UaS_AimSway_Thinker : Thinker {
 		plr.player.desiredfov = CVar.GetCVar("fov", plr.player).GetFloat() * zoomcurrent;
 	}
 
-	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
-	double DampedSpring(double p, double r, double v, double k, double d) { return -(d * v) - (k * (p - r)); }
 }
