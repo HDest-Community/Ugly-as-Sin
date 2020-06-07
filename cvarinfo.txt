@@ -36,3 +36,5 @@ server bool UaS_LightsEnabled = false;
 server bool UaS_VisWepsEnabled = false;
 
 server int UaS_Debug = 0;
+
+server bool UaS_FocusZoomEnabled = false;

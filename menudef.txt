@@ -58,6 +58,7 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_VisWep_Options"
 	StaticText " "
 
+	Option "Focus Zoom","UaS_FocusZoomEnabled","OnOff"
 	Option "Glowsticks","UaS_LightsEnabled","OnOff"
 	Control "Laser Sight", "use uas_playerlaser"
 
