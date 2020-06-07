@@ -1,6 +1,6 @@
-class UaS_AimSway_Bootstrap : Eventhandler {
+class UaS_Aim_Bootstrap : Eventhandler {
 	override void PlayerEntered(PlayerEvent e) {
-		UaS_AimSway_Thinker aimthinker = new("UaS_AimSway_Thinker");
+		UaS_Aim_Thinker aimthinker = new("UaS_Aim_Thinker");
 		aimthinker.plr = HDPlayerPawn(players[e.PlayerNumber].mo);
 		if(!aimthinker.plr) {
 			console.printf("new aimthinker failed for "..e.PlayerNumber) ;
@@ -17,25 +17,20 @@ class UaS_AimSway_Bootstrap : Eventhandler {
 	}
 }
 
-class UaS_AimSway_Thinker : Thinker {
+class UaS_Aim_Thinker : Thinker {
 	HDPlayerPawn plr;
-
-	// aim offseting variables
-	vector2 bob, bobspeed;
-	vector2 bobrandom, bobspeedrandom;
-	vector2 oldhudbob;
-	vector2 lookspeed;
 
 	override void Tick() {
 		if(!plr) { return; }
 		if (UaS_FocusZoomEnabled) { FocusZoom(); }
+		if (UaS_AimSwayEnabled) { AimSway(); }
 	}
 
 	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
 	double DampedSpring(double p, double r, double v, double k, double d) { return -(d * v) - (k * (p - r)); }
 }
 
-extend class UaS_AimSway_Thinker {
+extend class UaS_Aim_Thinker {
 	// focus-zooming external default variables
 	double zoomdefault;
 	double zoomtarget;
@@ -76,5 +71,47 @@ extend class UaS_AimSway_Thinker {
 		// Thanks Josh for figuring out that we should use the player's FOV CVar
 		plr.player.desiredfov = CVar.GetCVar("fov", plr.player).GetFloat() * zoomcurrent;
 	}
+}
 
+extend class UaS_Aim_Thinker {
+	// aim offseting variables
+	vector2 aimoffset;
+	vector2 aimswayrandom;
+	vector2 aimswayrandomspeed;
+
+	void AimSway() {
+		// Get player mouse input and add to offset
+		vector2 playerlook = (-plr.player.cmd.yaw, -plr.player.cmd.pitch) * 0.005;
+		aimoffset += playerlook;
+
+		// add random jitter
+		aimoffset += RandomSway() * 0.125;
+
+		// prevent from going outside bounds
+		aimoffset.x = clamp(aimoffset.x, -45, 45);
+		aimoffset.y = clamp(aimoffset.y, -45, 45);
+
+		// keep in a reasonably sane area
+		aimoffset *= 0.95;
+
+		// recenter for focus and bracing, separately
+		if (plr.isFocussing) { aimoffset *= 0.80; }
+		if (plr.gunbraced) { aimoffset *= 0.90; }
+
+		// apply to player
+		plr.hudbob += aimoffset;
+	}
+
+	vector2 RandomSway() {
+		if (random(1, 2) == 1) {
+			aimswayrandomspeed.x += ((frandom(-1.0, 1.0) + frandom(-1.0, 1.0) + frandom(-1.0, 1.0)) / 3);
+			aimswayrandomspeed.y += ((frandom(-1.0, 1.0) + frandom(-1.0, 1.0) + frandom(-1.0, 1.0)) / 3);
+		}
+
+		if (plr.isFocussing) { aimswayrandomspeed *= 0.25; }
+		if (plr.gunbraced) { aimswayrandomspeed *= 0.0; }
+
+		aimswayrandomspeed *= 0.9;
+		return aimswayrandomspeed;
+	}
 }
