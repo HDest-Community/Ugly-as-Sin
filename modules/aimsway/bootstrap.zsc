@@ -1,0 +1,78 @@
+class UaS_AimSway_Bootstrap : Eventhandler {
+	override void PlayerEntered(PlayerEvent e) {
+		UaS_AimSway_Thinker aimthinker = new("UaS_AimSway_Thinker");
+		aimthinker.plr = HDPlayerPawn(players[e.PlayerNumber].mo);
+		if(!aimthinker.plr) {
+			console.printf("new aimthinker failed for "..e.PlayerNumber) ;
+			aimthinker.destroy();
+			return;
+		}
+
+		// these could be cvar-influenced?
+		aimthinker.zoomdefault = 1.0;
+		aimthinker.zoomtarget = 0.75;
+		aimthinker.zoomcurrent = 1.0;
+		aimthinker.zoomdelay = 35;
+		aimthinker.zoomspring = 0.1;
+	}
+}
+
+class UaS_AimSway_Thinker : Thinker {
+	HDPlayerPawn plr;
+
+	// focus-zooming external default variables
+	double zoomdefault;
+	double zoomtarget;
+	double zoomcurrent;
+	double zoomspring;
+	int zoomdelay;
+
+	// focus-zooming internal variables
+	double zoomspeed;
+	int zoomcountdown;
+
+	// aim offseting variables
+	vector2 bob, bobspeed;
+	vector2 bobrandom, bobspeedrandom;
+	vector2 oldhudbob;
+	vector2 lookspeed;
+
+	override void Tick() {
+		if(!plr) { return; }
+
+		FocusZoom();
+	}
+
+	void FocusZoom() {
+		// Ensure a brief delay before focus zoom takes effect
+		if(plr.vel.length() <= 1) { zoomcountdown = max(zoomcountdown - 1, 1); }
+		else { zoomcountdown = zoomdelay; }
+
+		// Focus if zoom button pressed and delay runout
+		if((plr.player.cmd.buttons & BT_ZOOM) && zoomcountdown < zoomdelay) {
+			zoomspeed += dampedspring(
+				zoomcurrent,
+				zoomtarget,
+				zoomspeed,
+				zoomspring / (zoomcountdown),
+				1.0);
+			zoomcurrent += zoomspeed;
+		}
+		else {
+			zoomspeed += dampedspring(
+				zoomcurrent,
+				zoomdefault,
+				zoomspeed,
+				zoomspring,
+				1.0);
+			zoomcurrent += zoomspeed;
+		}
+
+		// Hopefully this respects players FOV setting appropriately
+		// Thanks Josh for figuring out that we should use the player's FOV CVar
+		plr.player.desiredfov = CVar.GetCVar("fov", plr.player).GetFloat() * zoomcurrent;
+	}
+
+	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
+	double DampedSpring(double p, double r, double v, double k, double d) { return -(d * v) - (k * (p - r)); }
+}
