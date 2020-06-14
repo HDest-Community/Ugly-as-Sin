@@ -8,5 +8,8 @@ GameInfo {
 	AddEventHandlers = "UaS_AI_Bootstrap"
 	AddEventHandlers = "UaS_Looting_Bootstrap"
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
+	AddEventHandlers = "UaS_2F_Bootstrap"
+	AddEventHandlers = "UaS_Sling_Bootstrap"
+	AddEventHandlers = "UaS_Glowstick_Spawner"
 	AddEventHandlers = "UaS_Aim_Bootstrap"
 }
