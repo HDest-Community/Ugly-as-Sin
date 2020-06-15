@@ -32,4 +32,4 @@ server int UaS_Debug = 0;
 server bool UaS_FocusZoomEnabled = false;
 server bool UaS_AimSwayEnabled = false;
 
-server bool UaS_YOLO = false;
+server noarchive bool UaS_YOLO = false;
