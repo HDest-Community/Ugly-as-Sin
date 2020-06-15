@@ -1,0 +1,28 @@
+class UaS_YOLO_Handler : EventHandler {
+	override void WorldTick() {
+		if (UaS_YOLO) { DoYOLO(); }
+		else { DisableYOLO(); }
+	}
+
+	void DoYOLO() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+
+			if (!players[i].mo.bBUDDHA) {
+				players[i].mo.bBUDDHA = true;
+				console.printf("Player "..i.." given BUDDHA.");
+			}
+		}
+	}
+
+	void DisableYOLO() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+
+			if (players[i].mo.bBUDDHA) {
+				players[i].mo.bBUDDHA = false;
+				console.printf("Player "..i.." removed BUDDHA.");
+			}
+		}
+	}
+}

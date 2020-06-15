@@ -12,4 +12,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Sling_Bootstrap"
 	AddEventHandlers = "UaS_Glowstick_Spawner"
 	AddEventHandlers = "UaS_Aim_Bootstrap"
+	AddEventHandlers = "UaS_YOLO_Handler"
 }
