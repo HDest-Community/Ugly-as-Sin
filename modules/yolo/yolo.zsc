@@ -16,6 +16,17 @@ class UaS_YOLO_Handler : EventHandler {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
 			players[i].mo.bBUDDHA = YOLO_Status;
+			if (YOLO_Status == true) {
+				HDPlayerPawn p = HDPlayerPawn(players[i].mo);
+				//clamp wound values
+				/*int maxsum = 100 - ((p.woundcount + p.burncount + p.unstablewoundcount + p.oldwoundcount + p.aggravateddamage) / 5);
+				p.woundcount = clamp(p.woundcount, 0, maxsum);
+				p.burncount = clamp(p.burncount, 0, maxsum);
+				p.unstablewoundcount = clamp(p.unstablewoundcount, 0, maxsum);
+				p.oldwoundcount = clamp(p.oldwoundcount, 0, maxsum);
+				p.aggravateddamage = clamp(p.oldwoundcount, 0, maxsum);
+				console.printf("Player "..i.." 2f "..p.secondflesh);*/
+			}
 		}
 	}
 }
