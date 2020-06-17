@@ -4,6 +4,7 @@ class UaS_Bootstrap : EventHandler {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
+			SutureModule_Bootstrap(i);
 		}
 	}
 
@@ -24,4 +25,13 @@ class UaS_Bootstrap : EventHandler {
 			if(UaS_Debug & Looting) { console.printf("Looting: Player "..pnum.." given tracker."); }
 		}
 	}
+
+	void SutureModule_Bootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if(!p.mo.countinv("UaS_2F_Handler")) {
+			p.mo.giveinventory("UaS_2F_Handler", 1);
+		}
+	}
+
 }
