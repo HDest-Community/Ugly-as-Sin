@@ -1,5 +1,6 @@
 GameInfo {
-	AddEventHandlers = "UaS_Hunger_Bootstrap"
+	AddEventHandlers = "UaS_Bootstrap"
+	//AddEventHandlers = "UaS_Hunger_Bootstrap"
 	AddEventHandlers = "UaS_Hunger_Spawner"
 	AddEventHandlers = "UaS_Scarcity_Spawner"
 	AddEventHandlers = "UaS_Debris_Spawner"

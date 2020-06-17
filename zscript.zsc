@@ -8,9 +8,10 @@ version "3.5"
 
 // Constants
 #include "modules/constants.zsc"
+#include "modules/bootstrap/bootstrap.zsc"
 
 // Hunger and Thirst scripts
-#include "modules/hunger/bootstrap.zsc"
+//#include "modules/hunger/bootstrap.zsc"
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"
 #include "modules/hunger/items.zsc"
