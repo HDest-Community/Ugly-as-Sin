@@ -1,7 +1,9 @@
 class UaS_Bootstrap : EventHandler {
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
+			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 		}
 	}
 
@@ -11,6 +13,15 @@ class UaS_Bootstrap : EventHandler {
 		if (!p.mo.countinv("UaS_HungerTracker")) {
 			p.mo.giveinventory("UaS_HungerTracker", 1);
 			if(UaS_Debug & Hunger) { console.printf("Hunger: Player "..pnum.." given tracker."); }
+		}
+	}
+
+	void Looting_Bootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if(!p.mo.countinv("UaS_Looting_Handler")) {
+			p.mo.giveinventory("UaS_Looting_Handler", 1);
+			if(UaS_Debug & Looting) { console.printf("Looting: Player "..pnum.." given tracker."); }
 		}
 	}
 }
