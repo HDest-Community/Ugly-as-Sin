@@ -42,9 +42,6 @@ version "3.5"
 #include "modules/looting/loottables.zsc"
 #include "modules/looting/flavortext.zsc"
 
-// Player laser
-#include "modules/lights/laser.zsc"
-
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
 
@@ -52,6 +49,7 @@ version "3.5"
 #include "modules/items/2f.zsc"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
+#include "modules/items/laser.zsc"
 
 #include "modules/aimsway/bootstrap.zsc"
 #include "modules/yolo/yolo.zsc"
