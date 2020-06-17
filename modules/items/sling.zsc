@@ -1,4 +1,4 @@
-class UaS_Sling_Bootstrap : EventHandler {
+class UaS_Sling_Spawner : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }

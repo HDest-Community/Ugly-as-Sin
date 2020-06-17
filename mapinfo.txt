@@ -7,7 +7,7 @@ GameInfo {
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_AI_Bootstrap"
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
-	AddEventHandlers = "UaS_Sling_Bootstrap"
+	AddEventHandlers = "UaS_Sling_Spawner"
 	AddEventHandlers = "UaS_Glowstick_Spawner"
 	AddEventHandlers = "UaS_Aim_Bootstrap"
 	AddEventHandlers = "UaS_YOLO_Handler"
