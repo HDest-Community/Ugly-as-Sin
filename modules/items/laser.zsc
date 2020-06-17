@@ -8,6 +8,7 @@ class UaS_PlayerLaser : HDPickup {
 		Inventory.Icon "CLIPA0";
 		//HDPickup.Bulk 5;
 		HDPickup.refid UAS_HDLD_LASERLIGHT;
+		tag "Laser sight module";
 		-INVENTORY.INVBAR;
 		-HDPickup.FitsInBackpack;
 		+HDPickup.NotInPockets;
