@@ -4,6 +4,7 @@ class UaS_Bootstrap : EventHandler {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
+			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			SutureModule_Bootstrap(i);
 		}
 	}
@@ -26,7 +27,7 @@ extend class UaS_BootStrap {
 	void Looting_Bootstrap(int pnum) {
 		PlayerInfo p = players[pnum];
 		if (!p.mo) { return; }
-		if(!p.mo.countinv("UaS_Looting_Handler")) {
+		if (!p.mo.countinv("UaS_Looting_Handler")) {
 			p.mo.giveinventory("UaS_Looting_Handler", 1);
 			if(UaS_Debug & Looting) { console.printf("Looting: Player "..pnum.." given tracker."); }
 		}
@@ -35,7 +36,7 @@ extend class UaS_BootStrap {
 	void SutureModule_Bootstrap(int pnum) {
 		PlayerInfo p = players[pnum];
 		if (!p.mo) { return; }
-		if(!p.mo.countinv("UaS_2F_Handler")) {
+		if (!p.mo.countinv("UaS_2F_Handler")) {
 			p.mo.giveinventory("UaS_2F_Handler", 1);
 		}
 	}
@@ -57,4 +58,11 @@ extend class UaS_BootStrap {
 		aimthinker.zoomspring = 0.1;
 	}
 
+	void Stealth_PlayerBootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if (!p.mo.countinv("UaS_StealthHandler")) {
+			p.mo.Giveinventory("UaS_StealthHandler", 1);
+		}
+	}
 }
