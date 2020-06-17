@@ -8,6 +8,12 @@ class UaS_Bootstrap : EventHandler {
 		}
 	}
 
+	override void PlayerEntered(PlayerEvent e) {
+		AimSway_Bootstrap(e.PlayerNumber);
+	}
+}
+
+extend class UaS_BootStrap {
 	void Hunger_Bootstrap(int pnum) {
 		PlayerInfo p = players[pnum];
 		if (!p.mo) { return; }
@@ -32,6 +38,23 @@ class UaS_Bootstrap : EventHandler {
 		if(!p.mo.countinv("UaS_2F_Handler")) {
 			p.mo.giveinventory("UaS_2F_Handler", 1);
 		}
+	}
+
+	void AimSway_Bootstrap(int pnum) {
+		UaS_Aim_Thinker aimthinker = new("UaS_Aim_Thinker");
+		aimthinker.plr = HDPlayerPawn(players[pnum].mo);
+		if(!aimthinker.plr) {
+			console.printf("new aimthinker failed for "..pnum) ;
+			aimthinker.destroy();
+			return;
+		}
+
+		// these could be cvar-influenced?
+		aimthinker.zoomdefault = 1.0;
+		aimthinker.zoomtarget = 0.75;
+		aimthinker.zoomcurrent = 1.0;
+		aimthinker.zoomdelay = 35;
+		aimthinker.zoomspring = 0.1;
 	}
 
 }

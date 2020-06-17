@@ -1,22 +1,3 @@
-class UaS_Aim_Bootstrap : Eventhandler {
-	override void PlayerEntered(PlayerEvent e) {
-		UaS_Aim_Thinker aimthinker = new("UaS_Aim_Thinker");
-		aimthinker.plr = HDPlayerPawn(players[e.PlayerNumber].mo);
-		if(!aimthinker.plr) {
-			console.printf("new aimthinker failed for "..e.PlayerNumber) ;
-			aimthinker.destroy();
-			return;
-		}
-
-		// these could be cvar-influenced?
-		aimthinker.zoomdefault = 1.0;
-		aimthinker.zoomtarget = 0.75;
-		aimthinker.zoomcurrent = 1.0;
-		aimthinker.zoomdelay = 35;
-		aimthinker.zoomspring = 0.1;
-	}
-}
-
 class UaS_Aim_Thinker : Thinker {
 	HDPlayerPawn plr;
 
