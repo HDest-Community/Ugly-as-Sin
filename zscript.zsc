@@ -50,6 +50,7 @@ version "3.5"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
 #include "modules/items/laser.zsc"
+#include "modules/items/resp.zsc"
 
 #include "modules/aimsway/bootstrap.zsc"
 #include "modules/yolo/yolo.zsc"
