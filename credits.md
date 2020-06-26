@@ -9,6 +9,8 @@
 * Ghastly_dragon:
   * Rocket Marine sprite, crouched.
   * SMG Marine sprite, crouched.
+* Jekyll Grim Payne:
+  * Respirator sprite.
 
 # Code
 * Zhs2: Spawning code suggestion.
