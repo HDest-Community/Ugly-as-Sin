@@ -52,7 +52,7 @@ class UaS_Respirator : HDPickup {
 		}
 
 		// Runout hiss
-		if (activated && capacity <= 1) {
+		if ((activated && capacity <= 1) || owner.health <= 0) {
 			owner.A_StartSound("UaS/respirator/empty", CHAN_RESP, CHANF_OVERLAP, 1, ATTN_STATIC, 1);
 			activated = false;
 		}
