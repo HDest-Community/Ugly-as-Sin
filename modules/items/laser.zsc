@@ -1,3 +1,117 @@
+class UaS_LaserLightModule : HDPickup {
+	int mode;
+	actor spotlight;
+	vector3 oldsc;
+
+	default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a combo laser/light module.";
+		Inventory.Icon "CLIPA0";
+		HDPickup.Bulk 5;
+		HDPickup.refid UAS_HDLD_LASERLIGHT;
+		tag "Light/Laser module";
+	}
+
+	override bool Use(bool pickup) {
+		mode++;
+		if (mode > 3) { mode = 0; }
+		return false;
+	}
+
+	override void DoEffect() {
+		switch (mode) {
+			case 0: //Off
+				if (spotlight) { spotlight.destroy(); }
+				break;
+			case 1: //Flashlight
+				HandleFlashlight();
+				break;
+			case 2: //Laser
+				if (spotlight) { spotlight.destroy(); }
+				HandleLaser();
+				break;
+			case 3: //Both
+				HandleFlashlight();
+				HandleLaser();
+				break;
+		}
+	}
+
+	void HandleFlashlight() {
+		HDPlayerPawn p = HDPlayerPawn(owner);
+		actor sc = p.scopecamera;
+		if (!spotlight) { spotlight = actor.spawn("UaS_LLModule_Spotlight", sc.pos, false); }
+		vector3 newpos = owner.vec3Angle(
+			8 * cos(-sc.pitch) + 4 * sin(-sc.pitch),
+			sc.angle,
+			(8 * sin(-sc.pitch)) + (owner.player.viewz - owner.pos.z) - 4);
+		spotlight.setOrigin(newpos, true);
+		spotlight.A_SetAngle(sc.angle, true);
+		spotlight.A_SetPitch(sc.pitch, true);
+
+		// Draw flashlight particle beam
+		int start = 1;
+		if(owner.CheckLocalView()) { start = 8; }
+		for (double d = start; d < 64; d = d + (d / 2)) {
+			spotlight.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
+				1, (sin(20) * d * 8), 0,
+				cos(sc.pitch) * cos(sc.angle) * (d),
+				cos(sc.pitch) * sin(sc.angle) * (d),
+				sin(-sc.pitch) * (d),
+				owner.vel.x, owner.vel.y, owner.vel.z,
+				0, 0, 0,
+				(0.75) / (d ** 1.1), 0, 0);
+		}
+	}
+
+	void HandleLaser() {
+		/*HDPlayerPawn p = HDPlayerPawn(owner);
+		actor sc = p.scopecamera;
+		color lasercolor = "GREEN";
+		// Draw laser
+		FLineTraceData laserTrace;
+		sc.LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
+		for (double f = 1; f < laserTrace.distance; f = f + random(1, f)) {
+			double bliplength = random(8, 32);
+			for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
+				float coloroffset = random(0, 128);
+				owner.A_SpawnParticle(lasercolor, SPF_FULLBRIGHT|SPF_RELANG,
+					1, frandom(0.5, 1.0), 0,
+					cos(sc.pitch) * cos(sc.angle) * (d + 10),
+					cos(sc.pitch) * sin(sc.angle) * (d + 10),
+					sin(-sc.pitch) * (d + 10) + owner.player.viewz * 0.9 ,
+					owner.vel.x, owner.vel.y, owner.vel.z,
+					0, 0, 0,
+					frandom(0.5, 1.0), -1, 0);
+			}
+			f += bliplength;
+		}*/
+	}
+
+	override int getsbarnum(int flags){ return mode; }
+}
+
+class UaS_LLModule_Spotlight : DynamicLight {
+	default {
+		DynamicLight.Type "Point";
+		+DYNAMICLIGHT.ATTENUATE;
+		+DYNAMICLIGHT.SPOT
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		args[DynamicLight.LIGHT_RED] = 255;
+		args[DynamicLight.LIGHT_GREEN] = 255;
+		args[DynamicLight.LIGHT_BLUE] = 255;
+		args[DynamicLight.LIGHT_INTENSITY] = 255;
+		SpotInnerAngle = 15;
+		SpotOuterAngle = 25;
+	}
+}
+
+
+/*
 class UaS_PlayerLaser : HDPickup {
 	UaS_PlayerLaser_actual laseractual;
 
@@ -66,7 +180,7 @@ class UaS_PlayerLaser_actual : Actor {
 			let psp = hdplayerpawn(followtarget).player.GetPSprite(PSP_WEAPON);
 			if(psp) temppitch += (psp.y - 32) / 2.0;
 			console.printf(""..psp.y);
-		}*/
+		}
 
 		rot.a = -deltaangle(HDPlayerPawn(followTarget).scopecamera.angle, oldrot.a);
 		rot.p = -deltaangle(HDPlayerPawn(followTarget).scopecamera.pitch, oldrot.p);
@@ -132,3 +246,4 @@ class UaS_PlayerLaser_actual : Actor {
 		return -(d * v) - (k * (p - r));
 	}
 }
+*/
