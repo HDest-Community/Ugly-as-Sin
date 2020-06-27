@@ -18,6 +18,7 @@
 * Josh771: Additional pathing code for AI module.
 * Major Cooke: Help getting visual weapons working.
 * Dawnbreeze: How to determine actor's current state label.
+* Accensus: Using particles for "volumetric" light beams.
 
 # Testing
 * BeatCrazed: First long-play with the v0.1.0 release, proving it's playable.
