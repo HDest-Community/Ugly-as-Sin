@@ -1,6 +1,7 @@
 class UaS_LaserLightModule : HDPickup {
 	int mode;
-	actor spotlight;
+	bool activated;
+	UaS_LLM_Emitter emitter;
 	vector3 oldsc;
 
 	default {
@@ -14,85 +15,116 @@ class UaS_LaserLightModule : HDPickup {
 	}
 
 	override bool Use(bool pickup) {
-		mode++;
-		if (mode > 3) { mode = 0; }
+		if (owner.player.cmd.buttons & BT_USE) {
+			mode++;
+			if (mode > 2) { mode = 0; }
+			return false;
+		}
+		activated = !activated;
 		return false;
 	}
 
 	override void DoEffect() {
-		switch (mode) {
-			case 0: //Off
-				if (spotlight) { spotlight.destroy(); }
-				break;
-			case 1: //Flashlight
-				HandleFlashlight();
-				break;
-			case 2: //Laser
-				if (spotlight) { spotlight.destroy(); }
-				HandleLaser();
-				break;
-			case 3: //Both
-				HandleFlashlight();
-				HandleLaser();
-				break;
+		if(activated) {
+			if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
+			UpdateEmitter();
+			switch (mode) {
+				case 0: //Flashlight
+					Light(true);
+					Laser(false);
+					break;
+				case 1: //Laser
+					Light(false);
+					Laser(true);
+					break;
+				case 2: //Both
+					Light(true);
+					Laser(true);
+					break;
+			}
 		}
+		else if (emitter) { emitter.destroy(); }
 	}
 
-	void HandleFlashlight() {
+	void UpdateEmitter() {
 		HDPlayerPawn p = HDPlayerPawn(owner);
 		actor sc = p.scopecamera;
-		if (!spotlight) { spotlight = actor.spawn("UaS_LLModule_Spotlight", sc.pos, false); }
 		vector3 newpos = owner.vec3Angle(
 			8 * cos(-sc.pitch) + 4 * sin(-sc.pitch),
 			sc.angle,
 			(8 * sin(-sc.pitch)) + (owner.player.viewz - owner.pos.z) - 4);
-		spotlight.setOrigin(newpos, true);
-		spotlight.A_SetAngle(sc.angle, true);
-		spotlight.A_SetPitch(sc.pitch, true);
+		newpos.z = min(
+			newpos.z,
+			owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
+		emitter.setOrigin(newpos, true);
+		emitter.A_SetAngle(sc.angle, true);
+		emitter.A_SetPitch(sc.pitch, true);
+		emitter.vel = owner.vel;
+	}
+
+	void Light(bool on) {
+		if (!on) { emitter.Deactivate(self); return; }
+
+		emitter.Activate(self); // turn on dynlight
+		HDPlayerPawn p = HDPlayerPawn(owner);
+		actor sc = p.scopecamera;
 
 		// Draw flashlight particle beam
-		int start = 1;
-		if(owner.CheckLocalView()) { start = 8; }
+		int start = 1; //particle beam starts at emitter
+		if(owner.CheckLocalView()) { start = 16; } // unless local player
 		for (double d = start; d < 64; d = d + (d / 2)) {
-			spotlight.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
+			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
 				1, (sin(20) * d * 8), 0,
 				cos(sc.pitch) * cos(sc.angle) * (d),
 				cos(sc.pitch) * sin(sc.angle) * (d),
 				sin(-sc.pitch) * (d),
-				owner.vel.x, owner.vel.y, owner.vel.z,
+				0, 0, 0,
 				0, 0, 0,
 				(0.75) / (d ** 1.1), 0, 0);
 		}
 	}
 
-	void HandleLaser() {
-		/*HDPlayerPawn p = HDPlayerPawn(owner);
+	void Laser(bool on) {
+		if (!on) { return; }
+		HDPlayerPawn p = HDPlayerPawn(owner);
 		actor sc = p.scopecamera;
-		color lasercolor = "GREEN";
-		// Draw laser
+
+		// Draw laser particle beam
 		FLineTraceData laserTrace;
-		sc.LineTrace(angle, 16384, pitch, TRF_THRUACTORS, data: laserTrace);
-		for (double f = 1; f < laserTrace.distance; f = f + random(1, f)) {
+		sc.LineTrace(sc.angle, 16384, sc.pitch, TRF_THRUACTORS, data: laserTrace);
+		for (double f = 8; f < laserTrace.distance; f = f + random(32, 128)) {
 			double bliplength = random(8, 32);
 			for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
 				float coloroffset = random(0, 128);
-				owner.A_SpawnParticle(lasercolor, SPF_FULLBRIGHT|SPF_RELANG,
-					1, frandom(0.5, 1.0), 0,
-					cos(sc.pitch) * cos(sc.angle) * (d + 10),
-					cos(sc.pitch) * sin(sc.angle) * (d + 10),
-					sin(-sc.pitch) * (d + 10) + owner.player.viewz * 0.9 ,
-					owner.vel.x, owner.vel.y, owner.vel.z,
+				emitter.A_SpawnParticle("GREEN", SPF_FULLBRIGHT|SPF_RELANG,
+					1, frandom(0.5, 1.0) * clamp(d/4096, 0.5, 1), 0,
+					cos(sc.pitch) * cos(sc.angle) * (d),
+					cos(sc.pitch) * sin(sc.angle) * (d),
+					sin(-sc.pitch) * (d),
 					0, 0, 0,
-					frandom(0.5, 1.0), -1, 0);
+					0, 0, 0,
+					frandom(0.5, 1.0) * clamp(d/32, 0.0, 1), -1, 0);
 			}
 			f += bliplength;
-		}*/
+		}
 	}
 
 	override int getsbarnum(int flags){ return mode; }
+
+	override inventory CreateTossable(int amt) {
+		if(emitter) { emitter.destroy(); }
+		return super.CreateTossable(amt);
+	}
+
+	/*
+	override void actualpickup(actor other) {
+		super.actualpickup(other);
+		UaS_Respirator pu = UaS_Respirator(other.findinventory("UaS_Respirator", false));
+		pu.capacity = capacity;
+	}*/
 }
 
-class UaS_LLModule_Spotlight : DynamicLight {
+class UaS_LLM_Emitter : DynamicLight {
 	default {
 		DynamicLight.Type "Point";
 		+DYNAMICLIGHT.ATTENUATE;
@@ -101,12 +133,14 @@ class UaS_LLModule_Spotlight : DynamicLight {
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
+		Deactivate(self);
 		args[DynamicLight.LIGHT_RED] = 255;
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
 		args[DynamicLight.LIGHT_INTENSITY] = 255;
 		SpotInnerAngle = 15;
 		SpotOuterAngle = 25;
+
 	}
 }
 
