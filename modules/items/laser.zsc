@@ -47,38 +47,49 @@ class UaS_LaserLightModule : HDPickup {
 	}
 
 	void UpdateEmitter() {
-		HDPlayerPawn p = HDPlayerPawn(owner);
-		actor sc = p.scopecamera;
-		vector3 newpos = owner.vec3Angle(
-			8 * cos(-sc.pitch) + 4 * sin(-sc.pitch),
-			sc.angle,
-			(8 * sin(-sc.pitch)) + (owner.player.viewz - owner.pos.z) - 4);
-		newpos.z = min(
-			newpos.z,
-			owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
+		vector3 newpos;
+		double newangle, newpitch;
+		if (owner is "HDPlayerPawn") {
+			HDPlayerPawn p = HDPlayerPawn(owner);
+			actor sc = p.scopecamera;
+			newpos = owner.vec3Angle(
+				8 * cos(-sc.pitch) + 4 * sin(-sc.pitch),
+				sc.angle,
+				(8 * sin(-sc.pitch)) + (owner.player.viewz - owner.pos.z) - 4);
+			newpos.z = min(
+				newpos.z,
+				owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
+			newangle = sc.angle;
+			newpitch = sc.pitch;
+		}
+		else {
+			newpos = owner.vec3Angle(
+				8 * cos(-owner.pitch) + 4 * sin(-owner.pitch),
+				owner.angle,
+				(8 * sin(-owner.pitch)) + (owner.height * 0.75));
+			newangle = owner.angle;
+			newpitch = owner.pitch;
+		}
 		emitter.setOrigin(newpos, true);
-		emitter.A_SetAngle(sc.angle, true);
-		emitter.A_SetPitch(sc.pitch, true);
+		emitter.A_SetAngle(newangle, true);
+		emitter.A_SetPitch(newpitch, true);
 		emitter.vel = owner.vel;
 	}
 
 	void Light(bool on) {
 		if (!on) { emitter.Deactivate(self); return; }
-
 		emitter.Activate(self); // turn on dynlight
-		HDPlayerPawn p = HDPlayerPawn(owner);
-		actor sc = p.scopecamera;
 
 		// Draw flashlight particle beam
 		int start = 1; //particle beam starts at emitter
-		if(owner.CheckLocalView()) { start = 16; } // unless local player
+		if(owner.CheckLocalView()) { start = 12; } // unless local player
 		for (double d = start; d < 64; d = d + (d / 2)) {
 			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
 				1, (sin(20) * d * 8), 0,
-				cos(sc.pitch) * cos(sc.angle) * (d),
-				cos(sc.pitch) * sin(sc.angle) * (d),
-				sin(-sc.pitch) * (d),
-				0, 0, 0,
+				cos(emitter.pitch) * cos(emitter.angle) * (d),
+				cos(emitter.pitch) * sin(emitter.angle) * (d),
+				sin(-emitter.pitch) * (d),
+				owner.vel.x, owner.vel.y, owner.vel.z,
 				0, 0, 0,
 				(0.75) / (d ** 1.1), 0, 0);
 		}
@@ -86,24 +97,21 @@ class UaS_LaserLightModule : HDPickup {
 
 	void Laser(bool on) {
 		if (!on) { return; }
-		HDPlayerPawn p = HDPlayerPawn(owner);
-		actor sc = p.scopecamera;
 
 		// Draw laser particle beam
 		FLineTraceData laserTrace;
-		sc.LineTrace(sc.angle, 16384, sc.pitch, TRF_THRUACTORS, data: laserTrace);
-		for (double f = 8; f < laserTrace.distance; f = f + random(32, 128)) {
-			double bliplength = random(8, 32);
-			for (double d = f; d < f + bliplength; d = d + frandom(0.1, 1.5)) {
-				float coloroffset = random(0, 128);
+		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
+		for (double f = 1; f < laserTrace.distance; f = f + random[llm](0, 256)) {
+			double bliplength = random[llm](8, 32);
+			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1.5)) {
 				emitter.A_SpawnParticle("GREEN", SPF_FULLBRIGHT|SPF_RELANG,
-					1, frandom(0.5, 1.0) * clamp(d/4096, 0.5, 1), 0,
-					cos(sc.pitch) * cos(sc.angle) * (d),
-					cos(sc.pitch) * sin(sc.angle) * (d),
-					sin(-sc.pitch) * (d),
+					1, frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1), 0,
+					cos(emitter.pitch) * cos(emitter.angle) * (d),
+					cos(emitter.pitch) * sin(emitter.angle) * (d),
+					sin(-emitter.pitch) * (d),
+					owner.vel.x, owner.vel.y, owner.vel.z,
 					0, 0, 0,
-					0, 0, 0,
-					frandom(0.5, 1.0) * clamp(d/32, 0.0, 1), -1, 0);
+					frandom[llm](0.5, 0.9) * clamp(d/32, 0.0, 1), -1, 0);
 			}
 			f += bliplength;
 		}
