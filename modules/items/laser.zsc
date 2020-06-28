@@ -91,6 +91,7 @@ class UaS_PlayerLaser_actual : Actor {
 			!(hdplayerpawn(followtarget).player.readyweapon is 'HDGrenadeThrower') &&
 			!(hdplayerpawn(followtarget).player.readyweapon is 'Tripwire') &&
 			!(hdplayerpawn(followtarget).player.readyweapon is 'Lumberjack'));
+			!(hdplayerpawn(followtarget).player.readyweapon is 'HDWoundFixer'));
 
 		if (active && validweapon) {
 			lasercolor = "GREEN";
