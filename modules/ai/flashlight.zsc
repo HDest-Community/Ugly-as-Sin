@@ -1,25 +1,67 @@
 extend class UaS_AI_Handler {
 	UaS_LaserLightModule llm;
-	int desiredmode;
+	int	recheck;
+	bool flashing;
+	int flashrate;
 
 	void Flashlight() {
-		desiredmode = 2;
 		if (globalfreeze || level.Frozen) { return; }
 		// Only do light for human-type classes
-		bool validClass = (
-			owner.CheckClass("HERPBot", AAPTR_DEFAULT, true) ||
-			owner.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true) ||
-			owner.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true) ||
-			owner.CheckClass("VulcanetteGuy", AAPTR_DEFAULT, true) ||
-			owner.CheckClass("HDMarine", AAPTR_DEFAULT, true)
+		bool BotClass = (
+			owner is "HERPBot" ||
+			owner is "DERPBot"
 		);
-		if (!validClass) { return; }
+		bool HumanClass = (
+			owner is "ZombieStormtrooper" ||
+			owner is "HideousShotgunGuy" ||
+			owner is "VulcanetteGuy" ||
+			owner is "HDMarine"
+		);
+		if (!BotClass && !HumanClass) { return; }
 
 		if (!owner.FindInventory("UaS_LaserLightModule")) {
 			owner.giveinventory("UaS_LaserLightModule", 1);
 			llm = UaS_LaserLightModule(owner.FindInventory("UaS_LaserLightModule"));
-			llm.ToggleSwitch();
-			llm.ModeSwitch(desiredmode);
+			llm.ModeSwitch(random[aillm](0,2));
 		}
+
+		if (HumanClass && recheck <= 0) {
+			llm.offset = 8;
+			// sample light from ahead of monster
+			FLineTraceData lookSpot;
+			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
+			double lightlevel = (lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
+
+			// More likely to activate in darker areas
+			if (random[aillm](0,192) > lightlevel) { llm.activated = true; }
+			else { llm.activated = false; }
+
+			// misc other adjustments
+			flashrate = random[aillm](1, 4);
+			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
+			if (random[aillm](0,1) > 0.75) { llm.ModeSwitch(random[aillm](0,2)); }
+		}
+
+		if (owner is "HERPBot") {
+			llm.ModeSwitch(1);
+			llm.activated = true;
+			llm.offset = 8;
+		}
+
+		if (owner is "DERPBot") {
+			llm.ModeSwitch(0);
+			llm.activated = true;
+			llm.offset = 2;
+		}
+
+		// Flash at target if aiming
+		flashing = (
+			owner.target &&
+			(owner.frame == 4 || owner.frame == 5) &&
+			(llm.mode == 0 || llm.mode == 2)
+		);
+		if (flashing && level.maptime & flashrate) { llm.ToggleSwitch(); }
+
+		recheck--;
 	}
 }

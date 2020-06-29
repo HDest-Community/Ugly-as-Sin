@@ -3,6 +3,7 @@ class UaS_LaserLightModule : HDPickup {
 	bool activated;
 	UaS_LLM_Emitter emitter;
 	vector3 oldsc;
+	double offset;
 
 	default {
 		Inventory.Amount 1;
@@ -20,6 +21,11 @@ class UaS_LaserLightModule : HDPickup {
 		else { mode = (mode + 1) % 3; }
 	}
 
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		offset = 12;
+	}
+
 	override bool Use(bool pickup) {
 		if (owner.player.cmd.buttons & BT_USE) {
 			ModeSwitch();
@@ -30,7 +36,7 @@ class UaS_LaserLightModule : HDPickup {
 	}
 
 	override void DoEffect() {
-		if(activated) {
+		if(activated && owner.health > 0) {
 			if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
 			UpdateEmitter();
 			switch (mode) {
@@ -58,9 +64,9 @@ class UaS_LaserLightModule : HDPickup {
 			HDPlayerPawn p = HDPlayerPawn(owner);
 			actor sc = p.scopecamera;
 			newpos = owner.vec3Angle(
-				12 * cos(-sc.pitch) + 4 * sin(-sc.pitch),
+				offset * cos(-sc.pitch) + 4 * sin(-sc.pitch),
 				sc.angle,
-				(12 * sin(-sc.pitch)) + (owner.player.viewz - owner.pos.z) - 4);
+				offset * sin(-sc.pitch) + ((owner.player.viewz - owner.pos.z) - 4));
 			newpos.z = min(
 				newpos.z,
 				owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
@@ -69,9 +75,9 @@ class UaS_LaserLightModule : HDPickup {
 		}
 		else {
 			newpos = owner.vec3Angle(
-				8 * cos(-owner.pitch) + 4 * sin(-owner.pitch),
+				offset * cos(-owner.pitch),
 				owner.angle,
-				(8 * sin(-owner.pitch)) + (owner.height * 0.75));
+				offset * sin(-owner.pitch) + (owner.height * 0.7));
 			newangle = owner.angle;
 			newpitch = owner.pitch;
 		}
