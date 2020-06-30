@@ -22,23 +22,20 @@ class UaS_Sling_Spawner : EventHandler {
 }
 
 class UaS_WeaponSling : HDPickup {
-	int toggleDelay, holdingToggle;
-	int slingPrep;
+	int holdingToggle;
 	bool slingActive;
-	bool slingBraced;
-	string attachedWeapon;
-	int attachedPoints;
+	actor attachedWeapon;
 	array<string> weaponList;
 
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a weapon sling.";
+		Inventory.PickupMessage "Picked up a weapon sling-brace rig.";
 		Inventory.Icon "HSCVI0";
-		HDPickup.Bulk 10;
+		HDPickup.Bulk 20;
 		Scale 0.75;
 		+FLATSPRITE;
-		tag "Weapon Sling";
+		tag "Sling-brace rig";
 		hdpickup.refid UAS_HDLD_SLING;
 	}
 
@@ -61,129 +58,30 @@ class UaS_WeaponSling : HDPickup {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return; }
 		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
-		// Break attachment if dropped
-		if(ownr.countinv(attachedWeapon) == 0) {
-			attachedWeapon = "";
-			attachedPoints = 0;
-		}
-		if(attachedPoints < 2) {
-			slingPrep = 0;
-			holdingToggle = -1;
-			slingBraced = false;
-			slingActive = false;
-			return;
-		}
-		if(attachedWeapon != ownr.player.ReadyWeapon.GetClassName()) { return; } // Skip if the current weapon isn't the attached one
 
-		toggleDelay = CVar.GetCVar('UaS_SlingDelay', owner.player).GetInt();
+		// Break attachment if switched away or dropped
+		if(ownr.player.ReadyWeapon != attachedweapon) { attachedWeapon = null; }
 
-		// Check for held button and increment / decrement counters
-		if((ownr.player.cmd.buttons & BT_ZOOM) && (ownr.player.cmd.buttons & BT_USE)) {
-			holdingToggle = min(holdingToggle + 1, toggleDelay+1);
-		}
-		else {
-			holdingToggle = -1;
-		}
+		// Stunning makes you lose sling
+		if (ownr.stunned > 0) { slingActive = false; }
 
-		// Latch the sling to active state
-		if(holdingToggle == toggleDelay) {
-			slingActive = !slingActive;
-		}
-
-		// "Animation" for preparing or stoping the sling
-		if(slingPrep > 0 && slingPrep < 360) {
-			if(slingActive) {
-				owner.A_SetPitch(owner.pitch + sin(slingPrep), SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle + cos(slingPrep), SPF_INTERPOLATE);
-
-			}
-			else {
-				owner.A_SetPitch(owner.pitch - sin(slingPrep), SPF_INTERPOLATE);
-				owner.A_SetAngle(owner.angle - cos(slingPrep), SPF_INTERPOLATE);
-			}
-		}
-
-		if(slingActive) {
-			slingPrep = min(slingPrep + 20, 360);
-		}
-		else {
-			slingPrep = max(slingPrep - 45, 0);
-		}
-
-		if(slingPrep == 40 || slingPrep == 315) { owner.A_PlaySound("weapons/pocket", CHAN_WEAPON, 0.25); }
-		if(slingPrep == 340) { owner.A_PlaySound("weapons/rifleclick2",CHAN_BODY,0.3); }
-
-
-		//Enable or disable on completion
-		if(slingPrep == 360) {
-			ownr.gunbraced = true;
-			slingBraced = true;
-		}
-		else {
-			slingBraced = false;
-		}
+		//Brace weapon if everyting good
+		if(slingActive) { ownr.gunbraced = true;	}
 
 		// Movement debuffs
-		switch(ownr.runwalksprint) {
+		/*switch(ownr.runwalksprint) {
 			case -1:
 				break;
 			case 0:
-				slingBraced = false;
-				break;
 			case 1:
-				slingBraced = false;
-				slingPrep = -15;
+				console.printf("sling rig stopped bracing");
+				slingActive = false;
 				break;
-		}
-
-		// Stunning makes you lose sling
-		if (ownr.stunned > 0) {
-			slingActive = 0;
-			slingBraced = false;
-			slingPrep = 0;
-		}
+		}*/
 	}
 
-	action void AttachToWeapon() {
-		let ownr = HDPlayerPawn(invoker.owner);
-		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
-		let currentWeapon = HDWeapon(ownr.player.ReadyWeapon);
-		string weapName = currentWeapon.GetClassName();
-		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >=2) {
-			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling already attached.", 70); }
-			return;
-		}
-		else if (invoker.attachedWeapon != weapName) {
-			invoker.attachedWeapon = "";
-			invoker.attachedPoints = 0;
-			//if(getcvar("hd_helptext")) { console.printf("Removed sling from previous weapon."); }
-		}
-		bool validWeapon;
-		for(int i = 0; i < invoker.weaponList.size(); i++) {
-			if(weapName == invoker.weaponList[i]) { validWeapon = true; }
-		}
-		if(validWeapon || currentWeapon.weaponspecial == 1337) {
-				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
-				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
-				invoker.attachedPoints++;
-				invoker.attachedWeapon = currentWeapon.GetClassName();
-				if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Attached a sling point ("..invoker.attachedPoints.." of 2).", 70); }
-		}
-		else {
-			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Can't put a sling on this weapon.", 70); }
-		}
-		invoker.attachedPoints = clamp(invoker.attachedPoints, 0, 2);
-		if(invoker.attachedWeapon == weapName && invoker.attachedPoints >= 2) {
-			if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Sling ready.\n\nHold \caZOOM + USE\cu to toggle."); }
-		}
-	}
-
-	States {
-		Spawn:
-			HSCV I -1;
-			stop;
-		Use:
-			HSCV I 1 AttachToWeapon();
-			fail;
+	override bool Use(bool pickup) {
+		slingActive = true;
+		return false;
 	}
 }
