@@ -51,6 +51,7 @@ version "3.5"
 #include "modules/items/glowstick.zsc"
 #include "modules/items/laser.zsc"
 #include "modules/items/resp.zsc"
+#include "modules/items/traumakit.zsc"
 
 #include "modules/aimsway/bootstrap.zsc"
 #include "modules/yolo/yolo.zsc"

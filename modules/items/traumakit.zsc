@@ -1,4 +1,77 @@
-class UaS_FieldSurgeryKit : HDWeapon {
+class WoundInfo {
+	bool obstructed;
+	bool numb;
+	bool clean;
+	bool open;
+	string description;
+
+	static WoundInfo create() {
+		WoundInfo newWound = new("WoundInfo");
+		newWound.obstructed = random(false,true);
+		newWound.numb = false;
+		newWound.clean = false;
+		newWound.open = false;
+		newWound.description = string.format("%s %s, %s %s",
+			WoundInfo.severity[random(0, WoundInfo.severity.size()-1)],
+			WoundInfo.type[random(0, WoundInfo.type.size()-1)],
+			WoundInfo.location[random(0, WoundInfo.location.size()-1)],
+			WoundInfo.bodypart[random(0, WoundInfo.bodypart.size()-1)]
+		);
+		return newWound;
+	}
+
+	static const string[] location = { "left","right" };
+	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
+	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+}
+
+class UaS_WoundHandler : Inventory {
+	int lastwounds;
+	double woundaverage;
+	array<WoundInfo> critwounds;
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		CheckForNewWounds();
+		ClampWounds();
+	}
+
+	void ClampWounds() {
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+		int clampopen;
+		for (int i = 0; i < critwounds.size(); i++) {
+			if (critwounds[i].open) { clampopen++; }
+		}
+		plr.unstablewoundcount = max(plr.unstablewoundcount, critwounds.size());
+		plr.woundcount = max(plr.woundcount, clampopen);
+	}
+
+	void CheckForNewWounds() {
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+
+		// get new wounds and average rolling
+		int newwounds = plr.woundcount - lastwounds;
+		woundaverage = (woundaverage * 0.75) + newwounds;
+		lastwounds = plr.woundcount;
+
+		if (woundaverage >= random[wounding](1, 3)) {
+			critwounds.push(WoundInfo.Create());
+			woundaverage *= 0.5;
+			int lastwoundindex = critwounds.size() - 1;
+			console.printf(critwounds[lastwoundindex].description);
+		}
+	}
+}
+
+/*class UaS_FieldSurgeryKit : HDWeapon {
 	struct StatusInfo {
 		string Message;
 		int timout;
@@ -123,3 +196,4 @@ class UaS_FieldSurgeryKit : HDWeapon {
 		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
 	}
 }
+*/
