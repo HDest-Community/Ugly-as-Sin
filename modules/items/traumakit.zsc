@@ -4,17 +4,6 @@ class UaS_FieldSurgeryKit : HDWeapon {
 		int timout;
 	}
 
-	struct WoundInfo {
-		bool active;
-		int size;
-		int packed;
-		int timeOpen;
-		double painFactor;
-		double dirtFactor;
-		vector3 offset;
-		string status;
-	}
-
 	enum ToolModes {
 		T_PAINKILLER,
 		T_FORCEPS,
@@ -25,10 +14,7 @@ class UaS_FieldSurgeryKit : HDWeapon {
 		T_2F,
 	}
 
-	WoundInfo currentWound;
-	int currentTool;
 	string statusMessage, currentMessage;
-	UaS_WoundDummy woundActor;
 
 	Default {
 		Inventory.Amount 1;
@@ -64,25 +50,6 @@ class UaS_FieldSurgeryKit : HDWeapon {
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
 			currentTool++;
 			if (CurrentTool > T_2F) { CurrentTool = T_PAINKILLER; }
-		}
-
-		// Show wound
-		if (woundActor) {
-			if (!(owner.player.cmd.buttons & BT_USE)) {
-				woundActor.destroy();
-				return;
-			}
-			if (currentWound.size >= 1 && currentWound.size <= 2) { WoundActor.frame = 0; }
-			else if (currentWound.size >= 3 && currentWound.size <= 4) { WoundActor.frame = 1; }
-			else if (currentWound.size >= 5) { WoundActor.frame = 2; }
-		}
-
-		else if (!woundActor) {
-			if ((owner.player.cmd.buttons & BT_USE)) {
-				WoundActor = UaS_WoundDummy(actor.Spawn("UaS_WoundDummy", owner.Vec3Offset(16, 16, 32)));
-				WoundActor.target = owner;
-				WoundActor.offset = (16, 16, 32);
-			}
 		}
 
 		// Status messages
@@ -154,37 +121,5 @@ class UaS_FieldSurgeryKit : HDWeapon {
 		statusMessage = statusMessage.."Open Wounds "..ownr.woundcount.."\n";
 		statusMessage = statusMessage.."Unstable Wounds "..ownr.unstablewoundcount.."\n";
 		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
-	}
-
-	void DebugGiveWounds() {
-		if (!owner) { return; }
-		let ownr = HDPlayerPawn(owner);
-
-		ownr.woundcount = random(1, 5);
-		statusMessage = statusMessage.."Gave Wounds!\n";
-	}
-}
-
-class UaS_WoundDummy : Actor {
-	vector3 offset;
-
-	Default {
-		Radius 8;
-		Height 16;
-		+NOGRAVITY;
-	}
-
-	override void Tick() {
-		super.Tick();
-		if(!target) { return; }
-		SetOrigin(target.Vec3Offset(offset.x, offset.y, offset.z), true);
-	}
-
-	States {
-		Spawn:
-			BLUD A 0;
-		SpawnLoop:
-			#### # 35;
-			Loop;
 	}
 }
