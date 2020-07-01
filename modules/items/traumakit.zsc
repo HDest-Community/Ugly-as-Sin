@@ -1,0 +1,190 @@
+class UaS_FieldSurgeryKit : HDWeapon {
+	struct StatusInfo {
+		string Message;
+		int timout;
+	}
+
+	struct WoundInfo {
+		bool active;
+		int size;
+		int packed;
+		int timeOpen;
+		double painFactor;
+		double dirtFactor;
+		vector3 offset;
+		string status;
+	}
+
+	enum ToolModes {
+		T_PAINKILLER,
+		T_FORCEPS,
+		T_SALINE,
+		T_BIOFOAM,
+		T_STAPLER,
+		T_SUTURES,
+		T_2F,
+	}
+
+	WoundInfo currentWound;
+	int currentTool;
+	string statusMessage, currentMessage;
+	UaS_WoundDummy woundActor;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a portable field surgery kit.";
+		Inventory.Icon "ROCKA0";
+		Scale 0.5;
+		+INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		//+WEAPON.NOAUTOFIRE;
+	}
+
+	override void DoEffect() {
+		let o = HDPlayerPawn(owner);
+		if (!o) { return; }
+
+		// Maintain wound states appropriately
+		bool kitOpen = (owner.player.readyweapon.GetClassName() == "UaS_FieldSurgeryKit");
+		switch (kitOpen) {
+			case true:
+				o.woundCount = max(currentWound.size, o.woundCount);
+				break;
+			case false:
+				currentWound.size = min(currentWound.size, o.woundCount);
+				if (currentWound.size <=0) { currentwound.active = false; }
+				return;
+				break;
+		}
+
+		// Cycle tools
+		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
+			currentTool++;
+			if (CurrentTool > T_2F) { CurrentTool = T_PAINKILLER; }
+		}
+
+		// Show wound
+		if (woundActor) {
+			if (!(owner.player.cmd.buttons & BT_USE)) {
+				woundActor.destroy();
+				return;
+			}
+			if (currentWound.size >= 1 && currentWound.size <= 2) { WoundActor.frame = 0; }
+			else if (currentWound.size >= 3 && currentWound.size <= 4) { WoundActor.frame = 1; }
+			else if (currentWound.size >= 5) { WoundActor.frame = 2; }
+		}
+
+		else if (!woundActor) {
+			if ((owner.player.cmd.buttons & BT_USE)) {
+				WoundActor = UaS_WoundDummy(actor.Spawn("UaS_WoundDummy", owner.Vec3Offset(16, 16, 32)));
+				WoundActor.target = owner;
+				WoundActor.offset = (16, 16, 32);
+			}
+		}
+
+		// Status messages
+		statusMessage = "\cyField Medical Kit\n\n";
+		switch (currentTool) {
+			case T_PAINKILLER:
+				statusMessage = statusmessage.."\cjAnaesthetic\n";
+				statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
+				break;
+			case T_FORCEPS:
+				statusMessage = statusmessage.."\cjForceps\n";
+				statusMessage = statusmessage.."\cuPrecision tool for removing obstructions..\n";
+				break;
+			case T_SALINE:
+				statusMessage = statusmessage.."\cjSaline\n";
+				statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
+				break;
+			case T_BIOFOAM:
+				statusMessage = statusmessage.."\cjBiofoam\n";
+				statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
+				break;
+			case T_STAPLER:
+				statusMessage = statusmessage.."\cjStapler\n";
+				statusMessage = statusmessage.."\cuManual hand-stapler.\n";
+				break;
+			case T_SUTURES:
+				statusMessage = statusmessage.."\cjSutures\n";
+				statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n";
+				break;
+			case T_2F:
+				statusMessage = statusmessage.."\cjSecond Flesh\n";
+				statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n";
+				break;
+		}
+
+		statusMessage = statusMessage.."\n\n\n\n";
+		statusMessage = statusMessage.."\crTreating:\n";
+		statusMessage = statusMessage..CurrentWound.status;
+
+		// Open Wound
+		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
+			if (currentWound.active) {
+				currentWound.size++;
+			}
+			else if (o.unstablewoundcount > 0) {
+				o.A_PlaySound("imp/melee", CHAN_WEAPON, 0.1);
+				currentWound.size = min(random(1, 5), o.unstablewoundcount);
+				o.unstablewoundcount -= currentWound.size;
+				currentWound.active = true;
+			}
+			currentwound.status = "";
+			if (currentWound.size >= 1 && currentWound.size <= 2) { currentwound.status = currentwound.status.."Small"; }
+			else if (currentWound.size >= 3 && currentWound.size <= 4) { currentwound.status = currentwound.status.."Moderate"; }
+			else if (currentWound.size >= 5) { currentwound.status = currentwound.status.."Large"; }
+			if(currentWound.status != "") { currentWound.status = currentwound.status.." wound"; }
+		}
+
+		//Debugging
+		if ((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) { DebugGiveWounds(); }
+		DebugStatus();
+
+		A_WeaponMessage(statusMessage);
+	}
+
+	void DebugStatus() {
+		if (!owner) { return; }
+		let ownr = HDPlayerPawn(owner);
+		statusMessage = statusMessage.."\n"..currentMessage;
+		statusMessage = statusMessage.."Open Wounds "..ownr.woundcount.."\n";
+		statusMessage = statusMessage.."Unstable Wounds "..ownr.unstablewoundcount.."\n";
+		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
+	}
+
+	void DebugGiveWounds() {
+		if (!owner) { return; }
+		let ownr = HDPlayerPawn(owner);
+
+		ownr.woundcount = random(1, 5);
+		statusMessage = statusMessage.."Gave Wounds!\n";
+	}
+}
+
+class UaS_WoundDummy : Actor {
+	vector3 offset;
+
+	Default {
+		Radius 8;
+		Height 16;
+		+NOGRAVITY;
+	}
+
+	override void Tick() {
+		super.Tick();
+		if(!target) { return; }
+		SetOrigin(target.Vec3Offset(offset.x, offset.y, offset.z), true);
+	}
+
+	States {
+		Spawn:
+			BLUD A 0;
+		SpawnLoop:
+			#### # 35;
+			Loop;
+	}
+}
