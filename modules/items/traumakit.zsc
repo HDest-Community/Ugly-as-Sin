@@ -47,6 +47,8 @@ class UaS_WoundHandler : Inventory {
 	override void DoEffect() {
 		if (!owner) { return; }
 		ManageWounds();
+		//TODO: Tick down wounds that have healing timers
+		//TickWounds()
 	}
 
 	void ManageWounds() {
@@ -77,7 +79,7 @@ class UaS_WoundHandler : Inventory {
 	}
 }
 
-/*class UaS_FieldSurgeryKit : HDWeapon {
+class UaS_TraumaKit : HDWeapon {
 	struct StatusInfo {
 		string Message;
 		int timout;
@@ -93,14 +95,14 @@ class UaS_WoundHandler : Inventory {
 		T_2F,
 	}
 
+	int currentTool;
 	string statusMessage, currentMessage;
 
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a portable field surgery kit.";
+		Inventory.PickupMessage "Picked up a personal trauma.";
 		Inventory.Icon "ROCKA0";
-		Scale 0.5;
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
@@ -109,22 +111,6 @@ class UaS_WoundHandler : Inventory {
 	}
 
 	override void DoEffect() {
-		let o = HDPlayerPawn(owner);
-		if (!o) { return; }
-
-		// Maintain wound states appropriately
-		bool kitOpen = (owner.player.readyweapon.GetClassName() == "UaS_FieldSurgeryKit");
-		switch (kitOpen) {
-			case true:
-				o.woundCount = max(currentWound.size, o.woundCount);
-				break;
-			case false:
-				currentWound.size = min(currentWound.size, o.woundCount);
-				if (currentWound.size <=0) { currentwound.active = false; }
-				return;
-				break;
-		}
-
 		// Cycle tools
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
 			currentTool++;
@@ -166,28 +152,6 @@ class UaS_WoundHandler : Inventory {
 
 		statusMessage = statusMessage.."\n\n\n\n";
 		statusMessage = statusMessage.."\crTreating:\n";
-		statusMessage = statusMessage..CurrentWound.status;
-
-		// Open Wound
-		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
-			if (currentWound.active) {
-				currentWound.size++;
-			}
-			else if (o.unstablewoundcount > 0) {
-				o.A_PlaySound("imp/melee", CHAN_WEAPON, 0.1);
-				currentWound.size = min(random(1, 5), o.unstablewoundcount);
-				o.unstablewoundcount -= currentWound.size;
-				currentWound.active = true;
-			}
-			currentwound.status = "";
-			if (currentWound.size >= 1 && currentWound.size <= 2) { currentwound.status = currentwound.status.."Small"; }
-			else if (currentWound.size >= 3 && currentWound.size <= 4) { currentwound.status = currentwound.status.."Moderate"; }
-			else if (currentWound.size >= 5) { currentwound.status = currentwound.status.."Large"; }
-			if(currentWound.status != "") { currentWound.status = currentwound.status.." wound"; }
-		}
-
-		//Debugging
-		if ((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) { DebugGiveWounds(); }
 		DebugStatus();
 
 		A_WeaponMessage(statusMessage);
@@ -202,4 +166,3 @@ class UaS_WoundHandler : Inventory {
 		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
 	}
 }
-*/
