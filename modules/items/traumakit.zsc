@@ -53,21 +53,21 @@ class UaS_WoundHandler : Inventory {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 
 		// get difference from last tick
-		int diffwounds = plr.oldwoundcount - lastwounds;
+		int diffwounds = max(plr.oldwoundcount,0) - lastwounds; // gotta clamp this to avoid false positives
 
 		if (diffwounds > 0) { // add new stable wounds
-			console.printf("new wound added");
+			console.printf("new wound added at tick "..level.maptime);
 			critwounds.push(WoundInfo.Create(diffwounds));
 			DebugWoundList();
 		}
-		if (diffwounds < 0) { // remove a passively-healed wound
-			console.printf("old wound removed");
+		else if (diffwounds < 0) { // remove a passively-healed wound
+			console.printf("old wound removed at tick "..level.maptime);
 			critwounds.delete(0);
 			DebugWoundList();
 		}
 
 		// sync count for next tick
-		lastwounds = plr.oldwoundcount;
+		lastwounds = max(plr.oldwoundcount, 0); // gotta clamp this to avoid false positives
 	}
 
 	void DebugWoundList() {
