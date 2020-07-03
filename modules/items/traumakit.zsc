@@ -1,23 +1,29 @@
 class WoundInfo {
-	bool obstructed;
-	bool numb;
-	bool clean;
-	bool open;
 	string description;
+	bool numb;
+	int dirty;
+	int septic;
+	int obstructed;
+	int open;
+	int timer;
+	int size;
 
-	static WoundInfo create() {
-		WoundInfo newWound = new("WoundInfo");
-		newWound.obstructed = random(false,true);
-		newWound.numb = false;
-		newWound.clean = false;
-		newWound.open = false;
-		newWound.description = string.format("%s %s, %s %s",
+	static WoundInfo create(int newsize) {
+		WoundInfo nw = new("WoundInfo");
+		nw.numb = false;
+		nw.dirty = random(newsize * 5, 100);
+		nw.septic = random(newsize * 5, 100);
+		nw.obstructed = random(newsize * 5, 100);
+		nw.open = random(newsize * 5, 100);
+		nw.timer = -1;
+		nw.size = newsize;
+		nw.description = string.format("%s %s, %s %s",
 			WoundInfo.severity[random(0, WoundInfo.severity.size()-1)],
 			WoundInfo.type[random(0, WoundInfo.type.size()-1)],
 			WoundInfo.location[random(0, WoundInfo.location.size()-1)],
 			WoundInfo.bodypart[random(0, WoundInfo.bodypart.size()-1)]
 		);
-		return newWound;
+		return nw;
 	}
 
 	static const string[] location = { "left","right" };
@@ -40,33 +46,33 @@ class UaS_WoundHandler : Inventory {
 
 	override void DoEffect() {
 		if (!owner) { return; }
-		CheckForNewWounds();
-		ClampWounds();
+		ManageWounds();
 	}
 
-	void ClampWounds() {
+	void ManageWounds() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
-		int clampopen;
-		for (int i = 0; i < critwounds.size(); i++) {
-			if (critwounds[i].open) { clampopen++; }
+
+		// get difference from last tick
+		int diffwounds = plr.oldwoundcount - lastwounds;
+
+		if (diffwounds > 0) { // add new stable wounds
+			console.printf("new wound added");
+			critwounds.push(WoundInfo.Create(diffwounds));
+			DebugWoundList();
 		}
-		plr.unstablewoundcount = max(plr.unstablewoundcount, critwounds.size());
-		plr.woundcount = max(plr.woundcount, clampopen);
+		if (diffwounds < 0) { // remove a passively-healed wound
+			console.printf("old wound removed");
+			critwounds.delete(0);
+			DebugWoundList();
+		}
+
+		// sync count for next tick
+		lastwounds = plr.oldwoundcount;
 	}
 
-	void CheckForNewWounds() {
-		HDPlayerPawn plr = HDPlayerPawn(owner);
-
-		// get new wounds and average rolling
-		int newwounds = plr.woundcount - lastwounds;
-		woundaverage = (woundaverage * 0.75) + newwounds;
-		lastwounds = plr.woundcount;
-
-		if (woundaverage >= random[wounding](1, 3)) {
-			critwounds.push(WoundInfo.Create());
-			woundaverage *= 0.5;
-			int lastwoundindex = critwounds.size() - 1;
-			console.printf(critwounds[lastwoundindex].description);
+	void DebugWoundList() {
+		for (int i = 0; i <= critwounds.size() - 1; i++) {
+			console.printf("W"..i..": "..critwounds[i].description);
 		}
 	}
 }
