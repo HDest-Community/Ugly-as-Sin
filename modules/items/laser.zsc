@@ -63,6 +63,7 @@ class UaS_LaserLightModule : HDPickup {
 		if (owner is "HDPlayerPawn") {
 			HDPlayerPawn p = HDPlayerPawn(owner);
 			actor sc = p.scopecamera;
+			if (!p || !sc) { return; }
 			newpos = owner.vec3Angle(
 				offset * cos(-sc.pitch) + 4 * sin(-sc.pitch),
 				sc.angle,
