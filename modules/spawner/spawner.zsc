@@ -1,0 +1,18 @@
+class UaS_Spawner : EventHandler {
+
+	override void WorldThingSpawned(WorldEvent e) {
+		if(!e.Thing) { return; }
+
+		//Spawn random debris as appropriate
+		switch(e.Thing.GetClassName()) {
+			case 'SpentStim':
+				UaS.SpawnStuff('UaS_EmptyStimpack', 1, e.Thing.pos);
+				break;
+		}
+
+		// Stuff that only spawns on map start
+		if (level.maptime != 1) { return; }
+
+		if(e.Thing is 'PortableLiteAmp') { UaS.SpawnStuff('UaS_LaserLightModule', 1, e.Thing.pos); }
+	}
+}

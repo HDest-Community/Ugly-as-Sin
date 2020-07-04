@@ -20,8 +20,8 @@ version "3.5"
 #include "modules/scarcity/spawner.zsc"
 #include "modules/scarcity/items.zsc"
 
-// Debris spawner
-#include "modules/debris/spawner.zsc"
+// General spawner
+#include "modules/spawner/spawner.zsc"
 
 // Frag spawning factor
 #include "modules/fragfactor/fragfactor.zsc"

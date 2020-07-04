@@ -2,7 +2,7 @@ GameInfo {
 	AddEventHandlers = "UaS_Bootstrap"
 	AddEventHandlers = "UaS_Hunger_Spawner"
 	AddEventHandlers = "UaS_Scarcity_Spawner"
-	AddEventHandlers = "UaS_Debris_Spawner"
+	AddEventHandlers = "UaS_Spawner"
 	AddEventHandlers = "UaS_FragRemovalHandler"
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_AI_Bootstrap"
