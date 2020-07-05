@@ -6,6 +6,7 @@ class UaS_Bootstrap : EventHandler {
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			SutureModule_Bootstrap(i);
+			WoundHandler_Bootstrap(i);
 		}
 	}
 
@@ -38,6 +39,14 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_2F_Handler")) {
 			p.mo.giveinventory("UaS_2F_Handler", 1);
+		}
+	}
+
+	void WoundHandler_Bootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if (!p.mo.countinv("UaS_WoundHandler")) {
+			p.mo.giveinventory("UaS_WoundHandler", 1);
 		}
 	}
 
