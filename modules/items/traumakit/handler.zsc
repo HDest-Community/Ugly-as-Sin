@@ -1,0 +1,86 @@
+class WoundInfo {
+	string description;
+	bool numb;
+	int dirty;
+	int obstructed;
+	int open;
+	int timer;
+	int size;
+
+	static WoundInfo create(int newsize) {
+		WoundInfo nw = new("WoundInfo");
+		nw.numb = false;
+		nw.dirty = random[uas_wi](newsize * 10, 100);
+		nw.obstructed = random[uas_wi](newsize * 10, 100);
+		nw.open = random[uas_wi](newsize * 10, 100);
+		nw.timer = -1;
+		nw.size = newsize;
+		nw.description = WoundDescription(newsize);
+		return nw;
+	}
+
+	static string WoundDescription(int newsize) {
+		int sevmax = WoundInfo.severity.size()-1;
+		int typmax = WoundInfo.type.size()-1;
+		int locmax = WoundInfo.location.size()-1;
+		int parmax = WoundInfo.bodypart.size()-1;
+		return string.format("%s %s, %s %s",
+			WoundInfo.severity[min(random[uas_wi](newsize, sevmax), sevmax)],
+			WoundInfo.type[random[uas_wi](0, typmax)],
+			WoundInfo.location[random[uas_wi](0, locmax)],
+			WoundInfo.bodypart[random[uas_wi](0, parmax)]
+		);
+	}
+
+	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious","critical" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+	static const string[] location = { "left","right" };
+	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
+}
+
+class UaS_WoundHandler : Inventory {
+	int lastwounds;
+	double woundaverage;
+	array<WoundInfo> critwounds;
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		ManageWounds();
+		//TODO: Tick down wounds that have healing timers
+		//TickWounds()
+	}
+
+	void ManageWounds() {
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+
+		// get difference from last tick
+		int diffwounds = max(plr.oldwoundcount,0) - lastwounds; // gotta clamp this to avoid false positives
+
+		if (diffwounds > 0) { // add new stable wounds
+			console.printf("new wound added at tick "..level.maptime);
+			critwounds.push(WoundInfo.Create(diffwounds));
+			DebugWoundList();
+		}
+		else if (diffwounds < 0) { // remove a passively-healed wound
+			console.printf("old wound removed at tick "..level.maptime);
+			critwounds.delete(0);
+			DebugWoundList();
+		}
+
+		// sync count for next tick
+		lastwounds = max(plr.oldwoundcount, 0); // gotta clamp this to avoid false positives
+	}
+
+	void DebugWoundList() {
+		for (int i = 0; i <= critwounds.size() - 1; i++) {
+			console.printf("W"..i..": "..critwounds[i].description);
+		}
+	}
+}
