@@ -1,0 +1,217 @@
+class UaS_TraumaKit : HDWeapon {
+	string statusMessage;
+	StatusInfo currentMessage;
+	WoundInfo currentWound;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a personal trauma kit.";
+		Inventory.Icon "ROCKA0";
+		+INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		//+WEAPON.NOAUTOFIRE;
+	}
+	override double weaponbulk(){ return 20; }
+
+	override void DoEffect() {
+
+		statusMessage = "\cyField Medical Kit\n\n";
+
+		currentWound = GetWound();
+		if (currentWound) {
+			statusMessage = statusMessage.."\crTreating:\n";
+			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
+		}
+		else {
+			statusMessage = statusMessage.."\crNo stable wounds to treat.\n\n";
+			A_WeaponMessage(statusMessage);
+			return;
+		}
+
+		switch (weaponstatus[TK_SELECTED]) {
+			case T_PAINKILLER:
+				HandlePainkiller();
+				break;
+			case T_FORCEPS:
+				HandleForceps();
+				break;
+			case T_SALINE:
+				HandleSaline();
+				break;
+			case T_BIOFOAM:
+				break;
+			case T_STAPLER:
+				break;
+			case T_SUTURES:
+				break;
+			case T_2F:
+				break;
+		}
+
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
+		}
+
+		A_WeaponMessage(statusMessage);
+
+		// Cycle tools
+		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
+			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+			weaponstatus[TK_HOLD] = 0;
+			currentmessage.text = "";
+			currentmessage.timeout = 0;
+		}
+	}
+
+	void HandlePainkiller() {
+		statusMessage = statusmessage.."\cjAnaesthetic\n";
+		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n\n";
+		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
+			if(currentWound.numb) {
+				currentmessage.text = "The wound is already numb.";
+				currentmessage.timeout = 5*35;
+			}
+			else {
+				owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
+				currentWound.numb = true;
+				currentmessage.text = "Anaesthetic injected.";
+				currentmessage.timeout = 5*35;
+			}
+		}
+	}
+
+	void HandleForceps() {
+		statusMessage = statusmessage.."\cjForceps\n";
+		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
+		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			currentmessage.text = "You hold the wound open.\n";
+			// Display obstruction status
+			if (currentWound.obstructed > 0) {
+				currentmessage.text = currentmessage.text.."There is some foreign obstruction.\n";
+				currentmessage.timeout = 1*35;
+			}
+			else {
+				currentmessage.text = currentmessage.text.."It appears clear of obstructions.\n";
+				currentmessage.timeout = 1*35;
+				return;
+			}
+
+			if((owner.player.cmd.buttons & BT_UNLOAD)) {
+				weaponstatus[TK_HOLD]--;
+				if (!currentWound.numb && !(owner.player.oldbuttons & BT_UNLOAD)) {
+					owner.A_StartSound(owner.painsound,CHAN_VOICE);
+					currentmessage.text = currentmessage.text.."Probing the w--";
+					owner.A_Log("\cgOW FUCK", true);
+
+				}
+				else if (currentWound.numb) {
+					currentmessage.text = currentmessage.text.."Probing the wound...";
+					if (weaponstatus[TK_HOLD] <= 0) {
+						currentWound.obstructed -= random[uas_tk](1,10);
+						owner.A_StartSound("misc/smallslop",CHAN_BODY);
+						HDPlayerPawn(owner).A_MuzzleClimb(
+							(frandom(-1,1),frandom(-1,1)),
+							(frandom(-1,1),frandom(-1,1)),
+							(frandom(-1,1),frandom(-1,1)),
+							(frandom(-3,3),frandom(-3,3))
+						);
+						weaponstatus[TK_HOLD] = random[uas_tk](20,40);
+						if (random[uas_tk](0,50) > currentWound.obstructed) {
+							currentWound.obstructed = 0;
+							owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+							owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void HandleSaline() {
+		statusMessage = statusmessage.."\cjSaline\n";
+		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
+	}
+
+	WoundInfo GetWound() {
+		UaS_WoundHandler wh = UaS_WoundHandler(owner.FindInventory('UaS_WoundHandler'));
+		if (!wh) { console.printf("No wound handler!"); return null; }
+		if (wh.critwounds.size() > 0) {
+			int lastwound = wh.critwounds.size() - 1;
+			return wh.critwounds[lastwound];
+		}
+		return null;
+	}
+
+	void ShowWound() {
+		// Show which wound being treated
+
+		// Show selected tool
+		/*switch (weaponstatus[TK_SELECTED]) {
+			case T_PAINKILLER:
+				statusMessage = statusmessage.."\cjAnaesthetic\n";
+				statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
+				break;
+			case T_FORCEPS:
+				statusMessage = statusmessage.."\cjForceps\n";
+				statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n";
+				break;
+			case T_SALINE:
+				statusMessage = statusmessage.."\cjSaline\n";
+				statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
+				break;
+			case T_BIOFOAM:
+				statusMessage = statusmessage.."\cjBiofoam\n";
+				statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
+				break;
+			case T_STAPLER:
+				statusMessage = statusmessage.."\cjStapler\n";
+				statusMessage = statusmessage.."\cuManual hand-stapler.\n";
+				break;
+			case T_SUTURES:
+				statusMessage = statusmessage.."\cjSutures\n";
+				statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n";
+				break;
+			case T_2F:
+				statusMessage = statusmessage.."\cjSecond Flesh\n";
+				statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n";
+				break;
+		}*/
+
+		//DebugStatus();
+	}
+
+	void DebugStatus() {
+		if (!owner) { return; }
+		let ownr = HDPlayerPawn(owner);
+		statusMessage = statusMessage.."\n";
+		statusMessage = statusMessage.."Open Wounds "..ownr.woundcount.."\n";
+		statusMessage = statusMessage.."Unstable Wounds "..ownr.unstablewoundcount.."\n";
+		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
+	}
+
+	struct StatusInfo {
+		string text;
+		int timeout;
+	}
+
+	enum ToolModes {
+		T_PAINKILLER,
+		T_FORCEPS,
+		T_SALINE,
+		T_BIOFOAM,
+		T_STAPLER,
+		T_SUTURES,
+		T_2F,
+	}
+
+	enum KitFlags {
+		TK_SELECTED,
+		TK_BUTTON,
+		TK_HOLD
+	}
+
+}
