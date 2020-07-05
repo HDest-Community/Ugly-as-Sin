@@ -17,19 +17,27 @@ class WoundInfo {
 		nw.open = random(newsize * 5, 100);
 		nw.timer = -1;
 		nw.size = newsize;
-		nw.description = string.format("%s %s, %s %s",
-			WoundInfo.severity[random(0, WoundInfo.severity.size()-1)],
-			WoundInfo.type[random(0, WoundInfo.type.size()-1)],
-			WoundInfo.location[random(0, WoundInfo.location.size()-1)],
-			WoundInfo.bodypart[random(0, WoundInfo.bodypart.size()-1)]
-		);
+		nw.description = WoundDescription(newsize);
 		return nw;
 	}
 
+	static string WoundDescription(int newsize) {
+		int sevmax = WoundInfo.severity.size()-1;
+		int typmax = WoundInfo.type.size()-1;
+		int locmax = WoundInfo.location.size()-1;
+		int parmax = WoundInfo.bodypart.size()-1;
+		return string.format("%s %s, %s %s",
+			WoundInfo.severity[min(random(newsize, sevmax), sevmax)],
+			WoundInfo.type[random(0, typmax)],
+			WoundInfo.location[random(0, locmax)],
+			WoundInfo.bodypart[random(0, parmax)]
+		);
+	}
+
+	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious","critical" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
 	static const string[] location = { "left","right" };
 	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
-	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious" };
-	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
 }
 
 class UaS_WoundHandler : Inventory {
