@@ -42,12 +42,16 @@ class UaS_TraumaKit : HDWeapon {
 				HandleSaline();
 				break;
 			case T_BIOFOAM:
+				HandleBiofoam();
 				break;
 			case T_STAPLER:
+				HandleStapler();
 				break;
 			case T_SUTURES:
+				HandleSutures();
 				break;
 			case T_2F:
+				Handle2F();
 				break;
 		}
 
@@ -60,11 +64,15 @@ class UaS_TraumaKit : HDWeapon {
 
 		// Cycle tools
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
-			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
-			weaponstatus[TK_HOLD] = 0;
-			currentmessage.text = "";
-			currentmessage.timeout = 0;
+			CycleTools();
 		}
+	}
+
+	void CycleTools() {
+		weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+		weaponstatus[TK_HOLD] = 0;
+		currentmessage.text = "";
+		currentmessage.timeout = 0;
 	}
 
 	void HandlePainkiller() {
@@ -80,6 +88,12 @@ class UaS_TraumaKit : HDWeapon {
 				currentWound.numb = true;
 				currentmessage.text = "Anaesthetic injected.";
 				currentmessage.timeout = 5*35;
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom(-1,1),frandom(-1,1))/10,
+					(frandom(-1,1),frandom(-1,1))/10,
+					(frandom(-1,1),frandom(-1,1))/10,
+					(frandom(-3,3),frandom(-3,3))/10
+				);
 			}
 		}
 	}
@@ -132,8 +146,33 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	void HandleSaline() {
+		CycleTools();
 		statusMessage = statusmessage.."\cjSaline\n";
 		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
+	}
+
+	void HandleBioFoam() {
+		CycleTools();
+		statusMessage = statusmessage.."\cjBiofoam\n";
+		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
+	}
+
+	void HandleStapler() {
+		CycleTools();
+		statusMessage = statusmessage.."\cjStapler\n";
+		statusMessage = statusmessage.."\cuManual hand-stapler.\n";
+	}
+
+	void HandleSutures() {
+		CycleTools();
+		statusMessage = statusmessage.."\cjSutures\n";
+		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n";
+	}
+
+	void Handle2F() {
+		CycleTools();
+		statusMessage = statusmessage.."\cjSecond Flesh\n";
+		statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n";
 	}
 
 	WoundInfo GetWound() {
@@ -144,44 +183,6 @@ class UaS_TraumaKit : HDWeapon {
 			return wh.critwounds[lastwound];
 		}
 		return null;
-	}
-
-	void ShowWound() {
-		// Show which wound being treated
-
-		// Show selected tool
-		/*switch (weaponstatus[TK_SELECTED]) {
-			case T_PAINKILLER:
-				statusMessage = statusmessage.."\cjAnaesthetic\n";
-				statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
-				break;
-			case T_FORCEPS:
-				statusMessage = statusmessage.."\cjForceps\n";
-				statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n";
-				break;
-			case T_SALINE:
-				statusMessage = statusmessage.."\cjSaline\n";
-				statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
-				break;
-			case T_BIOFOAM:
-				statusMessage = statusmessage.."\cjBiofoam\n";
-				statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
-				break;
-			case T_STAPLER:
-				statusMessage = statusmessage.."\cjStapler\n";
-				statusMessage = statusmessage.."\cuManual hand-stapler.\n";
-				break;
-			case T_SUTURES:
-				statusMessage = statusmessage.."\cjSutures\n";
-				statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n";
-				break;
-			case T_2F:
-				statusMessage = statusmessage.."\cjSecond Flesh\n";
-				statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n";
-				break;
-		}*/
-
-		//DebugStatus();
 	}
 
 	void DebugStatus() {
