@@ -81,10 +81,24 @@ class UaS_WoundHandler : Inventory {
 		}
 
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
-			if (critwounds[i].open == 0) {
+			// Start ticking off closed wounds
+			if (critwounds[i].open == 0 && critwounds[i].timer < 0) {
+				critwounds[i].timer = (
+					critwounds[i].dirty +
+					critwounds[i].obstructed +
+					critwounds[i].cavity +
+					critwounds[i].size);
+				critwounds[i].timer /= 4;		// average remaining unfixed status
+				critwounds[i].timer *= 35;		// convert to seconds
+				critwounds[i].timer = max(critwounds[i].timer, 2100);	// at least 1 minute to roll off
+			}
+			// decrement timer
+			if (critwounds[i].timer > 0) {
+				//console.printf("ticking "..i.." at "..critwounds[i].timer);
 				critwounds[i].timer = max(critwounds[i].timer - 1, 0);
 			}
-			if (critwounds[i].timer <= 0) {
+			// Roll off closed wounds when timer runs out
+			if (critwounds[i].timer == 0) {
 				console.printf("closed wound removed at tick "..level.maptime);
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
 				critwounds[i].destroy();

@@ -21,6 +21,8 @@ class UaS_TraumaKit : HDWeapon {
 
 		statusMessage = "\cyField Medical Kit\n\n";
 
+		if (currentWound && currentWound.open == 0) { currentWound = null; }
+
 		if (currentWound) {
 			DebugStatus();
 			statusMessage = statusMessage.."\crTreating:\n";
@@ -257,8 +259,9 @@ class UaS_TraumaKit : HDWeapon {
 		UaS_WoundHandler wh = UaS_WoundHandler(owner.FindInventory('UaS_WoundHandler'));
 		if (!wh) { console.printf("No wound handler!"); return null; }
 		if (wh.critwounds.size() > 0) {
-			int lastwound = wh.critwounds.size() - 1;
-			return wh.critwounds[lastwound];
+			for (int i = wh.critwounds.size() - 1; i >= 0; i--) {
+				if (wh.critwounds[i].open > 0) { return wh.critwounds[i]; }
+			}
 		}
 		return null;
 	}
