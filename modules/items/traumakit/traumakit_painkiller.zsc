@@ -9,6 +9,7 @@ extend class UaS_TraumaKit {
 			}
 			else {
 				owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
+				owner.A_StartSound("*grunt",CHAN_VOICE);
 				currentWound.numb = true;
 				currentmessage.text = "Anaesthetic injected.";
 				currentmessage.timeout = 5*35;

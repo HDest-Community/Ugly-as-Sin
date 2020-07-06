@@ -3,7 +3,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			currentmessage.text = "You hold the wound open.\n";
+			currentmessage.text = "Holding the wound open.\n";
 			// Display obstruction status
 			if (currentWound.obstructed > 0) {
 				currentmessage.text = currentmessage.text.."There is some foreign obstruction.\n";

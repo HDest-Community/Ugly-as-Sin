@@ -29,7 +29,7 @@ class UaS_TraumaKit : HDWeapon {
 
 		statusMessage = "\cyField Medical Kit\n\n";
 
-		RefreshStatus();
+		if (!RefreshStatus()) { return; }
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
@@ -55,6 +55,12 @@ class UaS_TraumaKit : HDWeapon {
 				break;
 		}
 
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
+		}
+
 		A_WeaponMessage(statusMessage);
 
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
@@ -69,7 +75,7 @@ class UaS_TraumaKit : HDWeapon {
 		currentmessage.timeout = 0;
 	}
 
-	void RefreshStatus() {
+	bool RefreshStatus() {
 		// Deselect closed current wound
 		if (currentWound && currentWound.open == 0) { currentWound = null; }
 
@@ -85,14 +91,9 @@ class UaS_TraumaKit : HDWeapon {
 			statusMessage = statusMessage.."\cuPress Zoom to check treatable wounds.\n\n";
 			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
 			A_WeaponMessage(statusMessage);
-			return;
+			return false;
 		}
-
-		// Tick down transient messages
-		if (currentmessage.timeout > 0) {
-			statusmessage = statusmessage..currentmessage.text;
-			currentmessage.timeout--;
-		}
+		return true;
 	}
 
 	WoundInfo GetWound() {
