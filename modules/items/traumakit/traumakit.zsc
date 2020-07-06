@@ -3,6 +3,7 @@ class UaS_TraumaKit : HDWeapon {
 	StatusInfo currentMessage;
 	WoundInfo currentWound;
 
+
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
@@ -20,13 +21,14 @@ class UaS_TraumaKit : HDWeapon {
 
 		statusMessage = "\cyField Medical Kit\n\n";
 
-		currentWound = GetWound();
 		if (currentWound) {
 			statusMessage = statusMessage.."\crTreating:\n";
 			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
 		}
 		else {
-			statusMessage = statusMessage.."\crNo stable wounds to treat.\n\n";
+			statusMessage = statusMessage.."\crNot treating any wound.\n";
+			statusMessage = statusMessage.."\ccPress Zoom to check treatable wounds.\n\n";
+			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
 			A_WeaponMessage(statusMessage);
 			return;
 		}
