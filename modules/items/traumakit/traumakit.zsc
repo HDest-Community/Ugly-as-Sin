@@ -22,10 +22,12 @@ class UaS_TraumaKit : HDWeapon {
 		statusMessage = "\cyField Medical Kit\n\n";
 
 		if (currentWound) {
+			DebugStatus();
 			statusMessage = statusMessage.."\crTreating:\n";
 			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
 		}
 		else {
+			DebugStatus();
 			statusMessage = statusMessage.."\crNot treating any wound.\n";
 			statusMessage = statusMessage.."\ccPress Zoom to check treatable wounds.\n\n";
 			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
