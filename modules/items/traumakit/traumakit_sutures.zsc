@@ -1,0 +1,46 @@
+extend class Uas_TraumaKit {
+	void HandleSutures() {
+		//CycleTools();
+		statusMessage = statusmessage.."\cjSutures\n";
+		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n";
+
+		if (currentWound.open > 0) {
+			currentmessage.text = "The wound is open.\n";
+			currentmessage.timeout = 1*35;
+		}
+		else {
+			currentmessage.text = "The wound is closed.\n";
+			currentmessage.timeout = 1*35;
+			return;
+		}
+
+		// force player to restart if pained last time
+		if (weaponstatus[TK_HOLD] < 0) {
+			if(!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; }
+			return;
+		}
+
+		// start suture
+		if ((owner.player.cmd.buttons & BT_ATTACK) && (weaponstatus[TK_HOLD] == 0)) {
+			owner.A_StartSound("bandage/rustle",CHAN_BODY,CHANF_OVERLAP);
+			weaponstatus[TK_HOLD] = 35;
+		}
+
+		// finish suture
+		if ((owner.player.cmd.buttons & BT_ATTACK)){
+			weaponstatus[TK_HOLD] = max(weaponstatus[TK_HOLD]-1, 0);
+
+			if (weaponstatus[TK_HOLD] == 10) {
+				if(!currentWound.numb) {
+					owner.damagemobj(owner,owner,1,"staples");
+					weaponstatus[TK_HOLD] = -1;
+					currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
+				}
+				else {
+					owner.A_StartSound("*grunt",CHAN_VOICE);
+					currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
+				}
+			}
+		}
+	}
+}

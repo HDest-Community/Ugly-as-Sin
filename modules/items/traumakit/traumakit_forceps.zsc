@@ -1,0 +1,55 @@
+extend class UaS_TraumaKit {
+	void HandleForceps() {
+		statusMessage = statusmessage.."\cjForceps\n";
+		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
+		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			currentmessage.text = "You hold the wound open.\n";
+			// Display obstruction status
+			if (currentWound.obstructed > 0) {
+				currentmessage.text = currentmessage.text.."There is some foreign obstruction.\n";
+				currentmessage.timeout = 1*35;
+			}
+			else {
+				currentmessage.text = currentmessage.text.."It appears clear of obstructions.\n";
+				currentmessage.timeout = 1*35;
+				return;
+			}
+
+			if((owner.player.cmd.buttons & BT_UNLOAD)) {
+				weaponstatus[TK_HOLD]--;
+				if (!currentWound.numb && !(owner.player.oldbuttons & BT_UNLOAD)) {
+					owner.A_StartSound("*usemeds",CHAN_VOICE);
+					currentmessage.text = currentmessage.text.."Probing the w--";
+					owner.A_Log("\cgOW FUCK", true);
+					HDPlayerPawn(owner).A_MuzzleClimb(
+						(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
+						(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
+						(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
+						(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
+					);
+				}
+				else if (currentWound.numb) {
+					currentmessage.text = currentmessage.text.."Probing the wound...";
+					if (weaponstatus[TK_HOLD] <= 0) {
+						currentWound.obstructed -= random[uas_tk](1,10);
+						owner.A_StartSound("misc/smallslop",CHAN_BODY);
+						if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+						HDPlayerPawn(owner).A_MuzzleClimb(
+							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+							(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3))
+						);
+						weaponstatus[TK_HOLD] = random[uas_tk](20,40);
+						if (random[uas_tk](0,50) > currentWound.obstructed) {
+							currentWound.obstructed = 0;
+							owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+							owner.damagemobj(owner,owner,1,"staples");
+							owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
+						}
+					}
+				}
+			}
+		}
+	}
+}

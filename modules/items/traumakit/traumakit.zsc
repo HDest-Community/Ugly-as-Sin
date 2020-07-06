@@ -1,8 +1,15 @@
+#include "modules/items/traumakit/traumakit_painkiller.zsc"
+#include "modules/items/traumakit/traumakit_forceps.zsc"
+#include "modules/items/traumakit/traumakit_stapler.zsc"
+#include "modules/items/traumakit/traumakit_sutures.zsc"
+#include "modules/items/traumakit/traumakit_biofoam.zsc"
+#include "modules/items/traumakit/traumakit_2f.zsc"
+#include "modules/items/traumakit/traumakit_saline.zsc"
+
 class UaS_TraumaKit : HDWeapon {
 	string statusMessage;
 	StatusInfo currentMessage;
 	WoundInfo currentWound;
-
 
 	Default {
 		Inventory.Amount 1;
@@ -18,24 +25,11 @@ class UaS_TraumaKit : HDWeapon {
 	override double weaponbulk(){ return 20; }
 
 	override void DoEffect() {
+		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
 
 		statusMessage = "\cyField Medical Kit\n\n";
 
-		if (currentWound && currentWound.open == 0) { currentWound = null; }
-
-		if (currentWound) {
-			DebugStatus();
-			statusMessage = statusMessage.."\crTreating:\n";
-			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
-		}
-		else {
-			DebugStatus();
-			statusMessage = statusMessage.."\crNot treating any wound.\n";
-			statusMessage = statusMessage.."\ccPress Zoom to check treatable wounds.\n\n";
-			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
-			A_WeaponMessage(statusMessage);
-			return;
-		}
+		RefreshStatus();
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
@@ -61,14 +55,8 @@ class UaS_TraumaKit : HDWeapon {
 				break;
 		}
 
-		if (currentmessage.timeout > 0) {
-			statusmessage = statusmessage..currentmessage.text;
-			currentmessage.timeout--;
-		}
-
 		A_WeaponMessage(statusMessage);
 
-		// Cycle tools
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
 			CycleTools();
 		}
@@ -81,178 +69,30 @@ class UaS_TraumaKit : HDWeapon {
 		currentmessage.timeout = 0;
 	}
 
-	void HandlePainkiller() {
-		statusMessage = statusmessage.."\cjAnaesthetic\n";
-		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n\n";
-		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
-			if(currentWound.numb) {
-				currentmessage.text = "The wound is already numb.";
-				currentmessage.timeout = 5*35;
-			}
-			else {
-				owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
-				currentWound.numb = true;
-				currentmessage.text = "Anaesthetic injected.";
-				currentmessage.timeout = 5*35;
-				HDPlayerPawn(owner).A_MuzzleClimb(
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3))/10
-				);
-			}
-		}
-	}
+	void RefreshStatus() {
+		// Deselect closed current wound
+		if (currentWound && currentWound.open == 0) { currentWound = null; }
 
-	void HandleForceps() {
-		statusMessage = statusmessage.."\cjForceps\n";
-		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
-		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			currentmessage.text = "You hold the wound open.\n";
-			// Display obstruction status
-			if (currentWound.obstructed > 0) {
-				currentmessage.text = currentmessage.text.."There is some foreign obstruction.\n";
-				currentmessage.timeout = 1*35;
-			}
-			else {
-				currentmessage.text = currentmessage.text.."It appears clear of obstructions.\n";
-				currentmessage.timeout = 1*35;
-				return;
-			}
-
-			if((owner.player.cmd.buttons & BT_UNLOAD)) {
-				weaponstatus[TK_HOLD]--;
-				if (!currentWound.numb && !(owner.player.oldbuttons & BT_UNLOAD)) {
-					owner.A_StartSound("*usemeds",CHAN_VOICE);
-					currentmessage.text = currentmessage.text.."Probing the w--";
-					owner.A_Log("\cgOW FUCK", true);
-					HDPlayerPawn(owner).A_MuzzleClimb(
-						(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
-						(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
-						(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
-						(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
-					);
-				}
-				else if (currentWound.numb) {
-					currentmessage.text = currentmessage.text.."Probing the wound...";
-					if (weaponstatus[TK_HOLD] <= 0) {
-						currentWound.obstructed -= random[uas_tk](1,10);
-						owner.A_StartSound("misc/smallslop",CHAN_BODY);
-						if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
-						HDPlayerPawn(owner).A_MuzzleClimb(
-							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-							(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3))
-						);
-						weaponstatus[TK_HOLD] = random[uas_tk](20,40);
-						if (random[uas_tk](0,50) > currentWound.obstructed) {
-							currentWound.obstructed = 0;
-							owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
-							owner.damagemobj(owner,owner,1,"staples");
-							owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	void HandleSaline() {
-		CycleTools();
-		statusMessage = statusmessage.."\cjSaline\n";
-		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n\n";
-	}
-
-	void HandleBioFoam() {
-		CycleTools();
-		statusMessage = statusmessage.."\cjBiofoam\n";
-		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n\n";
-	}
-
-	void HandleStapler() {
-		//CycleTools();
-		statusMessage = statusmessage.."\cjStapler\n";
-		statusMessage = statusmessage.."\cuManual hand-stapler.\n\n";
-		if (currentWound.open > 0) {
-			currentmessage.text = "The wound is open.\n";
-			currentmessage.timeout = 1*35;
+		// Display current wound, if any
+		if (currentWound) {
+			DebugStatus();
+			statusMessage = statusMessage.."\crTreating:\n";
+			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
 		}
 		else {
-			currentmessage.text = "The wound is closed.\n";
-			currentmessage.timeout = 1*35;
-			return;
-		}
-		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
-		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
-			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
-			if (!currentWound.numb) {
-				owner.damagemobj(owner,owner,1,"staples");
-				weaponstatus[TK_HOLD] = 35;
-			}
-			else {
-				owner.A_StartSound("*grunt",CHAN_VOICE);
-				weaponstatus[TK_HOLD] = 15;
-			}
-			HDPlayerPawn(owner).A_MuzzleClimb(
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
-			);
-			currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
-		}
-	}
-
-	void HandleSutures() {
-		//CycleTools();
-		statusMessage = statusmessage.."\cjSutures\n";
-		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n";
-
-		if (currentWound.open > 0) {
-			currentmessage.text = "The wound is open.\n";
-			currentmessage.timeout = 1*35;
-		}
-		else {
-			currentmessage.text = "The wound is closed.\n";
-			currentmessage.timeout = 1*35;
+			DebugStatus();
+			statusMessage = statusMessage.."\crNot treating any wound.\n";
+			statusMessage = statusMessage.."\cuPress Zoom to check treatable wounds.\n\n";
+			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
+			A_WeaponMessage(statusMessage);
 			return;
 		}
 
-		// force player to restart if pained last time
-		if (weaponstatus[TK_HOLD] < 0) {
-			if(!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; }
-			return;
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
 		}
-
-		// start suture
-		if ((owner.player.cmd.buttons & BT_ATTACK) && (weaponstatus[TK_HOLD] == 0)) {
-			owner.A_StartSound("bandage/rustle",CHAN_BODY,CHANF_OVERLAP);
-			weaponstatus[TK_HOLD] = 35;
-		}
-
-		// finish suture
-		if ((owner.player.cmd.buttons & BT_ATTACK)){
-			weaponstatus[TK_HOLD] = max(weaponstatus[TK_HOLD]-1, 0);
-
-			if (weaponstatus[TK_HOLD] == 10) {
-				if(!currentWound.numb) {
-					owner.damagemobj(owner,owner,1,"staples");
-					weaponstatus[TK_HOLD] = -1;
-					currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
-				}
-				else {
-					owner.A_StartSound("*grunt",CHAN_VOICE);
-					currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
-				}
-			}
-		}
-	}
-
-	void Handle2F() {
-		CycleTools();
-		statusMessage = statusmessage.."\cjSecond Flesh\n";
-		statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n\n";
 	}
 
 	WoundInfo GetWound() {
@@ -295,5 +135,4 @@ class UaS_TraumaKit : HDWeapon {
 		TK_BUTTON,
 		TK_HOLD
 	}
-
 }
