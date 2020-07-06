@@ -54,7 +54,7 @@ class UaS_WoundHandler : Inventory {
 		if (!owner) { return; }
 		ManageWounds();
 		//TODO: Tick down wounds that have healing timers
-		//TickWounds()
+		TickClosedWounds();
 	}
 
 	void ManageWounds() {
@@ -70,12 +70,24 @@ class UaS_WoundHandler : Inventory {
 		}
 		else if (diffwounds < 0) { // remove a passively-healed wound
 			console.printf("old wound removed at tick "..level.maptime);
+			critwounds[0].destroy();
 			critwounds.delete(0);
 			DebugWoundList();
 		}
 
 		// sync count for next tick
 		lastwounds = max(plr.oldwoundcount, 0); // gotta clamp this to avoid false positives
+	}
+
+	void TickClosedWounds() {
+		for(int i = 0; i <= critwounds.size() - 1; i++) {
+			if (critwounds[i].open == 0) {
+				console.printf("closed wound removed at tick "..level.maptime);
+				critwounds[i].destroy();
+				critwounds.delete(i);
+				DebugWoundList();
+			}
+		}
 	}
 
 	void DebugWoundList() {
