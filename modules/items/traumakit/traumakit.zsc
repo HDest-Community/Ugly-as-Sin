@@ -117,7 +117,7 @@ class UaS_TraumaKit : HDWeapon {
 			if((owner.player.cmd.buttons & BT_UNLOAD)) {
 				weaponstatus[TK_HOLD]--;
 				if (!currentWound.numb && !(owner.player.oldbuttons & BT_UNLOAD)) {
-					owner.A_StartSound(owner.painsound,CHAN_VOICE);
+					owner.A_StartSound("*usemeds",CHAN_VOICE);
 					currentmessage.text = currentmessage.text.."Probing the w--";
 					owner.A_Log("\cgOW FUCK", true);
 					HDPlayerPawn(owner).A_MuzzleClimb(
@@ -132,6 +132,7 @@ class UaS_TraumaKit : HDWeapon {
 					if (weaponstatus[TK_HOLD] <= 0) {
 						currentWound.obstructed -= random[uas_tk](1,10);
 						owner.A_StartSound("misc/smallslop",CHAN_BODY);
+						if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
 						HDPlayerPawn(owner).A_MuzzleClimb(
 							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 							(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
@@ -142,6 +143,7 @@ class UaS_TraumaKit : HDWeapon {
 						if (random[uas_tk](0,50) > currentWound.obstructed) {
 							currentWound.obstructed = 0;
 							owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+							owner.damagemobj(owner,owner,1,"staples");
 							owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
 						}
 					}
