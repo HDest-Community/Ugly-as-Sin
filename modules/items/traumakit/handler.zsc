@@ -4,6 +4,7 @@ class WoundInfo : thinker {
 	int dirty;
 	int obstructed;
 	int open;
+	int cavity;
 	int timer;
 	int size;
 
@@ -16,8 +17,9 @@ class WoundInfo : thinker {
 		WoundInfo nw = new("WoundInfo");
 		nw.numb = false;
 		nw.dirty = random[uas_wi](newsize * 10, 100);
-		nw.obstructed = random[uas_wi](newsize * 10, 100);
+		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](newsize * 10, 100);
 		nw.open = random[uas_wi](newsize * 10, 100);
+		nw.cavity = (nw.obstructed + nw.open) * 0.5;
 		nw.timer = -1;
 		nw.size = newsize;
 		nw.description = WoundDescription(newsize);
