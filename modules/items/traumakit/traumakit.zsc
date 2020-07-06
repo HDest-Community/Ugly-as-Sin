@@ -155,13 +155,13 @@ class UaS_TraumaKit : HDWeapon {
 	void HandleSaline() {
 		CycleTools();
 		statusMessage = statusmessage.."\cjSaline\n";
-		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n";
+		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n\n";
 	}
 
 	void HandleBioFoam() {
 		CycleTools();
 		statusMessage = statusmessage.."\cjBiofoam\n";
-		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
+		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n\n";
 	}
 
 	void HandleStapler() {
@@ -179,7 +179,7 @@ class UaS_TraumaKit : HDWeapon {
 	void Handle2F() {
 		CycleTools();
 		statusMessage = statusmessage.."\cjSecond Flesh\n";
-		statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n";
+		statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n\n";
 	}
 
 	WoundInfo GetWound() {
