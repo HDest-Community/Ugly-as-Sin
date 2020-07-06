@@ -165,9 +165,37 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	void HandleStapler() {
-		CycleTools();
+		//CycleTools();
 		statusMessage = statusmessage.."\cjStapler\n";
-		statusMessage = statusmessage.."\cuManual hand-stapler.\n";
+		statusMessage = statusmessage.."\cuManual hand-stapler.\n\n";
+		if (currentWound.open > 0) {
+			currentmessage.text = "The wound is open.\n";
+			currentmessage.timeout = 1*35;
+		}
+		else {
+			currentmessage.text = "The wound is closed.\n";
+			currentmessage.timeout = 1*35;
+			return;
+		}
+		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
+		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
+			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
+			if (!currentWound.numb) {
+				owner.damagemobj(owner,owner,1,"staples");
+				weaponstatus[TK_HOLD] = 35;
+			}
+			else {
+				owner.A_StartSound("*grunt",CHAN_VOICE);
+				weaponstatus[TK_HOLD] = 15;
+			}
+			HDPlayerPawn(owner).A_MuzzleClimb(
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
+			);
+			currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
+		}
 	}
 
 	void HandleSutures() {
