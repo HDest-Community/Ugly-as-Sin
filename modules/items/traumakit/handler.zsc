@@ -1,3 +1,5 @@
+#include "modules/items/traumakit/wound.zsc"
+
 class UaS_WoundHandler : Inventory {
 	int lastwounds;
 	double woundaverage;
@@ -17,55 +19,29 @@ class UaS_WoundHandler : Inventory {
 
 	void ManageWounds() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
+		int diffwounds = max(plr.oldwoundcount,0) - lastwounds; // clamp to avoid false positives
 
-		// get difference from last tick
-		int diffwounds = max(plr.oldwoundcount,0) - lastwounds; // gotta clamp this to avoid false positives
+		// passively add or remove based on player oldwoundwound
+		if (diffwounds > 0) { critwounds.push(WoundInfo.Create(diffwounds)); }
+		else if (diffwounds < 0) { RemoveWound(0); }
 
-		if (diffwounds > 0) { // add new stable wounds
-			console.printf("new wound added at tick "..level.maptime);
-			critwounds.push(WoundInfo.Create(diffwounds));
-			DebugWoundList();
-		}
-		else if (diffwounds < 0) { // remove a passively-healed wound
-			console.printf("old wound removed at tick "..level.maptime);
-			critwounds[0].destroy();
-			critwounds.delete(0);
-			DebugWoundList();
-		}
-
+		// iterate wound array
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
-			if (critwounds[i]) {
-				critwounds[i].TickWound();
-			}
-			else { critwounds.delete(i); }
-			// Start ticking off closed wounds
-			/*if (critwounds[i].open == 0 && critwounds[i].timer < 0) {
-				critwounds[i].timer = (
-					critwounds[i].dirty +
-					critwounds[i].obstructed +
-					critwounds[i].cavity +
-					critwounds[i].size);
-				critwounds[i].timer /= 4;		// average remaining unfixed status
-				critwounds[i].timer *= 35;		// convert to seconds
-				critwounds[i].timer = max(critwounds[i].timer, 2100);	// at least 1 minute to roll off
-			}
-			// decrement timer
-			if (critwounds[i].timer > 0) {
-				//console.printf("ticking "..i.." at "..critwounds[i].timer);
-				critwounds[i].timer = max(critwounds[i].timer - 1, 0);
-			}
-			// Roll off closed wounds when timer runs out
-			if (critwounds[i].timer == 0) {
-				console.printf("closed wound removed at tick "..level.maptime);
+			if (!critwounds[i]) { critwounds.delete(i); continue; }
+			if (critwounds[i].clear) {
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
-				critwounds[i].destroy();
-				critwounds.delete(i);
-				DebugWoundList();
-			}*/
+				RemoveWound(i);
+				continue;
+			}
+			critwounds[i].TickWound();
 		}
 
-		// sync count for next tick
-		lastwounds = max(plr.oldwoundcount, 0); // gotta clamp this to avoid false positives
+		lastwounds = max(plr.oldwoundcount, 0); // clamp to avoid false positives
+	}
+
+	void RemoveWound(int w) {
+		critwounds[w].destroy();
+		critwounds.delete(w);
 	}
 
 	void DebugWoundList() {

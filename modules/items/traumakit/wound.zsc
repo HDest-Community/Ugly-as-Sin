@@ -8,6 +8,7 @@ class WoundInfo : thinker {
 	int timer;
 	int size;
 	int infection;
+	bool clear;
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -17,9 +18,14 @@ class WoundInfo : thinker {
 	void TickWound() {
 		if (level.maptime % 35 == 0) {
 			int randmax = 25 - infection;
-			if (random[uas_wi](0, randmax) > AverageStatus()) {
+			bool clearable = (
+				(random[uas_wi](0, randmax) > AverageStatus()) &&
+				open == 0
+			);
+
+			if (clearable) {
 				console.printf("cured "..description);
-				self.destroy();
+				clear = true;
 			}
 		}
 	}
@@ -34,7 +40,10 @@ class WoundInfo : thinker {
 		retvalue /= 5;
 		return retvalue;
 	}
+}
 
+// Static methods
+extend class WoundInfo {
 	static WoundInfo create(int newsize) {
 		WoundInfo nw = new("WoundInfo");
 		nw.numb = false;
