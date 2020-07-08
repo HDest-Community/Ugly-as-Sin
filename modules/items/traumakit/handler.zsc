@@ -1,50 +1,3 @@
-class WoundInfo : thinker {
-	string description;
-	bool numb;
-	int dirty;
-	int obstructed;
-	int open;
-	int cavity;
-	int timer;
-	int size;
-
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		ChangeStatNum(STAT_STATIC);
-	}
-
-	static WoundInfo create(int newsize) {
-		WoundInfo nw = new("WoundInfo");
-		nw.numb = false;
-		nw.dirty = random[uas_wi](newsize * 10, 100);
-		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](newsize * 10, 100);
-		nw.open = random[uas_wi](newsize * 10, 100);
-		nw.cavity = (nw.obstructed + nw.open) * 0.5;
-		nw.timer = -1;
-		nw.size = newsize;
-		nw.description = WoundDescription(newsize);
-		return nw;
-	}
-
-	static string WoundDescription(int newsize) {
-		int sevmax = WoundInfo.severity.size()-1;
-		int typmax = WoundInfo.type.size()-1;
-		int locmax = WoundInfo.location.size()-1;
-		int parmax = WoundInfo.bodypart.size()-1;
-		return string.format("%s %s, %s %s",
-			WoundInfo.severity[min(random[uas_wi](newsize, sevmax), sevmax)],
-			WoundInfo.type[random[uas_wi](0, typmax)],
-			WoundInfo.location[random[uas_wi](0, locmax)],
-			WoundInfo.bodypart[random[uas_wi](0, parmax)]
-		);
-	}
-
-	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious","critical" };
-	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
-	static const string[] location = { "left","right" };
-	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
-}
-
 class UaS_WoundHandler : Inventory {
 	int lastwounds;
 	double woundaverage;
@@ -81,8 +34,12 @@ class UaS_WoundHandler : Inventory {
 		}
 
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
+			if (critwounds[i]) {
+				critwounds[i].TickWound();
+			}
+			else { critwounds.delete(i); }
 			// Start ticking off closed wounds
-			if (critwounds[i].open == 0 && critwounds[i].timer < 0) {
+			/*if (critwounds[i].open == 0 && critwounds[i].timer < 0) {
 				critwounds[i].timer = (
 					critwounds[i].dirty +
 					critwounds[i].obstructed +
@@ -104,7 +61,7 @@ class UaS_WoundHandler : Inventory {
 				critwounds[i].destroy();
 				critwounds.delete(i);
 				DebugWoundList();
-			}
+			}*/
 		}
 
 		// sync count for next tick

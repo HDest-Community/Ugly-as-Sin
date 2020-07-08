@@ -1,0 +1,69 @@
+class WoundInfo : thinker {
+	string description;
+	bool numb;
+	int dirty;
+	int obstructed;
+	int open;
+	int cavity;
+	int timer;
+	int size;
+	int infection;
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		ChangeStatNum(STAT_STATIC);
+	}
+
+	void TickWound() {
+		if (level.maptime % 35 == 0) {
+			int randmax = 25 - infection;
+			if (random[uas_wi](0, randmax) > AverageStatus()) {
+				console.printf("cured "..description);
+				self.destroy();
+			}
+		}
+	}
+
+	int AverageStatus() {
+		int retvalue;
+		retvalue += dirty;
+		retvalue += obstructed;
+		retvalue += open;
+		retvalue += cavity;
+		retvalue += infection;
+		retvalue /= 5;
+		return retvalue;
+	}
+
+	static WoundInfo create(int newsize) {
+		WoundInfo nw = new("WoundInfo");
+		nw.numb = false;
+		nw.dirty = random[uas_wi](newsize * 10, 100);
+		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](newsize * 10, 100);
+		nw.open = random[uas_wi](newsize * 10, 100);
+		nw.cavity = (nw.obstructed + nw.open) * 0.5;
+		nw.timer = -1;
+		nw.size = newsize;
+		nw.infection = 1;
+		nw.description = WoundDescription(newsize);
+		return nw;
+	}
+
+	static string WoundDescription(int newsize) {
+		int sevmax = WoundInfo.severity.size()-1;
+		int typmax = WoundInfo.type.size()-1;
+		int locmax = WoundInfo.location.size()-1;
+		int parmax = WoundInfo.bodypart.size()-1;
+		return string.format("%s %s, %s %s",
+			WoundInfo.severity[min(random[uas_wi](newsize, sevmax), sevmax)],
+			WoundInfo.type[random[uas_wi](0, typmax)],
+			WoundInfo.location[random[uas_wi](0, locmax)],
+			WoundInfo.bodypart[random[uas_wi](0, parmax)]
+		);
+	}
+
+	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious","critical" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+	static const string[] location = { "left","right" };
+	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
+}

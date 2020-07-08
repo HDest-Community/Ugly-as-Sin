@@ -27,7 +27,7 @@ class UaS_TraumaKit : HDWeapon {
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
 
-		statusMessage = "\cyField Medical Kit\n\n";
+		statusMessage = "\cyTrauma Kit\n\n";
 
 		if (!RefreshStatus()) { return; }
 
@@ -84,6 +84,7 @@ class UaS_TraumaKit : HDWeapon {
 			DebugStatus();
 			statusMessage = statusMessage.."\crTreating:\n";
 			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
+			statusMessage = statusMessage.."\c-"..currentWound.AverageStatus().."\n\n";
 		}
 		else {
 			DebugStatus();
