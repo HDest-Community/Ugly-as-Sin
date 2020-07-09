@@ -10,6 +10,7 @@ class UaS_TraumaKit : HDWeapon {
 	string statusMessage;
 	StatusInfo currentMessage;
 	WoundInfo currentWound;
+	UaS_WoundHandler wh;
 
 	Default {
 		Inventory.Amount 1;
@@ -26,10 +27,14 @@ class UaS_TraumaKit : HDWeapon {
 
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
+		if (!wh) { wh = UaS_WoundHandler(owner.FindInventory('UaS_WoundHandler')); }
+		if (!wh) { console.printf("No wound handler!"); return; }
 
 		statusMessage = "\cyTrauma Kit\n\n";
 
-		if (!RefreshStatus()) { return; }
+		WoundList();
+		CycleWounds();
+		CycleTools();
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
@@ -62,50 +67,55 @@ class UaS_TraumaKit : HDWeapon {
 		}
 
 		A_WeaponMessage(statusMessage);
+	}
 
-		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
-			CycleTools();
+	void WoundList() {
+		if (wh.critwounds.size() == 0) {
+			statusmessage = statusmessage.."No treatable wounds\n\n";
+			return;
+		}
+		int loopmin = max(weaponstatus[TK_WOUNDINDEX] - 3, 0);
+		int loopmax = min(loopmin + 3, wh.critwounds.size() - 1);
+		if (loopmin > 0) { statusmessage = statusmessage..". . .\n"; }
+		else { statusmessage = statusmessage.."\n"; }
+		for (int i = loopmin; i <= loopmax; i++) {
+			string hilite;
+			if (currentWound == wh.critwounds[i]) {
+				if (wh.critwounds[i].AverageStatus() >= 10) { hilite = "\ca"; }
+				else { hilite = "\cd"; }
+			}
+			else {
+				if (wh.critwounds[i].AverageStatus() >= 10) { hilite = "\cr"; }
+ 				else { hilite = "\cq"; }
+ 			}
+			statusmessage = statusmessage..hilite..wh.critwounds[i].description.."\n";
+		}
+		if (loopmax < wh.critwounds.size() - 1) { statusmessage = statusmessage..". . .\n"; }
+		else { statusmessage = statusmessage.."\n"; }
+		statusmessage = statusmessage.."\n";
+	}
+
+	void CycleWounds() {
+		if (!currentWound) { weaponstatus[TK_WOUNDINDEX] = -1; }
+		if (wh.critwounds.size() == 0) { return; }
+		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
+			weaponstatus[TK_WOUNDINDEX] = (weaponstatus[TK_WOUNDINDEX] + 1) % wh.critwounds.size();
+			currentWound = GetWound(weaponstatus[TK_WOUNDINDEX]);
 		}
 	}
 
 	void CycleTools() {
-		weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
-		weaponstatus[TK_HOLD] = 0;
-		currentmessage.text = "";
-		currentmessage.timeout = 0;
+		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
+			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+			weaponstatus[TK_HOLD] = 0;
+			currentmessage.text = "";
+			currentmessage.timeout = 0;
+		}
 	}
 
-	bool RefreshStatus() {
-		// Deselect closed current wound
-		if (currentWound && currentWound.open == 0) { currentWound = null; }
-
-		// Display current wound, if any
-		if (currentWound) {
-			DebugStatus();
-			statusMessage = statusMessage.."\crTreating:\n";
-			statusMessage = statusMessage.."\ca"..currentWound.description.."\n\n";
-			statusMessage = statusMessage.."\c-"..currentWound.AverageStatus().."\n\n";
-		}
-		else {
-			DebugStatus();
-			statusMessage = statusMessage.."\crNot treating any wound.\n";
-			statusMessage = statusMessage.."\cuPress Zoom to check treatable wounds.\n\n";
-			if (owner.player.cmd.buttons & BT_ZOOM) { currentWound = GetWound(); }
-			A_WeaponMessage(statusMessage);
-			return false;
-		}
-		return true;
-	}
-
-	WoundInfo GetWound() {
-		UaS_WoundHandler wh = UaS_WoundHandler(owner.FindInventory('UaS_WoundHandler'));
-		if (!wh) { console.printf("No wound handler!"); return null; }
-		if (wh.critwounds.size() > 0) {
-			for (int i = wh.critwounds.size() - 1; i >= 0; i--) {
-				if (wh.critwounds[i].open > 0) { return wh.critwounds[i]; }
-			}
-		}
-		return null;
+	WoundInfo GetWound(int index) {
+		if (wh.critwounds.size() <= 0) { return null; }
+		return wh.critwounds[index];
 	}
 
 	void DebugStatus() {
@@ -135,6 +145,7 @@ class UaS_TraumaKit : HDWeapon {
 	enum KitFlags {
 		TK_SELECTED,
 		TK_BUTTON,
-		TK_HOLD
+		TK_HOLD,
+		TK_WOUNDINDEX
 	}
 }
