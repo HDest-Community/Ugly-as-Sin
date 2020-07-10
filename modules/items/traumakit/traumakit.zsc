@@ -60,6 +60,8 @@ class UaS_TraumaKit : HDWeapon {
 				break;
 		}
 
+		if (currentWound) { statusmessage = statusmessage..currentWound.AverageStatus().."\n"; }
+
 		// Tick down transient messages
 		if (currentmessage.timeout > 0) {
 			statusmessage = statusmessage..currentmessage.text;
