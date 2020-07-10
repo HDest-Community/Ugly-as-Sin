@@ -4,6 +4,8 @@ class UaS_LaserLightModule : HDPickup {
 	UaS_LLM_Emitter emitter;
 	vector3 oldsc;
 	double offset;
+	color LaserColor;
+	double LaserAlpha;
 
 	default {
 		Inventory.Amount 1;
@@ -110,20 +112,41 @@ class UaS_LaserLightModule : HDPickup {
 	void Laser(bool on) {
 		if (!on) { return; }
 
+		// TODO: Make this and laser color user CVars
+		LaserAlpha = 1.0;
+
+		// Enemies use red lasers
+		if (owner.bISMONSTER && !owner.bFRIENDLY) { LaserColor = "RED"; }
+		else { LaserColor = "GREEN"; }
+
+		// Make laser particles larger for players wearing NVGs, and IR lasers visible
+		double sizefactor = 1;
+		if (players[consoleplayer].mo.checklocalview()) {
+			PlayerPawn plr = players[consoleplayer].mo;
+			PortableLiteAmp nvg = PortableLiteAmp(plr.FindInventory("PortableLiteAmp"));
+			if (nvg && nvg.worn) {
+				sizefactor *= clamp(nvg.amplitude * 0.1, 1, 3);
+				if (nvg.amplitude > 0) { LaserAlpha = 1.0; }
+			}
+		}
+
 		// Draw laser particle beam
 		FLineTraceData laserTrace;
 		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
-		for (double f = 1; f < laserTrace.distance; f = f + random[llm](0, 256)) {
+		for (double f = random[llm](0, 256); f < laserTrace.distance; f = f + random[llm](32, 256)) {
 			double bliplength = random[llm](8, 32);
-			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1.5)) {
-				emitter.A_SpawnParticle("GREEN", SPF_FULLBRIGHT|SPF_RELANG,
-					1, frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1), 0,
+			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1)) {
+				emitter.A_SpawnParticle(LaserColor, SPF_FULLBRIGHT|SPF_RELANG,
+					1,
+					(frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1)) * sizefactor,
+					0,
 					cos(emitter.pitch) * cos(emitter.angle) * (d),
 					cos(emitter.pitch) * sin(emitter.angle) * (d),
 					sin(-emitter.pitch) * (d),
 					owner.vel.x, owner.vel.y, owner.vel.z,
 					0, 0, 0,
-					frandom[llm](0.5, 0.9) * clamp(d/32, 0.0, 1), -1, 0);
+					(frandom[llm](0.5, 0.9) * clamp(d/32, 0.0, 1)) * LaserAlpha,
+					-1, 0);
 			}
 			f += bliplength;
 		}
