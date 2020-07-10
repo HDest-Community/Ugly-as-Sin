@@ -25,10 +25,11 @@ class UaS_WoundHandler : Inventory {
 		if (diffwounds > 0) { critwounds.push(WoundInfo.Create(diffwounds)); }
 		else if (diffwounds < 0) { RemoveWound(0); }
 
-		// iterate wound array
+		// iterate wound array, drop any wounds marked "clear"
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
 			if (!critwounds[i]) { critwounds.delete(i); continue; }
 			if (critwounds[i].clear) {
+				console.printf("Cured "..critwounds[i].description);
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
 				RemoveWound(i);
 				continue;
@@ -42,11 +43,5 @@ class UaS_WoundHandler : Inventory {
 	void RemoveWound(int w) {
 		critwounds[w].destroy();
 		critwounds.delete(w);
-	}
-
-	void DebugWoundList() {
-		for (int i = 0; i <= critwounds.size() - 1; i++) {
-			console.printf("W"..i..": "..critwounds[i].description);
-		}
 	}
 }
