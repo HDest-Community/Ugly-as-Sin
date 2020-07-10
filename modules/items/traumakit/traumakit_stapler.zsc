@@ -1,8 +1,8 @@
 extend class UaS_TraumaKit {
 	void HandleStapler() {
-		//CycleTools();
 		statusMessage = statusmessage.."\cjStapler\n";
 		statusMessage = statusmessage.."\cuManual hand-stapler.\n\n";
+		if (!currentWound) { return; }
 		if (currentWound.open > 0) {
 			currentmessage.text = "The wound is open.\n";
 			currentmessage.timeout = 1*35;

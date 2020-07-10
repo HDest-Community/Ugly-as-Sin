@@ -2,6 +2,7 @@ extend class UaS_TraumaKit {
 	void HandleForceps() {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
+		if (!currentWound) { return; }
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
 			currentmessage.text = "Holding the wound open.\n";
 			// Display obstruction status

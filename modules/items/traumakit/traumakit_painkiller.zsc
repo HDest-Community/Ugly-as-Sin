@@ -2,6 +2,7 @@ extend class UaS_TraumaKit {
 	void HandlePainkiller() {
 		statusMessage = statusmessage.."\cjAnaesthetic\n";
 		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n\n";
+		if (!currentWound) { return; }
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
 			if(currentWound.numb) {
 				currentmessage.text = "The wound is already numb.";

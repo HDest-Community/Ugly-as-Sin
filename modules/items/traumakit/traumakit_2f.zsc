@@ -1,7 +1,7 @@
 extend class UaS_TraumaKit {
 	void Handle2F() {
-		CycleTools();
 		statusMessage = statusmessage.."\cjSecond Flesh\n";
 		statusMessage = statusmessage.."\cuAdvanced stem cell and nutrient cocktail.\n\n";
+		if (!currentWound) { return; }
 	}
 }

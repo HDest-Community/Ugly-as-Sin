@@ -1,7 +1,7 @@
 extend class UaS_TraumaKit {
 	void HandleBioFoam() {
-		CycleTools();
 		statusMessage = statusmessage.."\cjBiofoam\n";
 		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n\n";
+		if (!currentWound) { return; }
 	}
 }
