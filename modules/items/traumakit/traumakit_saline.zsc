@@ -1,7 +1,35 @@
 extend class UaS_TraumaKit {
 	void HandleSaline() {
-		CycleTools();
 		statusMessage = statusmessage.."\cjSaline\n";
-		statusMessage = statusmessage.."\cuSterile flushing/cleaning solution.\n\n";
+		statusMessage = statusmessage.."\cuNeutral wound debriding solution.\n\n";
+		if (!currentWound) { return; }
+
+		if ((owner.player.cmd.buttons & BT_ZOOM)) {
+			currentmessage.text = "Inspecting for dirt and debris...\n";
+			if (currentWound.dirty > 0) {
+				currentmessage.text = currentmessage.text.."The wound is dirty.\n";
+				currentmessage.timeout = 1*35;
+			}
+			else {
+				currentmessage.text = currentmessage.text.."The wound appears clean.\n";
+				currentmessage.timeout = 1*35;
+				return;
+			}
+		}
+
+		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			if (!(owner.player.oldbuttons & BT_ATTACK)) {
+				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
+			}
+			else {
+				weaponstatus[TK_HOLD]--;
+			}
+
+			if (weaponstatus[TK_HOLD] > 0) {
+				currentmessage.text = "Flushing the wound...\n";
+				currentmessage.timeout = 10;
+				currentWound.dirty = max(currentWound.dirty - random[uas_tk](0,1), 0);
+			}
+		}
 	}
 }
