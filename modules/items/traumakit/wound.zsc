@@ -16,17 +16,27 @@ class WoundInfo : thinker {
 	}
 
 	void TickWound() {
-		if (level.maptime % 35 == 0) {
-			int randmax = 25 - infection;
-			bool clearable = (
-				(random[uas_wi](0, randmax) > AverageStatus()) &&
-				open == 0
-			);
+		timer--;
+		if (timer <= 0) {
+			int toHeal = (
+				random[uas_wi](0, 10) +
+				random[uas_wi](0, 10) +
+				random[uas_wi](0, 10)
+			) / 3;
 
-			if (clearable) {
-				console.printf("cured "..description);
+			if (toHeal > AverageStatus()) {
+				open = max(open - 1, 0);
+				cavity = max(cavity - 1, 0);
+				infection = max(infection - 1, 0);
+			}
+			else {
+				infection = min(infection + 1, 100);
+			}
+
+			if (toHeal >= AverageStatus() * 2) {
 				clear = true;
 			}
+			timer = (random[uas_wi](5, 10) * 35) / size;
 		}
 	}
 
@@ -45,15 +55,18 @@ class WoundInfo : thinker {
 // Static methods
 extend class WoundInfo {
 	static WoundInfo create(int newsize) {
+		int sizemin = clamp(newsize * 10, 0, 100);
+		int sizemax = clamp(newsize * 20, 0, 100);
+		SetRandomSeed[uas_wi](level.maptime);
 		WoundInfo nw = new("WoundInfo");
 		nw.numb = false;
-		nw.dirty = random[uas_wi](newsize * 10, 100);
-		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](newsize * 10, 100);
-		nw.open = random[uas_wi](newsize * 10, 100);
+		nw.dirty = random[uas_wi](sizemin, sizemax);
+		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](sizemin, sizemax);
+		nw.open = random[uas_wi](sizemin, sizemax);
 		nw.cavity = (nw.obstructed + nw.open) * 0.5;
-		nw.timer = -1;
+		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
+		nw.timer = (random[uas_wi](5, 10) * 35) / newsize;
 		nw.size = newsize;
-		nw.infection = 1;
 		nw.description = WoundDescription(newsize);
 		return nw;
 	}
