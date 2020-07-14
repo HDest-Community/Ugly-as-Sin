@@ -3,7 +3,7 @@
 #include "modules/items/traumakit/traumakit_stapler.zsc"
 #include "modules/items/traumakit/traumakit_sutures.zsc"
 #include "modules/items/traumakit/traumakit_biofoam.zsc"
-#include "modules/items/traumakit/traumakit_2f.zsc"
+//#include "modules/items/traumakit/traumakit_2f.zsc"
 #include "modules/items/traumakit/traumakit_saline.zsc"
 
 class UaS_TraumaKit : HDWeapon {
@@ -55,12 +55,20 @@ class UaS_TraumaKit : HDWeapon {
 			case T_SUTURES:
 				HandleSutures();
 				break;
-			case T_2F:
+			/*case T_2F: //Maybe add later
 				Handle2F();
-				break;
+				break;*/
 		}
 
-		if (currentWound) { statusmessage = statusmessage..currentWound.AverageStatus().."\n"; }
+		if (currentWound) {
+			statusmessage = statusmessage..currentWound.AverageStatus().."\n";
+			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
+			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
+			statusmessage = statusmessage.."open "..currentWound.open.."\n";
+			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
+			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
+			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
+		}
 
 		// Tick down transient messages
 		if (currentmessage.timeout > 0) {
@@ -114,7 +122,7 @@ class UaS_TraumaKit : HDWeapon {
 
 	void CycleTools() {
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
-			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 6;
 			weaponstatus[TK_HOLD] = 0;
 			currentmessage.text = "";
 			currentmessage.timeout = 0;

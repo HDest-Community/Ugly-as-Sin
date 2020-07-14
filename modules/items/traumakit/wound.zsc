@@ -18,25 +18,28 @@ class WoundInfo : thinker {
 	void TickWound() {
 		timer--;
 		if (timer <= 0) {
+			// Random normal distribution for heal probability
 			int toHeal = (
 				random[uas_wi](0, 10) +
 				random[uas_wi](0, 10) +
-				random[uas_wi](0, 10)
-			) / 3;
+				random[uas_wi](0, 10)) / 3;
 
-			if (toHeal > AverageStatus()) {
+			// Wound heals some points
+			if (toHeal >= AverageStatus()) {
 				open = max(open - 1, 0);
 				cavity = max(cavity - 1, 0);
 				infection = max(infection - 1, 0);
 			}
-			else {
+
+			// Infection increases
+			if (toHeal <= (AverageStatus() + infection)) {
 				infection = min(infection + 1, 100);
 			}
 
-			if (toHeal >= AverageStatus() * 2) {
+			if (toHeal >= (AverageStatus() * 2) + infection) {
 				clear = true;
 			}
-			timer = (random[uas_wi](5, 10) * 35) / size;
+			timer = (random[uas_wi](10, 30) * 35);
 		}
 	}
 
@@ -46,8 +49,8 @@ class WoundInfo : thinker {
 		retvalue += obstructed;
 		retvalue += open;
 		retvalue += cavity;
-		retvalue += infection;
-		retvalue /= 5;
+		//retvalue += infection;
+		retvalue /= 4; //5;
 		return retvalue;
 	}
 }
@@ -63,9 +66,9 @@ extend class WoundInfo {
 		nw.dirty = random[uas_wi](sizemin, sizemax);
 		nw.obstructed = randompick[uas_wi](0,0,1) * random[uas_wi](sizemin, sizemax);
 		nw.open = random[uas_wi](sizemin, sizemax);
-		nw.cavity = (nw.obstructed + nw.open) * 0.5;
+		nw.cavity = randompick[uas_wi](0,0,1) * (nw.obstructed + nw.open) * 0.5;
 		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
-		nw.timer = (random[uas_wi](5, 10) * 35) / newsize;
+		nw.timer = (random[uas_wi](10, 30) * 35);
 		nw.size = newsize;
 		nw.description = WoundDescription(newsize);
 		return nw;

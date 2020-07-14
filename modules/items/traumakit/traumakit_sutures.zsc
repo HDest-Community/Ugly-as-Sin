@@ -4,6 +4,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n";
 		if (!currentWound) { return; }
 
+		// Display contextual status
 		if (currentWound.open > 0) {
 			currentmessage.text = "The wound is open.\n";
 			currentmessage.timeout = 1*35;
@@ -13,6 +14,8 @@ extend class UaS_TraumaKit {
 			currentmessage.timeout = 1*35;
 			return;
 		}
+
+		//Handle actions
 
 		// force player to restart if pained last time
 		if (weaponstatus[TK_HOLD] < 0) {
