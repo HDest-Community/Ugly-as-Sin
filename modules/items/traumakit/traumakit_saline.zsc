@@ -28,10 +28,22 @@ extend class UaS_TraumaKit {
 			if (weaponstatus[TK_HOLD] > 0) {
 				currentmessage.text = "Flushing the wound...\n";
 				currentmessage.timeout = 10;
-				currentWound.dirty = max(currentWound.dirty - random[uas_tk](0,1), 0);
-				currentWound.infection = max(currentWound.infection - randompick[uas_tk](0,0,0,0,1), 1);
-			}
 
+				// semi-normalized distribution for success check
+				int check = (
+					random[uas_tk](0,100) +
+					random[uas_tk](0,100)) / 2;
+
+				// remove some dirt
+				if (check < currentWound.dirty) {
+					currentWound.dirty = max(currentWound.dirty - 1, 0);
+				}
+
+				// maybe remove some infection
+				if (check < currentWound.infection && random[uas_tk](0,1) == 0) {
+					currentWound.infection = max(currentWound.infection - 1, 1);
+				}
+			}
 		}
 	}
 }
