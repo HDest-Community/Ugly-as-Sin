@@ -58,8 +58,8 @@ class WoundInfo : thinker {
 // Static methods
 extend class WoundInfo {
 	static WoundInfo create(int newsize) {
-		int sizemin = clamp(newsize * 10, 0, 100);
-		int sizemax = clamp(newsize * 20, 0, 100);
+		int sizemin = clamp(newsize * 20, 0, 100);
+		int sizemax = clamp(newsize * 40, 0, 100);
 		SetRandomSeed[uas_wi](level.maptime);
 		WoundInfo nw = new("WoundInfo");
 		nw.numb = false;
