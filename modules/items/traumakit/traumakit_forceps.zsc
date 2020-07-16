@@ -1,4 +1,5 @@
 extend class UaS_TraumaKit {
+	bool holdingopen;
 	void HandleForceps() {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
@@ -16,15 +17,80 @@ extend class UaS_TraumaKit {
 		}
 
 		// Handle actions
+
+		// player must release buttons
+		if (!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; holdingopen = false; }
+		// otherwise force abort
+		if (weaponstatus[TK_HOLD] < 0) { return; }
+
+		// Hold wound open
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			weaponstatus[TK_HOLD]++;
+			holdingopen = true;
 			currentmessage.text = "Holding the wound open.\n";
+			double shake = weaponstatus[TK_HOLD];
+			if (currentWound.numb) { shake *= 0.001; }
+			else { shake *= 0.01; }
+			HDPlayerPawn(owner).A_MuzzleClimb(
+				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
+				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
+				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
+				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake))
+			);
+		}
+
+		// Abort if too much pain
+		int threshold = random[uas_tk](100,200);
+		if (currentWound.numb) { threshold *= 4; }
+		if (weaponstatus[TK_HOLD] > threshold) {
+			owner.A_StartSound("*usemeds",CHAN_VOICE);
+			owner.A_Log("\cgOW FUCK", true);
+			weaponstatus[TK_HOLD] = -1;
+			holdingopen = false;
+			HDPlayerPawn(owner).A_MuzzleClimb(
+				(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
+				(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
+				(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
+			);
+			return;
+		}
+
+		// Extract fragments
+		if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
+			owner.A_StartSound("misc/smallslop",CHAN_BODY);
+			if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+			HDPlayerPawn(owner).A_MuzzleClimb(
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+				(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)));
+			int check = (
+				random[uas_tk](100,200) +
+				random[uas_tk](100,200)) / 2;
+
+			if (check <= weaponstatus[TK_HOLD]) {
+				weaponstatus[TK_HOLD] = 50;
+				int remove = random[uas_tk](5,25);
+				// increase cavity for overshoot
+				if (remove > currentWound.obstructed) { currentWound.cavity = max(currentWound.cavity + (remove / 5), 0); }
+				currentWound.obstructed = max(currentWound.obstructed - random[uas_tk](5,25), 0);
+				owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+				owner.damagemobj(owner,owner,1,"staples");
+				owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
+			}
+		}
+	}
+}
+
+
+/*
 
 			if((owner.player.cmd.buttons & BT_UNLOAD)) {
 				weaponstatus[TK_HOLD]--;
 				if (!currentWound.numb && !(owner.player.oldbuttons & BT_UNLOAD)) {
-					owner.A_StartSound("*usemeds",CHAN_VOICE);
+
 					currentmessage.text = currentmessage.text.."Probing the w--";
-					owner.A_Log("\cgOW FUCK", true);
 					HDPlayerPawn(owner).A_MuzzleClimb(
 						(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
 						(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
@@ -53,7 +119,4 @@ extend class UaS_TraumaKit {
 						}
 					}
 				}
-			}
-		}
-	}
-}
+			}*/
