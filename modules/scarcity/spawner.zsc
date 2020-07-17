@@ -31,7 +31,7 @@ class UaS_Scarcity_Spawner : EventHandler {
 		ExactScarcity('PortableMedikit', 1.0 - ScarcityFactor);
 		ExactScarcity('PortableBerserkPack', 1.0 - ScarcityFactor);
 
-		ExactScarcity('HDArmour', 1.0 - ScarcityFactor);
+		//ExactScarcity('HDArmour', 1.0 - ScarcityFactor);
 
 		ExactScarcity('HDMap', 1.0 - ScarcityFactor);
 		ExactScarcity('PortableLiteAmp', 1.0 - ScarcityFactor);
