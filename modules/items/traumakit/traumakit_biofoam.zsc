@@ -17,10 +17,36 @@ extend class UaS_TraumaKit {
 
 		// Handle actions
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			currentmessage.text = "Injecting biofoam...\n";
-			currentmessage.timeout = 10;
-			currentWound.cavity = max(currentWound.cavity - randompick[uas_tk](0,0,1), 0);
-			currentWound.infection = max(currentWound.infection - randompick[uas_tk](0,0,0,1), 1);
+
+			if (!(owner.player.oldbuttons & BT_ATTACK)) {
+				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
+				owner.A_StartSound("UaS/traumakit/biofoam", CHAN_WEAPON, CHANF_DEFAULT, 0.1);
+			}
+			else {
+				weaponstatus[TK_HOLD]--;
+			}
+
+			if (weaponstatus[TK_HOLD] > 0) {
+				currentmessage.text = "Injecting biofoam...\n";
+				currentmessage.timeout = 10;
+
+				// semi-normalized distribution for success check
+				int check = (
+					random[uas_tk](0,100) +
+					random[uas_tk](0,100)) / 2;
+
+				// remove some dirt
+				if (check < currentWound.cavity) {
+					owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+					currentWound.cavity = max(currentWound.cavity - 1, 0);
+					if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+				}
+
+				// maybe remove some infection. Biofoam better at this than saline
+				if (check < currentWound.infection * 2 && random[uas_tk](0,1) == 0) {
+					currentWound.infection = max(currentWound.infection - 1, 1);
+				}
+			}
 		}
 	}
 }
