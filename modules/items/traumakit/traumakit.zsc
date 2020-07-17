@@ -60,6 +60,7 @@ class UaS_TraumaKit : HDWeapon {
 				break;*/
 		}
 
+		// Debugging
 		if (currentWound) {
 			statusmessage = statusmessage..currentWound.AverageStatus().."\n";
 			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
