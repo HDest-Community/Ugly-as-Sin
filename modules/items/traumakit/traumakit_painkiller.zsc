@@ -6,23 +6,17 @@ extend class UaS_TraumaKit {
 
 		// Handle actions
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
-			if(currentWound.numb) {
-				currentmessage.text = "The wound is already numb.";
-				currentmessage.timeout = 5*35;
-			}
-			else {
-				owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
-				owner.A_StartSound("*grunt",CHAN_VOICE);
-				currentWound.numb = true;
-				currentmessage.text = "Anaesthetic injected.";
-				currentmessage.timeout = 5*35;
-				HDPlayerPawn(owner).A_MuzzleClimb(
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
-					(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3))/10
-				);
-			}
+			owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
+			owner.A_StartSound("*grunt",CHAN_VOICE);
+			currentWound.numb = true;
+			currentmessage.text = "Anaesthetic injected.";
+			currentmessage.timeout = 2*35;
+			HDPlayerPawn(owner).A_MuzzleClimb(
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
+				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
+				(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3))/10
+			);
 		}
 	}
 }
