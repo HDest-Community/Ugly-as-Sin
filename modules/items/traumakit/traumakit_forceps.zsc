@@ -5,17 +5,6 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
 		if (!currentWound) { return; }
 
-		// Display contextual status
-		if (currentWound.obstructed > 0) {
-			currentmessage.text = "There is some foreign obstruction.\n";
-			currentmessage.timeout = 1*35;
-		}
-		else {
-			currentmessage.text = "It appears clear of obstructions.\n";
-			currentmessage.timeout = 1*35;
-			return;
-		}
-
 		// Handle actions
 
 		// player must release buttons

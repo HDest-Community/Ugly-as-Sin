@@ -62,13 +62,13 @@ class UaS_TraumaKit : HDWeapon {
 
 		// Debugging
 		if (currentWound) {
-			statusmessage = statusmessage..currentWound.AverageStatus().."\n";
-			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
+			statusmessage = statusmessage..currentWound.WoundStatus().."\n\n\n\n\n";
+			/*statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
 			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
 			statusmessage = statusmessage.."open "..currentWound.open.."\n";
 			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
 			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
-			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
+			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";*/
 		}
 
 		// Tick down transient messages

@@ -4,17 +4,6 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n\n";
 		if (!currentWound) { return; }
 
-		// Display contextual status
-		if (currentWound.cavity > 0) {
-			currentmessage.text = "The wound requires packing.\n";
-			currentmessage.timeout = 1*35;
-		}
-		else {
-			currentmessage.text = "The wound does not require packing.\n";
-			currentmessage.timeout = 1*35;
-			return;
-		}
-
 		// Handle actions
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
 

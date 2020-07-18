@@ -4,17 +4,6 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cuNeutral wound debriding solution.\n\n";
 		if (!currentWound) { return; }
 
-		// Display contextual status
-		if (currentWound.dirty > 0) {
-			currentmessage.text = "The wound is dirty.\n";
-			currentmessage.timeout = 1*35;
-		}
-		else {
-			currentmessage.text = "The wound appears clean.\n";
-			currentmessage.timeout = 1*35;
-			return;
-		}
-
 		// Handle actions
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {

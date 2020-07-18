@@ -57,6 +57,58 @@ class WoundInfo : thinker {
 	}
 }
 
+extend class WoundInfo {
+	string WoundStatus () {
+		string status = "The wound is ";
+		// open
+		if (open <= 0) { status = status..statuscolor(open).."closed\c-, and cannot be treated further."; return status; }
+		else { status = status..statuscolor(open).."open\c- "..numbstatus().."for treatment. "; }
+
+		status = status..dirtystatus()..obstructstatus()..cavitystatus();
+
+		return status;
+	}
+
+	string numbstatus() {
+		if (numb) { return "and \cdnumbed\c- "; }
+		return "";
+	}
+
+	string dirtystatus() {
+		if (dirty >= 75) { return "It is "..statuscolor(dirty).."filthy\c-. "; }
+		if (dirty >= 50) { return "It is "..statuscolor(dirty).."very dirty\c-. "; }
+		if (dirty >= 25) { return "It is "..statuscolor(dirty).."somewhat dirty\c-. "; }
+		if (dirty >= 15) { return "It is "..statuscolor(dirty).."almost clean\c-. "; }
+		if (dirty >= 10) { return "It is "..statuscolor(dirty).."acceptably clean\c-. "; }
+		return "It is "..statuscolor(dirty).."completely clean\c-. ";
+	}
+
+	string obstructstatus() {
+		if (obstructed >= 75) { return "There are "..statuscolor(obstructed).."many obstructions\c-. "; }
+		if (obstructed >= 50) { return "There are "..statuscolor(obstructed).."several obstructions\c-. "; }
+		if (obstructed >= 25) { return "There are "..statuscolor(obstructed).."a few obstructions\c-. "; }
+		if (obstructed >= 15) { return "There are "..statuscolor(obstructed).."some obstructions\c-. "; }
+		if (obstructed >= 10) { return "It appears "..statuscolor(obstructed).."mostly free of obstructions\c-. "; }
+		return "There are "..statuscolor(obstructed).."no apparent obstructions\c-. ";
+	}
+
+	string cavitystatus() {
+		if (cavity >= 75) { return "There is "..statuscolor(cavity).."severe tissue damage\c-. "; }
+		if (cavity >= 50) { return "There is "..statuscolor(cavity).."significant tissue damage\c-. "; }
+		if (cavity >= 25) { return "There is "..statuscolor(cavity).."moderate tissue damage\c-. "; }
+		if (cavity >= 15) { return "There is "..statuscolor(cavity).."some tissue damage\c-. "; }
+		if (cavity >= 10) { return "There is "..statuscolor(cavity).."little tissue damage\c-. "; }
+		return "There is "..statuscolor(cavity).."no tissue damage\c-. ";
+	}
+
+	string statuscolor(int amount) {
+		if (amount >= 50) { return "\ca"; } //brick
+		else if (amount >= 25) { return "\cr"; } // dark red
+		else if (amount >= 15) { return "\cq"; } // dark green
+		return "\cd"; // green
+	}
+}
+
 // Static methods
 extend class WoundInfo {
 	static WoundInfo create(int newsize) {
