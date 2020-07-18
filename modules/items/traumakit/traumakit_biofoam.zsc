@@ -10,6 +10,12 @@ extend class UaS_TraumaKit {
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {
 				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
 				owner.A_StartSound("UaS/traumakit/biofoam", CHAN_WEAPON, CHANF_DEFAULT, 0.1);
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1))
+				);
 			}
 			else {
 				weaponstatus[TK_HOLD]--;
@@ -26,9 +32,14 @@ extend class UaS_TraumaKit {
 
 				// remove some dirt
 				if (check < currentWound.cavity) {
-					owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
+					owner.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
 					currentWound.cavity = max(currentWound.cavity - 1, 0);
 					if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+					HDPlayerPawn(owner).A_MuzzleClimb(
+						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
+						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
+						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
+						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)));
 				}
 
 				// maybe remove some infection. Biofoam better at this than saline

@@ -42,13 +42,20 @@ extend class UaS_TraumaKit {
 				if (check < currentWound.dirty) {
 					owner.A_StartSound("misc/smallslop", CHAN_WEAPON);
 					currentWound.dirty = max(currentWound.dirty - 1, 0);
-					if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+					if(random[uas_tk](0, 10) == 0) { owner.A_StartSound("*grunt",CHAN_VOICE); }
 				}
 
 				// maybe remove some infection
 				if (check < currentWound.infection && random[uas_tk](0,1) == 0) {
 					currentWound.infection = max(currentWound.infection - 1, 1);
 				}
+
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
+					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1))
+				);
 			}
 		}
 	}
