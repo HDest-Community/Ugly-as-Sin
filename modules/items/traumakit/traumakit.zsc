@@ -40,11 +40,11 @@ class UaS_TraumaKit : HDWeapon {
 			case T_PAINKILLER:
 				HandlePainkiller();
 				break;
-			case T_FORCEPS:
-				HandleForceps();
-				break;
 			case T_SALINE:
 				HandleSaline();
+				break;
+			case T_FORCEPS:
+				HandleForceps();
 				break;
 			case T_BIOFOAM:
 				HandleBiofoam();
@@ -151,8 +151,8 @@ class UaS_TraumaKit : HDWeapon {
 
 	enum ToolModes {
 		T_PAINKILLER,
-		T_FORCEPS,
 		T_SALINE,
+		T_FORCEPS,
 		T_BIOFOAM,
 		T_STAPLER,
 		T_SUTURES,
