@@ -22,6 +22,8 @@ class UaS_TraumaKit : HDWeapon {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
+		weapon.slotpriority 0.5;
+		weapon.slotnumber 9;
 	}
 	override double weaponbulk(){ return 20; }
 
