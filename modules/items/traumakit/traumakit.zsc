@@ -13,10 +13,12 @@ class UaS_TraumaKit : HDWeapon {
 	UaS_WoundHandler wh;
 
 	Default {
+		radius 4;
+		height 4;
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a personal trauma kit.";
-		Inventory.Icon "ROCKA0";
+		Inventory.Icon "UGSIF0";
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
@@ -24,8 +26,15 @@ class UaS_TraumaKit : HDWeapon {
 		//+WEAPON.NOAUTOFIRE;
 		weapon.slotpriority 0.5;
 		weapon.slotnumber 9;
+		scale 0.5;
 	}
 	override double weaponbulk(){ return 20; }
+
+	states {
+		spawn:
+			UGSI F -1;
+			stop;
+	}
 
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
