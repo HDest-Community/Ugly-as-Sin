@@ -43,7 +43,7 @@ class UaS_WoundHandler : Inventory {
 		//else if (diffstable < 0) { RemoveWound(0); }
 
 		int diffwounds = plr.oldwoundcount - (5 * (critwounds.size()));
-		if(level.maptime % 35 == 0) { console.printf("diffwounds %i", diffwounds); }
+		//if(level.maptime % 35 == 0) { console.printf("diffwounds %i", diffwounds); }
 		if (diffwounds >= 5) { critwounds.push(WoundInfo.Create(diffwounds)); } // Create a new wound entry every 5 or more points
 		if (diffwounds < -5) { RemoveWound(0); } // or remove oldest wound if passively healed at least 5 points
 
