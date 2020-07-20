@@ -11,6 +11,8 @@
   * SMG Marine sprite, crouched.
 * Jekyll Grim Payne:
   * Respirator sprite.
+* kodi
+  * Laser/Light sprite
 
 # Code
 * Zhs2: Spawning code suggestion.

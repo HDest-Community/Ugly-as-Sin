@@ -8,13 +8,22 @@ class UaS_LaserLightModule : HDPickup {
 	double LaserAlpha;
 
 	default {
+		radius 3;
+		height 3;
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a combo laser/light module.";
-		Inventory.Icon "CLIPA0";
+		Inventory.Icon "UGSIe0";
 		HDPickup.Bulk 5;
 		HDPickup.refid UAS_HDLD_LASERLIGHT;
 		tag "Light/Laser module";
+		scale 0.5;
+	}
+
+	states {
+		spawn:
+			UGSI E -1;
+			stop;
 	}
 
 	void ToggleSwitch() { activated = !activated; }
