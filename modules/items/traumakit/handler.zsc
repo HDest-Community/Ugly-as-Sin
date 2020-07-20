@@ -1,8 +1,8 @@
 #include "modules/items/traumakit/wound.zsc"
 
 class UaS_WoundHandler : Inventory {
-	int lastwounds;
-	double woundaverage;
+	//int oldunstable, oldstable, oldopen;
+	//double woundaverage;
 	array<WoundInfo> critwounds;
 
 	default {
@@ -19,11 +19,33 @@ class UaS_WoundHandler : Inventory {
 
 	void ManageWounds() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
-		int diffwounds = max(plr.oldwoundcount,0) - lastwounds; // clamp to avoid false positives
 
-		// passively add or remove based on player oldwoundwound
-		if (diffwounds > 0) { critwounds.push(WoundInfo.Create(diffwounds)); }
-		else if (diffwounds < 0) { RemoveWound(0); }
+		// get difference in wound counts
+		//int diffopen = max(plr.woundcount, 0) - oldopen; // clamp to avoid false positives
+		//int diffunstable = max(plr.unstablewoundcount, 0) - oldunstable; // clamp to avoid false positives
+		//int diffstable = max(plr.oldwoundcount, 0) - oldstable; // clamp to avoid false positives
+
+		// try and guess what happened with HD's wound counters
+		/*
+		if (diffopen < 0 && diffunstable > 0) {
+			console.printf("open wound bandaged %i %i", diffopen, diffunstable);
+		}
+		if (diffopen > 0 && diffunstable < 0) {
+			console.printf("unstable wound reopened %i %i", diffopen, diffunstable);
+		}
+		if (diffunstable < 0 && diffstable > 0) {
+			console.printf("unstable wound settled %i %i", diffunstable, diffstable);
+		}
+		if (diffstable < 0) {
+			console.printf("stable wound healed %i", diffstable);
+		}*/
+		//if (diffunstable > 0) { critwounds.push(WoundInfo.Create(diffunstable)); }
+		//else if (diffstable < 0) { RemoveWound(0); }
+
+		int diffwounds = plr.oldwoundcount - (5 * (critwounds.size()));
+		if(level.maptime % 35 == 0) { console.printf("diffwounds %i", diffwounds); }
+		if (diffwounds >= 5) { critwounds.push(WoundInfo.Create(diffwounds)); } // Create a new wound entry every 5 or more points
+		if (diffwounds < -5) { RemoveWound(0); } // or remove oldest wound if passively healed at least 5 points
 
 		// iterate wound array, drop any wounds marked "clear"
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
@@ -37,7 +59,9 @@ class UaS_WoundHandler : Inventory {
 			critwounds[i].TickWound();
 		}
 
-		lastwounds = max(plr.oldwoundcount, 0); // clamp to avoid false positives
+		//oldopen = max(plr.woundcount, 0); // clamp to avoid false positives
+		//oldunstable = max(plr.unstablewoundcount, 0); // clamp to avoid false positives
+		//oldstable = max(plr.oldwoundcount, 0); // clamp to avoid false positives
 	}
 
 	void RemoveWound(int w) {
