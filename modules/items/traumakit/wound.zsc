@@ -20,9 +20,9 @@ class WoundInfo : thinker {
 		if (timer <= 0) {
 			// Random normal distribution for heal probability
 			int toHeal = (
-				random[uas_wi](0, 10) +
-				random[uas_wi](0, 10) +
-				random[uas_wi](0, 10)) / 3;
+				random[uas_wi](0, 15) +
+				random[uas_wi](0, 15) +
+				random[uas_wi](0, 15)) / 3;
 
 			// Wound heals some points
 			if (toHeal >= AverageStatus()) {
@@ -76,31 +76,31 @@ extend class WoundInfo {
 	}
 
 	string dirtystatus() {
-		if (dirty >= 60) { return "It is "..statuscolor(dirty).."filthy\c-.\n"; }
-		if (dirty >= 50) { return "It is "..statuscolor(dirty).."very dirty\c-.\n"; }
-		if (dirty >= 40) { return "It is "..statuscolor(dirty).."somewhat dirty\c-.\n"; }
-		if (dirty >= 30) { return "It is "..statuscolor(dirty).."a bit dirty\c-.\n"; }
-		if (dirty >= 20) { return "It is "..statuscolor(dirty).."almost clean\c-.\n"; }
-		if (dirty >= 10) { return "It is "..statuscolor(dirty).."acceptably clean\c-.\n"; }
-		return "It is "..statuscolor(dirty).."completely clean\c-.\n";
+		if (dirty >= 65) { return "It is "..statuscolor(dirty).."filthy\n"; }
+		if (dirty >= 55) { return "It is "..statuscolor(dirty).."very dirty\n"; }
+		if (dirty >= 45) { return "It is "..statuscolor(dirty).."somewhat dirty\n"; }
+		if (dirty >= 35) { return "It is "..statuscolor(dirty).."a bit dirty\n"; }
+		if (dirty >= 25) { return "It is "..statuscolor(dirty).."almost clean\n"; }
+		if (dirty >= 15) { return "It is "..statuscolor(dirty).."acceptably clean\n"; }
+		return "It is "..statuscolor(dirty).."completely clean\n";
 	}
 
 	string obstructstatus() {
-		if (obstructed >= 50) { return "There are "..statuscolor(obstructed).."many obstructions\c-.\n"; }
-		if (obstructed >= 40) { return "There are "..statuscolor(obstructed).."several obstructions\c-.\n"; }
-		if (obstructed >= 30) { return "There are "..statuscolor(obstructed).."a few obstructions\c-.\n"; }
-		if (obstructed >= 20) { return "There are "..statuscolor(obstructed).."some obstructions\c-.\n"; }
-		if (obstructed >= 10) { return "It appears "..statuscolor(obstructed).."mostly free of obstructions\c-.\n"; }
-		return "There are "..statuscolor(obstructed).."no apparent obstructions\c-.\n";
+		if (obstructed >= 55) { return "There are "..statuscolor(obstructed).."many obstructions\n"; }
+		if (obstructed >= 45) { return "There are "..statuscolor(obstructed).."several obstructions\n"; }
+		if (obstructed >= 35) { return "There are "..statuscolor(obstructed).."a few obstructions\n"; }
+		if (obstructed >= 25) { return "There are "..statuscolor(obstructed).."some obstructions\n"; }
+		if (obstructed >= 15) { return "It appears "..statuscolor(obstructed).."mostly free of obstructions\n"; }
+		return "There are "..statuscolor(obstructed).."no apparent obstructions\n";
 	}
 
 	string cavitystatus() {
-		if (cavity >= 80) { return "There is "..statuscolor(cavity).."severe tissue damage\c-.\n"; }
-		if (cavity >= 60) { return "There is "..statuscolor(cavity).."significant tissue damage\c-.\n"; }
-		if (cavity >= 40) { return "There is "..statuscolor(cavity).."moderate tissue damage\c-.\n"; }
-		if (cavity >= 20) { return "There is "..statuscolor(cavity).."some tissue damage\c-.\n"; }
-		if (cavity >= 10) { return "There is "..statuscolor(cavity).."little tissue damage\c-.\n"; }
-		return "There is "..statuscolor(cavity).."no treatable tissue damage\c-.\n";
+		if (cavity >= 85) { return "There is "..statuscolor(cavity).."severe tissue damage\n"; }
+		if (cavity >= 65) { return "There is "..statuscolor(cavity).."significant tissue damage\n"; }
+		if (cavity >= 45) { return "There is "..statuscolor(cavity).."moderate tissue damage\n"; }
+		if (cavity >= 25) { return "There is "..statuscolor(cavity).."some tissue damage\n"; }
+		if (cavity >= 15) { return "There is "..statuscolor(cavity).."little tissue damage\n"; }
+		return "There is "..statuscolor(cavity).."no treatable tissue damage\n";
 	}
 
 	string statuscolor(int amount) {
