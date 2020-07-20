@@ -1,5 +1,7 @@
 extend class UaS_TraumaKit {
 	bool holdingopen;
+	int mashes;
+
 	void HandleForceps() {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
@@ -8,7 +10,7 @@ extend class UaS_TraumaKit {
 		// Handle actions
 
 		// player must release buttons
-		if (!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; holdingopen = false; }
+		if (!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; holdingopen = false; mashes = 0; }
 		// otherwise force abort
 		if (weaponstatus[TK_HOLD] < 0) { return; }
 
@@ -17,6 +19,7 @@ extend class UaS_TraumaKit {
 			weaponstatus[TK_HOLD]++;
 			holdingopen = true;
 			currentmessage.text = "Holding the wound open.\n";
+			currentmessage.timeout = 5;
 			double shake = weaponstatus[TK_HOLD];
 			if (currentWound.numb) { shake *= 0.001; }
 			else { shake *= 0.01; }
@@ -45,8 +48,11 @@ extend class UaS_TraumaKit {
 			return;
 		}
 
+		for (int i = 0; i < mashes; i++) { currentmessage.text = currentmessage.text.."."; }
+
 		// Extract fragments
 		if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
+			mashes++;
 			owner.A_StartSound("misc/smallslop",CHAN_BODY);
 			if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
 			HDPlayerPawn(owner).A_MuzzleClimb(
@@ -60,13 +66,26 @@ extend class UaS_TraumaKit {
 
 			if (check <= weaponstatus[TK_HOLD]) {
 				weaponstatus[TK_HOLD] = 50;
-				int remove = random[uas_tk](5,25);
-				// increase cavity for overshoot
-				if (remove > currentWound.obstructed) { currentWound.cavity = max(currentWound.cavity + (remove / 5), 0); }
-				currentWound.obstructed = max(currentWound.obstructed - random[uas_tk](5,25), 0);
+				int remove = frandom[uas_tk](2,4) * mashes;
+				string result;
+
+				if (currentWound.obstructed > 0) { result = "You pull a randomized silly obstruction out of your wound"; }
+				else { result = "You yank at the wound ineffectually"; }
+
+				// increase cavity on overshoot
+				if (remove > currentWound.obstructed) {
+					currentWound.cavity = min(currentWound.cavity + (remove / 2), 100);
+					result = result..", damaging the surrounding tissue.";
+				}
+				else {
+					result = result..".";
+				}
+
+				currentWound.obstructed = max(currentWound.obstructed - remove, 0);
 				owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
 				owner.damagemobj(owner,owner,1,"staples");
-				owner.A_Log("You pull a randomized silly obstruction out of your wound.", true);
+				owner.A_Log(result, true);
+				mashes = 0;
 			}
 		}
 	}
