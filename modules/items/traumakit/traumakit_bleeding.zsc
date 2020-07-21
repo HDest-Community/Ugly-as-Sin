@@ -1,0 +1,67 @@
+extend class UaS_TraumaKit {
+	int pressure, hemostatic;
+
+	void BleedingControl() {
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+		if (plr.unstablewoundcount <= 0) { CycleTools(T_PAINKILLER); return; }
+
+		statusMessage = statusmessage.."\cjBleeding Control\n";
+		statusMessage = statusmessage.."\cuApply pressure and hemostatic compound.\n\n";
+
+		// Hemostatic amount readout
+		if (hemostatic > 0) { statusMessage = statusmessage.."\cr"; }
+		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."Hemostatic";
+		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."\n";
+
+		// Pressure amount readout
+		if (pressure > 50) { statusMessage = statusmessage.."\cw"; }
+		if (pressure > 100) { statusMessage = statusmessage.."\cm"; }
+		for (int i = 0; i < pressure/10; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."Pressure";
+		for (int i = 0; i < pressure/10; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."\n\n";
+
+		// Apply hemostatic compound
+		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
+			if (hemostatic > 1) {
+				currentmessage.text = "Already used hemostatic compound.";
+				currentmessage.timeout = 35;
+				return;
+			}
+			else {
+				hemostatic = 5;
+				currentmessage.text = "Applied hemostatic compound to wound.";
+				currentmessage.timeout = 35;
+				return;
+			}
+		}
+
+		// Apply pressure
+		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			currentmessage.text = "Applying pressure to wound.";
+			currentmessage.timeout = 35;
+			pressure = min(pressure + 1, 125);
+		}
+		else {
+			pressure = max(pressure - 1, 0);
+		}
+
+		if (level.time % 10 == 0 && pressure <= 100) {
+			int upperlimit = pressure + (hemostatic * 5);
+			int check = (
+				random[uas_tk](0, upperlimit) +
+				random[uas_tk](0, upperlimit) +
+				random[uas_tk](0, upperlimit)) / 3;
+
+			if (check > 75) {
+				hemostatic = max(hemostatic - 1, 0);
+				pressure = 0;
+				plr.unstablewoundcount = max(plr.unstablewoundcount - 1, 0);
+				plr.oldwoundcount = max(plr.oldwoundcount + 1, 0);
+				console.printf("stabilized one point");
+			}
+		}
+	}
+}
