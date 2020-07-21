@@ -5,6 +5,7 @@ extend class UaS_TraumaKit {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 		if (plr.unstablewoundcount <= 0) { CycleTools(T_PAINKILLER); return; }
 
+		currentWound = null;
 		statusMessage = statusmessage.."\cjBleeding Control\n";
 		statusMessage = statusmessage.."\cuApply pressure and hemostatic compound.\n\n";
 

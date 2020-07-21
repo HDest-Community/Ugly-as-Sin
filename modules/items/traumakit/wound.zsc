@@ -1,6 +1,6 @@
 class WoundInfo : thinker {
 	string description;
-	bool numb;
+	int painkiller;
 	int dirty;
 	int obstructed;
 	int open;
@@ -18,6 +18,9 @@ class WoundInfo : thinker {
 	void TickWound() {
 		timer--;
 		if (timer <= 0) {
+			// Metabolize some painkiller
+			painkiller = max(painkiller - 1, 0);
+
 			// Random normal distribution for heal probability
 			int toHeal = (
 				random[uas_wi](0, 15) +
@@ -45,6 +48,14 @@ class WoundInfo : thinker {
 		}
 	}
 
+	//
+	bool numb() {
+		int check = (
+			random[uas_wi](0,100) +
+			random[uas_wi](0,75) +
+			random[uas_wi](0,50)) / 3;
+		return (check < painkiller);
+	}
 }
 
 // Status methods
@@ -65,14 +76,17 @@ extend class WoundInfo {
 		if (open <= 0) { status = "The wound is "..statuscolor(open).."closed\c-,\nand cannot be treated further.\n"; return status; }
 		else { status = "The wound is "..statuscolor(open).."open\c-\n"; }
 
-		status = status..dirtystatus()..obstructstatus()..cavitystatus();
+		status = status..numbstatus()..dirtystatus()..obstructstatus()..cavitystatus();
 
 		return status;
 	}
 
 	string numbstatus() {
-		if (numb) { return "It is \cdnumbed\c-\n"; }
-		return "It is \crnot numb.\n";
+
+		if (painkiller >= 75) { return "It is "..statuscolor(100-painkiller).."numbed\c-\n"; }
+		if (painkiller >= 50) { return "It is "..statuscolor(100-painkiller).."mostly numbed\c-\n"; }
+		if (painkiller >= 25) { return "It is "..statuscolor(100-painkiller).."somewhat numbed\c-\n"; }
+		return "It is "..statuscolor(100-painkiller).."not numbed.\n";
 	}
 
 	string dirtystatus() {
@@ -125,7 +139,7 @@ extend class WoundInfo {
 		int sizemax = clamp(newsize * 20, 0, 100);
 		SetRandomSeed[uas_wi](level.maptime);
 		WoundInfo nw = new("WoundInfo");
-		nw.numb = false;
+		nw.painkiller = 0;
 		nw.dirty = random[uas_wi](sizemin, sizemax);
 		nw.obstructed = randompick[uas_wi](0,1) * random[uas_wi](sizemin, sizemax);
 		nw.open = random[uas_wi](sizemin, sizemax);
