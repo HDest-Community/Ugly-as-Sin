@@ -154,18 +154,26 @@ extend class WoundInfo {
 	static string WoundDescription(int newsize) {
 		int sevmax = WoundInfo.severity.size()-1;
 		int typmax = WoundInfo.type.size()-1;
-		int locmax = WoundInfo.location.size()-1;
 		int parmax = WoundInfo.bodypart.size()-1;
-		return string.format("%s %s, %s %s",
-			WoundInfo.severity[min(random[uas_wi](newsize, sevmax), sevmax)],
+		return string.format(
+			"%s %s, %s",
+			WoundInfo.severity[random[uas_wi](0, sevmax)],
 			WoundInfo.type[random[uas_wi](0, typmax)],
-			WoundInfo.location[random[uas_wi](0, locmax)],
 			WoundInfo.bodypart[random[uas_wi](0, parmax)]
 		);
 	}
 
-	static const string[] severity = { "minor","small","superficial","moderate","medium","large","serious","critical" };
+	static const string[] severity = { "minor","small","shallow","superficial","moderate","medium","large","deep","serious","critical" };
 	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
-	static const string[] location = { "left","right" };
-	static const string[] bodypart = { "upper leg","lower leg","upper arm","lower arm","shoulder","hip","upper torso","lower torso" };
+	static const string[] bodypart = {
+		"chest","abdomen","pelvis",
+		"upper back","lower back",
+		"left shoulder","right shoulder",
+		"left upper arm","right upper arm",
+		"left forearm","right forearm",
+		"left hip","right hip",
+		"left thigh","right thigh",
+		"left calf","right calf",
+		"left shin","right shin"
+	};
 }
