@@ -11,6 +11,7 @@ extend class UaS_TraumaKit {
 			if (!currentWound.numb()) {
 				owner.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;
+				PainJolt();
 			}
 			else {
 				owner.A_StartSound("*grunt",CHAN_VOICE);

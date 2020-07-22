@@ -24,6 +24,7 @@ extend class UaS_TraumaKit {
 
 			if (weaponstatus[TK_HOLD] == 10) {
 				if(!currentWound.numb()) {
+					PainJolt();
 					owner.damagemobj(owner,owner,1,"staples");
 					weaponstatus[TK_HOLD] = -1;
 					currentWound.open = max(currentWound.open - random[uas_tk](1,5), 0);

@@ -35,16 +35,9 @@ extend class UaS_TraumaKit {
 		int threshold = random[uas_tk](100,200);
 		if (currentWound.numb()) { threshold *= 4; }
 		if (weaponstatus[TK_HOLD] > threshold) {
-			owner.A_StartSound("*usemeds",CHAN_VOICE);
-			owner.A_Log("\cgOW FUCK", true);
 			weaponstatus[TK_HOLD] = -1;
 			holdingopen = false;
-			HDPlayerPawn(owner).A_MuzzleClimb(
-				(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
-				(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
-				(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
-			);
+			PainJolt();
 			return;
 		}
 
@@ -55,17 +48,10 @@ extend class UaS_TraumaKit {
 			mashes++;
 			owner.A_StartSound("misc/smallslop",CHAN_BODY);
 			if (!currentWound.numb()) {
-				owner.A_StartSound("*usemeds",CHAN_VOICE);
-				owner.A_Log("\cgOW FUCK", true);
 				weaponstatus[TK_HOLD] = -1;
 				holdingopen = false;
 				mashes = 0;
-				HDPlayerPawn(owner).A_MuzzleClimb(
-					(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
-					(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
-					(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
-					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
-				);
+				PainJolt();
 				return;
 			}
 			if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
