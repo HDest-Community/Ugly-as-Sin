@@ -25,6 +25,18 @@ extend class UaS_TraumaKit {
 				currentmessage.text = "Injecting biofoam...\n";
 				currentmessage.timeout = 10;
 
+				if (!currentWound.numb()) {
+					owner.A_StartSound("*usemeds",CHAN_VOICE);
+					owner.A_Log("\cgOW FUCK", true);
+					weaponstatus[TK_HOLD] = -1;
+					HDPlayerPawn(owner).A_MuzzleClimb(
+						(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
+						(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
+						(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
+						(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
+					);
+				}
+
 				// semi-normalized distribution for success check
 				int check = (
 					random[uas_tk](0,100) +

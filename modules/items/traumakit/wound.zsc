@@ -64,10 +64,10 @@ extend class WoundInfo {
 		int retvalue;
 		retvalue += dirty;
 		retvalue += obstructed;
-		retvalue += open;
 		retvalue += cavity;
+		//retvalue += open;
 		//retvalue += infection;
-		retvalue /= 4; //5;
+		retvalue /= 3;
 		return retvalue;
 	}
 

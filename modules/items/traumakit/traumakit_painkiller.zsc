@@ -8,7 +8,11 @@ extend class UaS_TraumaKit {
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
 			owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
 			owner.A_StartSound("*grunt",CHAN_VOICE);
-			currentWound.painkiller = min(currentWound.painkiller + random[uas_tk](20,40), 100);
+			int inject = (
+				random[uas_tk](20,40) +
+				random[uas_tk](20,40) +
+				random[uas_tk](20,40)) / 3;
+			currentWound.painkiller = max(currentWound.painkiller + inject, 100);
 			currentmessage.text = "Anaesthetic injected.";
 			currentmessage.timeout = 2*35;
 			HDPlayerPawn(owner).A_MuzzleClimb(

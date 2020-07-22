@@ -6,3 +6,4 @@ const UAS_HDLD_WRATION = "wrt";
 const UAS_HDLD_GLOWSTICK = "gls";
 const UAS_HDLD_LASERLIGHT = "llm";
 const UAS_HDLD_RESPIRATOR = "rsp";
+const UAS_HDLD_TRAUMAKIT = "trk";

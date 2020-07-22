@@ -1,0 +1,40 @@
+extend class UaS_TraumaKit {
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+	override string gethelptext(){
+		string r;
+		r = WEPHELP_FIREMODE.."  Cycle tools\n\n";
+
+		switch (weaponstatus[TK_SELECTED]) {
+			case T_PAINKILLER:
+				r.AppendFormat(WEPHELP_FIRE.."  Inject anesthetic\n");
+				break;
+			case T_SALINE:
+				r.AppendFormat(WEPHELP_FIRE.."  Flush wound\n");
+				break;
+			case T_FORCEPS:
+				r.AppendFormat(WEPHELP_FIRE.."  Hold wound open\n");
+				r.AppendFormat(WEPHELP_UNLOAD.."  Extract obstructions\n");
+				break;
+			case T_BIOFOAM:
+				r.AppendFormat(WEPHELP_FIRE.."  Inject biofoam\n");
+				break;
+			case T_STAPLER:
+				r.AppendFormat(WEPHELP_FIRE.."  Staple wound closed\n");
+				break;
+			case T_SUTURES:
+				r.AppendFormat(WEPHELP_FIRE.."  Suture wound closed\n");
+				break;
+			case T_BLEEDING:
+				r.AppendFormat(WEPHELP_FIRE.."  Apply pressure\n");
+				r.AppendFormat(WEPHELP_RELOAD.."  Apply hemostatics\n");
+				break;
+		}
+		return r;
+	}
+}

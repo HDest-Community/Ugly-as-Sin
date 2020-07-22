@@ -6,6 +6,7 @@
 //#include "modules/items/traumakit/traumakit_2f.zsc"
 #include "modules/items/traumakit/traumakit_saline.zsc"
 #include "modules/items/traumakit/traumakit_bleeding.zsc"
+#include "modules/items/traumakit/traumakit_helptext.zsc"
 
 class UaS_TraumaKit : HDWeapon {
 	string statusMessage;
@@ -27,7 +28,9 @@ class UaS_TraumaKit : HDWeapon {
 		//+WEAPON.NOAUTOFIRE;
 		weapon.slotpriority 0.5;
 		weapon.slotnumber 9;
+		hdweapon.refid UAS_HDLD_TRAUMAKIT;
 		scale 0.5;
+		tag "Trauma Kit";
 	}
 	override double weaponbulk(){ return 20; }
 
@@ -44,6 +47,7 @@ class UaS_TraumaKit : HDWeapon {
 
 		statusMessage = "\cyTrauma Kit\n\n";
 
+		SetHelpText();
 		WoundList();
 		CycleWounds();
 		CycleTools();
