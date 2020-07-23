@@ -10,6 +10,12 @@ OptionValue "UaS_Nice_Timescales" {
 	60,  "60x Realtime"
 }
 
+OptionValue "FocusModes" {
+	0, 	"Focus key"
+	1,	"Zoom key only"
+	2,	"Use key only"
+}
+
 AddOptionMenu "OptionsMenu" {
 	StaticText " "
 	Submenu "Ugly as Sin Settings", "UaS_Options"
@@ -51,8 +57,9 @@ OptionMenu "UaS_Options" {
 	StaticText " "
 
 	Option "Focus Zoom","UaS_FocusZoomEnabled","OnOff"
+	Option "Focus Zoom Mode","UaS_FocusZoomMode","FocusModes"
 	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
-	Control "Laser Sight", "use uas_playerlaser"
+	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"

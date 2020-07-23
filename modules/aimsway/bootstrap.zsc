@@ -18,18 +18,38 @@ extend class UaS_Aim_Thinker {
 	double zoomcurrent;
 	double zoomspring;
 	int zoomdelay;
+	transient cvar focusmode;
+	transient cvar playerfov;
 
 	// focus-zooming internal variables
 	double zoomspeed;
 	int zoomcountdown;
 
 	void FocusZoom() {
+		// Cache cvar struct
+		if (!focusmode) { focusmode=CVar.GetCVar("UaS_FocusZoomMode", plr.player); }
+		if (!playerfov) { playerfov=CVar.GetCVar("fov", plr.player); }
+
 		// Ensure a brief delay before focus zoom takes effect
 		if(plr.vel.length() <= 1) { zoomcountdown = max(zoomcountdown - 1, 1); }
 		else { zoomcountdown = zoomdelay; }
 
-		// Focus if zoom button pressed and delay runout
-		if((plr.isFocussing) && zoomcountdown < zoomdelay) {
+		// Determine focus mode
+		bool DoZoom = false;
+		switch (focusmode.GetInt()) {
+			case 0:
+				DoZoom = (plr.isFocussing);
+				break;
+			case 1:
+				DoZoom = (plr.player.cmd.buttons & BT_ZOOM);
+				break;
+			case 2:
+				DoZoom = (plr.player.cmd.buttons & BT_USE);
+				break;
+		}
+
+		// Focus if mode true and delay runout
+		if((DoZoom) && zoomcountdown < zoomdelay) {
 			zoomspeed += dampedspring(
 				zoomcurrent,
 				zoomtarget,
@@ -50,7 +70,7 @@ extend class UaS_Aim_Thinker {
 
 		// Hopefully this respects players FOV setting appropriately
 		// Thanks Josh for figuring out that we should use the player's FOV CVar
-		plr.player.desiredfov = CVar.GetCVar("fov", plr.player).GetFloat() * zoomcurrent;
+		plr.player.desiredfov = playerfov.GetFloat() * zoomcurrent;
 	}
 }
 
