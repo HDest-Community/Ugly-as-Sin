@@ -19,6 +19,7 @@ class UaS_WoundHandler : Inventory {
 
 	void ManageWounds() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
+		if(!plr) return;
 
 		// get difference in wound counts
 		//int diffopen = max(plr.woundcount, 0) - oldopen; // clamp to avoid false positives
