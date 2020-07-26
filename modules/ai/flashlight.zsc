@@ -37,9 +37,10 @@ extend class UaS_AI_Handler {
 			else { llm.activated = false; }
 
 			// misc other adjustments
-			flashrate = random[aillm](1, 4);
+			flashrate = random[aillm](2, 4);
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
 			if (random[aillm](0,1) > 0.75) { llm.ModeSwitch(random[aillm](0,2)); }
+			if (random[aillm](0,128) > lightlevel) { llm.ModeSwitch(randompick[aillm](0,2)); }
 		}
 
 		if (owner is "HERPBot") {
@@ -54,13 +55,36 @@ extend class UaS_AI_Handler {
 			llm.offset = 2;
 		}
 
-		// Flash at target if aiming
+		// Some bools
+		bool isowneraiming = (
+			owner.frame ==  4 || owner.frame ==  5 ||
+			owner.frame == 23 || owner.frame == 24
+		);
 		flashing = (
 			owner.target &&
-			(owner.frame == 4 || owner.frame == 5) &&
+			isowneraiming &&
 			(llm.mode == 0 || llm.mode == 2)
 		);
+
 		if (flashing && level.maptime & flashrate) { llm.ToggleSwitch(); }
+
+		// Handle random light movement
+		if ((level.maptime % 10 == 0) && !BotClass) {
+			if (owner.target && !(owner.target is "UaS_LastKnownMarker")) {
+				llm.angleoffset = frandom[ai](-35, 35);
+				llm.pitchoffset = frandom[ai](-25, 25);
+				//if (!isowneraiming) { llm.pitchoffset += 10; }
+			}
+			else if (random[ai](0, 1) == 0) {
+				llm.angleoffset = frandom[ai](-20, 20);
+				llm.pitchoffset = frandom[ai](-10, 10);
+				//if (!isowneraiming) { llm.pitchoffset += 20; }
+			}
+		}
+		if (isowneraiming && flashing) {
+			llm.angleoffset = 0;
+			llm.pitchoffset = 0;
+		}
 
 		recheck--;
 	}
