@@ -1,0 +1,92 @@
+class UaS_WeaponJammer : Inventory {
+	int oldchamber, oldmag, lastmag;
+	bool justjammed;
+	int restoremag;
+	LiberatorRifle rw;
+
+	override void DoEffect() {
+		if (!owner.player.ReadyWeapon) { return; }
+		if (level.maptime < 35) { return; }
+		if (owner.player.ReadyWeapon is 'LiberatorRifle') {
+			rw = LiberatorRifle(owner.FindInventory("LiberatorRifle"));
+			jamtest3();
+			jamtest4();
+			jamtest5();
+			oldchamber = rw.weaponstatus[LIBS_CHAMBER];
+		}
+	}
+
+	// Failure to feed, can be cleared by cycling
+	void jamtest3() {
+		if (oldchamber != 1 && rw.weaponstatus[LIBS_CHAMBER]==1 && !random(0,50)) {
+			console.printf("failure to feed!");
+			lastmag = rw.weaponstatus[LIBS_MAG];
+			rw.weaponstatus[LIBS_MAG] = 0;
+			restoremag = 2;
+		}
+		if (restoremag == 1) {
+			rw.weaponstatus[LIBS_MAG] = lastmag;
+		}
+		if (restoremag > 0) {
+			restoremag--;
+		}
+		oldchamber = rw.weaponstatus[LIBS_CHAMBER];
+	}
+
+	//requires unload. Add chambering attempts to this? failure to extract?
+	void jamtest4() {
+		if (oldchamber != 2 && rw.weaponstatus[LIBS_CHAMBER]==2 && !random(0,50)) {
+			console.printf("failure to extract!");
+			rw.weaponstatus[LIBS_CHAMBER]=1;
+			justjammed = true;
+		}
+
+		if (justjammed) {
+			//p is a player pointer
+			let psp = owner.player.getpsprite(1);
+			let wep = owner.player.ReadyWeapon;
+
+			if (psp && wep && (owner.InStateSequence(psp.curstate, wep.ResolveState("firegun")))) {
+				console.printf("caught firegun");
+				owner.player.SetPSprite(PSP_WEAPON,wep.FindState("nope"));
+			}
+
+			if (psp && wep && (owner.InStateSequence(psp.curstate, wep.ResolveState("chamber_manual")))) {
+				justjammed=false;
+			}
+		}
+	}
+
+	//simple light primer strike, can be cleared by automatically cycling
+	void jamtest5() {
+		if (oldchamber != 2 && rw.weaponstatus[LIBS_CHAMBER]==2 && !random(0,50)) {
+			console.printf("light strike / bad round!");
+			rw.weaponstatus[LIBS_CHAMBER]=1;
+		}
+	}
+
+	/*void jamtest1() {
+		if (oldchamber != 2 && rw.weaponstatus[LIBS_CHAMBER]==2 && random(0,1)) {
+			if(!justjammed) {
+				rw.weaponstatus[LIBS_CHAMBER]=0;
+				justjammed = true;
+			}
+			else { justjammed = false; }
+		}
+
+		oldchamber = rw.weaponstatus[LIBS_CHAMBER];
+	}
+
+	void jamtest2() {
+		if (justjammed && rw.weaponstatus[LIBS_CHAMBER]==1) {
+			rw.weaponstatus[LIBS_MAG] = lastmag;
+			justjammed = false;
+		}
+		if(oldmag > rw.weaponstatus[LIBS_MAG] && !justjammed) {
+			lastmag = rw.weaponstatus[LIBS_MAG];
+			rw.weaponstatus[LIBS_MAG] = 0;
+			justjammed = true;
+		}
+		oldmag = rw.weaponstatus[LIBS_MAG];
+	}*/
+}

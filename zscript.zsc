@@ -54,3 +54,4 @@ version "3.5"
 
 #include "modules/aimsway/bootstrap.zsc"
 #include "modules/yolo/yolo.zsc"
+#include "modules/jamming/jamming.zsc"
