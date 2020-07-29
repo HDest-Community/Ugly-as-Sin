@@ -41,10 +41,10 @@ class WoundInfo : thinker {
 				infection = min(infection + 1, 100);
 			}
 
-			if (AverageStatus() <= 1) {
+			if (AverageStatus() == 0) {
 				clear = true;
 			}
-			timer = random[uas_wi](1,3) * 35;
+			timer = random[uas_wi](2,5) * (35 + open);
 		}
 	}
 
@@ -65,9 +65,9 @@ extend class WoundInfo {
 		retvalue += dirty;
 		retvalue += obstructed;
 		retvalue += cavity;
-		//retvalue += open;
+		retvalue += open;
 		//retvalue += infection;
-		retvalue /= 3;
+		retvalue /= 4;
 		return retvalue;
 	}
 
