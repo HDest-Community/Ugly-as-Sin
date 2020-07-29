@@ -1,0 +1,149 @@
+class UaS_WoundStabilization : HDWeapon {
+	int pressure, hemostatic;
+	string statusMessage;
+	StatusInfo currentMessage;
+	WoundInfo currentWound;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "";
+		-INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		//+WEAPON.NOAUTOFIRE;
+		weapon.slotpriority 0.6;
+		weapon.slotnumber 9;
+		tag "Wound Stabilization";
+	}
+	override double weaponbulk(){ return 0; }
+
+	override void DoEffect() {
+		if (!(owner.player.readyweapon is 'UaS_WoundStabilization')) { return; }
+		SetHelpText();
+
+		statusMessage = "--- \cjWound stabilization\c- ---\n\n\n";
+		statusMessage = statusmessage..
+			"\cuApply pressure and\nhemostatic compound\nto bandaged wounds.\n\n\n";
+
+		BleedingControl();
+		TickMessages();
+		A_WeaponMessage(statusMessage);
+	}
+
+	void BleedingControl() {
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+		if (plr.unstablewoundcount <= 0) {
+			currentmessage.text = "";
+			statusMessage = statusmessage.."No unstable bandaged wounds to treat.";
+			return;
+		}
+
+		// Hemostatic amount readout
+		if (hemostatic > 0) { statusMessage = statusmessage.."\cr"; }
+		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."Hemostatic";
+		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."\n";
+
+		// Pressure amount readout
+		if (pressure > 50) { statusMessage = statusmessage.."\cw"; }
+		if (pressure > 100) { statusMessage = statusmessage.."\cm"; }
+		for (int i = 0; i < pressure/10; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."Pressure";
+		for (int i = 0; i < pressure/10; i++) { statusmessage = statusmessage.."="; }
+		statusmessage = statusmessage.."\n\n";
+
+		// Apply hemostatic compound
+		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
+			if (hemostatic > 1) {
+				currentmessage.text = "Already used hemostatic compound.";
+				currentmessage.timeout = 35;
+				return;
+			}
+			else {
+				owner.A_StartSound("misc/wallchunks",CHAN_WEAPON);
+				if (random[uas_bc](0,1) == 0) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom[uas_bc](-1,1),frandom[uas_bc](0,4)),
+					(frandom[uas_bc](-1,1),frandom[uas_bc](0,3)),
+					(frandom[uas_bc](-1,1),frandom[uas_bc](0,2)),
+					(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))
+				);
+				owner.A_StartSound("*grunt",CHAN_VOICE);
+				hemostatic = 5;
+				currentmessage.text = "Applied hemostatic compound to wound.";
+				currentmessage.timeout = 35;
+				return;
+			}
+		}
+
+		// Apply pressure
+		double shake;
+		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			pressure = min(pressure + 1, 125);
+			shake = pressure / 20.0;
+			if (random[uas_bc](0,35) == 0) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+			if (random[uas_bc](0,25) == 0) { owner.A_StartSound("misc/smallslop", CHAN_WEAPON); }
+			if (pressure == 100) { owner.A_StartSound("*usemeds",CHAN_VOICE); }
+		}
+		else {
+			pressure = max(pressure - 1, 0);
+			shake = -pressure / 20.0;
+		}
+
+		// Shake and fluctuate view
+		HDPlayerPawn(owner).A_MuzzleClimb(
+			(frandom[uas_bc](-shake,shake),frandom[uas_bc](0,shake))/20,
+			(frandom[uas_bc](-shake,shake),frandom[uas_bc](0,shake))/30,
+			(frandom[uas_bc](-shake,shake),frandom[uas_bc](0,shake))/40,
+			(frandom[uas_bc](-shake,shake),frandom[uas_bc](0,shake))/50
+		);
+
+		// check for stopped bleeding
+		if (level.time % 10 == 0 && pressure <= 100) {
+			int upperlimit = pressure + (hemostatic * 5);
+			int check = (
+				random[uas_bc](0, upperlimit) +
+				random[uas_bc](0, upperlimit)) / 2;
+
+			if (check > 80) {
+				currentmessage.text = "Stabilized some bleeding.";
+				currentmessage.timeout = 35;
+				hemostatic = max(hemostatic - 1, 0);
+				pressure = 50;
+				plr.unstablewoundcount = max(plr.unstablewoundcount - 1, 0);
+				plr.oldwoundcount = max(plr.oldwoundcount + 1, 0);
+			}
+		}
+	}
+
+	struct StatusInfo {
+		string text;
+		int timeout;
+	}
+
+	override string gethelptext(){
+		string r;
+		r.AppendFormat(WEPHELP_FIRE.."  Apply pressure\n");
+		r.AppendFormat(WEPHELP_RELOAD.."  Apply hemostatics\n");
+		return r;
+	}
+
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+
+	void TickMessages() {
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
+		}
+	}
+}
