@@ -8,7 +8,9 @@ extend class UaS_TraumaKit {
 	}
 	override string gethelptext(){
 		string r;
-		r = WEPHELP_FIREMODE.."  Cycle tools\n\n";
+		r = WEPHELP_FIREMODE.."  Cycle tools\n";
+		r.AppendFormat(WEPHELP_RELOAD.."  Cycle wounds down\n");
+		r.AppendFormat(WEPHELP_ALTRELOAD.."  Cycle wounds up\n\n");
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
