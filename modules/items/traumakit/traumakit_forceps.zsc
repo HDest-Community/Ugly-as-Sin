@@ -6,6 +6,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n";
 		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
 

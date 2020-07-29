@@ -3,6 +3,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjAnaesthetic\n";
 		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n\n";
 		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {

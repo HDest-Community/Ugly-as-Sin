@@ -3,6 +3,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjSaline\n";
 		statusMessage = statusmessage.."\cuNeutral wound debriding solution.\n\n";
 		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {

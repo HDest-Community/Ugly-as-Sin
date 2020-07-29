@@ -3,6 +3,7 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjStapler\n";
 		statusMessage = statusmessage.."\cuManual hand-stapler.\n\n";
 		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
 		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
