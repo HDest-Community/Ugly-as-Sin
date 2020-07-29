@@ -1,13 +1,40 @@
-extend class UaS_TraumaKit {
+class UaS_BleedingControl : UaS_TraumaKit {
 	int pressure, hemostatic;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "";
+		-INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		//+WEAPON.NOAUTOFIRE;
+		weapon.slotpriority 0.4;
+		weapon.slotnumber 9;
+		tag "Bleeding Control";
+	}
+	override double weaponbulk(){ return 0; }
+
+	override void DoEffect() {
+		if (!(owner.player.readyweapon is 'UaS_BleedingControl')) { return; }
+
+		statusMessage = "--- \cjBleeding Control\c- ---\n\n\n";
+		statusMessage = statusmessage..
+			"\cuApply pressure and\nhemostatic compound\nto bandaged wounds.\n\n";
+
+		BleedingControl();
+		TickMessages();
+		A_WeaponMessage(statusMessage);
+	}
 
 	void BleedingControl() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
-		if (plr.unstablewoundcount <= 0) { CycleTools(T_PAINKILLER); return; }
-
-		currentWound = null;
-		statusMessage = statusmessage.."\cjBleeding Control\n";
-		statusMessage = statusmessage.."\cuApply pressure and hemostatic compound.\n\n";
+		if (plr.unstablewoundcount <= 0) {
+			currentmessage.text = "";
+			statusMessage = statusmessage.."No unstable bandaged wounds to treat.";
+			return;
+		}
 
 		// Hemostatic amount readout
 		if (hemostatic > 0) { statusMessage = statusmessage.."\cr"; }
@@ -41,8 +68,6 @@ extend class UaS_TraumaKit {
 
 		// Apply pressure
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			currentmessage.text = "Applying pressure to wound.";
-			currentmessage.timeout = 35;
 			pressure = min(pressure + 1, 125);
 		}
 		else {
@@ -52,16 +77,17 @@ extend class UaS_TraumaKit {
 		if (level.time % 10 == 0 && pressure <= 100) {
 			int upperlimit = pressure + (hemostatic * 5);
 			int check = (
-				random[uas_tk](0, upperlimit) +
-				random[uas_tk](0, upperlimit) +
-				random[uas_tk](0, upperlimit)) / 3;
+				random[uas_bc](0, upperlimit) +
+				random[uas_bc](0, upperlimit) +
+				random[uas_bc](0, upperlimit)) / 3;
 
 			if (check > 75) {
+				currentmessage.text = "Stabilized some bleeding.";
+				currentmessage.timeout = 35;
 				hemostatic = max(hemostatic - 1, 0);
 				pressure = 0;
 				plr.unstablewoundcount = max(plr.unstablewoundcount - 1, 0);
 				plr.oldwoundcount = max(plr.oldwoundcount + 1, 0);
-				console.printf("stabilized one point");
 			}
 		}
 	}

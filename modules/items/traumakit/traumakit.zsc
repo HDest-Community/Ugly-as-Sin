@@ -3,9 +3,7 @@
 #include "modules/items/traumakit/traumakit_stapler.zsc"
 #include "modules/items/traumakit/traumakit_sutures.zsc"
 #include "modules/items/traumakit/traumakit_biofoam.zsc"
-//#include "modules/items/traumakit/traumakit_2f.zsc"
 #include "modules/items/traumakit/traumakit_saline.zsc"
-#include "modules/items/traumakit/traumakit_bleeding.zsc"
 #include "modules/items/traumakit/traumakit_helptext.zsc"
 
 class UaS_TraumaKit : HDWeapon {
@@ -71,9 +69,6 @@ class UaS_TraumaKit : HDWeapon {
 			case T_SUTURES:
 				HandleSutures();
 				break;
-			case T_BLEEDING:
-				BleedingControl();
-				break;
 			/*case T_2F: //Maybe add later
 				Handle2F();
 				break;*/
@@ -91,13 +86,16 @@ class UaS_TraumaKit : HDWeapon {
 			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";*/
 		}
 
+		TickMessages();
+		A_WeaponMessage(statusMessage);
+	}
+
+	void TickMessages() {
 		// Tick down transient messages
 		if (currentmessage.timeout > 0) {
 			statusmessage = statusmessage..currentmessage.text;
 			currentmessage.timeout--;
 		}
-
-		A_WeaponMessage(statusMessage);
 	}
 
 	void WoundList() {
@@ -144,7 +142,7 @@ class UaS_TraumaKit : HDWeapon {
 	void CycleTools(int set = -1) {
 		if (set != -1) { weaponstatus[TK_SELECTED] = set; return; }
 		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
-			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 6;
 			weaponstatus[TK_HOLD] = 0;
 			currentmessage.text = "";
 			currentmessage.timeout = 0;
