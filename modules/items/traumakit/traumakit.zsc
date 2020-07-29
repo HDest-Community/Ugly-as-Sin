@@ -74,17 +74,7 @@ class UaS_TraumaKit : HDWeapon {
 				break;*/
 		}
 
-
-		// Debugging
-		if (currentWound) {
-			statusmessage = statusmessage..currentWound.WoundStatus().."\n";
-			/*statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
-			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
-			statusmessage = statusmessage.."open "..currentWound.open.."\n";
-			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
-			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
-			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";*/
-		}
+		if (currentWound) { statusmessage = statusmessage..currentWound.WoundStatus().."\n"; }
 
 		TickMessages();
 		A_WeaponMessage(statusMessage);
@@ -168,6 +158,14 @@ class UaS_TraumaKit : HDWeapon {
 	void DebugStatus() {
 		if (!owner) { return; }
 		let ownr = HDPlayerPawn(owner);
+		if (currentWound) {
+			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
+			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
+			statusmessage = statusmessage.."open "..currentWound.open.."\n";
+			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
+			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
+			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
+		}
 		statusMessage = statusMessage.."\n";
 		statusMessage = statusMessage.."Open Wounds "..ownr.woundcount.."\n";
 		statusMessage = statusMessage.."Unstable Wounds "..ownr.unstablewoundcount.."\n";
