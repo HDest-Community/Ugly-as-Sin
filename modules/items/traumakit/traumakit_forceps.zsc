@@ -65,12 +65,12 @@ extend class UaS_TraumaKit {
 				random[uas_tk](100,200) +
 				random[uas_tk](100,200)) / 2;
 
-			if (check <= weaponstatus[TK_HOLD]) {
+			if (check <= weaponstatus[TK_HOLD] || check <= mashes * 20) {
 				weaponstatus[TK_HOLD] = 50;
 				int remove = frandom[uas_tk](2,4) * mashes;
 				string result;
 
-				if (currentWound.obstructed > 0) { result = "You pull a randomized silly obstruction out of your wound"; }
+				if (currentWound.obstructed > 0) { result = ExtractionMessage(); }
 				else { result = "You yank at the wound ineffectually"; }
 
 				// increase cavity on overshoot
@@ -90,4 +90,52 @@ extend class UaS_TraumaKit {
 			}
 		}
 	}
+}
+
+extend class UaS_TraumaKit {
+	string ExtractionMessage(bool damage = false) {
+		string r;
+		r = string.format("You %s %s %s out of the wound",
+			UaS_TraumaKit.verb[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
+			UaS_TraumaKit.piece[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
+			UaS_TraumaKit.material[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)]
+		);
+		return r;
+	}
+
+	static const string[] verb = {
+		"pull",
+		"yank",
+		"jerk",
+		"tug",
+		"extract",
+		"fish",
+		"carefully remove"
+	};
+	static const string[] piece = {
+		"a sliver of",
+		"a chunk of",
+		"a piece of",
+		"a fragment of",
+		"a shard of",
+		"some slivers of",
+		"some chunks of",
+		"some pieces of",
+		"some fragments of",
+		"some shards of"
+	};
+	static const string[] material = {
+		"bone",
+		"shrapnel",
+		"metal",
+		"claw",
+		"tooth",
+		"plastic",
+		"a bullet",
+		"a hollowpoint jacket",
+		"lead",
+		"copper",
+		"brass",
+		"necrotic tissue"
+	};
 }
