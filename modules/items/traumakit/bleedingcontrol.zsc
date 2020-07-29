@@ -1,5 +1,8 @@
-class UaS_BleedingControl : UaS_TraumaKit {
+class UaS_BleedingControl : HDWeapon {
 	int pressure, hemostatic;
+	string statusMessage;
+	StatusInfo currentMessage;
+	WoundInfo currentWound;
 
 	Default {
 		Inventory.Amount 1;
@@ -10,7 +13,7 @@ class UaS_BleedingControl : UaS_TraumaKit {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
 		//+WEAPON.NOAUTOFIRE;
-		weapon.slotpriority 0.4;
+		weapon.slotpriority 0.6;
 		weapon.slotnumber 9;
 		tag "Bleeding Control";
 	}
@@ -18,6 +21,7 @@ class UaS_BleedingControl : UaS_TraumaKit {
 
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_BleedingControl')) { return; }
+		SetHelpText();
 
 		statusMessage = "--- \cjBleeding Control\c- ---\n\n\n";
 		statusMessage = statusmessage..
@@ -89,6 +93,34 @@ class UaS_BleedingControl : UaS_TraumaKit {
 				plr.unstablewoundcount = max(plr.unstablewoundcount - 1, 0);
 				plr.oldwoundcount = max(plr.oldwoundcount + 1, 0);
 			}
+		}
+	}
+
+	struct StatusInfo {
+		string text;
+		int timeout;
+	}
+
+	override string gethelptext(){
+		string r;
+		r.AppendFormat(WEPHELP_FIRE.."  Apply pressure\n");
+		r.AppendFormat(WEPHELP_RELOAD.."  Apply hemostatics\n");
+		return r;
+	}
+
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+
+	void TickMessages() {
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
 		}
 	}
 }
