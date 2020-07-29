@@ -4,6 +4,7 @@ class UaS_LaserLightModule : HDPickup {
 	UaS_LLM_Emitter emitter;
 	vector3 oldsc;
 	double offset;
+	double angleoffset,pitchoffset;
 	color LaserColor;
 	double LaserAlpha;
 
@@ -47,9 +48,9 @@ class UaS_LaserLightModule : HDPickup {
 	}
 
 	override void DoEffect() {
+		if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
+		UpdateEmitter();
 		if(activated && owner.health > 0) {
-			if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
-			UpdateEmitter();
 			switch (mode) {
 				case 0: //Flashlight
 					Light(true);
@@ -65,7 +66,10 @@ class UaS_LaserLightModule : HDPickup {
 					break;
 			}
 		}
-		else if (emitter) { emitter.destroy(); }
+		else {
+			Light(false);
+			Laser(false);
+		}
 	}
 
 	void UpdateEmitter() {
@@ -90,13 +94,14 @@ class UaS_LaserLightModule : HDPickup {
 				offset * cos(-owner.pitch),
 				owner.angle,
 				offset * sin(-owner.pitch) + (owner.height * 0.7));
-			newangle = owner.angle;
-			newpitch = owner.pitch;
+			newangle = emitter.angle + (0.15 * deltaangle(emitter.angle, owner.angle + angleoffset));
+			newpitch = emitter.pitch + (0.15 * deltaangle(emitter.pitch, owner.pitch + pitchoffset));
 		}
 		emitter.setOrigin(newpos, true);
 		emitter.A_SetAngle(newangle, true);
 		emitter.A_SetPitch(newpitch, true);
 		emitter.vel = owner.vel;
+		emitter.source = self;
 	}
 
 	void Light(bool on) {
@@ -104,9 +109,11 @@ class UaS_LaserLightModule : HDPickup {
 		emitter.Activate(self); // turn on dynlight
 
 		// Draw flashlight particle beam
+		FLineTraceData flTrace;
+		emitter.LineTrace(emitter.angle, 64, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		int start = 1; //particle beam starts at emitter
 		if(owner.CheckLocalView()) { start = 12; } // unless local player
-		for (double d = start; d < 64; d = d + (d / 2)) {
+		for (double d = start; d < flTrace.distance; d = d + (d / 2)) {
 			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
 				1, (sin(20) * d * 8), 0,
 				cos(emitter.pitch) * cos(emitter.angle) * (d),
@@ -142,9 +149,11 @@ class UaS_LaserLightModule : HDPickup {
 		// Draw laser particle beam
 		FLineTraceData laserTrace;
 		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
-		for (double f = random[llm](0, 256); f < laserTrace.distance; f = f + random[llm](32, 256)) {
+		for (double f = 0; f < laserTrace.distance; f = f + random[llm](32, 256)) {
 			double bliplength = random[llm](8, 32);
 			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1)) {
+				if (d > laserTrace.distance) { break; }
+				double ps = frandom[llm](1, min(256,laserTrace.distance - d));
 				emitter.A_SpawnParticle(LaserColor, SPF_FULLBRIGHT|SPF_RELANG,
 					1,
 					(frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1)) * sizefactor,
@@ -152,7 +161,9 @@ class UaS_LaserLightModule : HDPickup {
 					cos(emitter.pitch) * cos(emitter.angle) * (d),
 					cos(emitter.pitch) * sin(emitter.angle) * (d),
 					sin(-emitter.pitch) * (d),
-					owner.vel.x, owner.vel.y, owner.vel.z,
+					owner.vel.x + (ps * cos(emitter.angle) * cos(-emitter.pitch)),
+					owner.vel.y + (ps * sin(emitter.angle) * cos(-emitter.pitch)),
+					owner.vel.z + (ps * sin(-emitter.pitch)),
 					0, 0, 0,
 					(frandom[llm](0.5, 0.9) * clamp(d/32, 0.0, 1)) * LaserAlpha,
 					-1, 0);
@@ -177,6 +188,7 @@ class UaS_LaserLightModule : HDPickup {
 }
 
 class UaS_LLM_Emitter : DynamicLight {
+	actor source;
 	default {
 		DynamicLight.Type "Point";
 		+DYNAMICLIGHT.ATTENUATE;
@@ -192,6 +204,10 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_INTENSITY] = 255;
 		SpotInnerAngle = 15;
 		SpotOuterAngle = 25;
+	}
 
+	override void Tick() {
+		super.tick();
+		if (!source) Destroy();
 	}
 }
