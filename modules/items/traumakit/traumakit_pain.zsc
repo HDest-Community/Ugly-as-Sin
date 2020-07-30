@@ -1,0 +1,113 @@
+extend class UaS_Traumakit {
+	void PainJolt() {
+		owner.A_StartSound("*usemeds",CHAN_VOICE);
+		if (random[uas_tk](0,1) == 0) { owner.A_Log("\cg"..PainMessage(), true); }
+		HDPlayerPawn(owner).A_MuzzleClimb(
+			(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
+			(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
+			(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
+			(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
+		);
+	}
+
+	string PainMessage() {
+		string r = "";
+
+		// possible swear
+		if (random[uas_tk](0,1) == 0) { r.AppendFormat(UaS_TraumaKit.swears1[random[uas_tk](0,UaS_TraumaKit.swears1.size()-1)].." "); }
+
+		// painword
+		r.AppendFormat(UaS_TraumaKit.painwords[random[uas_tk](0,UaS_TraumaKit.painwords.size()-1)].." ");
+		if (random[uas_tk](0,1) > 0) { return r; }
+
+		// swear
+		r.AppendFormat(UaS_TraumaKit.swears1[random[uas_tk](0,UaS_TraumaKit.swears1.size()-1)].." ");
+		if (random[uas_tk](0,2) > 0) { return r; }
+
+		// split phrase
+		r.AppendFormat(UaS_TraumaKit.phrases1[random[uas_tk](0,UaS_TraumaKit.phrases1.size()-1)].." ");
+		if (random[uas_tk](0,2) == 0) { r.AppendFormat(UaS_TraumaKit.swears2[random[uas_tk](0,UaS_TraumaKit.swears2.size()-1)].." "); }
+		r.AppendFormat(UaS_TraumaKit.phrases2[random[uas_tk](0,UaS_TraumaKit.phrases2.size()-1)].." ");
+		if (random[uas_tk](0,2) > 0) { return r; }
+
+		// painword
+		r.AppendFormat(UaS_TraumaKit.painwords[random[uas_tk](0,UaS_TraumaKit.painwords.size()-1)].." ");
+		if (random[uas_tk](0,2) > 0) { return r; }
+
+		// painword / swear pair
+		r.AppendFormat(UaS_TraumaKit.painwords[random[uas_tk](0,UaS_TraumaKit.painwords.size()-1)].." ");
+		r.AppendFormat(UaS_TraumaKit.swears1[random[uas_tk](0,UaS_TraumaKit.swears1.size()-1)].." ");
+		if (random[uas_tk](0,2) > 0) { return r; }
+
+		// painword
+		r.AppendFormat(UaS_TraumaKit.phrases3[random[uas_tk](0,UaS_TraumaKit.phrases3.size()-1)].." ");
+		return r;
+	}
+
+	static const string[] painwords = {
+		"ow",
+		"ow",
+		"ow",
+		"oww",
+		"oww",
+		"owo",
+		"ouch",
+		"owie",
+		"argh",
+		"gah",
+		"oof ouchie my bones"
+	};
+
+	static const string[] swears1 = {
+		"fuck",
+		"fuck",
+		"fuck",
+		"fuck",
+		"shit",
+		"shit",
+		"shit",
+		"god",
+		"goddammit",
+		"hell",
+		"dammit",
+		"frag",
+		"fark",
+		"frick",
+		"consarnit"
+	};
+
+	static const string[] swears2 = {
+		"shitting",
+		"fucking",
+		"fragging",
+		"farking",
+		"rutting",
+		"humping"
+	};
+
+	static const string[] phrases1 = {
+		"that",
+		"that really",
+		"this",
+		"this really",
+		"something",
+		"something really"
+	};
+
+	static const string[] phrases2 = {
+		"hurts",
+		"stings",
+		"burns",
+		"felt weird",
+		"felt wrong",
+		"felt bad"
+	};
+
+	static const string[] phrases3 = {
+		"shouldn't have touched that",
+		"shouldn't have done that",
+		"should be more careful",
+		"need more painkillers",
+		"... just breathe ..."
+	};
+}

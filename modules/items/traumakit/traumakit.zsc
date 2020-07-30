@@ -5,6 +5,7 @@
 #include "modules/items/traumakit/traumakit_biofoam.zsc"
 #include "modules/items/traumakit/traumakit_saline.zsc"
 #include "modules/items/traumakit/traumakit_helptext.zsc"
+#include "modules/items/traumakit/traumakit_pain.zsc"
 
 class UaS_TraumaKit : HDWeapon {
 	string statusMessage;
@@ -142,17 +143,6 @@ class UaS_TraumaKit : HDWeapon {
 	WoundInfo GetWound(int index) {
 		if (wh.critwounds.size() <= 0) { return null; }
 		return wh.critwounds[index];
-	}
-
-	void PainJolt() {
-		owner.A_StartSound("*usemeds",CHAN_VOICE);
-		owner.A_Log("\cgOW FUCK", true);
-		HDPlayerPawn(owner).A_MuzzleClimb(
-			(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
-			(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)),
-			(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
-			(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
-		);
 	}
 
 	void DebugStatus() {
