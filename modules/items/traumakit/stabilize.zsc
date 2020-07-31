@@ -23,7 +23,7 @@ class UaS_WoundStabilization : HDWeapon {
 		if (!(owner.player.readyweapon is 'UaS_WoundStabilization')) { return; }
 		SetHelpText();
 
-		statusMessage = "--- \cjWound stabilization\c- ---\n\n\n";
+		statusMessage = "--- \cdWound stabilization\c- ---\n\n\n";
 		statusMessage = statusmessage..
 			"\cuApply pressure and\nhemostatic compound\nto bandaged wounds.\n\n\n";
 

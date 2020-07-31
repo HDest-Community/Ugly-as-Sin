@@ -42,7 +42,7 @@ class UaS_TraumaKit : HDWeapon {
 
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
-		statusMessage = "\cyTrauma Kit\n\n";
+		statusMessage = "--- \cyTrauma Kit\c- ---\n\n";
 
 		SetHelpText();
 		SetPatient();
