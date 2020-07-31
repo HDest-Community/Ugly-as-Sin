@@ -12,6 +12,7 @@ class UaS_TraumaKit : HDWeapon {
 	StatusInfo currentMessage;
 	WoundInfo currentWound;
 	UaS_WoundHandler wh;
+	HDPlayerPawn patient, lastpatient;
 
 	Default {
 		radius 4;
@@ -41,12 +42,10 @@ class UaS_TraumaKit : HDWeapon {
 
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
-		if (!wh) { wh = UaS_WoundHandler(owner.FindInventory('UaS_WoundHandler')); }
-		if (!wh) { console.printf("No wound handler!"); return; }
-
 		statusMessage = "\cyTrauma Kit\n\n";
 
 		SetHelpText();
+		SetPatient();
 		WoundList();
 		CycleWounds();
 		CycleTools();
@@ -79,6 +78,24 @@ class UaS_TraumaKit : HDWeapon {
 
 		TickMessages();
 		A_WeaponMessage(statusMessage);
+	}
+
+	void SetPatient() {
+		bool other = false;
+		FLineTraceData tktrace;
+
+		if (owner.player.cmd.buttons & BT_ZOOM) {
+			owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
+			if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = true; }
+		}
+
+		if (other) { patient = HDPlayerPawn(tktrace.hitactor); }
+		else { patient = HDPlayerPawn(owner); }
+
+		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
+		if (!wh) { console.printf("No wound handler!"); return; }
+		if (patient != lastpatient) { currentWound = null; }
+		lastpatient = patient;
 	}
 
 	void TickMessages() {
@@ -146,8 +163,6 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	void DebugStatus() {
-		if (!owner) { return; }
-		let ownr = HDPlayerPawn(owner);
 		if (currentWound) {
 			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
 			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
@@ -157,9 +172,9 @@ class UaS_TraumaKit : HDWeapon {
 			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
 		}
 		statusMessage = statusMessage.."\n";
-		statusMessage = statusMessage.."Open Wounds "..ownr.woundcount.."\n";
-		statusMessage = statusMessage.."Unstable Wounds "..ownr.unstablewoundcount.."\n";
-		statusMessage = statusMessage.."Old Wounds "..ownr.oldwoundcount.."\n";
+		statusMessage = statusMessage.."Open Wounds "..patient.woundcount.."\n";
+		statusMessage = statusMessage.."Unstable Wounds "..patient.unstablewoundcount.."\n";
+		statusMessage = statusMessage.."Old Wounds "..patient.oldwoundcount.."\n";
 	}
 
 	struct StatusInfo {

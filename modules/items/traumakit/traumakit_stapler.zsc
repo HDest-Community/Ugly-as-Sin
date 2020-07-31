@@ -10,15 +10,15 @@ extend class UaS_TraumaKit {
 		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
 			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
 			if (!currentWound.numb()) {
-				owner.damagemobj(owner,owner,1,"staples");
+				patient.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;
 				PainJolt();
 			}
 			else {
-				owner.A_StartSound("*grunt",CHAN_VOICE);
+				patient.A_StartSound("*grunt",CHAN_VOICE);
 				weaponstatus[TK_HOLD] = 15;
 			}
-			HDPlayerPawn(owner).A_MuzzleClimb(
+			patient.A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),

@@ -26,12 +26,12 @@ extend class UaS_TraumaKit {
 			if (weaponstatus[TK_HOLD] == 10) {
 				if(!currentWound.numb()) {
 					PainJolt();
-					owner.damagemobj(owner,owner,1,"staples");
+					patient.damagemobj(owner,owner,1,"staples");
 					weaponstatus[TK_HOLD] = -1;
 					currentWound.open = max(currentWound.open - random[uas_tk](1,5), 0);
 				}
 				else {
-					if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+					if(random[uas_tk](0,1)) { patient.A_StartSound("*grunt",CHAN_VOICE); }
 					currentWound.open = max(currentWound.open - random[uas_tk](2,5), 0);
 				}
 			}

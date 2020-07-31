@@ -24,7 +24,7 @@ extend class UaS_TraumaKit {
 			double shake = weaponstatus[TK_HOLD];
 			if (currentWound.numb()) { shake *= 0.001; }
 			else { shake *= 0.01; }
-			HDPlayerPawn(owner).A_MuzzleClimb(
+			patient.A_MuzzleClimb(
 				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
 				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
 				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
@@ -47,7 +47,7 @@ extend class UaS_TraumaKit {
 		// Extract fragments
 		if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
 			mashes++;
-			owner.A_StartSound("misc/smallslop",CHAN_BODY);
+			patient.A_StartSound("misc/smallslop",CHAN_BODY);
 			if (!currentWound.numb()) {
 				weaponstatus[TK_HOLD] = -1;
 				holdingopen = false;
@@ -55,7 +55,7 @@ extend class UaS_TraumaKit {
 				PainJolt();
 				return;
 			}
-			if(random[uas_tk](0,1)) { owner.A_StartSound("*grunt",CHAN_VOICE); }
+			if(random[uas_tk](0,1)) { patient.A_StartSound("*grunt",CHAN_VOICE); }
 			HDPlayerPawn(owner).A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
@@ -83,8 +83,8 @@ extend class UaS_TraumaKit {
 				}
 
 				currentWound.obstructed = max(currentWound.obstructed - remove, 0);
-				owner.A_StartSound("misc/bulletflesh",CHAN_BODY);
-				owner.damagemobj(owner,owner,1,"staples");
+				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
+				patient.damagemobj(owner,owner,1,"staples");
 				owner.A_Log(result, true);
 				mashes = 0;
 			}
