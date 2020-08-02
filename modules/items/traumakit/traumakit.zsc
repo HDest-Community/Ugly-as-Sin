@@ -140,7 +140,7 @@ class UaS_TraumaKit : HDWeapon {
 			weaponstatus[TK_WOUNDINDEX] = (weaponstatus[TK_WOUNDINDEX] + 1) % wh.critwounds.size();
 			currentWound = GetWound(weaponstatus[TK_WOUNDINDEX]);
 		}
-		if ((owner.player.cmd.buttons & BT_ALTRELOAD) && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
+		else if ((owner.player.cmd.buttons & BT_ALTRELOAD) && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
 			weaponstatus[TK_WOUNDINDEX] = (weaponstatus[TK_WOUNDINDEX] - 1) % wh.critwounds.size();
 			if(weaponstatus[TK_WOUNDINDEX] < 0) { weaponstatus[TK_WOUNDINDEX] = wh.critwounds.size() - 1; }
 			currentWound = GetWound(weaponstatus[TK_WOUNDINDEX]);
@@ -149,8 +149,17 @@ class UaS_TraumaKit : HDWeapon {
 
 	void CycleTools(int set = -1) {
 		if (set != -1) { weaponstatus[TK_SELECTED] = set; return; }
-		if ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2)) {
+		bool pressedaltfire = ((owner.player.cmd.buttons & BT_USER2) && !(owner.player.oldbuttons & BT_USER2));
+		bool holdinguse = ((owner.player.cmd.buttons & BT_USE));
+		if (pressedaltfire && !holdinguse ) {
 			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 6;
+			weaponstatus[TK_HOLD] = 0;
+			currentmessage.text = "";
+			currentmessage.timeout = 0;
+		}
+		else if (pressedaltfire && holdinguse) {
+			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] - 1);
+			if(weaponstatus[TK_SELECTED] < 0) { weaponstatus[TK_SELECTED] = 5; }
 			weaponstatus[TK_HOLD] = 0;
 			currentmessage.text = "";
 			currentmessage.timeout = 0;
