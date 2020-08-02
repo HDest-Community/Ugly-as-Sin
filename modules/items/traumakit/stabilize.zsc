@@ -2,7 +2,7 @@ class UaS_WoundStabilization : HDWeapon {
 	int pressure, hemostatic;
 	string statusMessage;
 	StatusInfo currentMessage;
-	WoundInfo currentWound;
+	//WoundInfo currentWound;
 	HDPlayerPawn patient, lastpatient;
 
 	Default {
@@ -24,7 +24,10 @@ class UaS_WoundStabilization : HDWeapon {
 		if (!(owner.player.readyweapon is 'UaS_WoundStabilization')) { return; }
 		SetHelpText();
 
-		statusMessage = "--- \cdWound stabilization\c- ---\n\n\n";
+		statusMessage = "--- \cdWound stabilization\c- ---\n";
+		if (patient) { statusMessage = statusmessage.."Treating \cg"..patient.player.getusername().."\n\n"; }
+		else { statusMessage = statusmessage.."\n\n"; }
+
 		statusMessage = statusmessage..
 			"\cuApply pressure and\nhemostatic compound\nto bandaged wounds.\n\n\n";
 
@@ -130,18 +133,14 @@ class UaS_WoundStabilization : HDWeapon {
 	}
 
 	void SetPatient() {
-		bool other = false;
+		HDPlayerPawn other;
 		FLineTraceData tktrace;
+		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
+		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
 
-		if (owner.player.cmd.buttons & BT_ZOOM) {
-			owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
-			if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = true; }
-		}
+		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
+		if (!patient || !other) { patient = HDPlayerPawn(owner); }
 
-		if (other) { patient = HDPlayerPawn(tktrace.hitactor); }
-		else { patient = HDPlayerPawn(owner); }
-
-		if (patient != lastpatient) { currentWound = null; }
 		lastpatient = patient;
 	}
 
