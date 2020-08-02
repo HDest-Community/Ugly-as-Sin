@@ -3,6 +3,7 @@ class UaS_WoundStabilization : HDWeapon {
 	string statusMessage;
 	StatusInfo currentMessage;
 	WoundInfo currentWound;
+	HDPlayerPawn patient, lastpatient;
 
 	Default {
 		Inventory.Amount 1;
@@ -33,10 +34,12 @@ class UaS_WoundStabilization : HDWeapon {
 	}
 
 	void BleedingControl() {
-		HDPlayerPawn plr = HDPlayerPawn(owner);
-		if (plr.unstablewoundcount <= 0) {
+		SetPatient();
+		if (patient.unstablewoundcount <= 0) {
 			currentmessage.text = "";
 			statusMessage = statusmessage.."No unstable bandaged wounds to treat.";
+			hemostatic = 0;
+			pressure = 0;
 			return;
 		}
 
@@ -56,25 +59,28 @@ class UaS_WoundStabilization : HDWeapon {
 		statusmessage = statusmessage.."\n\n";
 
 		// Apply hemostatic compound
-		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
-			if (hemostatic > 1) {
-				currentmessage.text = "Already used hemostatic compound.";
+		if ((owner.player.cmd.buttons & BT_RELOAD)) {
+			pressure = 0;
+			if (hemostatic >= 5) {
+				currentmessage.text = "Applied hemostatic compound.";
 				currentmessage.timeout = 35;
 				return;
 			}
 			else {
-				owner.A_StartSound("misc/wallchunks",CHAN_WEAPON);
-				if (random[uas_bc](0,1) == 0) { owner.A_StartSound("*grunt",CHAN_VOICE); }
-				HDPlayerPawn(owner).A_MuzzleClimb(
-					(frandom[uas_bc](-1,1),frandom[uas_bc](0,4)),
-					(frandom[uas_bc](-1,1),frandom[uas_bc](0,3)),
-					(frandom[uas_bc](-1,1),frandom[uas_bc](0,2)),
-					(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))
-				);
-				owner.A_StartSound("*grunt",CHAN_VOICE);
-				hemostatic = 5;
-				currentmessage.text = "Applied hemostatic compound to wound.";
-				currentmessage.timeout = 35;
+				if (!(owner.player.oldbuttons & BT_RELOAD)) { owner.A_StartSound("bandage/rip", CHAN_WEAPON, CHANF_DEFAULT, 0.5); }
+				if (level.time % 35 == 0) {
+					owner.A_StartSound("misc/wallchunks",CHAN_WEAPON);
+					if (random[uas_bc](0,1) == 0) { patient.A_StartSound("*grunt",CHAN_VOICE); }
+					HDPlayerPawn(owner).A_MuzzleClimb(
+						(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))/2,
+						(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))/2,
+						(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))/2,
+						(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))/2
+					);
+					hemostatic++;
+					currentmessage.text = "Applying hemostatic compound to wound.";
+					currentmessage.timeout = 35;
+				}
 				return;
 			}
 		}
@@ -82,11 +88,11 @@ class UaS_WoundStabilization : HDWeapon {
 		// Apply pressure
 		double shake;
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			pressure = min(pressure + 1, 125);
+			pressure = min(pressure + 1, 95 + (hemostatic * 5));
 			shake = pressure / 20.0;
-			if (random[uas_bc](0,35) == 0) { owner.A_StartSound("*grunt",CHAN_VOICE); }
-			if (random[uas_bc](0,25) == 0) { owner.A_StartSound("misc/smallslop", CHAN_WEAPON); }
-			if (pressure == 100) { owner.A_StartSound("*usemeds",CHAN_VOICE); }
+			if (random[uas_bc](0,35) == 0) { patient.A_StartSound("*grunt",CHAN_VOICE); }
+			if (random[uas_bc](0,25) == 0) { patient.A_StartSound("misc/smallslop", CHAN_BODY); }
+			if (pressure == 100) { patient.A_StartSound("*usemeds",CHAN_VOICE); }
 		}
 		else {
 			pressure = max(pressure - 1, 0);
@@ -102,21 +108,41 @@ class UaS_WoundStabilization : HDWeapon {
 		);
 
 		// check for stopped bleeding
-		if (level.time % 10 == 0 && pressure <= 100) {
-			int upperlimit = pressure + (hemostatic * 5);
+		bool canstabilize = (
+			(hemostatic <= 0) ||
+			(hemostatic > 0 && pressure <= 100)
+		);
+		if (level.time % 10 == 0 && canstabilize) {
+			int upperlimit = pressure + (hemostatic * 10);
 			int check = (
 				random[uas_bc](0, upperlimit) +
 				random[uas_bc](0, upperlimit)) / 2;
 
-			if (check > 80) {
+			if (check > 75) {
 				currentmessage.text = "Stabilized some bleeding.";
 				currentmessage.timeout = 35;
 				hemostatic = max(hemostatic - 1, 0);
 				pressure = 50;
-				plr.unstablewoundcount = max(plr.unstablewoundcount - 1, 0);
-				plr.oldwoundcount = max(plr.oldwoundcount + 1, 0);
+				patient.unstablewoundcount = max(patient.unstablewoundcount - 1, 0);
+				patient.oldwoundcount = max(patient.oldwoundcount + 1, 0);
 			}
 		}
+	}
+
+	void SetPatient() {
+		bool other = false;
+		FLineTraceData tktrace;
+
+		if (owner.player.cmd.buttons & BT_ZOOM) {
+			owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
+			if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = true; }
+		}
+
+		if (other) { patient = HDPlayerPawn(tktrace.hitactor); }
+		else { patient = HDPlayerPawn(owner); }
+
+		if (patient != lastpatient) { currentWound = null; }
+		lastpatient = patient;
 	}
 
 	struct StatusInfo {
@@ -126,8 +152,9 @@ class UaS_WoundStabilization : HDWeapon {
 
 	override string gethelptext(){
 		string r;
-		r.AppendFormat(WEPHELP_FIRE.."  Apply pressure\n");
-		r.AppendFormat(WEPHELP_RELOAD.."  Apply hemostatics\n");
+		r.AppendFormat(WEPHELP_FIRE.."  Hold to apply pressure\n");
+		r.AppendFormat(WEPHELP_RELOAD.."  Hold to apply hemostatics\n");
+		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n");
 		return r;
 	}
 

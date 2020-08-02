@@ -11,7 +11,7 @@ extend class UaS_TraumaKit {
 		r = WEPHELP_FIREMODE.."  Cycle tools\n";
 		r.AppendFormat(WEPHELP_RELOAD.."  Cycle wounds down\n");
 		r.AppendFormat(WEPHELP_ALTRELOAD.."  Cycle wounds up\n");
-		r.AppendFormat(WEPHELP_ZOOM.."  Use on other player\n\n");
+		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n\n");
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
