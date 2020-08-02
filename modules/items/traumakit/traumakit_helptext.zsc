@@ -9,6 +9,7 @@ extend class UaS_TraumaKit {
 	override string gethelptext(){
 		string r;
 		r = WEPHELP_FIREMODE.."  Cycle tools\n";
+		r.AppendFormat("  +"..WEPHELP_USE.."  Cycle tools backward\n");
 		r.AppendFormat(WEPHELP_RELOAD.."  Cycle wounds down\n");
 		r.AppendFormat(WEPHELP_ALTRELOAD.."  Cycle wounds up\n");
 		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n\n");
