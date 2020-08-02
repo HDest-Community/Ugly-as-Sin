@@ -198,7 +198,6 @@ class UaS_TraumaKit : HDWeapon {
 		T_BIOFOAM,
 		T_STAPLER,
 		T_SUTURES,
-		T_BLEEDING,
 	}
 
 	enum KitFlags {

@@ -33,10 +33,6 @@ extend class UaS_TraumaKit {
 			case T_SUTURES:
 				r.AppendFormat(WEPHELP_FIRE.."  Suture wound closed\n");
 				break;
-			case T_BLEEDING:
-				r.AppendFormat(WEPHELP_FIRE.."  Apply pressure\n");
-				r.AppendFormat(WEPHELP_RELOAD.."  Apply hemostatics\n");
-				break;
 		}
 		return r;
 	}
