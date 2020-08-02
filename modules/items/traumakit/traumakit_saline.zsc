@@ -38,7 +38,7 @@ extend class UaS_TraumaKit {
 				if (check < currentWound.dirty) {
 					owner.A_StartSound("misc/smallslop", CHAN_WEAPON);
 					currentWound.dirty = max(currentWound.dirty - 1, 0);
-					if(random[uas_tk](0, 10) == 0) { patient.A_StartSound("*grunt",CHAN_VOICE); }
+					if(random[uas_tk](0, 10) == 0) { A_PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 				}
 
 				// maybe remove some infection

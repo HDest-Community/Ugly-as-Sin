@@ -44,7 +44,7 @@ extend class UaS_TraumaKit {
 				if (check < currentWound.cavity) {
 					patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
 					currentWound.cavity = max(currentWound.cavity - 1, 0);
-					if(random[uas_tk](0,1)) { patient.A_StartSound("*grunt",CHAN_VOICE); }
+					if(random[uas_tk](0,1)) { A_PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 					patient.A_MuzzleClimb(
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),

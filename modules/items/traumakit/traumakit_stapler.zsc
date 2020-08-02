@@ -15,7 +15,7 @@ extend class UaS_TraumaKit {
 				PainJolt();
 			}
 			else {
-				patient.A_StartSound("*grunt",CHAN_VOICE);
+				A_PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 				weaponstatus[TK_HOLD] = 15;
 			}
 			patient.A_MuzzleClimb(
