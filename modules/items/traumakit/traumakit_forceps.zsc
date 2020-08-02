@@ -9,16 +9,15 @@ extend class UaS_TraumaKit {
 		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
-
-		// player must release buttons
-		if (!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; holdingopen = false; mashes = 0; }
-		// otherwise force abort
-		if (weaponstatus[TK_HOLD] < 0) { return; }
+		if (weaponstatus[TK_HOLD] < 0 && !(owner.player.cmd.buttons & BT_ATTACK)) {
+			weaponstatus[TK_HOLD] = min(weaponstatus[TK_HOLD] + 1, 0);
+			return;
+		}
 
 		// Hold wound open
-		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			weaponstatus[TK_HOLD]++;
+		if ((owner.player.cmd.buttons & BT_ATTACK) && mashes < random[uas_tk](5,10) && weaponstatus[TK_HOLD] >= 0) {
 			holdingopen = true;
+			weaponstatus[TK_HOLD]++;
 			currentmessage.text = "Holding the wound open.\n";
 			currentmessage.timeout = 5;
 			double shake = weaponstatus[TK_HOLD];
@@ -30,64 +29,56 @@ extend class UaS_TraumaKit {
 				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
 				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake))
 			);
-		}
 
-		// Abort if too much pain
-		int threshold = random[uas_tk](100,200);
-		if (currentWound.numb()) { threshold *= 4; }
-		if (weaponstatus[TK_HOLD] > threshold) {
-			weaponstatus[TK_HOLD] = -1;
-			holdingopen = false;
-			PainJolt();
+			// Abort if too much pain
+			if (!currentWound.numb(random[uas_tk](0,1))) {
+				weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+				PainJolt();
+			}
+
+			for (int i = 0; i < mashes; i++) { currentmessage.text = currentmessage.text.."."; }
+
+			// Extract fragments
+			if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
+				if (!currentWound.numb(5)) {
+					weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+					PainJolt();
+				}
+				mashes++;
+				patient.A_StartSound("misc/smallslop",CHAN_BODY);
+				if(random[uas_tk](0,1)) { patient.A_StartSound("*grunt",CHAN_VOICE); }
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)));
+			}
 			return;
 		}
 
-		for (int i = 0; i < mashes; i++) { currentmessage.text = currentmessage.text.."."; }
+		if (mashes > 0) {
+			int remove = frandom[uas_tk](2,4) * mashes;
+			string result;
 
-		// Extract fragments
-		if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
-			mashes++;
-			patient.A_StartSound("misc/smallslop",CHAN_BODY);
-			if (!currentWound.numb()) {
-				weaponstatus[TK_HOLD] = -1;
-				holdingopen = false;
-				mashes = 0;
-				PainJolt();
-				return;
-			}
-			if(random[uas_tk](0,1)) { patient.A_StartSound("*grunt",CHAN_VOICE); }
-			HDPlayerPawn(owner).A_MuzzleClimb(
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
-				(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)));
-			int check = (
-				random[uas_tk](100,200) +
-				random[uas_tk](100,200)) / 2;
-
-			if (check <= weaponstatus[TK_HOLD] || check <= mashes * 20) {
-				weaponstatus[TK_HOLD] = 50;
-				int remove = frandom[uas_tk](2,4) * mashes;
-				string result;
-
-				if (currentWound.obstructed > 0) { result = ExtractionMessage(); }
-				else { result = "You yank at the wound ineffectually"; }
-
-				// increase cavity on overshoot
-				if (remove > currentWound.obstructed) {
-					currentWound.cavity = min(currentWound.cavity + (remove / 2), 100);
-					result = result..", damaging the surrounding tissue.";
-				}
-				else {
-					result = result..".";
-				}
-
-				currentWound.obstructed = max(currentWound.obstructed - remove, 0);
+			if (currentWound.obstructed > 0 && mashes > 1) {
+				result = ExtractionMessage();
 				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
 				patient.damagemobj(owner,owner,1,"staples");
-				owner.A_Log(result, true);
-				mashes = 0;
 			}
+			else { result = "You probe the wound"; }
+
+			// increase cavity on overshoot
+			if (remove > currentWound.obstructed) {
+				currentWound.cavity = min(currentWound.cavity + (remove / 2), 100);
+				result = result..", damaging the surrounding tissue.";
+			}
+			else {
+				result = result..".";
+			}
+
+			currentWound.obstructed = max(currentWound.obstructed - remove, 0);
+			owner.A_Log(result, true);
+			mashes = 0;
 		}
 	}
 }

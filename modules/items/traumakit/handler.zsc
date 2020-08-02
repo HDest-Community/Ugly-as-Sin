@@ -19,7 +19,7 @@ class UaS_WoundHandler : Inventory {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 		if(!plr) return;
 
-		int diffwounds = plr.oldwoundcount - (5 * (critwounds.size()));
+		int diffwounds = plr.oldwoundcount - (3 * (critwounds.size()));
 		if (diffwounds >= 3) { critwounds.push(WoundInfo.Create(diffwounds)); } // Create a new wound entry every 3 or more points
 		if (diffwounds < -3) { RemoveWound(0); } // or remove oldest wound if passively healed at least 3 points
 

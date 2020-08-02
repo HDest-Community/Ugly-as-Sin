@@ -8,6 +8,7 @@ class WoundInfo : thinker {
 	int timer;
 	int size;
 	int infection;
+	int pain;
 	bool clear;
 
 	override void PostBeginPlay() {
@@ -16,7 +17,8 @@ class WoundInfo : thinker {
 	}
 
 	void TickWound() {
-		timer--;
+		timer = max(timer - 1, 0);
+		pain = max(pain - 1, 0);
 		if (timer <= 0) {
 			// Metabolize some painkiller
 			painkiller = max(painkiller - 1, 0);
@@ -48,13 +50,13 @@ class WoundInfo : thinker {
 		}
 	}
 
-	//
-	bool numb() {
+	bool numb(int inflict = 0) {
+		pain = min(pain + inflict, 100);
 		int check = (
-			random[uas_wi](0,100) +
-			random[uas_wi](0,75) +
-			random[uas_wi](0,50)) / 3;
-		return (check < painkiller);
+			random[uas_wi](0,pain) +
+			random[uas_wi](0,pain) +
+			random[uas_wi](0,pain)) / 3;
+		return (check <= painkiller);
 	}
 }
 

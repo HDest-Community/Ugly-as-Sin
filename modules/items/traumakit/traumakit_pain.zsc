@@ -8,7 +8,7 @@ extend class UaS_Traumakit {
 			(frandom[uas_tk](-2,2),frandom[uas_tk](-2,2)),
 			(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
 		);
-		patient.vel += (frandom[uas_tk](-3,3), frandom[uas_tk](-3,3), frandom[uas_tk](0,1));
+		patient.vel += (frandom[uas_tk](-1,1), frandom[uas_tk](-1,1), frandom[uas_tk](0,2));
 	}
 
 	string PainMessage() {

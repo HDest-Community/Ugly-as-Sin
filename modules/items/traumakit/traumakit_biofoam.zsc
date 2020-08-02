@@ -6,6 +6,10 @@ extend class UaS_TraumaKit {
 		if (currentWound.open <= 0) { return; }
 
 		// Handle actions
+		if (weaponstatus[TK_HOLD] < 0) {
+			weaponstatus[TK_HOLD] = min(weaponstatus[TK_HOLD] + 1, 0);
+			return;
+		}
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
 
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {
@@ -26,8 +30,8 @@ extend class UaS_TraumaKit {
 				currentmessage.text = "Injecting biofoam...\n";
 				currentmessage.timeout = 10;
 
-				if (!currentWound.numb()) {
-					weaponstatus[TK_HOLD] = -1;
+				if (!currentWound.numb(15)) {
+					weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
 					PainJolt();
 				}
 
