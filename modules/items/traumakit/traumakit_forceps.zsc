@@ -46,7 +46,7 @@ extend class UaS_TraumaKit {
 				}
 				mashes++;
 				patient.A_StartSound("misc/smallslop",CHAN_BODY);
-				if(random[uas_tk](0,1)) { A_PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+				if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 				HDPlayerPawn(owner).A_MuzzleClimb(
 					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),

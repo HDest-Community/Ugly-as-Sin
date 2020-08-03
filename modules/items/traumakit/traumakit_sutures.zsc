@@ -31,7 +31,7 @@ extend class UaS_TraumaKit {
 					currentWound.open = max(currentWound.open - random[uas_tk](1,5), 0);
 				}
 				else {
-					if(random[uas_tk](0,1)) { A_PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+					if(random[uas_tk](0,1)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 					currentWound.open = max(currentWound.open - random[uas_tk](2,5), 0);
 				}
 			}

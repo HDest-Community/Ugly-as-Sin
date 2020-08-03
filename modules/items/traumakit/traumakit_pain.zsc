@@ -1,6 +1,6 @@
 extend class UaS_Traumakit {
 	void PainJolt() {
-		A_PlaySkinSound(SKINSOUND_MEDS,"*usemeds");
+		PlaySkinSound(SKINSOUND_MEDS,"*usemeds");
 		if (random[uas_tk](0,1) == 0) { patient.A_Log("\cg"..PainMessage(), true); }
 		patient.A_MuzzleClimb(
 			(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
