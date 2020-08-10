@@ -3,7 +3,7 @@ class UaS_WoundStabilization : HDWeapon {
 	string statusMessage;
 	StatusInfo currentMessage;
 	//WoundInfo currentWound;
-	HDPlayerPawn patient, lastpatient;
+	HDPlayerPawn patient;
 
 	Default {
 		Inventory.Amount 1;
@@ -140,8 +140,6 @@ class UaS_WoundStabilization : HDWeapon {
 
 		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
 		if (!patient || !other) { patient = HDPlayerPawn(owner); }
-
-		lastpatient = patient;
 	}
 
 	struct StatusInfo {
