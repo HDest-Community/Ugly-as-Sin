@@ -60,6 +60,7 @@ class UaS_Respirator : HDPickup {
 		capacity = clamp(capacity, 1, RESP_CAPACITY);
 
 		if (!activated && refill) { DoRefill(); }
+		super.DoEffect();
 	}
 
 	override bool Use(bool pickup) {
