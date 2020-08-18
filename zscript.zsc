@@ -49,6 +49,7 @@ version "3.5"
 #include "modules/items/2f.zsc"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
+#include "modules/items/flare.zsc"
 #include "modules/items/laser.zsc"
 #include "modules/items/resp.zsc"
 
