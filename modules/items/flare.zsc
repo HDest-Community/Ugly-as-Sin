@@ -42,9 +42,15 @@ class UaS_Flare : HDPickup {
 
 	override void Tick() {
 		switch(Activated) {
-			if (owner) { owner.A_SoundVolume(818764, double(brightness - age) / 384.0); }
-			else { A_SoundVolume(818764, double(brightness - age) / 384.0); }
 			case true:
+				if (owner) {
+					owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+					owner.A_SoundVolume(818764, double(brightness - age) / 384.0);
+				}
+				else {
+					A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+					A_SoundVolume(818764, double(brightness - age) / 384.0);
+				}
 				frame = 6;
 				if (level.maptime % 1 == 0) { brightness = min(brightness + 2, 192); }
 				if (level.maptime % 40 == 0) { age++; }
@@ -132,6 +138,11 @@ class UaS_Flare : HDPickup {
 			owner.DropInventory(self);
 		}
 		return false;
+	}
+
+	override void DetachFromOwner() {
+		owner.A_StopSound(818764);
+		super.DetachFromOwner();
 	}
 
 	override inventory CreateTossable(int amt) {
