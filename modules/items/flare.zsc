@@ -154,7 +154,10 @@ class UaS_Flare : HDPickup {
 			DroppedFlare.Age = Age;
 			DroppedFlare.Spindir = randompick[flare](-1,1);
 			DroppedFlare.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
-			if(owner) { Activated = false; }
+			if(owner) {
+				owner.A_StopSound(818764);
+				Activated = false;
+			}
 		}
 		return DroppedFlare;
 	}
