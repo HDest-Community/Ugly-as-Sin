@@ -40,13 +40,13 @@ Sprite "HSCVB0", 28, 16
 Sprite "HSCVE0", 15, 20
 {
 	Offset 8, 19
-	Patch "HSCVE0", 0, 0
+	Patch "HSCVE0",0,0{translation "176:191=124:127"}
 }
 
 Sprite "HSCVF0", 28, 23
 {
 	Offset 12, 22
-	Patch "HSCVF0", 0, 0
+	Patch "HSCVF0",0,0{translation "176:191=124:127", "32:47=124:127" }
 }
 
 Sprite "HSCVG0", 28, 23
