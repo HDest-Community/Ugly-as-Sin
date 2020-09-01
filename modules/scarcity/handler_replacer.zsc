@@ -69,7 +69,6 @@ extend class UaS_Scarcity_Handler {
 				if(spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] < MEDIKIT_MAXFLESH) { spawnedMedikit.frame = 2; }
 				UaS.SpawnStuff('UaS_EmptyMedikit', 1, targetActor.pos);
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', maxmodules - kitmodules, targetActor.pos); }
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('SecondBlood', 1, targetActor.pos); }
 				break;
 			case 'PortableBerserkPack':
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_ZerkInjector', 1, targetActor.pos); }
