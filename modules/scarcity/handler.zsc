@@ -1,5 +1,6 @@
 #include "modules/scarcity/handler_remover.zsc"
 #include "modules/scarcity/handler_replacer.zsc"
+#include "modules/scarcity/handler_helpers.zsc"
 
 class UaS_Scarcity_Handler : EventHandler {
 	double ScarcityFactor;
