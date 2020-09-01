@@ -1,4 +1,4 @@
-class UaS_Scarcity_Spawner : EventHandler {
+class UaS_Scarcity_Handler : EventHandler {
 	double ScarcityFactor;
 	double OverspawnFactor;
 	actor spawneditem;

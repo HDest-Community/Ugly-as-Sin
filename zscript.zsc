@@ -17,7 +17,7 @@ version "3.5"
 #include "modules/hunger/messkit.zsc"
 
 // Scarcity scripts
-#include "modules/scarcity/spawner.zsc"
+#include "modules/scarcity/handler.zsc"
 #include "modules/scarcity/items.zsc"
 
 // General spawner
