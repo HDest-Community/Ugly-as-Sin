@@ -43,22 +43,3 @@ class UaS_Scarcity_Handler : EventHandler {
 	}
 
 }
-
-class UaS_ArmorReducer : Actor {
-	double ScarcityFactor;
-
-	States {
-		Spawn:
-			TNT1 AAAAA 1;
-			TNT1 A 0 ReduceArmor();
-			stop;
-	}
-
-	action void ReduceArmor() {
-		if(invoker.target) {
-			Inventory(invoker.target).amount *= frandom(1.0 - invoker.ScarcityFactor, 1.0);
-			if(UaS_Debug & Scarcity) { console.printf("%s reduced to %i", Inventory(invoker.target).GetClassName(), Inventory(invoker.target).amount); }
-		}
-		Destroy();
-	}
-}

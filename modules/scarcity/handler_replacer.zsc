@@ -98,15 +98,5 @@ extend class UaS_Scarcity_Handler {
 				if(UaS_Debug & Scarcity) { console.printf("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()); }
 				break;
 		}
-
-		//Replacer routine for armor
-		switch(targetActor.GetClassName()) {
-			case 'HDArmour':
-				if(!UaS.RandomChance(ScarcityFactor)) { break; }
-				let ArmourReducer = UaS_ArmorReducer(actor.Spawn('UaS_ArmorReducer', targetActor.pos));
-				ArmourReducer.target = targetActor;
-				ArmourReducer.ScarcityFactor = ScarcityFactor;
-				break;
-		}
 	}
 }
