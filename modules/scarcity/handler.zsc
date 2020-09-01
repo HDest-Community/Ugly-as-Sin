@@ -34,7 +34,6 @@ class UaS_Scarcity_Handler : EventHandler {
 		ExactScarcity('PortableStimpack', 1.0 - ScarcityFactor);
 		ExactScarcity('PortableMedikit', 1.0 - ScarcityFactor);
 		ExactScarcity('PortableBerserkPack', 1.0 - ScarcityFactor);
-		ExactScarcity('SecondBlood', 1.0 - ScarcityFactor);
 
 		//ExactScarcity('HDArmour', 1.0 - ScarcityFactor);
 
