@@ -17,7 +17,7 @@ version "3.5"
 #include "modules/hunger/messkit.zsc"
 
 // Scarcity scripts
-#include "modules/scarcity/spawner.zsc"
+#include "modules/scarcity/handler.zsc"
 #include "modules/scarcity/items.zsc"
 
 // General spawner
@@ -49,6 +49,7 @@ version "3.5"
 #include "modules/items/2f.zsc"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
+#include "modules/items/flare.zsc"
 #include "modules/items/laser.zsc"
 #include "modules/items/resp.zsc"
 #include "modules/items/traumakit/handler.zsc"

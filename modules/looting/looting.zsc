@@ -27,6 +27,7 @@ class UaS_Looting_Handler : Inventory {
 		if (!owner) { return; }
 		if (owner.health <= 0) { return; }
 		if (!owner.player.ReadyWeapon) { return; }
+		if (!(owner.player.ReadyWeapon is "HDFist")) { return; }
 
 		if (TryingToSearch()) {
 			FLineTraceData trace;
@@ -36,6 +37,9 @@ class UaS_Looting_Handler : Inventory {
 				cooldown = max(cooldown - 1, 0);
 			}
 		}
+
+		HDPlayerPawn(owner).wephelptext = HDWeapon(owner.player.ReadyWeapon).gethelptext()..
+			WEPHELP_USE.."   Crouch next to a body\n      and hold to search.";
 
 		// Nudge owner angle/pitch
 		owner.angle += anglevel;
@@ -47,7 +51,6 @@ class UaS_Looting_Handler : Inventory {
 	bool TryingToSearch() {
 		return (
 			(owner.player.cmd.buttons & BT_USE) &&
-			owner.player.ReadyWeapon is "HDFist" &&
 			owner.player.CrouchFactor <= 0.5);
 	}
 

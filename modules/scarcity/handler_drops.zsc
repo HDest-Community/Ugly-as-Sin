@@ -1,0 +1,8 @@
+extend class UaS_Scarcity_Handler {
+	// Prevent monster drops
+	override void WorldThingDied(WorldEvent e) {
+		if(e.thing && e.thing is "HDMobBase" && UaS_ScarcityDisableDrops) {
+			HDMobBase(e.thing).bnodeathdrop = true;
+		}
+	}
+}

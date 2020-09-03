@@ -7,7 +7,13 @@ class UaS_2F_Handler : Inventory {
 		//assume 7 auto-sutures per module, default 42 sutures = 6 modules
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr || !ownr.player.ReadyWeapon) { return; }
-		if(cooldown == 0 && ownr.player.ReadyWeapon.GetClassName() == 'HDMedikitter') {
+		if(!(ownr.player.ReadyWeapon is 'HDMedikitter')) { return; }
+
+		HDPlayerPawn(owner).wephelptext = HDWeapon(owner.player.ReadyWeapon).gethelptext().."\n"..
+			WEPHELP_UNLOAD.."   Remove a suture module\n"..
+			WEPHELP_ALTRELOAD.."   Insert a suture module\n";
+
+		if(cooldown == 0) {
 			if(ownr.player.cmd.buttons & BT_USER4) {
 				if(HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] >= 7) {
 					HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] -= 7;

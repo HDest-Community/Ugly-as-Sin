@@ -70,6 +70,7 @@ class UaS_LaserLightModule : HDPickup {
 			Light(false);
 			Laser(false);
 		}
+		super.doEffect();
 	}
 
 	void UpdateEmitter() {
@@ -113,6 +114,7 @@ class UaS_LaserLightModule : HDPickup {
 		emitter.LineTrace(emitter.angle, 64, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		int start = 1; //particle beam starts at emitter
 		if(owner.CheckLocalView()) { start = 12; } // unless local player
+		if(owner is "DERPBot") { start = 4; } // Reduce beams on DERPs
 		for (double d = start; d < flTrace.distance; d = d + (d / 2)) {
 			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
 				1, (sin(20) * d * 8), 0,

@@ -142,6 +142,8 @@ class UaS_WeaponSling : HDPickup {
 			slingBraced = false;
 			slingPrep = 0;
 		}
+
+		super.DoEffect();
 	}
 
 	action void AttachToWeapon() {
