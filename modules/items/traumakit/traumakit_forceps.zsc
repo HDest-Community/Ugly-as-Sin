@@ -8,6 +8,12 @@ extend class UaS_TraumaKit {
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
 
+		// Status precheck
+		if (currentWound.obstructed < 0) {
+			currentmessage.text = "No obstructions require removal.\n";
+			currentmessage.timeout = 10;
+		}
+
 		// Handle actions
 		if (weaponstatus[TK_HOLD] < 0 && !(owner.player.cmd.buttons & BT_ATTACK)) {
 			weaponstatus[TK_HOLD] = min(weaponstatus[TK_HOLD] + 1, 0);

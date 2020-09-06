@@ -5,6 +5,13 @@ extend class UaS_TraumaKit {
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
 
+		// Status precheck
+		if (currentWound.cavity < 0) {
+			currentmessage.text = "The wound does not need biofoam.\n";
+			currentmessage.timeout = 10;
+			return;
+		}
+
 		// Handle actions
 		if (weaponstatus[TK_HOLD] < 0) {
 			weaponstatus[TK_HOLD] = min(weaponstatus[TK_HOLD] + 1, 0);

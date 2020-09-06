@@ -31,11 +31,11 @@ class WoundInfo : thinker {
 
 			// Wound heals some points
 			if (toHeal >= AverageStatus()) {
-				open = max(open - 1, 0);
-				cavity = max(cavity - 1, 0);
-				dirty = max(dirty - 1, 0);
-				obstructed = max(obstructed - 1, 0);
-				infection = max(infection - 1, 0);
+				if (open > 0) { open--; }
+				if (cavity > 0) { cavity--; }
+				if (dirty > 0) { dirty--; }
+				if (obstructed > 0) { obstructed--; }
+				if (infection > 0) { infection--; }
 			}
 
 			// Infection increases
@@ -92,6 +92,7 @@ extend class WoundInfo {
 	}
 
 	string dirtystatus() {
+		if (dirty <  0)  { return ""; }
 		if (dirty >= 65) { return "It is "..statuscolor(dirty).."filthy\n"; }
 		if (dirty >= 55) { return "It is "..statuscolor(dirty).."very dirty\n"; }
 		if (dirty >= 45) { return "It is "..statuscolor(dirty).."somewhat dirty\n"; }
@@ -102,6 +103,7 @@ extend class WoundInfo {
 	}
 
 	string obstructstatus() {
+		if (obstructed <  0)  { return ""; }
 		if (obstructed >= 55) { return "There are "..statuscolor(obstructed).."many obstructions\n"; }
 		if (obstructed >= 45) { return "There are "..statuscolor(obstructed).."several obstructions\n"; }
 		if (obstructed >= 35) { return "There are "..statuscolor(obstructed).."a few obstructions\n"; }
@@ -111,6 +113,7 @@ extend class WoundInfo {
 	}
 
 	string cavitystatus() {
+		if (cavity <  0)  { return ""; }
 		if (cavity >= 85) { return "There is "..statuscolor(cavity).."severe tissue damage\n"; }
 		if (cavity >= 65) { return "There is "..statuscolor(cavity).."significant tissue damage\n"; }
 		if (cavity >= 45) { return "There is "..statuscolor(cavity).."moderate tissue damage\n"; }
@@ -142,11 +145,11 @@ extend class WoundInfo {
 		SetRandomSeed[uas_wi](level.maptime);
 		WoundInfo nw = new("WoundInfo");
 		nw.painkiller = 0;
-		nw.dirty = random[uas_wi](sizemin, sizemax);
-		nw.obstructed = randompick[uas_wi](0,1) * random[uas_wi](sizemin, sizemax);
-		nw.open = random[uas_wi](sizemin, sizemax);
-		nw.cavity = randompick[uas_wi](0,1) * (nw.obstructed + nw.open) * 0.5;
+		nw.dirty = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
+		nw.obstructed = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
+		nw.cavity = randompick[uas_wi](-1,1) * (nw.obstructed + nw.open) * 0.5;
 		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
+		nw.open = random[uas_wi](sizemin, sizemax);
 		nw.timer = (random[uas_wi](10, 30) * 35);
 		nw.size = newsize;
 		nw.description = WoundDescription(newsize);
