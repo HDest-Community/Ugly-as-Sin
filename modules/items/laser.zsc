@@ -1,3 +1,21 @@
+extend class UaS_Spawner {
+	void LLMSpawns(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "PortableLiteAmp" ||
+			e.Thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable) {
+			UaS.SpawnStuff('UaS_LaserLightModule', randompick[llm](0, 1), e.Thing.pos);
+		}
+	}
+}
+
+
 class UaS_LaserLightModule : HDPickup {
 	int mode;
 	bool activated;

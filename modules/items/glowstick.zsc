@@ -1,6 +1,5 @@
-class UaS_Glowstick_Spawner : EventHandler {
-	//Set up spawns
-	override void WorldThingSpawned(WorldEvent e) {
+extend class UaS_Spawner {
+	void GlowstickSpawns(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
@@ -9,10 +8,10 @@ class UaS_Glowstick_Spawner : EventHandler {
 			e.thing.GetClassName() == "HDAmBox" ||
 			e.Thing.GetClassName() == "PortableStimpack" ||
 			e.Thing.GetClassName() == "PortableMedikit" ||
-			e.Thing.GetClassName() == "HDBP");
+			e.Thing.GetClassName() == "HDBackpack");
 
 		if(spawnable) {
-			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 1, 2), e.Thing.pos);
+			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 0, 1), e.Thing.pos);
 		}
 	}
 }

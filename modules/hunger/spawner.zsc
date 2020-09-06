@@ -17,7 +17,7 @@ extend class UaS_Spawner {
 		if(UaS.RandomChance(0.5)) { toSpawnClass = 'UaS_WaterRation'; }
 
 		//Spawn rations on backpacks, with a chance of an extra ration
-		if(e.Thing.GetClassName() == "Backpack") {
+		if(e.Thing.GetClassName() == "HDBackpack") {
 			UaS.SpawnStuff('UaS_FoodRation', 1, spawnPos);
 			UaS.SpawnStuff('UaS_WaterRation', 1, spawnPos);
 		}

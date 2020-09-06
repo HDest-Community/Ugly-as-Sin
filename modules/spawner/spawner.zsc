@@ -11,14 +11,13 @@ class UaS_Spawner : EventHandler {
 		}
 
 		// Stuff that only spawns on map start
-		if (level.maptime != 1) { return; }
-
-		bool llmspawns = (
-			e.Thing is 'PortableLiteAmp' ||
-			e.Thing is 'HDBackpack' ||
-			e.Thing is 'HDAmBox');
-		if(llmspawns) { UaS.SpawnStuff('UaS_LaserLightModule', 0.5, e.Thing.pos); }
+		if (level.maptime > 1) { return; }
 
 		HungerSpawns(e);
+		AllySpawns(e);
+		SlingSpawns(e);
+		GlowstickSpawns(e);
+		FlareSpawns(e);
+		LLMSpawns(e);
 	}
 }
