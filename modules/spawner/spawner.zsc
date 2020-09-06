@@ -13,6 +13,12 @@ class UaS_Spawner : EventHandler {
 		// Stuff that only spawns on map start
 		if (level.maptime != 1) { return; }
 
-		if(e.Thing is 'PortableLiteAmp') { UaS.SpawnStuff('UaS_LaserLightModule', 1, e.Thing.pos); }
+		bool llmspawns = (
+			e.Thing is 'PortableLiteAmp' ||
+			e.Thing is 'HDBackpack' ||
+			e.Thing is 'HDAmBox');
+		if(llmspawns) { UaS.SpawnStuff('UaS_LaserLightModule', 0.5, e.Thing.pos); }
+
+		HungerSpawns(e);
 	}
 }
