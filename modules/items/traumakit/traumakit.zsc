@@ -6,6 +6,7 @@
 #include "modules/items/traumakit/traumakit_saline.zsc"
 #include "modules/items/traumakit/traumakit_helptext.zsc"
 #include "modules/items/traumakit/traumakit_pain.zsc"
+#include "modules/items/traumakit/spawner.zsc"
 
 class UaS_TraumaKit : HDWeapon {
 	string statusMessage;
