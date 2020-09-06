@@ -47,7 +47,7 @@ class UaS_WoundStabilization : HDWeapon {
 		}
 
 		// Hemostatic amount readout
-		if (hemostatic > 0) { statusMessage = statusmessage.."\cr"; }
+		if (hemostatic > 0) { statusMessage = statusmessage.."\ca"; }
 		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
 		statusmessage = statusmessage.."Hemostatic";
 		for (int i = 0; i < hemostatic; i++) { statusmessage = statusmessage.."="; }
@@ -65,7 +65,10 @@ class UaS_WoundStabilization : HDWeapon {
 		if ((owner.player.cmd.buttons & BT_RELOAD)) {
 			pressure = 0;
 			if (hemostatic >= 5) {
-				currentmessage.text = "Applied hemostatic compound.";
+				currentmessage.text = "Applied hemostatic compound.\n"
+					.."\cr--WARNING--\n"
+					.."Clotting agents can cause\n"
+					.."burns and tissue damage!\n";
 				currentmessage.timeout = 35;
 				return;
 			}
@@ -80,7 +83,10 @@ class UaS_WoundStabilization : HDWeapon {
 						(frandom[uas_bc](-1,1),frandom[uas_bc](0,1))/2
 					);
 					hemostatic++;
-					currentmessage.text = "Applying hemostatic compound to wound.";
+					currentmessage.text = "Applying hemostatic compound to wound.\n"
+						.."\cr--WARNING--\n"
+						.."Clotting agents can cause\n"
+						.."burns and tissue damage!\n";
 					currentmessage.timeout = 35;
 				}
 				return;
@@ -90,11 +96,17 @@ class UaS_WoundStabilization : HDWeapon {
 		// Apply pressure
 		double shake;
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-			pressure = min(pressure + 1, 99 + (hemostatic * 5));
+			pressure = min(pressure + 1, 99 + (hemostatic * 10));
 			shake = pressure / 20.0;
 			if (random[uas_bc](0,25) == 0) { patient.A_StartSound("misc/smallslop", CHAN_BODY); }
 			if (pressure == 100) {
-				PlaySkinSound(SKINSOUND_MEDS,"*usemeds");
+				patient.damagemobj(owner,owner,1,"staples");
+				patient.burncount += randompick[uas_bc](0, 0, 0, 1);
+			}
+			if (pressure == 109) {
+				pressure = 0;
+				patient.damagemobj(owner,owner,1,"staples");
+				patient.burncount += randompick[uas_bc](0, 1);
 			}
 		}
 		else {
@@ -121,7 +133,7 @@ class UaS_WoundStabilization : HDWeapon {
 				random[uas_bc](0, upperlimit) +
 				random[uas_bc](0, upperlimit)) / 2;
 
-			if (check > 75) {
+			if (check > 70) {
 				currentmessage.text = "Stabilized some bleeding.";
 				currentmessage.timeout = 35;
 				hemostatic = max(hemostatic - 1, 0);
