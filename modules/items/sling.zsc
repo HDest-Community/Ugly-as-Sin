@@ -1,5 +1,5 @@
-class UaS_Sling_Spawner : EventHandler {
-	override void WorldThingSpawned(WorldEvent e) {
+extend class UaS_Spawner {
+	void SlingSpawns(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
@@ -17,7 +17,7 @@ class UaS_Sling_Spawner : EventHandler {
 			e.Thing.GetClassName() == "bossrifle"
 		);
 
-		if (spawnable && UaS.RandomChance(0.1)) { UaS.SpawnStuff("UaS_WeaponSling", 1, e.Thing.pos); }
+		if (spawnable && UaS.RandomChance(0.2)) { UaS.SpawnStuff("UaS_WeaponSling", 1, e.Thing.pos); }
 	}
 }
 

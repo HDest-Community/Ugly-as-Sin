@@ -1,4 +1,4 @@
-class UaS_Ally_Spawner : EventHandler {
+extend class UaS_Spawner {
 	double spawnChance;
 
 	override void WorldLoaded(WorldEvent e) {
@@ -8,7 +8,7 @@ class UaS_Ally_Spawner : EventHandler {
 	}
 
 	//Spawn allied marines randomly
-	override void WorldThingSpawned(WorldEvent e) {
+	void AllySpawns(WorldEvent e) {
 		bool replaced = false;
 
 		// Conditions for skipping spawns

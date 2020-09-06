@@ -1,9 +1,9 @@
-class UaS_Hunger_Spawner : EventHandler {
+extend class UaS_Spawner {
 	double spawnRate;
 	vector3 spawnPos;
 
 	//Set up spawns
-	override void WorldThingSpawned(WorldEvent e) {
+	void HungerSpawns(WorldEvent e) {
 		if(UaS_HungerTimeScale == 0 || UaS_HungerEnabled == false) { return; }
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
@@ -17,7 +17,7 @@ class UaS_Hunger_Spawner : EventHandler {
 		if(UaS.RandomChance(0.5)) { toSpawnClass = 'UaS_WaterRation'; }
 
 		//Spawn rations on backpacks, with a chance of an extra ration
-		if(e.Thing.GetClassName() == "HDBP") {
+		if(e.Thing.GetClassName() == "HDBackpack") {
 			UaS.SpawnStuff('UaS_FoodRation', 1, spawnPos);
 			UaS.SpawnStuff('UaS_WaterRation', 1, spawnPos);
 		}

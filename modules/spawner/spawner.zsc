@@ -11,8 +11,13 @@ class UaS_Spawner : EventHandler {
 		}
 
 		// Stuff that only spawns on map start
-		if (level.maptime != 1) { return; }
+		if (level.maptime > 1) { return; }
 
-		if(e.Thing is 'PortableLiteAmp') { UaS.SpawnStuff('UaS_LaserLightModule', 1, e.Thing.pos); }
+		HungerSpawns(e);
+		AllySpawns(e);
+		SlingSpawns(e);
+		GlowstickSpawns(e);
+		FlareSpawns(e);
+		LLMSpawns(e);
 	}
 }
