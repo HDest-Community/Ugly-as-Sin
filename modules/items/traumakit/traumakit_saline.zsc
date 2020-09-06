@@ -36,8 +36,9 @@ extend class UaS_TraumaKit {
 					random[uas_tk](0,100) +
 					random[uas_tk](0,100)) / 2;
 
-				if (!currentWound.numb(5)) {
-					weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+				if (currentWound.inpain(5)) {
+					weaponstatus[TK_HOLD] = -5;
+					currentWound.inpain(35);
 					PainJolt();
 				}
 

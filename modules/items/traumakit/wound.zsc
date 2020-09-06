@@ -50,13 +50,9 @@ class WoundInfo : thinker {
 		}
 	}
 
-	bool numb(int inflict = 0) {
-		pain = min(pain + inflict, 100);
-		int check = (
-			random[uas_wi](0,pain) +
-			random[uas_wi](0,pain) +
-			random[uas_wi](0,pain)) / 3;
-		return (check <= painkiller);
+	bool inpain(int inflict = 0) {
+		pain += inflict;
+		return (pain > (painkiller + 25) * 2);
 	}
 }
 

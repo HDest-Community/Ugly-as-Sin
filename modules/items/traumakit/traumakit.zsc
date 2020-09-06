@@ -78,7 +78,7 @@ class UaS_TraumaKit : HDWeapon {
 		}
 
 		if (currentWound) { statusmessage = statusmessage..currentWound.WoundStatus().."\n"; }
-		//WoundPainShake();
+		WoundPainShake();
 
 		TickMessages();
 		A_WeaponMessage(statusMessage);
@@ -86,7 +86,7 @@ class UaS_TraumaKit : HDWeapon {
 
 	void WoundPainShake() {
 		if (!currentWound) { return; }
-		double ps = currentWound.pain / 100.0;
+		double ps = currentWound.pain / 200.0;
 		patient.A_MuzzleClimb(
 			ps*(frandom[uas_tk](-1,1),ps*frandom[uas_tk](-1,1)),
 			ps*(frandom[uas_tk](-1,1),ps*frandom[uas_tk](-1,1)),

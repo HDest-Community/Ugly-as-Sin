@@ -10,9 +10,9 @@ extend class UaS_TraumaKit {
 			owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
 			PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 			int inject = (
-				random[uas_tk](20,40) +
-				random[uas_tk](20,40) +
-				random[uas_tk](20,40)) / 3;
+				random[uas_tk](30,50) +
+				random[uas_tk](30,50) +
+				random[uas_tk](30,50)) / 3;
 			currentWound.painkiller = min(currentWound.painkiller + inject, 100);
 			currentmessage.text = "Anaesthetic injected.";
 			currentmessage.timeout = 2*35;

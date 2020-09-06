@@ -26,19 +26,11 @@ extend class UaS_TraumaKit {
 			weaponstatus[TK_HOLD]++;
 			currentmessage.text = "Holding the wound open.\n";
 			currentmessage.timeout = 5;
-			double shake = weaponstatus[TK_HOLD];
-			if (currentWound.numb()) { shake *= 0.001; }
-			else { shake *= 0.01; }
-			patient.A_MuzzleClimb(
-				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
-				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
-				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake)),
-				(frandom[uas_tk](-shake,shake),frandom[uas_tk](-shake,shake))
-			);
 
 			// Abort if too much pain
-			if (!currentWound.numb(random[uas_tk](0,1))) {
-				weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+			if (currentWound.inpain(2)) {
+				weaponstatus[TK_HOLD] = -5;
+				currentWound.inpain(35);
 				PainJolt();
 			}
 
@@ -46,13 +38,14 @@ extend class UaS_TraumaKit {
 
 			// Extract fragments
 			if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
-				if (!currentWound.numb(5)) {
-					weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+				if (currentWound.inpain(10)) {
+					weaponstatus[TK_HOLD] = -5;
+					currentWound.inpain(35);
 					PainJolt();
 				}
 				mashes++;
 				patient.A_StartSound("misc/smallslop",CHAN_BODY);
-				if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+				//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 				HDPlayerPawn(owner).A_MuzzleClimb(
 					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
@@ -69,7 +62,7 @@ extend class UaS_TraumaKit {
 			if (currentWound.obstructed > 0 && mashes > 1) {
 				result = ExtractionMessage();
 				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
-				patient.damagemobj(owner,owner,1,"staples");
+				//patient.damagemobj(owner,owner,1,"staples");
 			}
 			else { result = "You probe the wound"; }
 

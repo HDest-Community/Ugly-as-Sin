@@ -37,8 +37,9 @@ extend class UaS_TraumaKit {
 				currentmessage.text = "Injecting biofoam...\n";
 				currentmessage.timeout = 10;
 
-				if (!currentWound.numb(15)) {
-					weaponstatus[TK_HOLD] = min(-35, -currentWound.pain);
+				if (currentWound.inpain(20)) {
+					weaponstatus[TK_HOLD] = -5;
+					currentWound.inpain(35);
 					PainJolt();
 				}
 
@@ -51,7 +52,7 @@ extend class UaS_TraumaKit {
 				if (check < currentWound.cavity) {
 					patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
 					currentWound.cavity = max(currentWound.cavity - 1, 0);
-					if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+					//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 					patient.A_MuzzleClimb(
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
