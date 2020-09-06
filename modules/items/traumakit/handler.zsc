@@ -27,7 +27,7 @@ class UaS_WoundHandler : Inventory {
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
 			if (!critwounds[i]) { critwounds.delete(i); continue; }
 			if (critwounds[i].clear) {
-				console.printf("Cured "..critwounds[i].description);
+				owner.A_Log("Cured "..critwounds[i].description, true);
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
 				RemoveWound(i);
 				continue;
