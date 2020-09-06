@@ -2,6 +2,7 @@
 
 class UaS_WoundHandler : Inventory {
 	array<WoundInfo> critwounds;
+	int oldburncount;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -18,6 +19,9 @@ class UaS_WoundHandler : Inventory {
 	void ManageWounds() {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 		if(!plr) return;
+
+		int diffburns = plr.burncount - oldburncount;
+		if (diffburns >= 7) { critwounds.push(WoundInfo.Create(diffburns - 2, true));
 
 		int diffwounds = plr.oldwoundcount - (3 * (critwounds.size()));
 		if (diffwounds >= 3) { critwounds.push(WoundInfo.Create(diffwounds)); } // Create a new wound entry every 3 or more points

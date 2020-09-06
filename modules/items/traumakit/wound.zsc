@@ -135,27 +135,48 @@ extend class WoundInfo {
 
 // Static methods
 extend class WoundInfo {
-	static WoundInfo create(int newsize) {
+	static WoundInfo create(int newsize, bool burn = false) {
 		int sizemin = clamp(newsize * 2, 0, 100);
 		int sizemax = clamp(newsize * 20, 0, 100);
 		SetRandomSeed[uas_wi](level.maptime);
 		WoundInfo nw = new("WoundInfo");
-		nw.painkiller = 0;
-		nw.dirty = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
-		nw.obstructed = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
-		nw.cavity = randompick[uas_wi](-1,1) * (nw.obstructed + nw.open) * 0.5;
-		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
-		nw.open = random[uas_wi](sizemin, sizemax);
-		nw.timer = (random[uas_wi](10, 30) * 35);
-		nw.size = newsize;
-		nw.description = WoundDescription(newsize);
+		if (burn) {
+			nw.painkiller = 0;
+			nw.dirty = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
+			nw.cavity = randompick[uas_wi](-1,1) * (nw.obstructed + nw.open) * 0.5;
+			nw.infection = (nw.dirty + nw.cavity) * 0.5;
+			nw.obstructed = -1;
+			nw.open = -1;
+			nw.timer = (random[uas_wi](10, 30) * 35);
+			nw.size = newsize;
+			nw.description = WoundDescription(newsize, burn);
+		else {
+			nw.painkiller = 0;
+			nw.dirty = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
+			nw.obstructed = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
+			nw.cavity = randompick[uas_wi](-1,1) * (nw.obstructed + nw.open) * 0.5;
+			nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
+			nw.open = random[uas_wi](sizemin, sizemax);
+			nw.timer = (random[uas_wi](10, 30) * 35);
+			nw.size = newsize;
+			nw.description = WoundDescription(newsize);
+		}
 		return nw;
 	}
 
-	static string WoundDescription(int newsize) {
+	static string WoundDescription(int newsize, bool burn = false) {
 		int sevmax = WoundInfo.severity.size()-1;
 		int typmax = WoundInfo.type.size()-1;
+		int btypmax = WoundInfo.burntype.size()-1;
 		int parmax = WoundInfo.bodypart.size()-1;
+		if (burn) {
+			return string.format(
+				"%s %s, %s",
+				WoundInfo.severity[random[uas_wi](0, sevmax)],
+				WoundInfo.burntype[random[uas_wi](0, btypmax)],
+				WoundInfo.bodypart[random[uas_wi](0, parmax)]
+			);
+		}
 		return string.format(
 			"%s %s, %s",
 			WoundInfo.severity[random[uas_wi](0, sevmax)],
@@ -166,6 +187,7 @@ extend class WoundInfo {
 
 	static const string[] severity = { "minor","small","shallow","superficial","moderate","medium","large","deep","serious","critical" };
 	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+	static const string[] burntype = { "singe","scorch","1st-degree burn","2nd-degree burn","3rd-degree burn" };
 	static const string[] bodypart = {
 		"chest","abdomen","pelvis",
 		"upper back","lower back",
