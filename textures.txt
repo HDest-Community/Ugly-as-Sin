@@ -6,7 +6,7 @@ Sprite "HSCVA0", 23, 12
 	Patch "HSCVA0", 0, 0
 }
 
-Sprite "UGSIF0", 5, 10
+Sprite "UGSIH0", 5, 10
 {
 	XScale 1.500
 	Offset 3, -2

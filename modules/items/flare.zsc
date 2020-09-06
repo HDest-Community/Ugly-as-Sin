@@ -28,7 +28,7 @@ class UaS_Flare : HDPickup {
 
 	Default {
 		Inventory.PickupMessage "Picked up a flare.";
-		Inventory.Icon "UGSIF0";
+		Inventory.Icon "UGSIH0";
 		HDPickup.Bulk 2;
 		tag "Flare";
 		HDPickup.refid UAS_HDLD_FLARE;
@@ -106,7 +106,7 @@ class UaS_Flare : HDPickup {
 				}
 				break;
 			case false:
-				frame = 5;
+				frame = 7;
 				if (FlareLight) { FlareLight.Destroy(); }
 				if (FlareLight2) { FlareLight2.Destroy(); }
 				brightness = 0;
@@ -169,7 +169,7 @@ class UaS_Flare : HDPickup {
 
 	states {
 		Spawn:
-			UGSI B -1;
+			UGSI G -1;
 			stop;
 	}
 }
