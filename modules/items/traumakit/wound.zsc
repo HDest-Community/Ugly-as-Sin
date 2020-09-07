@@ -61,10 +61,10 @@ class WoundInfo : thinker {
 extend class WoundInfo {
 	int AverageStatus() {
 		int retvalue;
-		retvalue += dirty;
-		retvalue += obstructed;
-		retvalue += cavity;
-		retvalue += open;
+		if (dirty >= 0) { retvalue += dirty; }
+		if (obstructed >= 0) { retvalue += obstructed; }
+		if (cavity >= 0) { retvalue += cavity; }
+		if (open >= 0) { retvalue += open; }
 		//retvalue += infection;
 		retvalue /= 4;
 		return retvalue;
@@ -137,13 +137,13 @@ extend class WoundInfo {
 // Static methods
 extend class WoundInfo {
 	static WoundInfo create(int newsize) {
-		int sizemin = clamp(newsize * 2, 0, 100);
+		int sizemin = clamp(newsize * 10, 0, 100);
 		int sizemax = clamp(newsize * 20, 0, 100);
 		WoundInfo nw = new("WoundInfo");
 		nw.painkiller = 0;
-		nw.dirty = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
-		nw.obstructed = randompick[uas_wi](-1,1) * random[uas_wi](sizemin, sizemax);
-		nw.cavity = randompick[uas_wi](-1,1) * (nw.obstructed + nw.open) * 0.5;
+		nw.dirty = randompick[uas_wi](-1, random[uas_wi](sizemin, sizemax));
+		nw.obstructed = randompick[uas_wi](-1, random[uas_wi](sizemin, sizemax));
+		nw.cavity = randompick[uas_wi](-1, (nw.obstructed + nw.open) * 0.5);
 		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
 		nw.open = random[uas_wi](sizemin, sizemax);
 		nw.timer = (random[uas_wi](10, 30) * 35);
