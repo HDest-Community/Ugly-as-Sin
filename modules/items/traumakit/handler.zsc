@@ -41,22 +41,19 @@ class UaS_WoundHandler : Inventory {
 		//compare
 		int diffwounds = plr.oldwoundcount - knownwounds;
 
-		// Create a new wound entry every 3 or more points
+		// Create a new wound entry until the wounds array matches number of oldwounds
 		if (diffwounds > 0) {
 			int newsize = random[uas_wh](1, 5);
 			newsize = min(newsize, diffwounds);
 			critwounds.push(WoundInfo.Create(newsize));
 			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
-			diffwounds -= newsize;
 		}
 
-		 // or remove oldest wound if passively healed at least 3 points
-		if (diffwounds < 0) {
+		// remove oldest wound entry if passively healed enough points
+		if (diffwounds < 0 && abs(diffwounds) >= critwounds[0].size) {
 			if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description); }
 			RemoveWound(0);
-			diffwounds += 3;
 		}
-
 	}
 
 	void RemoveWound(int w) {
