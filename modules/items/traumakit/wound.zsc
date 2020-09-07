@@ -19,6 +19,7 @@ class WoundInfo : thinker {
 	void TickWound() {
 		timer = max(timer - 1, 0);
 		pain = max(pain - 1, 0);
+		pain = max(pain - painkiller / 20, 0);
 		if (timer <= 0) {
 			// Metabolize some painkiller
 			painkiller = max(painkiller - 1, 0);
