@@ -19,11 +19,8 @@ class UaS_WoundHandler : Inventory {
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 		if(!plr) return;
 
-		int diffwounds = plr.oldwoundcount - (3 * (critwounds.size()));
-		if (diffwounds >= 3) { critwounds.push(WoundInfo.Create(diffwounds)); } // Create a new wound entry every 3 or more points
-		if (diffwounds < -3) { RemoveWound(0); } // or remove oldest wound if passively healed at least 3 points
-
 		// iterate wound array, drop any wounds marked "clear"
+		// Do this first to hopefully avoid dropping or double-counting
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
 			if (!critwounds[i]) { critwounds.delete(i); continue; }
 			if (critwounds[i].clear) {
@@ -34,6 +31,32 @@ class UaS_WoundHandler : Inventory {
 			}
 			critwounds[i].TickWound();
 		}
+
+		// tabulate new wound array total points
+		int knownwounds;
+		for (int i = 1; i < critwounds.size(); i++) {
+			knownwounds += critwounds[i].size;
+		}
+
+		//compare
+		int diffwounds = plr.oldwoundcount - knownwounds;
+
+		// Create a new wound entry every 3 or more points
+		if (diffwounds > 0) {
+			int newsize = random[uas_wh](1, 5);
+			newsize = min(newsize, diffwounds);
+			critwounds.push(WoundInfo.Create(newsize));
+			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
+			diffwounds -= newsize;
+		}
+
+		 // or remove oldest wound if passively healed at least 3 points
+		if (diffwounds < 0) {
+			if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description); }
+			RemoveWound(0);
+			diffwounds += 3;
+		}
+
 	}
 
 	void RemoveWound(int w) {
