@@ -63,7 +63,7 @@ class UaS_WoundHandler : Inventory {
 
 			}
 			//Remove the oldest wound if none appropriate
-			if (!removedone && (diffwounds < -5 || plr.oldwoundcount <=0) {
+			if (!removedone && (diffwounds < -5 || plr.oldwoundcount <=0)) {
 				if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description.." with size "..critwounds[0].size.. "for diffwound "..diffwounds); }
 				RemoveWound(0);
 			}
