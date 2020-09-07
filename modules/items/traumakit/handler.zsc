@@ -49,10 +49,24 @@ class UaS_WoundHandler : Inventory {
 			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
 		}
 
-		// remove oldest wound entry if passively healed enough points
-		if (diffwounds < 0 && abs(diffwounds) >= critwounds[0].size) {
-			if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description); }
-			RemoveWound(0);
+		// remove oldest wound entry if passively healed enough points or if wounds are zero
+		if (critwounds.size() > 0 && (diffwounds < 0 || plr.oldwoundcount <= 0)) {
+			bool removedone;
+			// Look for oldest wound of the right size to remove
+			for (int i = 0; i < critwounds.size(); i++) {
+				if (critwounds[i].size == abs(diffwounds)) {
+					if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[i].description.." with size "..critwounds[i].size); }
+					RemoveWound(i);
+					removedone = true;
+					break;
+				}
+
+			}
+			//Remove the oldest wound if none appropriate
+			if (!removedone && (diffwounds < -5 || plr.oldwoundcount <=0) {
+				if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description.." with size "..critwounds[0].size.. "for diffwound "..diffwounds); }
+				RemoveWound(0);
+			}
 		}
 	}
 
