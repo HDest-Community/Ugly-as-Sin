@@ -42,8 +42,8 @@ class UaS_WoundHandler : Inventory {
 		int diffwounds = plr.oldwoundcount - knownwounds;
 
 		// Create a new wound entry until the wounds array matches number of oldwounds
-		int newsize = random[uas_wh](1, 5);
-		if (diffwounds >= newsize) {
+		if (diffwounds >= 5) {
+			int newsize = random[uas_wh](1, 5);
 			newsize = min(newsize, diffwounds);
 			critwounds.push(WoundInfo.Create(newsize));
 			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
