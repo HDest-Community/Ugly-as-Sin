@@ -14,6 +14,22 @@ class UaS_WoundHandler : Inventory {
 	override void DoEffect() {
 		if (!owner) { return; }
 		ManageWounds();
+		WoundPainShake();
+	}
+
+	void WoundPainShake() {
+		if(critwounds.size() <= 0) { return; }
+		double totalpain;
+		for(int i = 0; i < critwounds.size(); i++) {
+			totalpain += critwounds[i].pain	/ 200.0;
+		}
+		double ps = totalpain / critwounds.size();
+		HDPlayerPawn(owner).A_MuzzleClimb(
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1))
+		);
 	}
 
 	void ManageWounds() {
