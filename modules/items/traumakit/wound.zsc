@@ -60,13 +60,13 @@ class WoundInfo : thinker {
 // Status methods
 extend class WoundInfo {
 	int AverageStatus() {
-		int retvalue;
-		if (dirty >= 0) { retvalue += dirty; }
-		if (obstructed >= 0) { retvalue += obstructed; }
-		if (cavity >= 0) { retvalue += cavity; }
-		if (open >= 0) { retvalue += open; }
+		int retvalue, counted;
+		if (dirty >= 0) { retvalue += dirty; counted++; }
+		if (obstructed >= 0) { retvalue += obstructed; counted++;}
+		if (cavity >= 0) { retvalue += cavity; counted++;}
+		if (open >= 0) { retvalue += open; counted++;}
 		//retvalue += infection;
-		retvalue /= 4;
+		retvalue /= counted;
 		return retvalue;
 	}
 
