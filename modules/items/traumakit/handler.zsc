@@ -19,11 +19,11 @@ class UaS_WoundHandler : Inventory {
 
 	void WoundPainShake() {
 		if(critwounds.size() <= 0) { return; }
-		double totalpain;
+		double maxpain;
 		for(int i = 0; i < critwounds.size(); i++) {
-			totalpain += critwounds[i].pain	/ 200.0;
+			maxpain = max(maxpain, critwounds[i].pain);
 		}
-		double ps = totalpain / critwounds.size();
+		double ps = maxpain / 200;
 		HDPlayerPawn(owner).A_MuzzleClimb(
 			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
 			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
