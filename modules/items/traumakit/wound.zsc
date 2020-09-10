@@ -141,9 +141,9 @@ extend class WoundInfo {
 		int sizemax = clamp(newsize * 20, 0, 100);
 		WoundInfo nw = new("WoundInfo");
 		nw.painkiller = 0;
-		nw.dirty = randompick[uas_wi](-1, random[uas_wi](sizemin, sizemax));
-		nw.obstructed = randompick[uas_wi](-1, random[uas_wi](sizemin, sizemax));
-		nw.cavity = randompick[uas_wi](-1, (nw.obstructed + nw.open) * 0.5);
+		nw.dirty = max(-1, randompick[uas_wi](-1, 1, 1, 1) * random[uas_wi](sizemin, sizemax));
+		nw.obstructed = max(-1, randompick[uas_wi](-1, 1) * random[uas_wi](sizemin, sizemax));
+		nw.cavity = max(-1, randompick[uas_wi](-1, 1, 1) * random[uas_wi](sizemin, sizemax));
 		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
 		nw.open = random[uas_wi](sizemin, sizemax);
 		nw.timer = (random[uas_wi](10, 30) * 35);
