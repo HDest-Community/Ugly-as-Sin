@@ -18,7 +18,7 @@ extend class UaS_Spawner {
 }
 
 class UaS_Flare : HDPickup {
-	bool Activated;
+	bool Activated, Thrown;
 	DynamicLight FlareLight;
 	DynamicLight FlareLight2;
 	UaS_Flare DroppedFlare;
@@ -41,6 +41,11 @@ class UaS_Flare : HDPickup {
 	}
 
 	override void Tick() {
+		if (Thrown) {
+			vel *= 5;
+			vel.z += 5;
+			Thrown = false;
+		}
 		switch(Activated) {
 			case true:
 				if (owner) {
@@ -146,6 +151,7 @@ class UaS_Flare : HDPickup {
 	}
 
 	override inventory CreateTossable(int amt) {
+		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
 		DroppedFlare = null;
 		DroppedFlare = UaS_Flare(super.CreateTossable(amt));
 		if (DroppedFlare && Activated) {
@@ -154,11 +160,13 @@ class UaS_Flare : HDPickup {
 			DroppedFlare.Age = Age;
 			DroppedFlare.Spindir = randompick[flare](-1,1);
 			DroppedFlare.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
+			DroppedFlare.Thrown = Thrown;
 			if(owner) {
 				owner.A_StopSound(818764);
 				Activated = false;
 			}
 		}
+		//Thrown = false;
 		return DroppedFlare;
 	}
 

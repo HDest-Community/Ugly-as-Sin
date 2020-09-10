@@ -17,7 +17,7 @@ extend class UaS_Spawner {
 }
 
 class UaS_Glowstick : HDPickup {
-	bool Activated;
+	bool Activated, Thrown;
 	DynamicLight GlowLight;
 	UaS_Glowstick DroppedGlowStick;
 	int spindir;
@@ -38,6 +38,11 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override void Tick() {
+		if (Thrown) {
+			vel *= 5;
+			vel.z += 5;
+			Thrown = false;
+		}
 		switch(Activated) {
 			case true:
 				frame = 2;
@@ -73,6 +78,7 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override inventory CreateTossable(int amt) {
+		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
 		DroppedGlowStick = null;
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
 		if (DroppedGlowStick && Activated) {
@@ -80,8 +86,10 @@ class UaS_Glowstick : HDPickup {
 			DroppedGlowstick.Brightness = Brightness;
 			DroppedGlowstick.Age = Age;
 			DroppedGlowstick.Spindir = randompick(-1,1);
+			DroppedGlowstick.Thrown = Thrown;
 			if(owner) { Activated = false; }
 		}
+		//Thrown = false;
 		return DroppedGlowStick;
 	}
 
