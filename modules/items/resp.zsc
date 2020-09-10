@@ -69,7 +69,7 @@ class UaS_Respirator : HDPickup {
 		if (!activated && (o.player.buttons & BT_USE)) { refill = !refill; return false; }
 
 		if (capacity <= 1) {
-			owner.A_Log("Canister empty. Hold [use] and activate to refill.");
+			owner.A_Log("Canister empty. Hold [use] and activate to refill.", true);
 			return false;
 		}
 
@@ -94,7 +94,7 @@ class UaS_Respirator : HDPickup {
 		}
 
 		if (capacity >= RESP_CAPACITY) {
-			owner.a_Log("Canister full.");
+			owner.A_Log("Canister full.", true);
 			refill = false;
 			return;
 		}
