@@ -2,6 +2,7 @@
 
 class UaS_WoundHandler : Inventory {
 	array<WoundInfo> critwounds;
+	int nextwound;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -16,6 +17,7 @@ class UaS_WoundHandler : Inventory {
 	}
 
 	void ManageWounds() {
+		if (nextwound == 0) { nextwound = random[uas_wh](1, 5); }
 		HDPlayerPawn plr = HDPlayerPawn(owner);
 		if(!plr) return;
 
@@ -42,11 +44,12 @@ class UaS_WoundHandler : Inventory {
 		int diffwounds = plr.oldwoundcount - knownwounds;
 
 		// Create a new wound entry until the wounds array matches number of oldwounds
-		if (diffwounds >= 5) {
-			int newsize = random[uas_wh](1, 5);
+		if (diffwounds >= nextwound) {
+			int newsize = nextwound;
 			newsize = min(newsize, diffwounds);
 			critwounds.push(WoundInfo.Create(newsize));
 			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
+			nextwound = random[uas_wh](1, 5);
 		}
 
 		// remove oldest wound entry if passively healed enough points or if wounds are zero
