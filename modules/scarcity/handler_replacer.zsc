@@ -25,13 +25,13 @@ extend class UaS_Scarcity_Handler {
 				break;
 			case 'ShellPickup':
 			case 'HDShellAmmo':
-				UaS.SpawnStuff('HDFumblingShell', random(0, 4 * min(OverspawnFactor-ScarcityFactor, 1.0)), targetActor.pos, true);
+				UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * min(OverspawnFactor-ScarcityFactor, 1.0))), targetActor.pos, true);
 				break;
 			case 'ShellBoxPickup':
 				BoxReplacer('ShellBoxPickup', 'HDFumblingShell', 20, targetActor);
 				break;
 			case 'HDBattery':
-				int MagCap = 20 * min(OverspawnFactor - ScarcityFactor, 1.0);
+				int MagCap = int(20 * min(OverspawnFactor - ScarcityFactor, 1.0));
 				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { HDMagAmmo.SpawnMag(targetActor, 'HDBattery', random(0, MagCap)); }
 				break;
 			case 'RocketBigPickup':
@@ -63,7 +63,7 @@ extend class UaS_Scarcity_Handler {
 				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', targetActor.pos));
 				if(!spawnedMedikit) { break; }
 				//assume 7 auto-sutures per module, default 42 sutures = 6 modules
-				int maxmodules = max(1, (MEDIKIT_MAXFLESH * UaS_ScarcityOverspawn) / 6);
+				int maxmodules = int(max(1, (MEDIKIT_MAXFLESH * UaS_ScarcityOverspawn) / 6));
 				int kitmodules = max(1, random(1, maxmodules));
 				spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] = 7 * kitmodules;
 				if(spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] < MEDIKIT_MAXFLESH) { spawnedMedikit.frame = 2; }
@@ -94,7 +94,7 @@ extend class UaS_Scarcity_Handler {
 				avgint /= 3;
 				avgint *= UaS_ScarcityOverspawn;
 				avgint  = clamp(avgint,0,400);
-				PortableLiteAmp(spawnedLiteAmp).setintegrity(avgint);
+				PortableLiteAmp(spawnedLiteAmp).setintegrity(int(avgint));
 				if(UaS_Debug & Scarcity) { console.printf("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()); }
 				break;
 		}

@@ -110,8 +110,8 @@ class UaS_WeaponSling : HDPickup {
 			slingPrep = max(slingPrep - 45, 0);
 		}
 
-		if(slingPrep == 40 || slingPrep == 315) { owner.A_PlaySound("weapons/pocket", CHAN_WEAPON, 0.25); }
-		if(slingPrep == 340) { owner.A_PlaySound("weapons/rifleclick2",CHAN_BODY,0.3); }
+		if(slingPrep == 40 || slingPrep == 315) { owner.A_StartSound("weapons/pocket", CHAN_WEAPON, volume: 0.25); }
+		if(slingPrep == 340) { owner.A_StartSound("weapons/rifleclick2", CHAN_BODY, volume: 0.3); }
 
 
 		//Enable or disable on completion
@@ -165,8 +165,8 @@ class UaS_WeaponSling : HDPickup {
 			if(weapName == invoker.weaponList[i]) { validWeapon = true; }
 		}
 		if(validWeapon || currentWeapon.weaponspecial == 1337) {
-				A_PlaySound("misc/fragknock", CHAN_BODY, 0.3);
-				A_PlaySound("misc/casing", CHAN_WEAPON, 0.3);
+				A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
+				A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
 				invoker.attachedPoints++;
 				invoker.attachedWeapon = currentWeapon.GetClassName();
 				if(getcvar("hd_helptext")) { currentWeapon.A_WeaponMessage("Attached a sling point ("..invoker.attachedPoints.." of 2).", 70); }

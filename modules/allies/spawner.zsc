@@ -61,7 +61,7 @@ extend class UaS_Spawner {
 }
 
 class UaS_Ally_Activator : Inventory {
-	int closestPlayer;
+	double closestPlayer;
 	bool LoSPlayer;
 
 	override void DoEffect() {

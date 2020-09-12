@@ -56,7 +56,7 @@ extend class UaS_TraumaKit {
 		}
 
 		if (mashes > 0) {
-			int remove = frandom[uas_tk](2,4) * mashes;
+			int remove = random[uas_tk](2,4) * mashes;
 			string result;
 
 			if (currentWound.obstructed > 0 && mashes > 1) {

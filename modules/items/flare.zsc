@@ -67,7 +67,7 @@ class UaS_Flare : HDPickup {
 					FlareLight.args[DynamicLight.LIGHT_GREEN] = 160;
 					FlareLight.args[DynamicLight.LIGHT_BLUE] = 192;
 				}
-				FlareLight.args[DynamicLight.LIGHT_INTENSITY] = 0.25 * (brightness - age) + random[flare](-4, 4);
+				FlareLight.args[DynamicLight.LIGHT_INTENSITY] = int(0.25 * (brightness - age) + random[flare](-4, 4));
 				if (owner) { FlareLight.target = owner; }
 				else { FlareLight.target = self; }
 

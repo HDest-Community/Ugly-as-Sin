@@ -36,7 +36,7 @@ extend class UaS_AI_Handler {
 
 				if(UaS.randomChance(1.0 - healthFactor)) { owner.bFRIGHTENED = true; }
 				else { owner.bFRIGHTENED = false; }
-				painCountDown = random[ai](5, 10) * 35 * healthFactor;
+				painCountDown = int(random[ai](5, 10) * 35 * healthFactor);
 			}
 			painCountdown = max(painCountDown - 1, 0);
 

@@ -144,7 +144,7 @@ extend class WoundInfo {
 		nw.dirty = max(-1, randompick[uas_wi](-1, 1, 1, 1) * random[uas_wi](sizemin, sizemax));
 		nw.obstructed = max(-1, randompick[uas_wi](-1, 1) * random[uas_wi](sizemin, sizemax));
 		nw.cavity = max(-1, randompick[uas_wi](-1, 1, 1) * random[uas_wi](sizemin, sizemax));
-		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) * 0.25;
+		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) / 4;
 		nw.open = random[uas_wi](sizemin, sizemax);
 		nw.timer = (random[uas_wi](10, 30) * 35);
 		nw.size = newsize;

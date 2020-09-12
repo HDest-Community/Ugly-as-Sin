@@ -10,7 +10,7 @@ extend class UaS_Scarcity_Handler {
 
 		int originalcount = thingArray.Size();
 
-		int targetAmount = thingArray.Size() * targetPercent;
+		int targetAmount = int(thingArray.Size() * targetPercent);
 		while(thingArray.Size() > targetAmount) {
 			if(UaS_Debug & Scarcity) { console.printf("Modified or removed "..checkClass); }
 			int index = random(0, thingArray.Size()-1);

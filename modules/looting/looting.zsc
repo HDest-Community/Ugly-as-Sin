@@ -69,7 +69,7 @@ class UaS_Looting_Handler : Inventory {
 				currentWeapon.A_WeaponMessage(searchMarker.lastMessage);
 				return;
 			}
-			owner.A_PlaySound("weapons/pocket", frandom(0.0, 0.5));
+			owner.A_StartSound("weapons/pocket", volume: frandom(0.0, 0.5));
 			searchMarker.searchedAmount += frandom(0.05, 0.1);
 			anglevel += frandom[loot](-1, 1);
 			pitchvel += frandom[loot](-1, 1);
@@ -92,7 +92,7 @@ class UaS_Looting_Handler : Inventory {
 		int maxAmount = 0;
 		double rarityFactor = 0;
 
-		if(spawnTarget.CheckClass("ZombieStormtrooper", AAPTR_DEFAULT, true)) {
+		if(spawnTarget is "ZombieStormtrooper") {
 			int weapontype = ZombieStormtrooper(spawnTarget).firemode;
 			switch(weapontype) {
 				case -2:
@@ -113,7 +113,7 @@ class UaS_Looting_Handler : Inventory {
 					break;
 			}
 		}
-		if(spawnTarget.CheckClass("HideousShotgunGuy", AAPTR_DEFAULT, true)) {
+		if(spawnTarget is "HideousShotgunGuy") {
 			int weapontype = HideousShotgunGuy(spawnTarget).wep;
 			switch(weapontype) {
 				case -1:
@@ -134,7 +134,7 @@ class UaS_Looting_Handler : Inventory {
 					break;
 			}
 		}
-		if(spawnTarget.CheckClass("VulcanetteGuy", AAPTR_DEFAULT, true)) {
+		if(spawnTarget is "VulcanetteGuy") {
 			tableSize = DragonGuardLoot.Size() - 1;
 			lootIndex = random(0, tableSize);
 			LootClass = DragonGuardLoot[lootIndex].itemName;
@@ -142,7 +142,7 @@ class UaS_Looting_Handler : Inventory {
 			maxAmount = DragonGuardLoot[lootIndex].maxAmount;
 			rarityFactor = DragonGuardLoot[lootIndex].rarityFactor;
 		}
-		if(spawnTarget.CheckClass("HDMarine", AAPTR_DEFAULT, true)) {
+		if(spawnTarget is "HDMarine") {
 			int weapontype = HDMarine(spawnTarget).wep;
 			switch(weapontype) {
 				case 1:

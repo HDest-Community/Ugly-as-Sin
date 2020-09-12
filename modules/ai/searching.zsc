@@ -10,7 +10,7 @@ extend class UaS_AI_Handler {
 		if(owner.health <= 0) { return; }
 
 		// Normal following behavior plus visibility checks
-		if (owner.target && owner.target.CheckClass("HDPlayerPawn", AAPTR_DEFAULT, true)) {
+		if (owner.target && owner.target is "HDPlayerPawn") {
 			if (lastknown) { lastKnown.destroy(); }
 
 			// Clear ambush flag if needed
