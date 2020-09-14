@@ -1,0 +1,44 @@
+// A base class for all consumable (food) items to inherit from
+class UaS_Consumable : HDPickup {
+	int energy;
+	int fluid;
+	string description;
+	string opensound;
+	property Energy: energy;
+	property Fluid: fluid;
+	property Description: description;
+	property OpenSound: opensound;
+
+	default {
+		UaS_Consumable.Energy 0;
+		UaS_Consumable.Fluid 0;
+		UaS_Consumable.Description "A generic block of vaguely food-like mush with no nutritional value. Probably obtained via console commands.";
+		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		Inventory.PickupMessage "Picked up a generic consumable. You really shouldn't have this.";
+		Inventory.Icon "HSCVB0";
+		Inventory.PickupSound "weapons/pocket";
+		tag "Generic Consumable";
+		HDPickup.Bulk 5;
+		-INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+	}
+
+	States {
+		Spawn:
+			TNT1 A -1 { invoker.UpdateSprite(); }
+			Stop;
+	}
+
+	override void BeginPlay() {
+		UpdateSprite();
+		super.BeginPlay();
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+}

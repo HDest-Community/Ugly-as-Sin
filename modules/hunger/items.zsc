@@ -1,33 +1,27 @@
-class UaS_FoodRation : HDPickup {
+class UaS_FoodRation : UaS_Consumable {
 	default {
-		inventory.pickupmessage "Picked up some food.";
-		inventory.MaxAmount 16;
+		UaS_Consumable.Energy 400;
+		UaS_Consumable.Fluid 0;
+		UaS_Consumable.Description "A flavorless ration bar, intended to replace a single meal with a few energy-dense bites.";
+		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		Inventory.PickupMessage "Picked up a military food ration.";
+		tag "Food Ration (400kcal)";
+		Inventory.Icon "HSCVA0";
 		hdpickup.bulk 4;
-		tag "Food Ration";
 		hdpickup.refid UAS_HDLD_FRATION;
-		+INVENTORY.IGNORESKILL;
-	}
-
-	States {
-		Spawn:
-			HSCV A -1;
-			stop;
 	}
 }
 
-class UaS_WaterRation : HDPickup {
+class UaS_WaterRation : UaS_Consumable {
 	default {
-		inventory.pickupmessage "Picked up some water.";
-		inventory.MaxAmount 16;
+		UaS_Consumable.Energy 0;
+		UaS_Consumable.Fluid 250;
+		UaS_Consumable.Description "A disposable tear-open water pouch, about equivalent to a single glass of water.";
+		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		inventory.pickupmessage "Picked up a military water ration.";
+		tag "Water Ration (250ml)";
+		Inventory.Icon "HSCVR0";
 		hdpickup.bulk 8;
-		tag "Water Ration";
 		hdpickup.refid UAS_HDLD_WRATION;
-		+INVENTORY.IGNORESKILL;
-	}
-
-	States {
-		Spawn:
-			HSCV R -1;
-			stop;
 	}
 }
