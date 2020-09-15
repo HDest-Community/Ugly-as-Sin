@@ -1,0 +1,29 @@
+extend class UaS_TraumaKit {
+	void HandleScalpel() {
+		statusMessage = statusmessage.."\cjScalpel\n";
+		statusMessage = statusmessage.."\cuFor re-opening wounds.\n\n";
+		if (!currentWound) { return; }
+
+		// Handle actions
+		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
+		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
+			owner.A_StartSound("bandage/rip",CHAN_WEAPON);
+			if (currentWound.inpain(75)) {
+				patient.damagemobj(owner,owner,1,"staples");
+				weaponstatus[TK_HOLD] = 50;
+				PainJolt();
+			}
+			else {
+				weaponstatus[TK_HOLD] = 25;
+			}
+			patient.A_MuzzleClimb(
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,4)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,3)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,2)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,1))
+			);
+			currentWound.open = max(currentWound.open + random[uas_tk](5,10), 100);
+			return;
+		}
+	}
+}

@@ -2,6 +2,7 @@
 #include "modules/items/traumakit/traumakit_forceps.zsc"
 #include "modules/items/traumakit/traumakit_stapler.zsc"
 #include "modules/items/traumakit/traumakit_sutures.zsc"
+#include "modules/items/traumakit/traumakit_scalpel.zsc"
 #include "modules/items/traumakit/traumakit_biofoam.zsc"
 #include "modules/items/traumakit/traumakit_saline.zsc"
 #include "modules/items/traumakit/traumakit_helptext.zsc"
@@ -73,9 +74,9 @@ class UaS_TraumaKit : HDWeapon {
 			case T_SUTURES:
 				HandleSutures();
 				break;
-			/*case T_2F: //Maybe add later
-				Handle2F();
-				break;*/
+			case T_SCALPEL:
+				HandleScalpel();
+				break;
 		}
 
 		if (currentWound) { statusmessage = statusmessage..currentWound.WoundStatus().."\n"; }
@@ -214,6 +215,7 @@ class UaS_TraumaKit : HDWeapon {
 		T_BIOFOAM,
 		T_STAPLER,
 		T_SUTURES,
+		T_SCALPEL,
 	}
 
 	enum KitFlags {
