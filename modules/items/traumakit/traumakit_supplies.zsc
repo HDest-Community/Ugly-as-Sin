@@ -1,0 +1,33 @@
+extend class UaS_TraumaKit {
+	void HandleSupplies() {
+		if((owner.player.cmd.buttons & BT_ALTFIRE) && !(owner.player.oldbuttons & BT_ALTFIRE)) {
+
+			switch (weaponstatus[TK_SELECTED]) {
+				case T_PAINKILLER:
+					if(owner.countinv("PortableStimpack") > 0) {
+						owner.TakeInventory("PortableStimpack", 1);
+						weaponstatus[TKS_PAINKILLER] += 20;
+						currentmessage.text = "Refilled anesthetic by breaking down one stimpack.";
+						currentmessage.timeout = 2*35;
+					}
+					else {
+						currentmessage.text = "No available stimpacks.";
+						currentmessage.timeout = 2*35;
+					}
+					break;
+				case T_SALINE:
+					break;
+				case T_FORCEPS:
+					break;
+				case T_BIOFOAM:
+					break;
+				case T_STAPLER:
+					break;
+				case T_SUTURES:
+					break;
+				case T_SCALPEL:
+					break;
+			}
+		}
+	}
+}

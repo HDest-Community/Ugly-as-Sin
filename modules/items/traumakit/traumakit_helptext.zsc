@@ -18,6 +18,7 @@ extend class UaS_TraumaKit {
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
 				r.AppendFormat(WEPHELP_FIRE.."  Inject anesthetic\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill anesthetic\n(break down stimpack)\n");
 				break;
 			case T_SALINE:
 				r.AppendFormat(WEPHELP_FIRE.."  Flush wound\n");

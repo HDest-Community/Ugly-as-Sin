@@ -1,13 +1,16 @@
 extend class UaS_TraumaKit {
 	void HandlePainkiller() {
 		statusMessage = statusmessage.."\cjAnesthetic\n";
-		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n\n";
+		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
+		statusMessage = statusmessage.."Injections remaining: \cy"..weaponstatus[TKS_PAINKILLER].."\n\n";
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
+		if (weaponstatus[TKS_PAINKILLER] <=0) { return; }
 
 		// Handle actions
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
 			owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
+			weaponstatus[TKS_PAINKILLER]--;
 			//PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 			int inject = (
 				random[uas_tk](30,50) +

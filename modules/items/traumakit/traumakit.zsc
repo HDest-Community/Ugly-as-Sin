@@ -7,6 +7,7 @@
 #include "modules/items/traumakit/traumakit_saline.zsc"
 #include "modules/items/traumakit/traumakit_helptext.zsc"
 #include "modules/items/traumakit/traumakit_pain.zsc"
+#include "modules/items/traumakit/traumakit_supplies.zsc"
 #include "modules/items/traumakit/spawner.zsc"
 
 class UaS_TraumaKit : HDWeapon {
@@ -54,6 +55,7 @@ class UaS_TraumaKit : HDWeapon {
 		WoundList();
 		CycleWounds();
 		CycleTools();
+		HandleSupplies();
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
@@ -220,9 +222,16 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	enum KitFlags {
+		//standard slots
 		TK_SELECTED,
 		TK_BUTTON,
 		TK_HOLD,
-		TK_WOUNDINDEX
+		TK_WOUNDINDEX,
+
+		//supply slots
+		TKS_PAINKILLER,
+		TKS_SALINE,
+		TKS_BIOFOAM,
+		TKS_STAPLES,
 	}
 }
