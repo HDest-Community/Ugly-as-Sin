@@ -151,6 +151,7 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	void CycleTools(int set = -1) {
+		if ((owner.player.cmd.buttons & BT_FIREMODE)) { return; }
 		if (set != -1) { weaponstatus[TK_SELECTED] = set; return; }
 		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
 			weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
