@@ -25,6 +25,7 @@ class UaS_LaserLightModule : HDPickup {
 	double angleoffset,pitchoffset;
 	color LaserColor;
 	double LaserAlpha;
+	transient cvar beams;
 
 	default {
 		radius 3;
@@ -128,6 +129,8 @@ class UaS_LaserLightModule : HDPickup {
 		emitter.Activate(self); // turn on dynlight
 
 		// Draw flashlight particle beam
+		if (!beams) { beams = CVar.GetCVar("UaS_FlashlightParticles", players[consoleplayer]); }
+		if (beams.GetBool() == false) { return; }
 		FLineTraceData flTrace;
 		emitter.LineTrace(emitter.angle, 64, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		int start = 1; //particle beam starts at emitter

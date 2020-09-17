@@ -60,6 +60,7 @@ OptionMenu "UaS_Options" {
 	Option "Focus Zoom Mode","UaS_FocusZoomMode","FocusModes"
 	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
 	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"

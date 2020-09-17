@@ -35,3 +35,5 @@ server int UaS_FocusZoomMode = 0;
 server bool UaS_AimSwayEnabled = false;
 
 server noarchive bool UaS_YOLO = false;
+
+user bool UaS_FlashlightParticles = true;
