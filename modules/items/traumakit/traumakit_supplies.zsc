@@ -2,7 +2,7 @@ extend class UaS_TraumaKit {
 	override void actualpickup(actor other,bool silent){
 		let tk=hdweapon(other.findinventory("UaS_TraumaKit"));
 		if(tk) {
-			other.A_Log(string.format("\cgRefilled Trauma Kit supplies",true));
+			other.A_Log(string.format("\cgRefilled Trauma Kit supplies"),true);
 			tk.weaponstatus[TKS_PAINKILLER] += weaponstatus[TKS_PAINKILLER];
 			tk.weaponstatus[TKS_SALINE] += weaponstatus[TKS_SALINE];
 			tk.weaponstatus[TKS_BIOFOAM] += weaponstatus[TKS_BIOFOAM];
