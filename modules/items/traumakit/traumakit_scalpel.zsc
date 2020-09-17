@@ -1,7 +1,7 @@
 extend class UaS_TraumaKit {
 	void HandleScalpel() {
 		statusMessage = statusmessage.."\cjScalpel\n";
-		statusMessage = statusmessage.."\cuFor re-opening wounds.\n\n";
+		statusMessage = statusmessage.."\cuFor re-opening wounds.\n\n\n";
 		if (!currentWound) { return; }
 
 		// Handle actions

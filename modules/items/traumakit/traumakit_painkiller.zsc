@@ -5,7 +5,11 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."Injections remaining: \cy"..weaponstatus[TKS_PAINKILLER].."\n\n";
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
-		if (weaponstatus[TKS_PAINKILLER] <=0) { return; }
+		if (weaponstatus[TKS_PAINKILLER] <=0) {
+			currentmessage.text = "No painkiller left!\n";
+			currentmessage.timeout = 2*35;
+			return;
+		}
 
 		// Handle actions
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {

@@ -1,7 +1,7 @@
 extend class UaS_TraumaKit {
 	void HandleSutures() {
 		statusMessage = statusmessage.."\cjSutures\n";
-		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n";
+		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n\n";
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
 

@@ -1,9 +1,15 @@
 extend class UaS_TraumaKit {
 	void HandleBioFoam() {
 		statusMessage = statusmessage.."\cjBiofoam\n";
-		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n\n";
+		statusMessage = statusmessage.."\cuAbsorbant antispetic flesh-analogue.\n";
+		statusMessage = statusmessage.."Biofoam remaining: \cy"..weaponstatus[TKS_BIOFOAM].."\n\n";
 		if (!currentWound) { return; }
 		if (currentWound.open <= 0) { return; }
+		if (weaponstatus[TKS_BIOFOAM] <=0) {
+			currentmessage.text = "No biofoam left!\n";
+			currentmessage.timeout = 2*35;
+			return;
+		}
 
 		// Status precheck
 		if (currentWound.cavity < 0) {
@@ -36,6 +42,8 @@ extend class UaS_TraumaKit {
 			if (weaponstatus[TK_HOLD] > 0) {
 				currentmessage.text = "Injecting biofoam...\n";
 				currentmessage.timeout = 10;
+
+				weaponstatus[TKS_BIOFOAM]--;
 
 				if (currentWound.inpain(10)) {
 					weaponstatus[TK_HOLD] = -5;

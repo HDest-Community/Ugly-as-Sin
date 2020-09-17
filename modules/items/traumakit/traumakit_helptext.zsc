@@ -22,6 +22,7 @@ extend class UaS_TraumaKit {
 				break;
 			case T_SALINE:
 				r.AppendFormat(WEPHELP_FIRE.."  Flush wound\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill saline\n(break down bloodpack)\n");
 				break;
 			case T_FORCEPS:
 				r.AppendFormat(WEPHELP_FIRE.."  Hold wound open\n");
@@ -29,9 +30,11 @@ extend class UaS_TraumaKit {
 				break;
 			case T_BIOFOAM:
 				r.AppendFormat(WEPHELP_FIRE.."  Inject biofoam\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill biofoam\n(break down suture cart)\n");
 				break;
 			case T_STAPLER:
 				r.AppendFormat(WEPHELP_FIRE.."  Staple wound closed\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill staples\n(break down suture cart)\n");
 				break;
 			case T_SUTURES:
 				r.AppendFormat(WEPHELP_FIRE.."  Suture wound closed\n");
