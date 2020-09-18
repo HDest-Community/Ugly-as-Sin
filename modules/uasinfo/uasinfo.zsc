@@ -1,0 +1,5 @@
+class UaS_InfoHandler : StaticEventHandler {
+	override void OnRegister() {
+		ReadUASINFO();
+	}
+}

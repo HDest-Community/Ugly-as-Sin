@@ -58,3 +58,4 @@ version "4.4"
 
 #include "modules/aimsway/bootstrap.zsc"
 #include "modules/yolo/yolo.zsc"
+#include "modules/uasinfo/uasinfo.zsc"
