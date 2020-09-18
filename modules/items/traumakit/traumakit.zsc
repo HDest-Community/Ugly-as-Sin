@@ -36,7 +36,16 @@ class UaS_TraumaKit : HDWeapon {
 		scale 0.5;
 		tag "Trauma Kit";
 	}
-	override double weaponbulk(){ return 20; }
+
+	override double weaponbulk(){
+		double b = 0;
+		b += (weaponstatus[TKS_PAINKILLER] / 20) * (ENC_STIMPACK * 0.4);
+		b += (weaponstatus[TKS_SALINE] / 1000) * (ENC_STIMPACK * 2 * 0.8);
+		b += (weaponstatus[TKS_BIOFOAM] / 250) * (6 * 0.6);
+		b += (weaponstatus[TKS_STAPLES] / 25) * (6 * 0.1);
+		b = max(b, 15);
+		return b;
+	}
 
 	states {
 		spawn:
