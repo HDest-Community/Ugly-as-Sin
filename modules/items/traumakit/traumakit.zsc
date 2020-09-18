@@ -24,6 +24,7 @@ class UaS_TraumaKit : HDWeapon {
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a personal trauma kit.";
 		Inventory.Icon "UGSIF0";
+		Inventory.PickupSound "weapons/pocket";
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;

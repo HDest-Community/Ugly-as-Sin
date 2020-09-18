@@ -52,7 +52,7 @@ class WoundInfo : thinker {
 	}
 
 	bool inpain(int inflict = 0) {
-		pain += inflict;
+		pain = max(pain + inflict, 200);
 		return (pain > (painkiller + 25) * 2);
 	}
 }
