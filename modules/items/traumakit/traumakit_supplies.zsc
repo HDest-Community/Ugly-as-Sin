@@ -19,7 +19,7 @@ extend class UaS_TraumaKit {
 		weaponstatus[TKS_PAINKILLER] = 20;
 		weaponstatus[TKS_SALINE] = 1000;
 		weaponstatus[TKS_BIOFOAM] = 1000;
-		weaponstatus[TKS_STAPLES] = 100;
+		weaponstatus[TKS_STAPLES] = 25;
 	}
 
 	void HandleSupplies() {
@@ -57,7 +57,7 @@ extend class UaS_TraumaKit {
 					if(owner.countinv("UaS_2FCartridge") > 0) {
 						owner.TakeInventory("UaS_2FCartridge", 1);
 						weaponstatus[TKS_BIOFOAM] += 250;
-						weaponstatus[TKS_STAPLES] += 25;
+						weaponstatus[TKS_STAPLES] += 15;
 						currentmessage.text = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
 						currentmessage.timeout = 2*35;
 					}
