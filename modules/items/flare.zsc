@@ -122,6 +122,8 @@ class UaS_Flare : HDPickup {
 		// Use up when dead?
 		if (Activated && (brightness - age) <= 0) {
 			Activated = false;
+			if (FlareLight) { FlareLight.Destroy(); }
+			if (FlareLight2) { FlareLight2.Destroy(); }
 			if (owner) {
 				Amount--;
 				owner.A_StopSound(818764);

@@ -65,6 +65,15 @@ class UaS_Glowstick : HDPickup {
 				age = 0;
 				break;
 		}
+
+		// Use up when dead?
+		if (Activated && (brightness - age) <= 0) {
+			Activated = false;
+			if (GlowLight) { glowLight.Destroy(); }
+			if (owner) { Amount--; }
+			else { destroy(); }
+		}
+
 		A_SetAngle(angle + vel.length() * 3 * spindir);
 		super.Tick();
 	}
