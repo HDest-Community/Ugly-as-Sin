@@ -8,6 +8,7 @@ class UaS_Bootstrap : EventHandler {
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Medical_Bootstrap(i);
+			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}
 	}
 
@@ -19,10 +20,6 @@ class UaS_Bootstrap : EventHandler {
 		if (!deathfade) { deathfade = CVar.GetCVar("UaS_DeathFade", players[e.PlayerNumber]); }
 		if (deathfade.GetBool() == false) { return; }
 		Deathfade_Bootstrap(e.PlayerNumber, true);
-	}
-
-	override void PlayerRespawned(PlayerEvent e) {
-		Deathfade_Bootstrap(e.PlayerNumber, false);
 	}
 }
 
