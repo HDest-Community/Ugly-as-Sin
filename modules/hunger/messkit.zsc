@@ -34,13 +34,20 @@ class UaS_FoodManager : HDWeapon {
 			if (i is 'UaS_Consumable') {
 				UaS_Consumable fi = UaS_Consumable(i);
 				foodarray.push(fi);
-				statusmessage = statusmessage..fi.GetTag();
 			}
 			i = i.inv;
 		}
+
 		if (foodarray.size() == 0) {
 			statusmessage = statusmessage.."No consumables!\n\n";
 			return;
+		}
+		else {
+			for (int i=0; i < foodarray.size(); i++) {
+				statusmessage = statusmessage
+					..foodarray[i].tag.." "
+					..countinv(foodarray[i].GetClassName()).."\n";
+			}
 		}
 		statusmessage = statusmessage.."\n";
 	}
