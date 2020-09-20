@@ -93,7 +93,9 @@ extend class UaS_Aim_Thinker {
 		aimoffset.y = clamp(aimoffset.y, -45, 45);
 
 		// keep in a reasonably sane area
-		aimoffset *= 0.95;
+		double coefficient = 0.25;
+		if (plr.stunned > 0) { coefficient *= 0.5); }
+		aimoffset *= ((plr.fatigue + 1) / 50.0) ** coefficient;
 
 		// recenter for focus and bracing, separately
 		if (plr.isFocussing) { aimoffset *= 0.80; }
