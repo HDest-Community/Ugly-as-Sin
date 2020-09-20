@@ -1,4 +1,6 @@
 class UaS_Bootstrap : EventHandler {
+	transient cvar deathfade;
+
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
@@ -11,6 +13,16 @@ class UaS_Bootstrap : EventHandler {
 
 	override void PlayerEntered(PlayerEvent e) {
 		AimSway_Bootstrap(e.PlayerNumber);
+	}
+
+	override void PlayerDied(PlayerEvent e) {
+		if (!deathfade) { deathfade = CVar.GetCVar("UaS_DeathFade", players[e.PlayerNumber]); }
+		if (deathfade.GetBool() == false) { return; }
+		Deathfade_Bootstrap(e.PlayerNumber, true);
+	}
+
+	override void PlayerRespawned(PlayerEvent e) {
+		Deathfade_Bootstrap(e.PlayerNumber, false);
 	}
 }
 
@@ -69,6 +81,19 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_StealthHandler")) {
 			p.mo.Giveinventory("UaS_StealthHandler", 1);
+		}
+	}
+
+	void Deathfade_Bootstrap(int pnum, bool activate) {
+		Shader.SetEnabled(players[pnum].mo.player, "deathfade", activate);
+		if (!activate) { return; }
+		UaS_DeathFader df = new("UaS_DeathFader");
+		df.plr = HDPlayerPawn(players[pnum].mo);
+		df.counttoblack = (11 - min(abs(players[pnum].mo.health),10)) * 35;
+		if(!df.plr) {
+			console.printf("new deathfader failed for "..pnum) ;
+			df.destroy();
+			return;
 		}
 	}
 }

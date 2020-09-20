@@ -57,4 +57,5 @@ version "4.4"
 #include "modules/items/traumakit/stabilize.zsc"
 
 #include "modules/aimsway/bootstrap.zsc"
+#include "modules/deathfade/deathfade.zsc"
 #include "modules/yolo/yolo.zsc"
