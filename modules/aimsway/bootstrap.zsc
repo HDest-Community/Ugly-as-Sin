@@ -94,7 +94,7 @@ extend class UaS_Aim_Thinker {
 
 		// keep in a reasonably sane area
 		double coefficient = 0.25;
-		if (plr.stunned > 0) { coefficient *= 0.5); }
+		if (plr.stunned > 0) { coefficient *= 0.5; }
 		aimoffset *= ((plr.fatigue + 1) / 50.0) ** coefficient;
 
 		// recenter for focus and bracing, separately
