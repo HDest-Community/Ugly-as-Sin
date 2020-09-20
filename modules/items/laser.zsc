@@ -225,7 +225,7 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
 		args[DynamicLight.LIGHT_INTENSITY] = 255;
-		SpotInnerAngle = 15;
+		SpotInnerAngle = 0;
 		SpotOuterAngle = 25;
 	}
 
