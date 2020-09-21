@@ -60,6 +60,8 @@ OptionMenu "UaS_Options" {
 	Option "Focus Zoom Mode","UaS_FocusZoomMode","FocusModes"
 	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
 	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
+	Option "Death Fading", "UaS_DeathFade", "OnOff"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"
@@ -95,11 +97,15 @@ OptionMenu "UaS_Scarcity_Options" {
 	Title "Scarcity Module"
 	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
 	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
+	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
 	StaticText "Removes or reduces map spawns, forcing"
 	StaticText "you to scavenge for your supplies."
 	StaticText " "
 	StaticText "Scarcity controls removal percentage."
 	StaticText "Overspawn controls what's left over."
+	StaticText " "
+	StaticText "Disable drops prevents monsters"
+	StaticText "from dropping ammo or weapons"
 	StaticText " "
 	StaticText "Requires new map or game to take effect."
 }

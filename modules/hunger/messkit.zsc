@@ -84,7 +84,7 @@ class UaS_MessKit : HDWeapon {
 			TNT1 A random(15,20) UaS_OpenWater();
 			goto nope;
 		Swallow:
-			TNT1 A random(8,12) A_PlaySound("weapons/pocket");
+			TNT1 A random(8,12) A_StartSound("weapons/pocket");
 			goto nope;
 		User4:
 		Toss:
@@ -160,7 +160,7 @@ class UaS_MessKit : HDWeapon {
 					TrackerStatusMessage("You're full.\nCouldn't drink another drop.");
 					return ResolveState("nope");
 				}
-				A_PlaySound("misc/smallslop");
+				A_StartSound("misc/smallslop");
 				return ResolveState("Sip");
 			}
 			invoker.UaS_TossOpened(false);
@@ -170,10 +170,10 @@ class UaS_MessKit : HDWeapon {
 	//Takes a random-sized "bite" of the food
 	action void UaS_TakeScoop() {
 		double difference = clamp(2500 - invoker.tracker.calories, 0, 500);
-		A_PlaySound("UaS/FoodScoop", CHAN_AUTO, frandom(0.3, 0.6));
-		invoker.biteSize  = min(invoker.mealsize, 75 * invoker.speedFactor) * frandom(0.75,1.0);;
-		invoker.biteSize *= (difference / 500.0);
-		invoker.biteSize  = clamp(invoker.biteSize, 1, 75 * invoker.speedFactor);
+		A_StartSound("UaS/FoodScoop", CHAN_AUTO, volume: frandom(0.3, 0.6));
+		invoker.biteSize  = int(min(invoker.mealsize, 75 * invoker.speedFactor) * frandom(0.75,1.0));
+		invoker.biteSize *= int(difference / 500.0);
+		invoker.biteSize  = int(clamp(invoker.biteSize, 1, 75 * invoker.speedFactor));
 	}
 
 	//"Chew" the food
@@ -181,9 +181,9 @@ class UaS_MessKit : HDWeapon {
 		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
 		if(invoker.bitesize > 0) {
 			//Chew
-			int chunk = random(1,10) * invoker.speedFactor;
-			A_PlaySound("weapons/pocket", CHAN_AUTO, frandom(0.25, 0.6));
-			A_PlaySound("misc/fragroll", CHAN_AUTO, frandom(0.25, 0.7));
+			int chunk = int(random(1,10) * invoker.speedFactor);
+			A_StartSound("weapons/pocket", CHAN_AUTO, volume: frandom(0.25, 0.6));
+			A_StartSound("misc/fragroll", CHAN_AUTO, volume: frandom(0.25, 0.7));
 			invoker.mealSize -= clamp(chunk, 0, invoker.biteSize);
 			invoker.tracker.calories += clamp(chunk, 0, invoker.biteSize);
 			invoker.biteSize -= clamp(chunk, 0, invoker.biteSize);
@@ -196,7 +196,7 @@ class UaS_MessKit : HDWeapon {
 	//Consume a random amount of water "drops" to simulate drinking
 	action state UaS_Sip() {
 		invoker.tracker = UaS_HungerTracker(FindInventory("UaS_HungerTracker", false));
-		int drops = random(1,2) * invoker.speedFactor;
+		int drops = int(random(1,2) * invoker.speedFactor);
 		for(int i = 1; i <= drops; i++) {
 			invoker.sipsize += 1;
 			invoker.tracker.water += 1;
@@ -215,7 +215,7 @@ class UaS_MessKit : HDWeapon {
 		if(countinv("UaS_FoodRation") > 0) {
 			if(invoker.mealSize < 500) {
 				invoker.owner.TakeInventory("UaS_FoodRation",1);
-				A_PlaySound("imp/melee");
+				A_StartSound("imp/melee");
 				invoker.mealSize += random(5, 10) * 25;
 				//invoker.flavor = RandomFlavor();
 				TrackerStatusMessage("Opened Food Ration!");
@@ -234,7 +234,7 @@ class UaS_MessKit : HDWeapon {
 		if(countinv("UaS_WaterRation") > 0) {
 			if(invoker.drinksize < 500) {
 				invoker.owner.TakeInventory("UaS_WaterRation",1);
-				A_PlaySound("misc/smallslop");
+				A_StartSound("misc/smallslop");
 				invoker.drinkSize += random(40, 50) * 5;
 				TrackerStatusMessage();
 			}

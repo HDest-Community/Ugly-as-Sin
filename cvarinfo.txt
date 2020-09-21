@@ -6,6 +6,7 @@ user bool UaS_HungerAutoselect = true;
 server bool UaS_ScarcityEnabled = false;
 server int UaS_ScarcityRate = 50;
 server float UaS_ScarcityOverspawn = 0.5;
+server bool UaS_ScarcityDisableDrops = false;
 
 user int UaS_SlingDelay = 35;
 
@@ -34,3 +35,6 @@ server int UaS_FocusZoomMode = 0;
 server bool UaS_AimSwayEnabled = false;
 
 server noarchive bool UaS_YOLO = false;
+
+user bool UaS_FlashlightParticles = true;
+user bool UaS_DeathFade = true;

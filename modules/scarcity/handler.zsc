@@ -1,0 +1,45 @@
+#include "modules/scarcity/handler_remover.zsc"
+#include "modules/scarcity/handler_replacer.zsc"
+#include "modules/scarcity/handler_helpers.zsc"
+#include "modules/scarcity/handler_drops.zsc"
+
+class UaS_Scarcity_Handler : EventHandler {
+	double ScarcityFactor;
+	double OverspawnFactor;
+	actor spawneditem;
+
+	override void OnRegister() {
+		ScarcityFactor = double(UaS_ScarcityRate) / 100.0;
+		OverspawnFactor = UaS_ScarcityOverspawn + 1.0;
+	}
+
+	override void WorldTick() {
+		if(level.maptime != 1) { return; }
+		if(UaS_ScarcityEnabled == false) { return; }
+
+		ExactScarcity('HD9mMag15', 1.0 - ScarcityFactor);
+		ExactScarcity('HD9mMag30', 1.0 - ScarcityFactor);
+		ExactScarcity('HD9mBoxPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('HD4mMag', 1.0 - ScarcityFactor);
+		ExactScarcity('HD7mMag', 1.0 - ScarcityFactor);
+		ExactScarcity('HD7mBoxPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('HD7mClip', 1.0 - ScarcityFactor);
+		ExactScarcity('ShellPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('HDShellAmmo', 1.0 - ScarcityFactor);
+		ExactScarcity('ShellBoxPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('HDBattery', 1.0 - ScarcityFactor);
+		ExactScarcity('RocketBigPickup', 1.0 - ScarcityFactor);
+		ExactScarcity('FragP', 1.0 - ScarcityFactor);
+		ExactScarcity('HDFragGrenadeAmmo', 1.0 - ScarcityFactor);
+
+		ExactScarcity('PortableStimpack', 1.0 - ScarcityFactor);
+		ExactScarcity('PortableMedikit', 1.0 - ScarcityFactor);
+		ExactScarcity('PortableBerserkPack', 1.0 - ScarcityFactor);
+
+		//ExactScarcity('HDArmour', 1.0 - ScarcityFactor);
+
+		ExactScarcity('HDMap', 1.0 - ScarcityFactor);
+		ExactScarcity('PortableLiteAmp', 1.0 - ScarcityFactor);
+	}
+
+}

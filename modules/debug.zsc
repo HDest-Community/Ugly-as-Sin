@@ -4,7 +4,7 @@ enum UaS_Debug_Flags {
 	Debris = 4,
 	Sling = 8,
 	Frag = 16,
-//	unused = 32,
+	Med = 32,
 	Allies = 64,
 	AI = 128,
 //	unused = 256,

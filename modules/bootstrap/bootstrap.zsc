@@ -1,16 +1,25 @@
 class UaS_Bootstrap : EventHandler {
+	transient cvar deathfade;
+
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
-			SutureModule_Bootstrap(i);
+			Medical_Bootstrap(i);
+			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
 		AimSway_Bootstrap(e.PlayerNumber);
+	}
+
+	override void PlayerDied(PlayerEvent e) {
+		if (!deathfade) { deathfade = CVar.GetCVar("UaS_DeathFade", players[e.PlayerNumber]); }
+		if (deathfade.GetBool() == false) { return; }
+		Deathfade_Bootstrap(e.PlayerNumber, true);
 	}
 }
 
@@ -33,11 +42,17 @@ extend class UaS_BootStrap {
 		}
 	}
 
-	void SutureModule_Bootstrap(int pnum) {
+	void Medical_Bootstrap(int pnum) {
 		PlayerInfo p = players[pnum];
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_2F_Handler")) {
 			p.mo.giveinventory("UaS_2F_Handler", 1);
+		}
+		if (!p.mo.countinv("UaS_WoundStabilization")) {
+			p.mo.giveinventory("UaS_WoundStabilization", 1);
+		}
+		if (!p.mo.countinv("UaS_WoundHandler")) {
+			p.mo.giveinventory("UaS_WoundHandler", 1);
 		}
 	}
 
@@ -63,6 +78,19 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_StealthHandler")) {
 			p.mo.Giveinventory("UaS_StealthHandler", 1);
+		}
+	}
+
+	void Deathfade_Bootstrap(int pnum, bool activate) {
+		Shader.SetEnabled(players[pnum].mo.player, "deathfade", activate);
+		if (!activate) { return; }
+		UaS_DeathFader df = new("UaS_DeathFader");
+		df.plr = HDPlayerPawn(players[pnum].mo);
+		df.counttoblack = (11 - min(abs(players[pnum].mo.health),10)) * 35;
+		if(!df.plr) {
+			console.printf("new deathfader failed for "..pnum) ;
+			df.destroy();
+			return;
 		}
 	}
 }

@@ -1,0 +1,180 @@
+class WoundInfo : thinker {
+	string description;
+	int painkiller;
+	int dirty;
+	int obstructed;
+	int open;
+	int cavity;
+	int timer;
+	int size;
+	int infection;
+	int pain;
+	bool clear;
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		ChangeStatNum(STAT_STATIC);
+	}
+
+	void TickWound() {
+		timer = max(timer - 1, 0);
+		pain = max(pain - 1, 0);
+		pain = max(pain - painkiller / 20, 0);
+		if (timer <= 0) {
+			// Metabolize some painkiller
+			painkiller = max(painkiller - 1, 0);
+
+			// Random normal distribution for heal probability
+			int toHeal = (
+				random[uas_wi](0, 15) +
+				random[uas_wi](0, 15) +
+				random[uas_wi](0, 15)) / 3;
+
+			// Wound heals some points
+			if (toHeal >= AverageStatus()) {
+				if (open > 0) { open--; }
+				if (cavity > 0) { cavity--; }
+				if (dirty > 0) { dirty--; }
+				if (obstructed > 0) { obstructed--; }
+				if (infection > 0) { infection--; }
+			}
+
+			// Infection increases
+			if (toHeal <= (AverageStatus() + infection)) {
+				infection = min(infection + 1, 100);
+			}
+
+			if (AverageStatus() == 0) {
+				clear = true;
+			}
+			timer = random[uas_wi](2,5) * (35 + open);
+		}
+	}
+
+	bool inpain(int inflict = 0) {
+		pain += inflict;
+		return (pain > (painkiller + 25) * 2);
+	}
+}
+
+// Status methods
+extend class WoundInfo {
+	int AverageStatus() {
+		int retvalue, counted;
+		if (dirty >= 0) { retvalue += dirty; counted++; }
+		if (obstructed >= 0) { retvalue += obstructed; counted++;}
+		if (cavity >= 0) { retvalue += cavity; counted++;}
+		if (open >= 0) { retvalue += open; counted++;}
+		//retvalue += infection;
+		retvalue /= counted;
+		return retvalue;
+	}
+
+	string WoundStatus () {
+		string status;
+		if (open <= 0) { status = "The wound is "..statuscolor(open).."closed\c-,\nand cannot be treated further.\n"; return status; }
+		else { status = "The wound is "..statuscolor(open).."open\c-\n"; }
+
+		status = status..numbstatus()..dirtystatus()..obstructstatus()..cavitystatus();
+
+		return status;
+	}
+
+	string numbstatus() {
+
+		if (painkiller >= 75) { return "It is "..statuscolor(100-painkiller).."numbed\c-\n"; }
+		if (painkiller >= 50) { return "It is "..statuscolor(100-painkiller).."mostly numbed\c-\n"; }
+		if (painkiller >= 25) { return "It is "..statuscolor(100-painkiller).."somewhat numbed\c-\n"; }
+		return "It is "..statuscolor(100-painkiller).."not numbed.\n";
+	}
+
+	string dirtystatus() {
+		if (dirty <  0)  { return ""; }
+		if (dirty >= 65) { return "It is "..statuscolor(dirty).."filthy\n"; }
+		if (dirty >= 55) { return "It is "..statuscolor(dirty).."very dirty\n"; }
+		if (dirty >= 45) { return "It is "..statuscolor(dirty).."somewhat dirty\n"; }
+		if (dirty >= 35) { return "It is "..statuscolor(dirty).."a bit dirty\n"; }
+		if (dirty >= 25) { return "It is "..statuscolor(dirty).."almost clean\n"; }
+		if (dirty >= 15) { return "It is "..statuscolor(dirty).."acceptably clean\n"; }
+		return "It is "..statuscolor(dirty).."completely clean\n";
+	}
+
+	string obstructstatus() {
+		if (obstructed <  0)  { return ""; }
+		if (obstructed >= 55) { return "There are "..statuscolor(obstructed).."many obstructions\n"; }
+		if (obstructed >= 45) { return "There are "..statuscolor(obstructed).."several obstructions\n"; }
+		if (obstructed >= 35) { return "There are "..statuscolor(obstructed).."a few obstructions\n"; }
+		if (obstructed >= 25) { return "There are "..statuscolor(obstructed).."some obstructions\n"; }
+		if (obstructed >= 15) { return "It appears "..statuscolor(obstructed).."mostly free of obstructions\n"; }
+		return "There are "..statuscolor(obstructed).."no apparent obstructions\n";
+	}
+
+	string cavitystatus() {
+		if (cavity <  0)  { return ""; }
+		if (cavity >= 85) { return "There is "..statuscolor(cavity).."severe tissue damage\n"; }
+		if (cavity >= 65) { return "There is "..statuscolor(cavity).."significant tissue damage\n"; }
+		if (cavity >= 45) { return "There is "..statuscolor(cavity).."moderate tissue damage\n"; }
+		if (cavity >= 25) { return "There is "..statuscolor(cavity).."some tissue damage\n"; }
+		if (cavity >= 15) { return "There is "..statuscolor(cavity).."little tissue damage\n"; }
+		return "There is "..statuscolor(cavity).."no treatable tissue damage\n";
+	}
+
+	string statuscolor(int amount) {
+		if (amount >= 90) { 	 return "\cm"; } // black
+		else if (amount >= 80) { return "\cr"; } // dark red
+		else if (amount >= 70) { return "\ca"; } // brick
+		else if (amount >= 60) { return "\cx"; } // fire
+		else if (amount >= 50) { return "\ci"; } // orange
+		else if (amount >= 40) { return "\ck"; } // yellow
+		else if (amount >= 30) { return "\cs"; } // dark brown
+		else if (amount >= 20) { return "\cq"; } // dark green
+		else if (amount >= 10) { return "\cd"; } // green
+		else if (amount >=  0) { return "\cd"; } // grey
+		return "\cj"; // white
+	}
+}
+
+// Static methods
+extend class WoundInfo {
+	static WoundInfo create(int newsize) {
+		int sizemin = clamp(newsize * 10, 0, 100);
+		int sizemax = clamp(newsize * 20, 0, 100);
+		WoundInfo nw = new("WoundInfo");
+		nw.painkiller = 0;
+		nw.dirty = max(-1, randompick[uas_wi](-1, 1, 1, 1) * random[uas_wi](sizemin, sizemax));
+		nw.obstructed = max(-1, randompick[uas_wi](-1, 1) * random[uas_wi](sizemin, sizemax));
+		nw.cavity = max(-1, randompick[uas_wi](-1, 1, 1) * random[uas_wi](sizemin, sizemax));
+		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) / 4;
+		nw.open = random[uas_wi](sizemin, sizemax);
+		nw.timer = (random[uas_wi](10, 30) * 35);
+		nw.size = newsize;
+		nw.description = WoundDescription(newsize);
+		return nw;
+	}
+
+	static string WoundDescription(int newsize) {
+		int sevmax = WoundInfo.severity.size()-1;
+		int typmax = WoundInfo.type.size()-1;
+		int parmax = WoundInfo.bodypart.size()-1;
+		return string.format(
+			"%s %s, %s",
+			WoundInfo.severity[random[uas_wi](0, sevmax)],
+			WoundInfo.type[random[uas_wi](0, typmax)],
+			WoundInfo.bodypart[random[uas_wi](0, parmax)]
+		);
+	}
+
+	static const string[] severity = { "minor","small","shallow","superficial","moderate","medium","large","deep","serious","critical" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+	static const string[] bodypart = {
+		"chest","abdomen","pelvis",
+		"upper back","lower back",
+		"left shoulder","right shoulder",
+		"left upper arm","right upper arm",
+		"left forearm","right forearm",
+		"left hip","right hip",
+		"left thigh","right thigh",
+		"left calf","right calf",
+		"left shin","right shin"
+	};
+}

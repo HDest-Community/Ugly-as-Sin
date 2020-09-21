@@ -1,0 +1,48 @@
+extend class UaS_TraumaKit {
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+	override string gethelptext(){
+		string r;
+		r.AppendFormat(WEPHELP_RELOAD.."  Cycle tools forward\n");
+		r.AppendFormat(WEPHELP_ALTRELOAD.."  Cycle tools backward\n");
+		r.AppendFormat(WEPHELP_FIREMODE.."  Hold and ...\n");
+		r.AppendFormat("  +"..WEPHELP_RELOAD.."  Cycle wounds down\n");
+		r.AppendFormat("  +"..WEPHELP_ALTRELOAD.."  Cycle wounds up\n");
+		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n\n");
+
+		switch (weaponstatus[TK_SELECTED]) {
+			case T_PAINKILLER:
+				r.AppendFormat(WEPHELP_FIRE.."  Inject anesthetic\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill anesthetic\n(break down stimpack)\n");
+				break;
+			case T_SALINE:
+				r.AppendFormat(WEPHELP_FIRE.."  Flush wound\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill saline\n(break down bloodpack)\n");
+				break;
+			case T_FORCEPS:
+				r.AppendFormat(WEPHELP_FIRE.."  Hold wound open\n");
+				r.AppendFormat(WEPHELP_UNLOAD.."  Extract obstructions\n");
+				break;
+			case T_BIOFOAM:
+				r.AppendFormat(WEPHELP_FIRE.."  Inject biofoam\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill biofoam\n(break down suture cart)\n");
+				break;
+			case T_STAPLER:
+				r.AppendFormat(WEPHELP_FIRE.."  Staple wound closed\n");
+				r.AppendFormat(WEPHELP_ALTFIRE.."  Refill staples\n(break down suture cart)\n");
+				break;
+			case T_SUTURES:
+				r.AppendFormat(WEPHELP_FIRE.."  Suture wound closed\n");
+				break;
+			case T_SCALPEL:
+				r.AppendFormat(WEPHELP_FIRE.."  Re-open wound\n");
+				break;
+		}
+		return r;
+	}
+}

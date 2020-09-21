@@ -1,6 +1,5 @@
-class UaS_Glowstick_Spawner : EventHandler {
-	//Set up spawns
-	override void WorldThingSpawned(WorldEvent e) {
+extend class UaS_Spawner {
+	void GlowstickSpawns(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
@@ -9,16 +8,16 @@ class UaS_Glowstick_Spawner : EventHandler {
 			e.thing.GetClassName() == "HDAmBox" ||
 			e.Thing.GetClassName() == "PortableStimpack" ||
 			e.Thing.GetClassName() == "PortableMedikit" ||
-			e.Thing.GetClassName() == "HDBP");
+			e.Thing.GetClassName() == "HDBackpack");
 
 		if(spawnable) {
-			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 1, 2), e.Thing.pos);
+			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 0, 1), e.Thing.pos);
 		}
 	}
 }
 
 class UaS_Glowstick : HDPickup {
-	bool Activated;
+	bool Activated, Thrown;
 	DynamicLight GlowLight;
 	UaS_Glowstick DroppedGlowStick;
 	int spindir;
@@ -39,6 +38,11 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override void Tick() {
+		if (Thrown) {
+			vel *= 5;
+			vel.z += 5;
+			Thrown = false;
+		}
 		switch(Activated) {
 			case true:
 				frame = 2;
@@ -61,19 +65,29 @@ class UaS_Glowstick : HDPickup {
 				age = 0;
 				break;
 		}
+
+		// Use up when dead?
+		if (Activated && (brightness - age) <= 0) {
+			Activated = false;
+			if (GlowLight) { glowLight.Destroy(); }
+			if (owner) { Amount--; }
+			else { destroy(); }
+		}
+
 		A_SetAngle(angle + vel.length() * 3 * spindir);
 		super.Tick();
 	}
 
 	override bool Use(bool pickup) {
 		if (!Activated) {
-			owner.A_PlaySound("UaS/Glowstick", CHAN_AUTO, 0.15);
+			owner.A_StartSound("UaS/Glowstick", CHAN_AUTO, volume: 0.15);
 			Activated = true;;
 		} else { owner.DropInventory(self); }
 		return false;
 	}
 
 	override inventory CreateTossable(int amt) {
+		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
 		DroppedGlowStick = null;
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
 		if (DroppedGlowStick && Activated) {
@@ -81,8 +95,10 @@ class UaS_Glowstick : HDPickup {
 			DroppedGlowstick.Brightness = Brightness;
 			DroppedGlowstick.Age = Age;
 			DroppedGlowstick.Spindir = randompick(-1,1);
+			DroppedGlowstick.Thrown = Thrown;
 			if(owner) { Activated = false; }
 		}
+		//Thrown = false;
 		return DroppedGlowStick;
 	}
 

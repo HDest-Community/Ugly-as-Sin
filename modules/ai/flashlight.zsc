@@ -5,7 +5,7 @@ extend class UaS_AI_Handler {
 	int flashrate;
 
 	void Flashlight() {
-		if (globalfreeze || level.Frozen) { return; }
+		if (owner.isFrozen() || level.isFrozen()) { return; }
 		// Only do light for human-type classes
 		bool BotClass = (
 			owner is "HERPBot" ||
@@ -30,7 +30,7 @@ extend class UaS_AI_Handler {
 			// sample light from ahead of monster
 			FLineTraceData lookSpot;
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
-			double lightlevel = (lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
+			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
 			// More likely to activate in darker areas
 			if (random[aillm](0,192) > lightlevel) { llm.activated = true; }

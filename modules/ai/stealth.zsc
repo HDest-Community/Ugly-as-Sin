@@ -14,7 +14,7 @@ class UaS_StealthHandler : Inventory {
 		if (!owner || !owner.player) { return; }
 		if (!UaS_AI_Stealth) { return; }
 
-		threshold = (56.0 / owner.player.crouchfactor) - (owner.vel.length() * 5);
+		threshold = int((56.0 / owner.player.crouchfactor) - (owner.vel.length() * 5));
 
 		stealth -= clamp((GetLightLevel() - threshold), -3, 3);
 		stealth = clamp(stealth, 0, 100);
@@ -39,7 +39,7 @@ class UaS_StealthHandler : Inventory {
 
 		// Iterate lights
 		while (currentLight = DynamicLight(LightFinder.Next())) {
-			if (currentLight.CheckClass("VisorLight")) { continue; } // Skip HD's nightvision visor light
+			if (currentLight is "VisorLight") { continue; } // Skip HD's nightvision visor light
 			if (!currentLight.CheckSight(owner)) { continue; } //Skip if the light isn't in LoS
 
 			vector3 posdiff = levellocals.Vec3Diff((owner.pos.x, owner.pos.y, owner.pos.z + (owner.height / 2)), currentlight.pos);
@@ -68,12 +68,12 @@ class UaS_StealthHandler : Inventory {
 			// Special handling for Steve's Flashlight
 			// This is a disgusting hack, BTW
 			string steves = "ActorHeadLight";
-			if (currentLight.CheckClass(steves) && posdiff.xy.length() < owner.radius) { avgIntensity *= 100; }
+			if (currentLight.GetClass() == steves && posdiff.xy.length() < owner.radius) { avgIntensity *= 100; }
 
 			// Handle dormant lights
 			if (currentLight.bDORMANT) { avgIntensity = 0; }
 
-			trueLightLevel = max(trueLightLevel, avgIntensity);
+			trueLightLevel = int(max(trueLightLevel, avgIntensity));
 		}
 		if (UaS_Debug & Stealth) { owner.A_Log("Stealth "..stealth.." - LightLevel "..trueLightLevel.." - threshold "..threshold); }
 		return trueLightLevel;

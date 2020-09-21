@@ -1,0 +1,195 @@
+extend class UaS_Spawner {
+	//Set up spawns
+	void FlareSpawns(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "PortableStimpack" ||
+			e.Thing.GetClassName() == "PortableMedikit" ||
+			e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable) {
+			UaS.SpawnStuff('UaS_flare', randompick[flare](0, 0, 0, 1), e.Thing.pos);
+		}
+	}
+}
+
+class UaS_Flare : HDPickup {
+	bool Activated, Thrown;
+	DynamicLight FlareLight;
+	DynamicLight FlareLight2;
+	UaS_Flare DroppedFlare;
+	int spindir;
+	int brightness;
+	int age;
+
+	Default {
+		Inventory.PickupMessage "Picked up a flare.";
+		Inventory.Icon "UGSIH0";
+		HDPickup.Bulk 2;
+		tag "Flare";
+		HDPickup.refid UAS_HDLD_FLARE;
+		-HDPickup.DropTranslation;
+		+HDPickup.FitsInBackpack;
+		+FLATSPRITE;
+		+FORCEXYBILLBOARD;
+		+INVENTORY.IGNORESKILL;
+		height 1;
+	}
+
+	override void Tick() {
+		if (Thrown) {
+			vel *= 5;
+			vel.z += 5;
+			Thrown = false;
+		}
+		switch(Activated) {
+			case true:
+				if (owner) {
+					owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+					owner.A_SoundVolume(818764, double(brightness - age) / 384.0);
+				}
+				else {
+					A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+					A_SoundVolume(818764, double(brightness - age) / 384.0);
+				}
+				frame = 6;
+				if (level.maptime % 1 == 0) { brightness = min(brightness + 2, 192); }
+				if (level.maptime % 40 == 0) { age++; }
+
+				// bright light
+				if (!FlareLight) {
+					FlareLight = DynamicLight(Actor.Spawn("UaS_FlareLight"));
+					FlareLight.args[DynamicLight.LIGHT_RED] = 256;
+					FlareLight.args[DynamicLight.LIGHT_GREEN] = 160;
+					FlareLight.args[DynamicLight.LIGHT_BLUE] = 192;
+				}
+				FlareLight.args[DynamicLight.LIGHT_INTENSITY] = int(0.25 * (brightness - age) + random[flare](-4, 4));
+				if (owner) { FlareLight.target = owner; }
+				else { FlareLight.target = self; }
+
+				// spill light
+				if (!FlareLight2) {
+					FlareLight2 = DynamicLight(Actor.Spawn("UaS_FlareLight"));
+					FlareLight2.args[DynamicLight.LIGHT_RED] = 224;
+					FlareLight2.args[DynamicLight.LIGHT_GREEN] = 96;
+					FlareLight2.args[DynamicLight.LIGHT_BLUE] = 128;
+				}
+				FlareLight2.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age) + random[flare](-16, 16);
+				if (owner) { FlareLight2.target = owner; }
+				else { FlareLight2.target = self; }
+
+				actor pspawn = self;
+				if (owner) { pspawn = owner; }
+				for (int i = 0; i < 4; i++ ) {
+					double pvel = frandom[flare](2,4) * (double(brightness - age) / 192.0);
+					pspawn.A_SpawnParticle(
+						"red",
+						flags: SPF_FULLBRIGHT,
+						size: random[flare](1,2),
+						zoff: pspawn.height/2,
+						velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
+						vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
+						velz: pvel * sin(frandom[flare](-0,8)),
+						startalphaf: 0.75,
+						sizestep: -0.1
+					);
+					pspawn.A_SpawnParticle(
+						"yellow",
+						flags: SPF_FULLBRIGHT,
+						size: random[flare](1,2),
+						zoff: pspawn.height/2,
+						velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
+						vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
+						velz: pvel * sin(frandom[flare](-0,8)),
+						startalphaf: 0.75,
+						sizestep: -0.1
+					);
+				}
+				break;
+			case false:
+				frame = 7;
+				if (FlareLight) { FlareLight.Destroy(); }
+				if (FlareLight2) { FlareLight2.Destroy(); }
+				brightness = 0;
+				age = 0;
+				break;
+		}
+
+		// Use up when dead?
+		if (Activated && (brightness - age) <= 0) {
+			Activated = false;
+			if (FlareLight) { FlareLight.Destroy(); }
+			if (FlareLight2) { FlareLight2.Destroy(); }
+			if (owner) {
+				Amount--;
+				owner.A_StopSound(818764);
+			}
+			else { destroy(); }
+		}
+
+		A_SetAngle(angle + vel.length() * 3 * spindir);
+		super.Tick();
+	}
+
+	override bool Use(bool pickup) {
+		if (!Activated) {
+			owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
+			Activated = true;;
+		}
+		else {
+			owner.A_StopSound(818764);
+			owner.DropInventory(self);
+		}
+		return false;
+	}
+
+	override void DetachFromOwner() {
+		owner.A_StopSound(818764);
+		super.DetachFromOwner();
+	}
+
+	override inventory CreateTossable(int amt) {
+		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
+		DroppedFlare = null;
+		DroppedFlare = UaS_Flare(super.CreateTossable(amt));
+		if (DroppedFlare && Activated) {
+			DroppedFlare.Activated = true;
+			DroppedFlare.Brightness = Brightness;
+			DroppedFlare.Age = Age;
+			DroppedFlare.Spindir = randompick[flare](-1,1);
+			DroppedFlare.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
+			DroppedFlare.Thrown = Thrown;
+			if(owner) {
+				owner.A_StopSound(818764);
+				Activated = false;
+			}
+		}
+		//Thrown = false;
+		return DroppedFlare;
+	}
+
+	override void actualpickup(actor other){
+		if(Activated)return;
+		super.actualpickup(other);
+	}
+
+	states {
+		Spawn:
+			UGSI G -1;
+			stop;
+	}
+}
+
+class UaS_FlareLight : DynamicLight {
+	override void Tick() {
+		super.Tick();
+		if (target) {
+			SetOrigin((target.pos.x, target.pos.y, target.pos.z + target.height/2), true);
+			Prev = target.Prev;
+		}
+	}
+}

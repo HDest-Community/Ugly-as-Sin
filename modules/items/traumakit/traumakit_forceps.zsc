@@ -1,0 +1,131 @@
+extend class UaS_TraumaKit {
+	bool holdingopen;
+	int mashes;
+
+	void HandleForceps() {
+		statusMessage = statusmessage.."\cjForceps\n";
+		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n\n";
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
+
+		// Status precheck
+		if (currentWound.obstructed < 0) {
+			currentmessage.text = "No obstructions require removal.\n";
+			currentmessage.timeout = 10;
+		}
+
+		// Handle actions
+		if (weaponstatus[TK_HOLD] < 0 && !(owner.player.cmd.buttons & BT_ATTACK)) {
+			weaponstatus[TK_HOLD] = min(weaponstatus[TK_HOLD] + 1, 0);
+			return;
+		}
+
+		// Hold wound open
+		if ((owner.player.cmd.buttons & BT_ATTACK) && mashes < random[uas_tk](5,10) && weaponstatus[TK_HOLD] >= 0) {
+			holdingopen = true;
+			weaponstatus[TK_HOLD]++;
+			currentmessage.text = "Holding the wound open.\n";
+			currentmessage.timeout = 5;
+
+			// Abort if too much pain
+			if (currentWound.inpain(2)) {
+				weaponstatus[TK_HOLD] = -5;
+				currentWound.inpain(35);
+				PainJolt();
+			}
+
+			for (int i = 0; i < mashes; i++) { currentmessage.text = currentmessage.text.."."; }
+
+			// Extract fragments
+			if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
+				if (currentWound.inpain(10)) {
+					weaponstatus[TK_HOLD] = -5;
+					currentWound.inpain(35);
+					PainJolt();
+				}
+				mashes++;
+				patient.A_StartSound("misc/smallslop",CHAN_BODY);
+				//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+				HDPlayerPawn(owner).A_MuzzleClimb(
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
+					(frandom[uas_tk](-3,3),frandom[uas_tk](-3,3)));
+			}
+			return;
+		}
+
+		if (mashes > 0) {
+			int remove = random[uas_tk](2,4) * mashes;
+			string result;
+
+			if (currentWound.obstructed > 0 && mashes > 1) {
+				result = ExtractionMessage();
+				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
+				//patient.damagemobj(owner,owner,1,"staples");
+			}
+			else { result = "You probe the wound"; }
+
+			// increase cavity on overshoot
+			if (remove > currentWound.obstructed) {
+				currentWound.cavity = min(currentWound.cavity + (remove / 2), 100);
+				result = result..", damaging the surrounding tissue.";
+			}
+			else {
+				result = result..".";
+			}
+
+			currentWound.obstructed = max(currentWound.obstructed - remove, 0);
+			owner.A_Log(result, true);
+			mashes = 0;
+		}
+	}
+}
+
+extend class UaS_TraumaKit {
+	string ExtractionMessage(bool damage = false) {
+		string r;
+		r = string.format("You %s %s %s out of the wound",
+			UaS_TraumaKit.verb[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
+			UaS_TraumaKit.piece[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
+			UaS_TraumaKit.material[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)]
+		);
+		return r;
+	}
+
+	static const string[] verb = {
+		"pull",
+		"yank",
+		"jerk",
+		"tug",
+		"extract",
+		"fish",
+		"carefully remove"
+	};
+	static const string[] piece = {
+		"a sliver of",
+		"a chunk of",
+		"a piece of",
+		"a fragment of",
+		"a shard of",
+		"some slivers of",
+		"some chunks of",
+		"some pieces of",
+		"some fragments of",
+		"some shards of"
+	};
+	static const string[] material = {
+		"bone",
+		"shrapnel",
+		"metal",
+		"claw",
+		"tooth",
+		"plastic",
+		"a bullet",
+		"a hollowpoint jacket",
+		"lead",
+		"copper",
+		"brass",
+		"necrotic tissue"
+	};
+}

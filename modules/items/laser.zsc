@@ -1,3 +1,21 @@
+extend class UaS_Spawner {
+	void LLMSpawns(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "PortableLiteAmp" ||
+			e.Thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable) {
+			UaS.SpawnStuff('UaS_LaserLightModule', randompick[llm](0, 1), e.Thing.pos);
+		}
+	}
+}
+
+
 class UaS_LaserLightModule : HDPickup {
 	int mode;
 	bool activated;
@@ -7,6 +25,7 @@ class UaS_LaserLightModule : HDPickup {
 	double angleoffset,pitchoffset;
 	color LaserColor;
 	double LaserAlpha;
+	transient cvar beams;
 
 	default {
 		radius 3;
@@ -70,6 +89,7 @@ class UaS_LaserLightModule : HDPickup {
 			Light(false);
 			Laser(false);
 		}
+		super.doEffect();
 	}
 
 	void UpdateEmitter() {
@@ -109,10 +129,13 @@ class UaS_LaserLightModule : HDPickup {
 		emitter.Activate(self); // turn on dynlight
 
 		// Draw flashlight particle beam
+		if (!beams) { beams = CVar.GetCVar("UaS_FlashlightParticles", players[consoleplayer]); }
+		if (beams.GetBool() == false) { return; }
 		FLineTraceData flTrace;
 		emitter.LineTrace(emitter.angle, 64, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		int start = 1; //particle beam starts at emitter
 		if(owner.CheckLocalView()) { start = 12; } // unless local player
+		if(owner is "DERPBot") { start = 4; } // Reduce beams on DERPs
 		for (double d = start; d < flTrace.distance; d = d + (d / 2)) {
 			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
 				1, (sin(20) * d * 8), 0,
@@ -202,7 +225,7 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
 		args[DynamicLight.LIGHT_INTENSITY] = 255;
-		SpotInnerAngle = 15;
+		SpotInnerAngle = 0;
 		SpotOuterAngle = 25;
 	}
 

@@ -15,7 +15,7 @@ class UaS_Automap : HDPickup {
 				target = other;
 				A_GiveToTarget("MapRevealer",1);
 				A_Log("\c-Local area map downloaded.");
-				A_PlaySound("misc/i_pkup",0,1,0,0);
+				A_StartSound("misc/i_pkup",0,volume:1);
 				return;
 				break;
 			case 1: // Damaged
@@ -23,7 +23,7 @@ class UaS_Automap : HDPickup {
 					target = other;
 					A_GiveToTarget("MapRevealer",1);
 					A_Log("\c-Local area map downloaded.");
-					A_PlaySound("misc/i_pkup",0,1,0,0);
+					A_StartSound("misc/i_pkup",0,volume:1);
 				}
 				if(UaS.RandomChance(0.25)) { status = 2; }
 				return;

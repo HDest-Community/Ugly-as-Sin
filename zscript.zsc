@@ -1,4 +1,4 @@
-version "3.5"
+version "4.4"
 
 // Static functions
 #include "modules/static.zsc"
@@ -10,6 +10,9 @@ version "3.5"
 #include "modules/constants.zsc"
 #include "modules/bootstrap/bootstrap.zsc"
 
+// General spawner
+#include "modules/spawner/spawner.zsc"
+
 // Hunger and Thirst scripts
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"
@@ -17,11 +20,8 @@ version "3.5"
 #include "modules/hunger/messkit.zsc"
 
 // Scarcity scripts
-#include "modules/scarcity/spawner.zsc"
+#include "modules/scarcity/handler.zsc"
 #include "modules/scarcity/items.zsc"
-
-// General spawner
-#include "modules/spawner/spawner.zsc"
 
 // Frag spawning factor
 #include "modules/fragfactor/fragfactor.zsc"
@@ -49,9 +49,14 @@ version "3.5"
 #include "modules/items/2f.zsc"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
+#include "modules/items/flare.zsc"
 #include "modules/items/laser.zsc"
 #include "modules/items/resp.zsc"
+#include "modules/items/traumakit/handler.zsc"
+#include "modules/items/traumakit/traumakit.zsc"
+#include "modules/items/traumakit/stabilize.zsc"
 
-#include "modules/aimsway/bootstrap.zsc"
+#include "modules/aimsway/aimsway.zsc"
+#include "modules/deathfade/deathfade.zsc"
 #include "modules/yolo/yolo.zsc"
 #include "modules/jamming/jamming.zsc"

@@ -43,7 +43,7 @@ class UaS_HungerTracker : CustomInventory {
 		if(foodfatigue < 0) { foodfatigue = 0; }
 		if(waterfatigue < 0) { waterfatigue = 0; }
 		double minfatigue = max(foodfatigue, waterfatigue);
-		ownr.fatigue = max(ownr.fatigue, minfatigue);
+		ownr.fatigue = int(max(ownr.fatigue, minfatigue));
 
 		//Reduce calories
 		double foodburn = (1 / minute) * max(calories / 1500, 0.75) * frandom[hunger](0.95, 1.05);
@@ -88,7 +88,7 @@ class UaS_HungerTracker : CustomInventory {
 		else if(calories >= 250 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
 		else if(calories >= 0 && calories < 250) { statusMessage = statusMessage.."Your stomach clenches. "; }
 		//Last meal messages
-		int mealdelta = (lastmeal - calories);
+		int mealdelta = int(lastmeal - calories);
 		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
 		else if(mealdelta >= 1000 && mealdelta <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
 		else if(mealdelta >= 1500 && mealdelta <2000) { statusMessage = statusMessage.."When did you last eat? "; }
@@ -113,7 +113,7 @@ class UaS_HungerTracker : CustomInventory {
 		else if(water >= 250 && water < 500) { statusMessage = statusMessage.."Your mouth is dry. "; }
 		else if(water >= 0 && water < 250) { statusMessage = statusMessage.."Your throat is parched. "; }
 		//Last drink messages
-		int drinkdelta = (lastdrink - water);
+		int drinkdelta = int(lastdrink - water);
 		if(drinkdelta >= 500 && drinkdelta <1000) { statusMessage = statusMessage.."Time for another drink?"; }
 		else if(drinkdelta >= 1000 && drinkdelta <1500) { statusMessage = statusMessage.."It's been a while since you drank something. "; }
 		else if(drinkdelta >= 1500 && drinkdelta <2000) { statusMessage = statusMessage.."When did you last have some water? "; }

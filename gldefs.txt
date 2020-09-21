@@ -11,3 +11,10 @@ HardwareShader PostProcess scene
 	Shader "shaders/uas_stealth.fp" 330
 	Uniform float stealth
 }
+
+HardwareShader PostProcess scene
+{
+	Name "deathfade"
+	Shader "shaders/uas_deathfade.fp" 330
+	Uniform float fadeamount
+}

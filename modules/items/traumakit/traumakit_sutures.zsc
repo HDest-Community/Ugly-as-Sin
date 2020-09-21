@@ -1,0 +1,47 @@
+extend class UaS_TraumaKit {
+	void HandleSutures() {
+		statusMessage = statusmessage.."\cjSutures\n";
+		statusMessage = statusmessage.."\cuHook needle and biodegradable thread.\n\n\n";
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
+
+		// Status precheck
+		if (currentWound.open <= 0) {
+			//currentmessage.text = "The wound is closed.\n";
+			//currentmessage.timeout = 10;
+			return;
+		}
+
+		//Handle actions
+
+		// force player to restart if pained last time
+		if (weaponstatus[TK_HOLD] < 0) {
+			if(!(owner.player.oldbuttons & BT_ATTACK)) { weaponstatus[TK_HOLD] = 0; }
+			return;
+		}
+
+		// start suture
+		if ((owner.player.cmd.buttons & BT_ATTACK) && (weaponstatus[TK_HOLD] == 0)) {
+			owner.A_StartSound("bandage/rustle",CHAN_BODY,CHANF_OVERLAP);
+			weaponstatus[TK_HOLD] = 35;
+		}
+
+		// finish suture
+		if ((owner.player.cmd.buttons & BT_ATTACK)){
+			weaponstatus[TK_HOLD] = max(weaponstatus[TK_HOLD]-1, 0);
+
+			if (weaponstatus[TK_HOLD] == 10) {
+				if(currentWound.inpain(25)) {
+					PainJolt();
+					patient.damagemobj(owner,owner,1,"staples");
+					weaponstatus[TK_HOLD] = -1;
+					currentWound.open = max(currentWound.open - random[uas_tk](1,5), 0);
+				}
+				else {
+					//if(random[uas_tk](0,1)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
+					currentWound.open = max(currentWound.open - random[uas_tk](2,5), 0);
+				}
+			}
+		}
+	}
+}
