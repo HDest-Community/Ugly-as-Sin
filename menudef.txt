@@ -62,6 +62,7 @@ OptionMenu "UaS_Options" {
 	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
 	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 	Option "Death Fading", "UaS_DeathFade", "OnOff"
+	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
 
 	StaticText "Changing module configuration mid-game may cause"
 	StaticText "unpredictable results. A new game is recommended when"

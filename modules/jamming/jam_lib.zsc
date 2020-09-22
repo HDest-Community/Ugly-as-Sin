@@ -1,0 +1,45 @@
+enum UAS_LIB_CONSTANTS {
+	// Status slots
+	UAS_LIBS_FIRED = 8,
+
+	// Convenience
+	UAS_LIB_CHAMBER_LIVE = 2,
+	UAS_LIB_CHAMBER_SHELL = 1,
+	UAS_LIB_CHAMBER_EMPTY = 0,
+
+	UAS_LIB_JAMTHRESH = 50,
+};
+
+extend class UaS_WeaponJammer {
+	int Lib_OldChamber;
+	int jamcheck;
+	LiberatorRifle lib;
+
+	void LiberatorJamming() {
+		lib = LiberatorRifle(owner.FindInventory("LiberatorRifle"));
+		bool JustFired = (lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_SHELL && Lib_OldChamber == UAS_LIB_CHAMBER_LIVE);
+		bool JustFed = (
+			(lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_LIVE && Lib_OldChamber == UAS_LIB_CHAMBER_SHELL) ||
+			(lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_LIVE && Lib_OldChamber == UAS_LIB_CHAMBER_EMPTY));
+		bool JustEjected = (JustFired && !JustFed);
+
+		if (JustFired) { lib.weaponstatus[UAS_LIBS_FIRED]++; }
+		jamcheck = random[uas_jm](lib.weaponstatus[UAS_LIBS_FIRED], UAS_LIB_JAMTHRESH);
+
+		if (JustFed && jamcheck == UAS_LIB_JAMTHRESH - 1) {
+			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
+			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_EMPTY;
+			lib.weaponstatus[LIBS_MAG]++;
+			lib.weaponstatus[UAS_LIBS_FIRED] /= 4;
+			return;
+		}
+		else if (JustFed && jamcheck == UAS_LIB_JAMTHRESH) {
+			if (UaS_Debug & Jamming) { console.printf("Next round bad"); }
+			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_SHELL;
+			lib.weaponstatus[UAS_LIBS_FIRED] /= 4;
+			return;
+		}
+
+		Lib_OldChamber = lib.weaponstatus[LIBS_CHAMBER];
+	}
+}

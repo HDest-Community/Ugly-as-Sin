@@ -7,7 +7,7 @@ enum UaS_Debug_Flags {
 	Med = 32,
 	Allies = 64,
 	AI = 128,
-//	unused = 256,
+	Jamming = 256,
 	Looting = 512,
 	Stealth = 1024,
 	Searching = 2048,

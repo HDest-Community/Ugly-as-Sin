@@ -6,6 +6,7 @@ class UaS_Bootstrap : EventHandler {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
+			if (UaS_JammingEnabled) { Jamming_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Medical_Bootstrap(i);
 			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
@@ -91,6 +92,14 @@ extend class UaS_BootStrap {
 			console.printf("new deathfader failed for "..pnum) ;
 			df.destroy();
 			return;
+		}
+	}
+
+	void Jamming_Bootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if (!p.mo.countinv("UaS_WeaponJammer")) {
+			p.mo.Giveinventory("UaS_WeaponJammer", 1);
 		}
 	}
 }
