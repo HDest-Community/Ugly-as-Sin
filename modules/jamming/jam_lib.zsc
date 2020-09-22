@@ -7,7 +7,7 @@ enum UAS_LIB_CONSTANTS {
 	UAS_LIB_CHAMBER_SHELL = 1,
 	UAS_LIB_CHAMBER_EMPTY = 0,
 
-	UAS_LIB_JAMTHRESH = 10000,
+	UAS_LIB_JAMTHRESH = 5000,
 };
 
 extend class UaS_WeaponJammer {
@@ -25,11 +25,11 @@ extend class UaS_WeaponJammer {
 
 		if (JustFired) {
 			lib.weaponstatus[UAS_LIBS_FIRED]++;
-			jamcheck = random[uas_jm](lib.weaponstatus[UAS_LIBS_FIRED], UAS_LIB_JAMTHRESH);
+			jamcheck = random[uas_jm](0, UAS_LIB_JAMTHRESH);
 			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..lib.weaponstatus[UAS_LIBS_FIRED].."/"..UAS_LIB_JAMTHRESH.." check "..jamcheck); }
 		}
 
-		if (JustFed && jamcheck == UAS_LIB_JAMTHRESH - 1) {
+		if (JustFed && jamcheck <= lib.weaponstatus[UAS_LIBS_FIRED]) {
 			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
 			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_EMPTY;
 			lib.weaponstatus[LIBS_MAG]++;
