@@ -104,7 +104,7 @@ class UaS_TraumaKit : HDWeapon {
 		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
 
 		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
-		if (!patient || !other) { patient = HDPlayerPawn(owner); }
+		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
 
 		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
 		if (!wh) { console.printf("No wound handler!"); return; }
