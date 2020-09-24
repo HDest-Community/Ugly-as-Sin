@@ -53,7 +53,7 @@ extend class UaS_TraumaKit {
 				// remove some dirt
 				if (check < currentWound.dirty) {
 					owner.A_StartSound("misc/smallslop", CHAN_WEAPON);
-					currentWound.dirty = max(currentWound.dirty - 1, 0);
+					currentWound.dirty = max(currentWound.dirty - random[uas_tk](1,2), 0);
 					if(random[uas_tk](0, 35) == 0) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 				}
 
