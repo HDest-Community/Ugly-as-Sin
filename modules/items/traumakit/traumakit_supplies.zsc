@@ -56,7 +56,7 @@ extend class UaS_TraumaKit {
 				case T_STAPLER:
 					if(owner.countinv("UaS_2FCartridge") > 0) {
 						owner.TakeInventory("UaS_2FCartridge", 1);
-						weaponstatus[TKS_BIOFOAM] += 250;
+						weaponstatus[TKS_BIOFOAM] += 200;
 						weaponstatus[TKS_STAPLES] += 15;
 						currentmessage.text = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
 						currentmessage.timeout = 2*35;
