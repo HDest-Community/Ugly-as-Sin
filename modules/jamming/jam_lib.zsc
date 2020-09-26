@@ -25,11 +25,11 @@ extend class UaS_WeaponJammer {
 
 		if (JustFired) {
 			lib.weaponstatus[UAS_LIBS_FIRED]++;
-			jamcheck = random[uas_jm](0, UAS_LIB_JAMTHRESH);
+			jamcheck = weightedroll();
 			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..lib.weaponstatus[UAS_LIBS_FIRED].."/"..UAS_LIB_JAMTHRESH.." check "..jamcheck); }
 		}
 
-		if (JustFed && jamcheck <= lib.weaponstatus[UAS_LIBS_FIRED]) {
+		if (JustFed && jamcheck < lib.weaponstatus[UAS_LIBS_FIRED]) {
 			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
 			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_EMPTY;
 			lib.weaponstatus[LIBS_MAG]++;
@@ -44,5 +44,14 @@ extend class UaS_WeaponJammer {
 		}
 
 		Lib_OldChamber = lib.weaponstatus[LIBS_CHAMBER];
+		if (jamcheck < 0) jamcheck = 0;
+	}
+	int weightedroll() {
+		int r = random[uas_jm](0, UAS_LIB_JAMTHRESH);
+		r += random[uas_jm](0, UAS_LIB_JAMTHRESH);
+		r += random[uas_jm](0, UAS_LIB_JAMTHRESH);
+		r  = UAS_LIB_JAMTHRESH - (2 * abs(r/3 - (UAS_LIB_JAMTHRESH / 2)));
+		return r;
 	}
 }
+
