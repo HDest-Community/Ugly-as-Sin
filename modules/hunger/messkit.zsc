@@ -20,11 +20,36 @@ class UaS_FoodManager : HDWeapon {
 	}
 
 	override void DoEffect() {
-		if (!(owner.player.readyweapon is 'UaS_FoodManager')) { return; }
+		if (!CriticalChecks()) { return; }
+
 		statusMessage = "... \cjFood Manager\c- ...\n\n";
 
-		FoodList();
+		DisplayList();
+		HandleInput();
+
+		debugstatus();
 		A_WeaponMessage(statusMessage);
+	}
+
+	bool CriticalChecks() {
+		FoodList();
+		if (!(owner.player.readyweapon is 'UaS_FoodManager')) { return false; }
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
+		return true;
+	}
+
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+		if ((bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+			weaponstatus[FMS_SELECTED]++;
+			if (weaponstatus[FMS_SELECTED] >= foodarray.size()) { weaponstatus[FMS_SELECTED] = 0; }
+		}
+		else if ((bt & BT_ALTRELOAD) && !(bto & BT_ALTRELOAD)) {
+			weaponstatus[FMS_SELECTED]--;
+			if (weaponstatus[FMS_SELECTED] < 0) { weaponstatus[FMS_SELECTED] = foodarray.size()-1; }
+		}
 	}
 
 	void FoodList() {
@@ -37,18 +62,33 @@ class UaS_FoodManager : HDWeapon {
 			}
 			i = i.inv;
 		}
+		bINVBAR = (foodarray.size() > 0);
+	}
 
+	void DisplayList() {
 		if (foodarray.size() == 0) {
 			statusmessage = statusmessage.."No consumables!\n\n";
 			return;
 		}
 		else {
 			for (int i=0; i < foodarray.size(); i++) {
+				if (i == weaponstatus[FMS_SELECTED]) { statusmessage = statusmessage.."\cb"; }
 				statusmessage = statusmessage
-					..foodarray[i].tag.." "
-					..countinv(foodarray[i].GetClassName()).."\n";
+					..foodarray[i].gettag().." \c-x"
+					..owner.countinv(foodarray[i].GetClassName()).."\n";
 			}
 		}
 		statusmessage = statusmessage.."\n";
+	}
+
+	void debugstatus() {
+		if (!(UaS_Debug & Hunger)) { return; }
+		statusMessage = statusMessage
+			.."energy "..int(tracker.calories).."\n"
+			.."fluid "..int(tracker.water).."\n";
+	}
+
+	enum Slots {
+		FMS_SELECTED,
 	}
 }
