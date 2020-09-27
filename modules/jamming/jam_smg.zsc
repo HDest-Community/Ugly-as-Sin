@@ -1,0 +1,32 @@
+enum UAS_SMG_CONSTANTS {
+	// Status slots
+	UAS_SMG_FIRED = 6,
+
+	// Convenience
+	UAS_SMG_CHAMBER_LIVE = 2,
+	UAS_SMG_CHAMBER_SHELL = 1,
+	UAS_SMG_CHAMBER_EMPTY = 0,
+
+	UAS_SMG_JAMTHRESH = 5000,
+};
+
+extend class UaS_WeaponJammer {
+	void SMGJamming() {
+		wep = HDSMG(owner.player.ReadyWeapon);
+		ChamberSlot = SMGS_CHAMBER;
+		MagSlot = SMGS_MAG;
+		//HeatSlot = LIBS_HEAT;
+		JamSlot = UAS_SMG_FIRED;
+		WJ_LIVE = UAS_SMG_CHAMBER_LIVE;
+		WJ_SHELL = UAS_SMG_CHAMBER_SHELL;
+		WJ_EMPTY = UAS_SMG_CHAMBER_EMPTY;
+		JamThresh = UAS_SMG_JAMTHRESH;
+
+		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
+		JustFed = (
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_SHELL) ||
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_EMPTY)
+		);
+		JustEjected = (JustFired && !JustFed);
+	}
+}

@@ -11,47 +11,22 @@ enum UAS_LIB_CONSTANTS {
 };
 
 extend class UaS_WeaponJammer {
-	int Lib_OldChamber;
-	int jamcheck;
-	LiberatorRifle lib;
-
 	void LiberatorJamming() {
-		lib = LiberatorRifle(owner.FindInventory("LiberatorRifle"));
-		bool JustFired = (lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_SHELL && Lib_OldChamber == UAS_LIB_CHAMBER_LIVE);
-		bool JustFed = (
-			(lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_LIVE && Lib_OldChamber == UAS_LIB_CHAMBER_SHELL) ||
-			(lib.weaponstatus[LIBS_CHAMBER] == UAS_LIB_CHAMBER_LIVE && Lib_OldChamber == UAS_LIB_CHAMBER_EMPTY));
-		bool JustEjected = (JustFired && !JustFed);
+		wep = LiberatorRifle(owner.player.ReadyWeapon);
+		ChamberSlot = LIBS_CHAMBER;
+		MagSlot = LIBS_MAG;
+		HeatSlot = LIBS_HEAT;
+		JamSlot = UAS_LIBS_FIRED;
+		WJ_LIVE = UAS_LIB_CHAMBER_LIVE;
+		WJ_SHELL = UAS_LIB_CHAMBER_SHELL;
+		WJ_EMPTY = UAS_LIB_CHAMBER_EMPTY;
+		JamThresh = UAS_LIB_JAMTHRESH;
 
-		if (JustFired) {
-			lib.weaponstatus[UAS_LIBS_FIRED]++;
-			jamcheck = weightedroll();
-			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..lib.weaponstatus[UAS_LIBS_FIRED].."/"..UAS_LIB_JAMTHRESH.." check "..jamcheck); }
-		}
-
-		if (JustFed && jamcheck < lib.weaponstatus[UAS_LIBS_FIRED]) {
-			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
-			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_EMPTY;
-			lib.weaponstatus[LIBS_MAG]++;
-			lib.weaponstatus[UAS_LIBS_FIRED] /= 4;
-			return;
-		}
-		else if (JustFed && jamcheck == UAS_LIB_JAMTHRESH) {
-			if (UaS_Debug & Jamming) { console.printf("Next round bad"); }
-			lib.weaponstatus[LIBS_CHAMBER] = UAS_LIB_CHAMBER_SHELL;
-			lib.weaponstatus[UAS_LIBS_FIRED] /= 4;
-			return;
-		}
-
-		Lib_OldChamber = lib.weaponstatus[LIBS_CHAMBER];
-		if (jamcheck < 0) jamcheck = 0;
-	}
-	int weightedroll() {
-		int r = random[uas_jm](0, UAS_LIB_JAMTHRESH);
-		r += random[uas_jm](0, UAS_LIB_JAMTHRESH);
-		r += random[uas_jm](0, UAS_LIB_JAMTHRESH);
-		r  = UAS_LIB_JAMTHRESH - (2 * abs(r/3 - (UAS_LIB_JAMTHRESH / 2)));
-		return r;
+		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
+		JustFed = (
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_SHELL) ||
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_EMPTY)
+		);
+		JustEjected = (JustFired && !JustFed);
 	}
 }
-

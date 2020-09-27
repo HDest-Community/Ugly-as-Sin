@@ -1,0 +1,32 @@
+enum UAS_PIS_CONSTANTS {
+	// Status slots
+	UAS_PIS_FIRED = 3,
+
+	// Convenience
+	UAS_PIS_CHAMBER_LIVE = 2,
+	UAS_PIS_CHAMBER_SHELL = 1,
+	UAS_PIS_CHAMBER_EMPTY = 0,
+
+	UAS_PIS_JAMTHRESH = 5000,
+};
+
+extend class UaS_WeaponJammer {
+	void PistolJamming() {
+		wep = HDHandgun(owner.player.ReadyWeapon);
+		ChamberSlot = PISS_CHAMBER;
+		MagSlot = PISS_MAG;
+		//HeatSlot = LIBS_HEAT;
+		JamSlot = UAS_PIS_FIRED;
+		WJ_LIVE = UAS_PIS_CHAMBER_LIVE;
+		WJ_SHELL = UAS_PIS_CHAMBER_SHELL;
+		WJ_EMPTY = UAS_PIS_CHAMBER_EMPTY;
+		JamThresh = UAS_PIS_JAMTHRESH;
+
+		JustFired = ((wep.weaponstatus[MagSlot] == OldMag - 1));
+		JustFed = (
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_SHELL) ||
+			(wep.weaponstatus[ChamberSlot] == WJ_LIVE && OldChamber == WJ_EMPTY)
+		);
+		JustEjected = (JustFired && !JustFed);
+	}
+}

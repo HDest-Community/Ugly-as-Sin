@@ -1,9 +1,57 @@
 #include "modules/jamming/jam_lib.zsc"
+#include "modules/jamming/jam_pis.zsc"
+#include "modules/jamming/jam_smg.zsc"
 
 class UaS_WeaponJammer : Inventory {
+	int ChamberSlot, MagSlot, HeatSlot, JamSlot;
+	int OldChamber, OldMag;
+	int JamCheck;
+	int JamThresh;
+	int WJ_LIVE, WJ_SHELL, WJ_EMPTY;
+	bool JustFired, JustFed, JustEjected;
+	HDWeapon wep;
+
 	override void DoEffect() {
 		if (!owner.player.ReadyWeapon) { return; }
 		if (level.maptime < 35) { return; }
+		wep = null;
 		if (owner.player.ReadyWeapon is 'LiberatorRifle') { LiberatorJamming(); }
+		if (owner.player.ReadyWeapon is 'HDHandgun') { PistolJamming(); }
+		if (owner.player.ReadyWeapon is 'HDSMG') { SMGJamming(); }
+		if (!wep) { return; }
+
+		// Reroll the jam chance every shot and track shots fired
+		if (JustFired) {
+			wep.weaponstatus[JamSlot]++;
+			JamCheck = weightedroll(JamThresh);
+			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck); }
+		}
+
+		// Check for failure thresholds
+		if (JustFed && JamCheck < wep.weaponstatus[JamSlot]) {
+			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
+			wep.weaponstatus[ChamberSlot] = WJ_EMPTY;
+			wep.weaponstatus[MagSlot]++;
+			wep.weaponstatus[JamSlot] /= 4;
+			return;
+		}
+		else if (JustFed && JamCheck == JamThresh) {
+			if (UaS_Debug & Jamming) { console.printf("Next round bad"); }
+			wep.weaponstatus[ChamberSlot] = WJ_SHELL;
+			wep.weaponstatus[JamSlot] /= 4;
+			return;
+		}
+
+		// Set old variables
+		OldChamber = wep.weaponstatus[ChamberSlot];
+		OldMag = wep.weaponstatus[MagSlot];
+	}
+
+	int weightedroll(int thresh) {
+		int r = random[uas_jm](0, thresh);
+		r += random[uas_jm](0, thresh);
+		r += random[uas_jm](0, thresh);
+		r  = thresh - (2 * abs(r/3 - (thresh / 2)));
+		return r;
 	}
 }
