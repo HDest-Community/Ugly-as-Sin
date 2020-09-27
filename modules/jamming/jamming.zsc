@@ -16,7 +16,7 @@ class UaS_WeaponJammer : Inventory {
 		if (level.maptime < 35) { return; }
 		wep = null;
 		if (owner.player.ReadyWeapon is 'LiberatorRifle') { LiberatorJamming(); }
-		if (owner.player.ReadyWeapon is 'HDHandgun') { PistolJamming(); }
+		if (owner.player.ReadyWeapon is 'HDPistol') { PistolJamming(); }
 		if (owner.player.ReadyWeapon is 'HDSMG') { SMGJamming(); }
 		if (!wep) { return; }
 

@@ -12,7 +12,7 @@ enum UAS_PIS_CONSTANTS {
 
 extend class UaS_WeaponJammer {
 	void PistolJamming() {
-		wep = HDHandgun(owner.player.ReadyWeapon);
+		wep = HDWeapon(owner.player.ReadyWeapon);
 		ChamberSlot = PISS_CHAMBER;
 		MagSlot = PISS_MAG;
 		//HeatSlot = LIBS_HEAT;

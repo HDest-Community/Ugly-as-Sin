@@ -12,7 +12,7 @@ enum UAS_SMG_CONSTANTS {
 
 extend class UaS_WeaponJammer {
 	void SMGJamming() {
-		wep = HDSMG(owner.player.ReadyWeapon);
+		wep = HDWeapon(owner.player.ReadyWeapon);
 		ChamberSlot = SMGS_CHAMBER;
 		MagSlot = SMGS_MAG;
 		//HeatSlot = LIBS_HEAT;
