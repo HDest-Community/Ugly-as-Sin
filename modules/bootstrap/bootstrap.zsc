@@ -30,6 +30,7 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_HungerTracker")) {
 			p.mo.giveinventory("UaS_HungerTracker", 1);
+			p.mo.giveinventory("UaS_MessKit", 1);
 			if(UaS_Debug & Hunger) { console.printf("Hunger: Player "..pnum.." given tracker."); }
 		}
 	}

@@ -6,6 +6,9 @@ $random UaS/FoodScoop {
 	UaS/FoodScoop2
 }
 
+UaS/Chew1	dspocket
+UaS/Chew2	dsfrgrol
+
 UaS/Glowstick	dsrifclk
 UaS/Flare		"sounds/tr_flare.wav"
 
