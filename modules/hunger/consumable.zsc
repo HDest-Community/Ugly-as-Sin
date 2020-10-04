@@ -2,6 +2,9 @@
 class UaS_Consumable : HDPickup {
 	int energy;
 	int fluid;
+	bool opened;
+	double energy_consumed;
+	double fluid_consumed;
 	string description;
 	string opensound;
 	property Energy: energy;
