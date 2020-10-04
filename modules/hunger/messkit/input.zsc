@@ -1,0 +1,32 @@
+extend class UaS_Messkit {
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+		UaS_Consumable item = foodarray[weaponstatus[MKS_SELECTED]];
+
+		//Take a bite
+		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
+			if (fluidonly()) {
+				int sipsize = min(random[uas_mk](15,30), item.fluid - item.fluid_consumed);
+				weaponstatus[MKS_SIP] = sipsize;
+				item.fluid_consumed += sipsize;
+				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+			}
+			else {
+				int bitesize = min(random[uas_mk](50,75), item.energy - item.energy_consumed);
+				weaponstatus[MKS_BITE] = bitesize;
+				item.energy_consumed += bitesize;
+			}
+		}
+		// Cycle down
+		else if ((bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+			weaponstatus[MKS_SELECTED]++;
+			if (weaponstatus[MKS_SELECTED] >= foodarray.size()) { weaponstatus[MKS_SELECTED] = 0; }
+		}
+		// Cycle up
+		else if ((bt & BT_ALTRELOAD) && !(bto & BT_ALTRELOAD)) {
+			weaponstatus[MKS_SELECTED]--;
+			if (weaponstatus[MKS_SELECTED] < 0) { weaponstatus[MKS_SELECTED] = foodarray.size()-1; }
+		}
+	}
+}

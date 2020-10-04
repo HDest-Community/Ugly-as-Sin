@@ -1,0 +1,20 @@
+extend class UaS_Messkit {
+	void Consume() {
+		if (mouthclear()) { return; }
+		if (weaponstatus[MKS_SIP] > 0) {
+			weaponstatus[MKS_SIP]--;
+			owner.A_StartSound("UaS/Sip", CHAN_VOICE, CHANF_NOSTOP, volume: frandom[uas_mk](0.25, 0.5));
+			console.printf("Sipping "..weaponstatus[MKS_SIP]);
+		}
+		else if (weaponstatus[MKS_BITE] > 0 && level.maptime % 5 == 0) {
+			owner.A_StartSound("UaS/Chew", CHAN_VOICE, CHANF_NOSTOP, volume: frandom[uas_mk](0.4, 0.75));
+			weaponstatus[MKS_BITE] -= min(random[uas_mk](1,10), weaponstatus[MKS_BITE]);
+			console.printf("chewing "..weaponstatus[MKS_BITE]);
+		}
+		if (mouthclear()) {
+			console.printf("Swallowed");
+			owner.A_StartSound("UaS/Swallow", CHAN_VOICE);
+			return;
+		}
+	}
+}

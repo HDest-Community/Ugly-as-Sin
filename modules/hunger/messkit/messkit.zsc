@@ -1,0 +1,42 @@
+#include "modules/hunger/messkit/foodlist.zsc"
+#include "modules/hunger/messkit/consume.zsc"
+#include "modules/hunger/messkit/input.zsc"
+#include "modules/hunger/messkit/misc.zsc"
+
+class UaS_MessKit : HDWeapon {
+	array<UaS_Consumable> foodarray;
+	UaS_HungerTracker tracker;
+	string statusMessage;
+
+	default {
+		Scale 0.5;
+		Inventory.PickupMessage "";
+		Inventory.Icon "HSCVB0";
+		Inventory.MaxAmount 1;
+		-INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+INVENTORY.UNTOSSABLE;
+		tag "Messkit";
+		-hdweapon.fitsinbackpack;
+	}
+
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+
+		statusMessage = "... \cjMesskit\c- ...\n\n";
+
+		DisplayList();
+		HandleInput();
+
+		debugstatus();
+		A_WeaponMessage(statusMessage);
+	}
+
+	override void Tick() {
+		BuildFoodList();
+		bINVBAR = (foodarray.size() > 0);
+		Consume();
+	}
+
+}
