@@ -7,7 +7,6 @@ extend class UaS_Messkit {
 		DisplayList();
 		HandleInput();
 
-		debugstatus();
 		A_WeaponMessage(statusMessage);
 	}
 
@@ -22,12 +21,18 @@ extend class UaS_Messkit {
 				..foodarray[i].gettag().." \c-x"
 				..owner.countinv(foodarray[i].GetClassName()).."\n";
 		}
-		statusmessage = statusmessage
-			.."\n\n"
-			..int(item.energy - item.energy_consumed).."\n"
-			..int(item.fluid - item.fluid_consumed).."\n"
-			..item.description.."\n";
+		debugstatus();
+		statusmessage = statusmessage.."\n"..item.description.."\n";
 	}
+
+	void debugstatus() {
+		if (!(UaS_Debug & Hunger)) { return; }
+		if (!item) { return; }
+		statusMessage = statusMessage.."\n"
+			.."energy "..int(item.energy * (1.0 - (item.consumed / item.bulk))).."\n"
+			.."fluid "..int(item.fluid * (1.0 - (item.consumed / item.bulk))).."\n";
+	}
+
 
 	void HandleInput() {
 		int bt = owner.player.cmd.buttons;
@@ -37,16 +42,18 @@ extend class UaS_Messkit {
 
 		//Take a bite
 		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
-			if (fluidonly()) {
-				int sipsize = min(random[uas_mk](15,30), item.fluid - item.fluid_consumed);
+			if (item.bDRINKABLE) {
+				int sipsize = item.fluid / item.bulk;
 				weaponstatus[MKS_SIP] = sipsize;
-				item.fluid_consumed += sipsize;
+				item.consumed += 1.0;
 				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
 			}
 			else {
-				int bitesize = min(random[uas_mk](50,75), item.energy - item.energy_consumed);
+				int bitesize = item.energy / (item.bulk * 2);
+				int sipsize = item.fluid / (item.bulk * 2);
 				weaponstatus[MKS_BITE] = bitesize;
-				item.energy_consumed += bitesize;
+				weaponstatus[MKS_SIP] = sipsize;
+				item.consumed += 0.5;
 			}
 		}
 		// Cycle down

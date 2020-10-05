@@ -25,21 +25,7 @@ extend class UaS_Messkit {
 		return (weaponstatus[MKS_BITE] <= 0 && weaponstatus[MKS_SIP] <= 0);
 	}
 
-	bool fluidonly() {
-		return (
-			foodarray[weaponstatus[MKS_SELECTED]].energy <=0 &&
-			foodarray[weaponstatus[MKS_SELECTED]].fluid >0
-		);
-	}
-
 	override int getsbarnum(int flags){return foodarray.size();}
-
-	void debugstatus() {
-		if (!(UaS_Debug & Hunger)) { return; }
-		statusMessage = statusMessage
-			.."energy "..int(tracker.calories).."\n"
-			.."fluid "..int(tracker.water).."\n";
-	}
 
 	enum Slots {
 		MKS_SELECTED,

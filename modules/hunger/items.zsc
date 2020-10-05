@@ -18,6 +18,7 @@ class UaS_WaterRation : UaS_Consumable {
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Description "A disposable tear-open water pouch, about equivalent to a single glass of water.";
 		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		+UaS_Consumable.DRINKABLE;
 		inventory.pickupmessage "Picked up a military water ration.";
 		tag "Water Ration (250ml)";
 		Inventory.Icon "HSCVR0";
