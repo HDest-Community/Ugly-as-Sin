@@ -1,8 +1,39 @@
 extend class UaS_Messkit {
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+
+		statusMessage = "... \cjMesskit\c- ...\n\n";
+
+		DisplayList();
+		HandleInput();
+
+		debugstatus();
+		A_WeaponMessage(statusMessage);
+	}
+
+	void DisplayList() {
+		if (foodarray.size() == 0 || !item) {
+			statusmessage = statusmessage.."Nothing to consume!\n\n";
+			return;
+		}
+		for (int i=0; i < foodarray.size(); i++) {
+			if (i == weaponstatus[MKS_SELECTED]) { statusmessage = statusmessage.."\cb"; }
+			statusmessage = statusmessage
+				..foodarray[i].gettag().." \c-x"
+				..owner.countinv(foodarray[i].GetClassName()).."\n";
+		}
+		statusmessage = statusmessage
+			.."\n\n"
+			..int(item.energy - item.energy_consumed).."\n"
+			..int(item.fluid - item.fluid_consumed).."\n"
+			..item.description.."\n";
+	}
+
 	void HandleInput() {
 		int bt = owner.player.cmd.buttons;
 		int bto = owner.player.oldbuttons;
-		UaS_Consumable item = foodarray[weaponstatus[MKS_SELECTED]];
+
+		if (foodarray.size() == 0) { return; }
 
 		//Take a bite
 		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
