@@ -26,3 +26,14 @@ class UaS_WaterRation : UaS_Consumable {
 		hdpickup.refid UAS_HDLD_WRATION;
 	}
 }
+
+class UaS_CurryRiceMRE : UaS_Consumable {
+	default {
+		UaS_Consumable.Energy 500;
+		UaS_Consumable.Fluid 200;
+		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a sealed meal pack.";
+		inventory.pickupmessage "Picked up a curry rice MRE.";
+		tag "Curry Rice MRE";
+		hdpickup.bulk 8;
+	}
+}
