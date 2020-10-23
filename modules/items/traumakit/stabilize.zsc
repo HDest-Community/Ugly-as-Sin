@@ -14,6 +14,7 @@ class UaS_WoundStabilization : HDWeapon {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
 		-HDWEAPON.FITSINBACKPACK;
+		+NOINTERACTION; //because gear crate. Maybe inherit from hdwoundfixer instead?
 		//+WEAPON.NOAUTOFIRE;
 		weapon.slotpriority 0.6;
 		weapon.slotnumber 9;
