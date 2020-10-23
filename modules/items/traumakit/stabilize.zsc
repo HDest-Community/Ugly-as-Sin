@@ -13,6 +13,7 @@ class UaS_WoundStabilization : HDWeapon {
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
+		-HDWEAPON.FITSINBACKPACK;
 		//+WEAPON.NOAUTOFIRE;
 		weapon.slotpriority 0.6;
 		weapon.slotnumber 9;
