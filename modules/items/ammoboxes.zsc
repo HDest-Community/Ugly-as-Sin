@@ -1,0 +1,111 @@
+class UaS_9mmBox : HDMagAmmo replaces HD9mBoxPickup {
+	default {
+		scale 0.4;
+		HDMagAmmo.MaxPerUnit 100;
+		HDMagAmmo.RoundType "HDPistolAmmo";
+		HDMagAmmo.RoundBulk ENC_9_LOADED;
+		HDMagAmmo.MagBulk 2;
+		tag "9mm ammo box";
+		Inventory.PickupMessage "Picked up a box of 100 9mm rounds.";
+		//HDPickup.refid NONE_YET;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt) {
+		return "9BOXA0","PBRSA0","HDPistolAmmo",0.6;
+	}
+
+	override void GetItemsThatUseThis() {
+		itemsthatusethis.push("DERPUsable");
+		itemsthatusethis.push("DERPDEAD");
+		itemsthatusethis.push("HDPistol");
+		itemsthatusethis.push("HDRevolver");
+		itemsthatusethis.push("HDSMG");
+	}
+
+	States {
+		Spawn:
+			9BOX A -1;
+	}
+}
+
+class UaS_ShellBox : HDMagAmmo replaces ShellBoxPickup {
+	default {
+		scale 0.4;
+		HDMagAmmo.MaxPerUnit 20;
+		HDMagAmmo.RoundType "HDShellAmmo";
+		HDMagAmmo.RoundBulk ENC_SHELLLOADED;
+		HDMagAmmo.MagBulk 2;
+		tag "12ga shell box";
+		Inventory.PickupMessage "Picked up a box of 20 12ga shells.";
+		translation "160:167=80:105";
+		//HDPickup.refid NONE_YET;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt) {
+		return "SBOXA0","SHL1A0","HDShellAmmo",0.6;
+	}
+
+	override void GetItemsThatUseThis() {
+		itemsthatusethis.push("Hunter");
+		itemsthatusethis.push("Slayer");
+	}
+
+	States {
+		Spawn:
+			SBOX A -1;
+	}
+}
+
+class UaS_7mmBox : HDMagAmmo replaces HD7mBoxPickup {
+	default {
+		scale 0.4;
+		HDMagAmmo.MaxPerUnit 50;
+		HDMagAmmo.RoundType "SevenMilAmmo";
+		HDMagAmmo.RoundBulk ENC_776_LOADED;
+		HDMagAmmo.MagBulk 2;
+		tag "7.76mm ammo box";
+		Inventory.PickupMessage "Picked up a box of 50 7.76mm rounds.";
+		//HDPickup.refid NONE_YET;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt) {
+		return "7BOXA0","RBRSA3A7","SevenMilAmmo",0.6;
+	}
+
+	override void GetItemsThatUseThis(){
+		itemsthatusethis.push("LiberatorRifle");
+		itemsthatusethis.push("BossRifle");
+		itemsthatusethis.push("AutoReloader");
+	}
+
+	States {
+		Spawn:
+			7BOX A -1;
+	}
+}
+
+class UaS_355Box : HDMagAmmo replaces HD355BoxPickup {
+	default {
+		scale 0.4;
+		HDMagAmmo.MaxPerUnit 72;
+		HDMagAmmo.RoundType "HDRevolverAmmo";
+		HDMagAmmo.RoundBulk ENC_355_LOADED;
+		HDMagAmmo.MagBulk 2;
+		tag ".355 ammo box";
+		Inventory.PickupMessage "Picked up a box of 72 .355 rounds.";
+		//HDPickup.refid NONE_YET;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt) {
+		return "3BOXA0","PBRSA0","HDRevolverAmmo",0.6;
+	}
+
+	override void GetItemsThatUseThis(){
+		itemsthatusethis.push("HDRevolver");
+	}
+
+	States {
+		Spawn:
+			7BOX A -1;
+	}
+}

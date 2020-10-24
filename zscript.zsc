@@ -55,6 +55,7 @@ version "4.4"
 #include "modules/items/traumakit/handler.zsc"
 #include "modules/items/traumakit/traumakit.zsc"
 #include "modules/items/traumakit/stabilize.zsc"
+#include "modules/items/ammoboxes.zsc"
 
 #include "modules/aimsway/aimsway.zsc"
 #include "modules/deathfade/deathfade.zsc"
