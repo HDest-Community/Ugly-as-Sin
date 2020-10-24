@@ -29,6 +29,7 @@ class UaS_TraumaKit : HDWeapon {
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.NO_AUTO_SWITCH;
+		+hdweapon.fitsinbackpack;
 		//+WEAPON.NOAUTOFIRE;
 		weapon.slotpriority 0.5;
 		weapon.slotnumber 9;
