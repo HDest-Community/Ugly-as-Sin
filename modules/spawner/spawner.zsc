@@ -10,6 +10,8 @@ class UaS_Spawner : EventHandler {
 				break;
 		}
 
+		AmmoBoxSpawns(e);
+
 		// Stuff that only spawns on map start
 		if (level.maptime > 1) { return; }
 

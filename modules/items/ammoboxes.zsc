@@ -1,3 +1,47 @@
+extend class UaS_Spawner {
+	void AmmoBoxSpawns(worldevent e) {
+		//9mm boxes
+		if (e.Thing is "HD9mBoxPickup") {
+			HDPistolAmmo p = HDPistolAmmo(actor.spawn("HDPistolAmmo",e.thing.pos));
+			p.amount = 100;
+			p.vel = e.thing.vel;
+			p.SplitPickupBoxableRound(10,101,"HD9mBoxPickup","TEN9A0","PRNDA0");
+			e.thing.destroy();
+			return;
+		}
+
+		//shell boxes
+		if (e.Thing is "ShellBoxPickup") {
+			HDShellAmmo p = HDShellAmmo(actor.spawn("HDShellAmmo",e.thing.pos));
+			p.amount = 20;
+			p.vel = e.thing.vel;
+			p.SplitPickupBoxableRound(4,21,"ShellBoxPickup","SHELA0","SHL1A0");
+			e.thing.destroy();
+			return;
+		}
+
+		//7mm boxes
+		if (e.Thing is "HD7mBoxPickup") {
+			SevenMilAmmo p = SevenMilAmmo(actor.spawn("SevenMilAmmo",e.thing.pos));
+			p.amount = 50;
+			p.vel = e.thing.vel;
+			p.SplitPickupBoxableRound(10,51,"HD7mBoxPickup","TEN7A0","RBRSA0");
+			e.thing.destroy();
+			return;
+		}
+
+		//.355 boxes
+		if (e.Thing is "HD355BoxPickup") {
+			HDRevolverAmmo p = HDRevolverAmmo(actor.spawn("HDRevolverAmmo",e.thing.pos));
+			p.amount = 72;
+			p.vel = e.thing.vel;
+			p.SplitPickupBoxableRound(10,73,"HD355BoxPickup","TEN9A0","PRNDA0");
+			e.thing.destroy();
+			return;
+		}
+	}
+}
+
 class UaS_9mmBox : HDMagAmmo replaces HD9mBoxPickup {
 	default {
 		scale 0.4;
@@ -6,7 +50,7 @@ class UaS_9mmBox : HDMagAmmo replaces HD9mBoxPickup {
 		HDMagAmmo.RoundBulk ENC_9_LOADED;
 		HDMagAmmo.MagBulk 2;
 		tag "9mm ammo box";
-		Inventory.PickupMessage "Picked up a box of 100 9mm rounds.";
+		Inventory.PickupMessage "Picked up a box of 9mm rounds.";
 		//HDPickup.refid NONE_YET;
 	}
 
@@ -36,7 +80,7 @@ class UaS_ShellBox : HDMagAmmo replaces ShellBoxPickup {
 		HDMagAmmo.RoundBulk ENC_SHELLLOADED;
 		HDMagAmmo.MagBulk 2;
 		tag "12ga shell box";
-		Inventory.PickupMessage "Picked up a box of 20 12ga shells.";
+		Inventory.PickupMessage "Picked up a box of 12ga shells.";
 		translation "160:167=80:105";
 		//HDPickup.refid NONE_YET;
 	}
@@ -64,7 +108,7 @@ class UaS_7mmBox : HDMagAmmo replaces HD7mBoxPickup {
 		HDMagAmmo.RoundBulk ENC_776_LOADED;
 		HDMagAmmo.MagBulk 2;
 		tag "7.76mm ammo box";
-		Inventory.PickupMessage "Picked up a box of 50 7.76mm rounds.";
+		Inventory.PickupMessage "Picked up a box of 7.76mm rounds.";
 		//HDPickup.refid NONE_YET;
 	}
 
