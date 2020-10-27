@@ -156,6 +156,6 @@ class UaS_355Box : UaS_AmmoBox replaces HD355BoxPickup {
 
 	States {
 		Spawn:
-			7BOX A -1;
+			3BOX A -1;
 	}
 }
