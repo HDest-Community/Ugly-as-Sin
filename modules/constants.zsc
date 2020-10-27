@@ -8,3 +8,8 @@ const UAS_HDLD_FLARE = "flr";
 const UAS_HDLD_LASERLIGHT = "llm";
 const UAS_HDLD_RESPIRATOR = "rsp";
 const UAS_HDLD_TRAUMAKIT = "trk";
+
+const UAS_HDLD_9MMBOX = "9bx";
+const UAS_HDLD_SHELLBOX = "sbx";
+const UAS_HDLD_7MMBOX = "7bx";
+const UAS_HDLD_355BOX = "3bx";

@@ -42,16 +42,25 @@ extend class UaS_Spawner {
 	}
 }
 
-class UaS_9mmBox : HDMagAmmo replaces HD9mBoxPickup {
+// mostly copy-pasted from HD
+class UaS_AmmoBox : HDMagAmmo {
+	default {
+		HDMagAmmo.extracttime 1;
+		HDMagAmmo.inserttime 4;
+		HDMagAmmo.MagBulk 2;
+	}
+}
+
+//specific classes
+class UaS_9mmBox : UaS_AmmoBox replaces HD9mBoxPickup {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 100;
 		HDMagAmmo.RoundType "HDPistolAmmo";
 		HDMagAmmo.RoundBulk ENC_9_LOADED;
-		HDMagAmmo.MagBulk 2;
-		tag "9mm ammo box";
+		tag "Reusable 9mm ammo box";
 		Inventory.PickupMessage "Picked up a box of 9mm rounds.";
-		//HDPickup.refid NONE_YET;
+		HDPickup.refid UAS_HDLD_9MMBOX;
 	}
 
 	override string,string,name,double getmagsprite(int thismagamt) {
@@ -72,17 +81,16 @@ class UaS_9mmBox : HDMagAmmo replaces HD9mBoxPickup {
 	}
 }
 
-class UaS_ShellBox : HDMagAmmo replaces ShellBoxPickup {
+class UaS_ShellBox : UaS_AmmoBox replaces ShellBoxPickup {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 20;
 		HDMagAmmo.RoundType "HDShellAmmo";
 		HDMagAmmo.RoundBulk ENC_SHELLLOADED;
-		HDMagAmmo.MagBulk 2;
-		tag "12ga shell box";
+		tag "Reusable 12ga shell box";
 		Inventory.PickupMessage "Picked up a box of 12ga shells.";
 		translation "160:167=80:105";
-		//HDPickup.refid NONE_YET;
+		HDPickup.refid UAS_HDLD_SHELLBOX;
 	}
 
 	override string,string,name,double getmagsprite(int thismagamt) {
@@ -100,16 +108,15 @@ class UaS_ShellBox : HDMagAmmo replaces ShellBoxPickup {
 	}
 }
 
-class UaS_7mmBox : HDMagAmmo replaces HD7mBoxPickup {
+class UaS_7mmBox : UaS_AmmoBox replaces HD7mBoxPickup {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 50;
 		HDMagAmmo.RoundType "SevenMilAmmo";
 		HDMagAmmo.RoundBulk ENC_776_LOADED;
-		HDMagAmmo.MagBulk 2;
-		tag "7.76mm ammo box";
+		tag "Reusable 7.76mm ammo box";
 		Inventory.PickupMessage "Picked up a box of 7.76mm rounds.";
-		//HDPickup.refid NONE_YET;
+		HDPickup.refid UAS_HDLD_7MMBOX;
 	}
 
 	override string,string,name,double getmagsprite(int thismagamt) {
@@ -128,16 +135,15 @@ class UaS_7mmBox : HDMagAmmo replaces HD7mBoxPickup {
 	}
 }
 
-class UaS_355Box : HDMagAmmo replaces HD355BoxPickup {
+class UaS_355Box : UaS_AmmoBox replaces HD355BoxPickup {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 72;
 		HDMagAmmo.RoundType "HDRevolverAmmo";
 		HDMagAmmo.RoundBulk ENC_355_LOADED;
-		HDMagAmmo.MagBulk 2;
-		tag ".355 ammo box";
+		tag "Reusable .355 ammo box";
 		Inventory.PickupMessage "Picked up a box of 72 .355 rounds.";
-		//HDPickup.refid NONE_YET;
+		HDPickup.refid UAS_HDLD_355BOX;
 	}
 
 	override string,string,name,double getmagsprite(int thismagamt) {
