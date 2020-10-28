@@ -40,3 +40,5 @@ user bool UaS_FlashlightParticles = true;
 user bool UaS_DeathFade = true;
 
 server bool UaS_JammingEnabled = false;
+
+server bool UaS_ReplaceAmmoboxes = false;

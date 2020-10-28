@@ -1,5 +1,6 @@
 extend class UaS_Spawner {
 	void AmmoBoxSpawns(worldevent e) {
+		if (!UaS_ReplaceAmmoboxes) { return; }
 		//9mm boxes
 		if (e.Thing is "HD9mBoxPickup") {
 			HDPistolAmmo p = HDPistolAmmo(actor.spawn("HDPistolAmmo",e.thing.pos));
@@ -40,6 +41,14 @@ extend class UaS_Spawner {
 			return;
 		}
 	}
+
+	override void CheckReplacement(ReplaceEvent e) {
+		if (!UaS_ReplaceAmmoboxes) { return; }
+		if (e.Replacee is "HD9mBoxPickup") { e.Replacement = "UaS_9mmBox"; return; }
+		if (e.Replacee is "ShellBoxPickup") { e.Replacement = "UaS_ShellBox"; return; }
+		if (e.Replacee is "HD7mBoxPickup") { e.Replacement = "UaS_7mmBox"; return; }
+		if (e.Replacee is "HD355BoxPickup") { e.Replacement = "UaS_355Box"; return; }
+	}
 }
 
 // mostly copy-pasted from HD
@@ -52,7 +61,7 @@ class UaS_AmmoBox : HDMagAmmo {
 }
 
 //specific classes
-class UaS_9mmBox : UaS_AmmoBox replaces HD9mBoxPickup {
+class UaS_9mmBox : UaS_AmmoBox {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 100;
@@ -81,7 +90,7 @@ class UaS_9mmBox : UaS_AmmoBox replaces HD9mBoxPickup {
 	}
 }
 
-class UaS_ShellBox : UaS_AmmoBox replaces ShellBoxPickup {
+class UaS_ShellBox : UaS_AmmoBox {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 20;
@@ -108,7 +117,7 @@ class UaS_ShellBox : UaS_AmmoBox replaces ShellBoxPickup {
 	}
 }
 
-class UaS_7mmBox : UaS_AmmoBox replaces HD7mBoxPickup {
+class UaS_7mmBox : UaS_AmmoBox {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 50;
@@ -135,7 +144,7 @@ class UaS_7mmBox : UaS_AmmoBox replaces HD7mBoxPickup {
 	}
 }
 
-class UaS_355Box : UaS_AmmoBox replaces HD355BoxPickup {
+class UaS_355Box : UaS_AmmoBox {
 	default {
 		scale 0.4;
 		HDMagAmmo.MaxPerUnit 72;
