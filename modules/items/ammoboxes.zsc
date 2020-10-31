@@ -55,7 +55,7 @@ extend class UaS_Spawner {
 class UaS_AmmoBox : HDMagAmmo {
 	default {
 		HDMagAmmo.extracttime 1;
-		HDMagAmmo.inserttime 4;
+		HDMagAmmo.inserttime 2;
 		HDMagAmmo.MagBulk 2;
 	}
 }
