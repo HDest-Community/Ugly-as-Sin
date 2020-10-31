@@ -4,9 +4,9 @@ extend class UaS_Spawner {
 		//9mm boxes
 		if (e.Thing is "HD9mBoxPickup") {
 			HDPistolAmmo p = HDPistolAmmo(actor.spawn("HDPistolAmmo",e.thing.pos));
-			p.amount = 100;
+			p.amount = HDUPK(e.Thing).amount;
 			p.vel = e.thing.vel;
-			p.SplitPickupBoxableRound(10,101,"HD9mBoxPickup","TEN9A0","PRNDA0");
+			p.SplitPickupBoxableRound(10,int.max,"HD9mBoxPickup","TEN9A0","PRNDA0");
 			e.thing.destroy();
 			return;
 		}
@@ -14,9 +14,9 @@ extend class UaS_Spawner {
 		//shell boxes
 		if (e.Thing is "ShellBoxPickup") {
 			HDShellAmmo p = HDShellAmmo(actor.spawn("HDShellAmmo",e.thing.pos));
-			p.amount = 20;
+			p.amount = HDUPK(e.Thing).amount;
 			p.vel = e.thing.vel;
-			p.SplitPickupBoxableRound(4,21,"ShellBoxPickup","SHELA0","SHL1A0");
+			p.SplitPickupBoxableRound(4,int.max,"ShellBoxPickup","SHELA0","SHL1A0");
 			e.thing.destroy();
 			return;
 		}
@@ -24,9 +24,9 @@ extend class UaS_Spawner {
 		//7mm boxes
 		if (e.Thing is "HD7mBoxPickup") {
 			SevenMilAmmo p = SevenMilAmmo(actor.spawn("SevenMilAmmo",e.thing.pos));
-			p.amount = 50;
+			p.amount = HDUPK(e.Thing).amount;
 			p.vel = e.thing.vel;
-			p.SplitPickupBoxableRound(10,51,"HD7mBoxPickup","TEN7A0","RBRSA0");
+			p.SplitPickupBoxableRound(10,int.max,"HD7mBoxPickup","TEN7A0","RBRSA0");
 			e.thing.destroy();
 			return;
 		}
@@ -34,9 +34,9 @@ extend class UaS_Spawner {
 		//.355 boxes
 		if (e.Thing is "HD355BoxPickup") {
 			HDRevolverAmmo p = HDRevolverAmmo(actor.spawn("HDRevolverAmmo",e.thing.pos));
-			p.amount = 72;
+			p.amount = HDUPK(e.Thing).amount;
 			p.vel = e.thing.vel;
-			p.SplitPickupBoxableRound(10,73,"HD355BoxPickup","TEN9A0","PRNDA0");
+			p.SplitPickupBoxableRound(10,int.max,"HD355BoxPickup","TEN9A0","PRNDA0");
 			e.thing.destroy();
 			return;
 		}
