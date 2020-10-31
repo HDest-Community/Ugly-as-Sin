@@ -2,6 +2,18 @@ extend class UaS_Scarcity_Handler {
 	void DoReplacement(actor targetActor) {
 		//Replacer routines for ammo items
 		switch(targetActor.GetClassName()) {
+			case 'UaS_9mmBox':
+				MagReplacer('UaS_9mmBox', 'HDLoose9mm', 100, targetActor);
+				break;
+			case 'UaS_ShellBox':
+				MagReplacer('UaS_ShellBox', 'HDFumblingShell', 20, targetActor);
+				break;
+			case 'UaS_7mmBox':
+				MagReplacer('UaS_7mmBox', 'SevenMilAmmo', 50, targetActor);
+				break;
+			case 'UaS_355Box':
+				MagReplacer('UaS_355Box', 'SevenMilAmmo', 72, targetActor);
+				break;
 			case 'HD9mMag15':
 				MagReplacer('HD9mMag15', 'HDLoose9mm', 15, targetActor);
 				break;

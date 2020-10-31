@@ -17,6 +17,10 @@ class UaS_Scarcity_Handler : EventHandler {
 		if(level.maptime != 1) { return; }
 		if(UaS_ScarcityEnabled == false) { return; }
 
+		ExactScarcity('UaS_9mmBox', 1.0 - ScarcityFactor);
+		ExactScarcity('UaS_ShellBox', 1.0 - ScarcityFactor);
+		ExactScarcity('UaS_7mmBox', 1.0 - ScarcityFactor);
+		ExactScarcity('UaS_355Box', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mMag15', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mMag30', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mBoxPickup', 1.0 - ScarcityFactor);
