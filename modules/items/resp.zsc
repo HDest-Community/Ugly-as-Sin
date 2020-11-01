@@ -1,3 +1,34 @@
+class UaS_Respirator : HDMagAmmo {
+
+	default {
+		Height 12;
+		Radius 4;
+		Inventory.Icon "UGSID0";
+		Inventory.PickupMessage "Picked up an emergency respirator.";
+		+Inventory.Invbar;
+		HDMagAmmo.mustshowinmagmanager true;
+		HDMagAmmo.maxperunit 100;
+		HDMagAmmo.roundbulk 0.05;
+		HDMagAmmo.magbulk 30;
+		HDMagAmmo.inserttime 1;
+		HDMagAmmo.extracttime 1;
+		tag "Emergency respirator";
+		HDPickup.refid UAS_HDLD_RESPIRATOR;
+	}
+
+	states {
+		spawn:
+			UGSI D 0 -1;
+			stop;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt){
+		string magsprite="UGSID0";
+		return magsprite,"","",0.6;
+	}
+}
+
+/*
 const CHAN_RESP = 82698380;
 const CHAN_BREATH = 82698381;
 const RESP_CAPACITY = 10500;
@@ -157,3 +188,4 @@ class UaS_Respirator : HDPickup {
 
 	double AirPercent() { return 100 * (double(capacity)/double(maxcapacity)); }
 }
+/*
