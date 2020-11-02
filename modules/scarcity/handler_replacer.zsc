@@ -12,7 +12,7 @@ extend class UaS_Scarcity_Handler {
 				MagReplacer('UaS_7mmBox', 'SevenMilAmmo', 50, targetActor);
 				break;
 			case 'UaS_355Box':
-				MagReplacer('UaS_355Box', 'SevenMilAmmo', 72, targetActor);
+				MagReplacer('UaS_355Box', 'HDRevolverAmmo', 72, targetActor);
 				break;
 			case 'HD9mMag15':
 				MagReplacer('HD9mMag15', 'HDLoose9mm', 15, targetActor);
