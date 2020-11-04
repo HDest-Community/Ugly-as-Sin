@@ -58,6 +58,9 @@ class UaS_AmmoBox : HDMagAmmo {
 		HDMagAmmo.inserttime 2;
 		HDMagAmmo.MagBulk 2;
 	}
+
+	// Don't auto-consolidate these like mags
+	override void Consolidate() { SyncAmount(); return; }
 }
 
 //specific classes
