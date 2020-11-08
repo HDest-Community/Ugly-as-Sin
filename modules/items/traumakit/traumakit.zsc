@@ -16,6 +16,7 @@ class UaS_TraumaKit : HDWeapon {
 	WoundInfo currentWound;
 	UaS_WoundHandler wh;
 	HDPlayerPawn patient, lastpatient;
+	transient cvar autostrip;
 
 	Default {
 		radius 4;
@@ -96,6 +97,34 @@ class UaS_TraumaKit : HDWeapon {
 
 		TickMessages();
 		A_WeaponMessage(statusMessage);
+	}
+
+	// Somewhat copied from HD
+	bool HandleStrip() {
+		if (!autostrip) { autostrip = CVar.GetCVar("hd_autostrip", owner.player); }
+		if(owner.countinv("WornRadsuit")){
+			if(autostrip.GetBool()) {
+				HDPlayerPawn.CheckStrip(owner,-1);
+				return false;
+			}
+			else{
+				currentmessage.text = "Take off your environment suit first!\n";
+				currentmessage.timeout = 2*35;
+				return false;
+			}
+		}
+		if(owner.countinv("HDArmourWorn")){
+			if(autostrip.GetBool()) {
+				HDPlayerPawn.CheckStrip(owner,-1);
+				return false;
+			}
+			else{
+				currentmessage.text = "Take off your armour first!\n";
+				currentmessage.timeout = 2*35;
+				return false;
+			}
+		}
+		return true;
 	}
 
 	void SetPatient() {

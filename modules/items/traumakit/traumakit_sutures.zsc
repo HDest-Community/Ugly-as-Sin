@@ -22,12 +22,14 @@ extend class UaS_TraumaKit {
 
 		// start suture
 		if ((owner.player.cmd.buttons & BT_ATTACK) && (weaponstatus[TK_HOLD] == 0)) {
+			if (!HandleStrip()) { return; }
 			owner.A_StartSound("bandage/rustle",CHAN_BODY,CHANF_OVERLAP);
 			weaponstatus[TK_HOLD] = 35;
 		}
 
 		// finish suture
 		if ((owner.player.cmd.buttons & BT_ATTACK)){
+			if (!HandleStrip()) { return; }
 			weaponstatus[TK_HOLD] = max(weaponstatus[TK_HOLD]-1, 0);
 
 			if (weaponstatus[TK_HOLD] == 10) {

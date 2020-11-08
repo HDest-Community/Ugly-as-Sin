@@ -13,6 +13,7 @@ extend class UaS_TraumaKit {
 
 		// Handle actions
 		if((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK)) {
+			if (!HandleStrip()) { return; }
 			owner.A_StartSound("misc/bulletflesh",CHAN_WEAPON);
 			weaponstatus[TKS_PAINKILLER]--;
 			//PlaySkinSound(SKINSOUND_GRUNT,"*grunt");

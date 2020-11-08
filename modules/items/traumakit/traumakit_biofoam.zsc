@@ -24,7 +24,7 @@ extend class UaS_TraumaKit {
 			return;
 		}
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
-
+			if (!HandleStrip()) { return; }
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {
 				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
 				owner.A_StartSound("UaS/traumakit/biofoam", CHAN_WEAPON, CHANF_DEFAULT, 0.1);

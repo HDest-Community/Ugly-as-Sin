@@ -25,6 +25,7 @@ extend class UaS_TraumaKit {
 		}
 
 		if ((owner.player.cmd.buttons & BT_ATTACK)) {
+			if (!HandleStrip()) { return; }
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {
 				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
 				owner.A_StartSound("misc/smallslop", CHAN_WEAPON);

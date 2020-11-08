@@ -17,6 +17,7 @@ extend class UaS_TraumaKit {
 				return;
 			}
 
+			if (!HandleStrip()) { return; }
 			if (currentWound.inpain(75)) {
 				patient.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;

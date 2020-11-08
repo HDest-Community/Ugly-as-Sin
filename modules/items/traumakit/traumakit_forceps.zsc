@@ -22,6 +22,7 @@ extend class UaS_TraumaKit {
 
 		// Hold wound open
 		if ((owner.player.cmd.buttons & BT_ATTACK) && mashes < random[uas_tk](5,10) && weaponstatus[TK_HOLD] >= 0) {
+			if (!HandleStrip()) { return; }
 			holdingopen = true;
 			weaponstatus[TK_HOLD]++;
 			currentmessage.text = "Holding the wound open.\n";

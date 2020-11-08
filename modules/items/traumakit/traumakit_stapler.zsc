@@ -21,6 +21,7 @@ extend class UaS_TraumaKit {
 		// Handle actions
 		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
 		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
+			if (!HandleStrip()) { return; }
 			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
 			weaponstatus[TKS_STAPLES]--;
 			if (currentWound.inpain(25)) {
