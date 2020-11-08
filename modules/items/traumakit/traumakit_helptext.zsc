@@ -13,7 +13,8 @@ extend class UaS_TraumaKit {
 		r.AppendFormat(WEPHELP_FIREMODE.."  Hold and ...\n");
 		r.AppendFormat("  +"..WEPHELP_RELOAD.."  Cycle wounds down\n");
 		r.AppendFormat("  +"..WEPHELP_ALTRELOAD.."  Cycle wounds up\n");
-		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n\n");
+		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n");
+		r.AppendFormat(WEPHELP_DROPONE.."  Drop some excess supplies\n\n");
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
