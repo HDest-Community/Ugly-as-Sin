@@ -39,7 +39,7 @@ extend class UaS_TraumaKit {
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
 			);
-			currentWound.open = max(currentWound.open - random[uas_tk](5,10), 0);
+			currentWound.open = max(currentWound.open - random[uas_tk](5,15), 0);
 		}
 	}
 }

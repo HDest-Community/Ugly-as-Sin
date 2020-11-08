@@ -57,12 +57,14 @@ extend class UaS_TraumaKit {
 		}
 
 		if (mashes > 0) {
-			int remove = random[uas_tk](2,4) * mashes;
+			int remove = random[uas_tk](4,8) * mashes;
+			int minimum = currentWound.obstructed / 5;
 			string result;
 
-			if (currentWound.obstructed > 0 && mashes > 1) {
+			if (currentWound.obstructed > 0 && remove > minimum) {
 				result = ExtractionMessage();
 				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
+				currentWound.obstructed = max(currentWound.obstructed - remove, 0);
 				//patient.damagemobj(owner,owner,1,"staples");
 			}
 			else { result = "You probe the wound"; }
@@ -76,7 +78,7 @@ extend class UaS_TraumaKit {
 				result = result..".";
 			}
 
-			currentWound.obstructed = max(currentWound.obstructed - remove, 0);
+			currentWound.inpain(remove);
 			owner.A_Log(result, true);
 			mashes = 0;
 		}

@@ -45,7 +45,7 @@ extend class UaS_TraumaKit {
 
 				weaponstatus[TKS_BIOFOAM]--;
 
-				if (currentWound.inpain(10)) {
+				if (currentWound.inpain(8)) {
 					weaponstatus[TK_HOLD] = -5;
 					currentWound.inpain(35);
 					PainJolt();
@@ -53,7 +53,7 @@ extend class UaS_TraumaKit {
 
 				// semi-normalized distribution for success check
 				int check = (
-					random[uas_tk](0,100) +
+					random[uas_tk](0,50) +
 					random[uas_tk](0,100)) / 2;
 
 				// remove some tissue damage

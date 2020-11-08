@@ -18,9 +18,9 @@ extend class UaS_TraumaKit {
 			weaponstatus[TKS_PAINKILLER]--;
 			//PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 			int inject = (
-				random[uas_tk](30,50) +
-				random[uas_tk](30,50) +
-				random[uas_tk](30,50)) / 3;
+				random[uas_tk](25,75) +
+				random[uas_tk](25,75) +
+				random[uas_tk](25,75)) / 3;
 			currentWound.painkiller = min(currentWound.painkiller + inject, 100);
 			currentmessage.text = "Anesthetic injected.";
 			currentmessage.timeout = 2*35;

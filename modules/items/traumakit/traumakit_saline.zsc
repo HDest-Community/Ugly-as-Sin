@@ -42,7 +42,7 @@ extend class UaS_TraumaKit {
 
 				// semi-normalized distribution for success check
 				int check = (
-					random[uas_tk](0,100) +
+					random[uas_tk](0,75) +
 					random[uas_tk](0,100)) / 2;
 
 				if (currentWound.inpain(5)) {
