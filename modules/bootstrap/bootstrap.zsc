@@ -14,7 +14,7 @@ class UaS_Bootstrap : EventHandler {
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
-		AimSway_Bootstrap(e.PlayerNumber);
+		if (!e.IsReturn) AimSway_Bootstrap(e.PlayerNumber);
 	}
 
 	override void PlayerDied(PlayerEvent e) {
