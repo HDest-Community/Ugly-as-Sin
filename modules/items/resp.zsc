@@ -2,65 +2,49 @@ const CHAN_RESP = 82698380;
 const CHAN_BREATH = 82698381;
 const RESP_CAPACITY = 10500;
 
-class UaS_Respirator : HDPickup {
-	bool activated;
-	bool refill;
-	int capacity;
-	int reserve;
-	int breathing;
-	double breathcycle;
+class UaS_Respirator : HDMagAmmo {
+	bool activated, refill;
+	int breath, reserve, airunits;
 
 	default {
-		Inventory.Amount 1;
-		Inventory.MaxAmount 1;
-		inventory.icon "UGSID0";
-		inventory.pickupmessage "Picked up a self-contained emergency respirator.";
-		height 12;
-		radius 4;
-		hdpickup.bulk 25;
+		Height 12;
+		Radius 4;
+		Inventory.Icon "UGSID0";
+		Inventory.PickupMessage "Picked up an emergency respirator.";
+		+Inventory.Invbar;
+		HDMagAmmo.mustshowinmagmanager true;
+		HDMagAmmo.maxperunit 100;
+		HDMagAmmo.roundbulk 0.05;
+		HDMagAmmo.magbulk 30;
+		HDMagAmmo.inserttime 6;
+		HDMagAmmo.extracttime 4;
 		tag "Emergency respirator";
 		HDPickup.refid UAS_HDLD_RESPIRATOR;
 	}
 
-	states {
-		spawn:
-			UGSI D 0 -1;
-			stop;
-	}
-
-	override void BeginPlay() {
-		super.PostBeginPlay();
-		if (capacity == 0) { capacity = RESP_CAPACITY; }
-		breathcycle = 0.1;
-	}
-
 	override void DoEffect() {
-		hdplayerpawn o = hdplayerpawn(owner);
+		//console.printf("breath "..owner.player.air_finished - Level.maptime);
+		//console.printf(""..airunits);
 
-		// Canister active
-		if (activated && capacity > 1) {
-			capacity -= 1 + (o.fatigue / 5);
-			breathing -= 1 + (o.fatigue / 5);
-			if (reserve < level.AirSupply) { reserve++; }
-			o.player.air_finished = Level.maptime + reserve;
-
-			if (breathing <= 0) {
-				owner.A_StartSound("UaS/respirator/breathing", CHAN_BREATH, 0, frandom(0.5, 0.75), ATTN_STATIC, 1.0 + breathcycle);
-				breathing = 120;
-				breathcycle = 0 - breathcycle;
+		if (activated) {
+			// use sub-units of air so player has at least one breath per mag unit
+			if (airunits <= 0 && mags[0] > 0) {
+				airunits += 105;
+				mags[0]--;
+			}
+			if(airunits > 0) {
+				Breathe();
+				owner.player.air_finished = Level.maptime + reserve;
+			}
+			else if (mags[0] == 0 || owner.health <= 0) {
+				owner.A_StopSound(CHAN_BREATH);
+				owner.A_StartSound("UaS/respirator/empty",
+					CHAN_RESP, CHANF_OVERLAP, 1, ATTN_STATIC, 1);
+				activated = false;
 			}
 		}
 
-		// Runout hiss
-		if ((activated && capacity <= 1) || owner.health <= 0) {
-			owner.A_StartSound("UaS/respirator/empty", CHAN_RESP, CHANF_OVERLAP, 1, ATTN_STATIC, 1);
-			activated = false;
-		}
-
-		capacity = clamp(capacity, 1, RESP_CAPACITY);
-
 		if (!activated && refill) { DoRefill(); }
-		super.DoEffect();
 	}
 
 	override bool Use(bool pickup) {
@@ -68,22 +52,36 @@ class UaS_Respirator : HDPickup {
 
 		if (!activated && (o.player.buttons & BT_USE)) { refill = !refill; return false; }
 
-		if (capacity <= 1) {
+		owner.A_StopSound(CHAN_BREATH);
+		owner.A_StartSound("UaS/respirator/click",
+			CHAN_AUTO, 0, 1, ATTN_STATIC);
+
+		if (mags[0] == 0) {
 			owner.A_Log("Canister empty. Hold [use] and activate to refill.", true);
 			return false;
 		}
 
-		owner.A_StopSound(CHAN_BREATH);
-		owner.A_StartSound("UaS/respirator/click", CHAN_AUTO, 0, 1, ATTN_STATIC);
-		if (capacity > 1) {
-			owner.A_StartSound("UaS/respirator/toggle", CHAN_RESP, 0, 1, ATTN_STATIC);
+		else if (mags[0] > 0) {
+			owner.A_StartSound("UaS/respirator/toggle",
+				CHAN_AUTO, 0, 1, ATTN_STATIC);
 			reserve = clamp(o.player.air_finished - Level.maptime, 0, level.AirSupply);
-			breathing = 25;
-			breathcycle = 0.1;
+			breath = 0;
 			activated = !(activated);
 			refill = false;
 		}
+
 		return false;
+	}
+
+	void Breathe() {
+		hdplayerpawn o = hdplayerpawn(owner);
+		int increment = 1 + (o.fatigue / 5);
+		if (breath == 0)   { BreathSound(1.1); }
+		if (breath == 120) { BreathSound(0.9); breath = -breath; }
+		if (breath >= 0)   { breath = min(breath + increment, 120); }
+		if (breath <  0)   { breath = min(breath + increment, 0); }
+		if (reserve < level.AirSupply) { reserve++; }
+		airunits -= increment;
 	}
 
 	void DoRefill() {
@@ -93,52 +91,85 @@ class UaS_Respirator : HDPickup {
 			return;
 		}
 
-		if (capacity >= RESP_CAPACITY) {
+		if (mags[0] >= maxperunit) {
 			owner.A_Log("Canister full.", true);
 			refill = false;
 			return;
 		}
 
-		capacity = min(capacity + 10, RESP_CAPACITY);
-		if (level.maptime % 5 == 0) { owner.A_StartSound("UaS/respirator/pump", CHAN_RESP, CHANF_OVERLAP, 0.5, ATTN_STATIC, 1.5); }
+		if (level.maptime % 5 == 0) {
+			owner.A_StartSound("UaS/respirator/pump",
+				CHAN_RESP, CHANF_OVERLAP, 0.1, ATTN_STATIC, 2.0 - (mags[0]/double(maxperunit)));
+		}
+		if (level.maptime % 15 == 0) { mags[0]++; }
 		if (level.maptime % 35 == 0) {
-			owner.A_StartSound("UaS/respirator/toggle", CHAN_RESP, CHANF_OVERLAP, 0.75, ATTN_STATIC, 1);
+			owner.A_StartSound("UaS/respirator/toggle",
+				CHAN_RESP, CHANF_OVERLAP, 0.2, ATTN_STATIC, 2.0 - (mags[0]/double(maxperunit)));
 		}
 	}
 
-	override inventory CreateTossable(int amt) {
-		amount = 1;
-		if(activated) { Use(false); }
-		UaS_Respirator DroppedResp = UaS_Respirator(super.CreateTossable(amt));
-		if (DroppedResp) {
-			DroppedResp.capacity = capacity;
-		}
-		return DroppedResp;
+	// Bleed air
+	override bool Extract() {
+		SyncAmount();
+		if (mags.size() < 1 || mags[mags.size()-1] < 1) { return false; }
+		mags[mags.size()-1]--;
+		owner.A_StartSound("UaS/respirator/vent",
+			CHAN_RESP, CHANF_OVERLAP, 0.3, ATTN_STATIC, 2.0);
+		return true;
 	}
 
-	override void actualpickup(actor other) {
-		super.actualpickup(other);
-		UaS_Respirator pu = UaS_Respirator(other.findinventory("UaS_Respirator", false));
-		pu.capacity = capacity;
+	// Fill from lowest available other tank
+	override bool Insert() {
+		SyncAmount();
+		if(amount < 2) { return mags[0]; }
+		if (mags[mags.size()-1] >= maxperunit) { return false; }
+		int lowestindex =- 1;
+		int lowest = maxperunit;
+		for (int i=0; i<amount-1; i++){
+			if(lowest > mags[i] && mags[i] > 0){
+				lowest = mags[i];
+				lowestindex = i;
+			}
+		}
+		if (lowestindex < 0) { return false; }
+		if (mags[lowestindex] < 1) { return false; }
+		mags[lowestindex]--;
+		mags[mags.size()-1]++;
+		owner.A_StartSound("UaS/respirator/vent",
+			CHAN_RESP, CHANF_OVERLAP, 0.3, ATTN_STATIC, 3.0);
+		return true;
+	}
+
+	void BreathSound(double breathpitch) {
+		owner.A_StartSound("UaS/respirator/breathing",
+			CHAN_BREATH, 0, frandom[uas_resp](0.25, 0.5), ATTN_STATIC, breathpitch);
 	}
 
 	override string PickupMessage() {
 		string msg = super.PickupMessage();
 		string status;
-		switch (capacity) {
-			case RESP_CAPACITY:
-				status = "It is full.";
-				break;
-			case 0:
-				status = "It is empty.";
-				break;
-			default:
-				status = string.format("It is at %d percent capacity", AirPercent());
+		if (mags[0] >= maxperunit) {
+			status = "It is full.";
+		}
+		else if (mags[0] == 0) {
+			status = "It is empty.";
+		}
+		else {
+			status = string.format("It is at "..mags[0].." percent capacity");
 		}
 		return string.format(""..msg.." "..status);
 	}
 
-	override int getsbarnum(int flags){return int(100 * (double(capacity)/double(RESP_CAPACITY)));}
+	override string,string,name,double getmagsprite(int thismagamt){
+		string magsprite="UGSID0";
+		return magsprite,"","",0.6;
+	}
 
-	double AirPercent() { return 100 * (double(capacity)/double(RESP_CAPACITY)); }
+	override int getsbarnum(int flags){return int(mags[0]);}
+
+	states {
+		spawn:
+			UGSI D 0 -1;
+			stop;
+	}
 }
