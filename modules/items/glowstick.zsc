@@ -46,8 +46,8 @@ class UaS_Glowstick : HDPickup {
 		switch(Activated) {
 			case true:
 				frame = 2;
-				if (level.maptime % 5 == 1) { brightness = min(brightness + 1, 64); }
-				if (level.maptime % 700 == 1) { age++; }
+				if (level.maptime % 5 == 0) { brightness = min(brightness + 1, 64); }
+				if (level.maptime % 700 == 0) { age++; }
 				if (!GlowLight) {
 					GlowLight = DynamicLight(Actor.Spawn("UaS_GlowstickLight"));
 					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
@@ -67,7 +67,7 @@ class UaS_Glowstick : HDPickup {
 		}
 
 		// Use up when dead?
-		if (Activated && (brightness - age) <= 0) {
+		if (Activated && (brightness - age) < 0) {
 			Activated = false;
 			if (GlowLight) { glowLight.Destroy(); }
 			if (owner) { Amount--; }
@@ -81,7 +81,8 @@ class UaS_Glowstick : HDPickup {
 	override bool Use(bool pickup) {
 		if (!Activated) {
 			owner.A_StartSound("UaS/Glowstick", CHAN_AUTO, volume: 0.15);
-			Activated = true;;
+			Activated = true;
+			brightness = 1;
 		} else { owner.DropInventory(self); }
 		return false;
 	}
