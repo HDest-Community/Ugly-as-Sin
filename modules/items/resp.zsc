@@ -165,7 +165,10 @@ class UaS_Respirator : HDMagAmmo {
 		return magsprite,"","",0.6;
 	}
 
-	override int getsbarnum(int flags){return int(mags[0]);}
+	override int getsbarnum(int flags){
+		if (mags.size() < 1) { return 0; }
+		return int(mags[0]);
+	}
 
 	states {
 		spawn:
