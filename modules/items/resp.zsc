@@ -1,6 +1,5 @@
 const CHAN_RESP = 82698380;
 const CHAN_BREATH = 82698381;
-const RESP_CAPACITY = 10500;
 
 class UaS_Respirator : HDMagAmmo {
 	bool activated, refill;
@@ -25,6 +24,8 @@ class UaS_Respirator : HDMagAmmo {
 	override void DoEffect() {
 		//console.printf("breath "..owner.player.air_finished - Level.maptime);
 		//console.printf(""..airunits);
+		super.DoEffect();
+		if (mags.size() < 1) { return; }
 
 		if (activated) {
 			// use sub-units of air so player has at least one breath per mag unit
@@ -52,22 +53,13 @@ class UaS_Respirator : HDMagAmmo {
 
 		if (!activated && (o.player.buttons & BT_USE)) { refill = !refill; return false; }
 
-		owner.A_StopSound(CHAN_BREATH);
-		owner.A_StartSound("UaS/respirator/click",
-			CHAN_AUTO, 0, 1, ATTN_STATIC);
-
 		if (mags[0] == 0) {
 			owner.A_Log("Canister empty. Hold [use] and activate to refill.", true);
 			return false;
 		}
 
 		else if (mags[0] > 0) {
-			owner.A_StartSound("UaS/respirator/toggle",
-				CHAN_AUTO, 0, 1, ATTN_STATIC);
-			reserve = clamp(o.player.air_finished - Level.maptime, 0, level.AirSupply);
-			breath = 0;
-			activated = !(activated);
-			refill = false;
+			ToggleRespirator();
 		}
 
 		return false;
@@ -84,8 +76,21 @@ class UaS_Respirator : HDMagAmmo {
 		airunits -= increment;
 	}
 
+	void ToggleRespirator() {
+		owner.A_StopSound(CHAN_BREATH);
+		owner.A_StartSound("UaS/respirator/click",
+			CHAN_AUTO, 0, 1, ATTN_STATIC);
+		PlayerPawn o = playerpawn(owner);
+		owner.A_StartSound("UaS/respirator/toggle",
+			CHAN_AUTO, 0, 1, ATTN_STATIC);
+		reserve = clamp(o.player.air_finished - Level.maptime, 0, level.AirSupply);
+		breath = 0;
+		activated = !(activated);
+		refill = false;
+	}
+
 	void DoRefill() {
-		if (owner.waterlevel >=3 ) {
+		if (owner.waterlevel >= 3 ) {
 			owner.A_Log("Can't refill canister underwater.", true);
 			refill = false;
 			return;
@@ -148,14 +153,14 @@ class UaS_Respirator : HDMagAmmo {
 	override string PickupMessage() {
 		string msg = super.PickupMessage();
 		string status;
-		if (mags[0] >= maxperunit) {
+		if (mags[mags.size()-1] >= maxperunit) {
 			status = "It is full.";
 		}
-		else if (mags[0] == 0) {
+		else if (mags[mags.size()-1] == 0) {
 			status = "It is empty.";
 		}
 		else {
-			status = string.format("It is at "..mags[0].." percent capacity");
+			status = string.format("It is at "..mags[mags.size()-1].." percent capacity");
 		}
 		return string.format(""..msg.." "..status);
 	}
@@ -168,6 +173,11 @@ class UaS_Respirator : HDMagAmmo {
 	override int getsbarnum(int flags){
 		if (mags.size() < 1) { return 0; }
 		return int(mags[0]);
+	}
+
+	override void DetachFromOwner() {
+		if (activated) { ToggleRespirator(); }
+		super.DetachFromOwner();
 	}
 
 	states {
