@@ -65,7 +65,6 @@ class UaS_Ally_Activator : Inventory {
 	bool LoSPlayer;
 
 	override void DoEffect() {
-		super.DoEffect();
 		closestPlayer = 32767;
 		LoSPlayer = false;
 		owner.SetStateLabel("noshot");

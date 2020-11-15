@@ -1,4 +1,7 @@
 class UaS_AI_Handler : Inventory {
+	int RecheckAI;
+	bool ProcessAI;
+
 	override void BeginPlay() {
 		super.BeginPlay();
 		countdown = -1; // -1 = "no countdown", to prevent repeated triggering of zero conditions
@@ -10,11 +13,47 @@ class UaS_AI_Handler : Inventory {
 	}
 
 	override void DoEffect() {
-		super.DoEffect();
-		if(!owner) { return; }
+		if(!owner) { destroy(); return; }
+		if(owner.health <= 0) { return; }
+		WoundDebuff(); // this one is low-cost enough
+
+		// Periodically (random delay) recheck to turn on higher-cost AI
+		RecheckAI--;
+		if(RecheckAI <= 0) {
+			ProcessAI = PlayerProxCheck();
+			RecheckAI = random[ai_proc](35,350);
+		}
+		if(!ProcessAI) { return; }
 
 		SearchBehavior();
-		WoundDebuff();
 		Flashlight();
+		if (UaS_Debug & AI) {
+			console.printf(level.maptime
+				..": Processed AI for "
+				..owner.GetClassName()
+				..score);
+		}
+	}
+
+	bool PlayerProxCheck() {
+		double closestPlayer = 4096**2;
+		bool LoSPlayer = false;
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if(!playerInGame[i]) continue;
+			closestPlayer = min(owner.Distance3DSquared(players[i].mo), closestPlayer);
+			LoSPlayer = owner.CheckSight(players[i].mo);
+		}
+		if (UaS_Debug & AI) {
+			console.printf(level.maptime
+				..": Proxcheck AI for "
+				..owner.GetClassName()
+				..score.." "
+				..closestPlayer.." "
+				..LoSPlayer);
+		}
+		if (closestPlayer <= (2048**2) || LoSPlayer) {
+			return true;
+		}
+		return false;
 	}
 }

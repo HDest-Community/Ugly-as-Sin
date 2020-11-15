@@ -4,14 +4,23 @@ class UaS_AI_Bootstrap : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
 		if(!UaS_AdvancedAIEnabled) { return; }
+		if(ExcludedClass(e.thing)) { return; }
 		if(e.Thing is 'HDMobBase' || e.Thing is "HERPBot" || e.Thing is "DERPBot") {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
-			actor givenHandler = e.thing.FindInventory("UaS_AI_Handler");
+			UaS_AI_Handler givenHandler = UaS_AI_Handler(e.thing.FindInventory("UaS_AI_Handler"));
 			givenHandler.score = givenAIHandlers;
+			givenHandler.ProcessAI = false;
+			givenHandler.RecheckAI = random[ai_proc](35, 350);
 			givenAIHandlers++;
 			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) {
 				console.printf("Gave AI tracker "..givenHandler.score.." to "..e.Thing.GetClassName());
 			}
 		}
+	}
+
+	bool ExcludedClass(actor o) {
+		return (
+			o is "HDBarrel"
+		);
 	}
 }
