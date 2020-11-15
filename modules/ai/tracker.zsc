@@ -1,3 +1,5 @@
+const UAS_AI_PROC_RANGE = HDCONST_ONEMETRE * 150;
+
 class UaS_AI_Handler : Inventory {
 	int RecheckAI;
 	bool ProcessAI;
@@ -36,7 +38,7 @@ class UaS_AI_Handler : Inventory {
 	}
 
 	bool PlayerProxCheck() {
-		double closestPlayer = 4096**2;
+		double closestPlayer = UAS_AI_PROC_RANGE**3;
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if(!playerInGame[i]) continue;
 			closestPlayer = min(owner.Distance3DSquared(players[i].mo), closestPlayer);
@@ -46,7 +48,7 @@ class UaS_AI_Handler : Inventory {
 				..": Proxcheck AI for "
 				..owner.GetClassName()
 				..score.." "
-				..bool(closestPlayer <= (2048**2)));
+				..bool(closestPlayer <= (UAS_AI_PROC_RANGE**2)));
 		}
 		return (closestPlayer <= (2048**2));
 	}
