@@ -1,4 +1,4 @@
-version "4.4"
+version "4.5"
 
 // Static functions
 #include "modules/static.zsc"
