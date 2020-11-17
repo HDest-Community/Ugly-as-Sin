@@ -48,6 +48,7 @@ extend class UaS_Spawner {
 		if (e.Replacee is "ShellBoxPickup") { e.Replacement = "UaS_ShellBox"; return; }
 		if (e.Replacee is "HD7mBoxPickup") { e.Replacement = "UaS_7mmBox"; return; }
 		if (e.Replacee is "HD355BoxPickup") { e.Replacement = "UaS_355Box"; return; }
+		if (e.Replacee is "RocketBigPickup") { e.Replacement = "UaS_RocketBox"; return; }
 	}
 }
 
@@ -154,7 +155,7 @@ class UaS_355Box : UaS_AmmoBox {
 		HDMagAmmo.RoundType "HDRevolverAmmo";
 		HDMagAmmo.RoundBulk ENC_355_LOADED;
 		tag "Reusable .355 ammo box";
-		Inventory.PickupMessage "Picked up a box of 72 .355 rounds.";
+		Inventory.PickupMessage "Picked up a box of .355 rounds.";
 		HDPickup.refid UAS_HDLD_355BOX;
 	}
 
@@ -169,5 +170,35 @@ class UaS_355Box : UaS_AmmoBox {
 	States {
 		Spawn:
 			3BOX A -1;
+	}
+}
+
+class UaS_RocketBox : UaS_AmmoBox {
+	default {
+		HDMagAmmo.extracttime 5;
+		HDMagAmmo.inserttime 8;
+		HDMagAmmo.MagBulk 5;
+		scale 0.6;
+		HDMagAmmo.MaxPerUnit 4;
+		HDMagAmmo.RoundType "HDRocketAmmo";
+		HDMagAmmo.RoundBulk ENC_ROCKETLOADED*1.25;
+		tag "Reusable gyro-grenade box";
+		Inventory.PickupMessage "Picked up a box of gyro-grenades rounds.";
+		HDPickup.refid UAS_HDLD_RKTBOX;
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt) {
+		return "UGSII0","ROQPA0","HDRocketAmmo",0.6;
+	}
+
+	override void GetItemsThatUseThis(){
+		itemsthatusethis.push("HDRL");
+		itemsthatusethis.push("Blooper");
+		itemsthatusethis.push("HDIEDKit");
+	}
+
+	States {
+		Spawn:
+			UGSI I -1;
 	}
 }
