@@ -21,6 +21,7 @@ class UaS_Scarcity_Handler : EventHandler {
 		ExactScarcity('UaS_ShellBox', 1.0 - ScarcityFactor);
 		ExactScarcity('UaS_7mmBox', 1.0 - ScarcityFactor);
 		ExactScarcity('UaS_355Box', 1.0 - ScarcityFactor);
+		ExactScarcity('UaS_RocketBox', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mMag15', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mMag30', 1.0 - ScarcityFactor);
 		ExactScarcity('HD9mBoxPickup', 1.0 - ScarcityFactor);

@@ -1,50 +1,25 @@
 extend class UaS_Scarcity_Handler {
 	void DoReplacement(actor targetActor) {
-		//Replacer routines for ammo items
+		//Replacer routines for mag-type items
+		if (targetActor is "HDMagAmmo") {
+			HDMagAmmo m = HDMagAmmo(targetActor);
+			name magname = m.GetClassName();
+			name roundtype = "";
+			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
+			MagReplacer(magname, roundtype, m.maxperunit, targetActor);
+		}
+		// Replacer routines for HDUPK and ammo items
 		switch(targetActor.GetClassName()) {
-			case 'UaS_9mmBox':
-				MagReplacer('UaS_9mmBox', 'HDLoose9mm', 100, targetActor);
-				break;
-			case 'UaS_ShellBox':
-				MagReplacer('UaS_ShellBox', 'HDFumblingShell', 20, targetActor);
-				break;
-			case 'UaS_7mmBox':
-				MagReplacer('UaS_7mmBox', 'SevenMilAmmo', 50, targetActor);
-				break;
-			case 'UaS_355Box':
-				MagReplacer('UaS_355Box', 'HDRevolverAmmo', 72, targetActor);
-				break;
-			case 'HD9mMag15':
-				MagReplacer('HD9mMag15', 'HDLoose9mm', 15, targetActor);
-				break;
-			case 'HD9mMag30':
-				MagReplacer('HD9mMag30', 'HDLoose9mm', 30, targetActor);
-				break;
 			case 'HD9mBoxPickup':
-				BoxReplacer('HD9mBoxPickup', 'HDLoose9mm', 100, targetActor);
-				break;
-			case 'HD4mMag':
-				MagReplacer('HD4mMag', 'FourMilAmmo', 50, targetActor);
-				break;
-			case 'HD7mMag':
-				MagReplacer('HD7mMag', 'SevenMilAmmo', 30, targetActor);
-				break;
 			case 'HD7mBoxPickup':
-				BoxReplacer('HD7mBoxPickup', 'SevenMilAmmo', 50, targetActor);
-				break;
-			case 'HD7mClip':
-				MagReplacer('HD7mClip', 'SevenMilAmmo', 10, targetActor);
+			case 'ShellBoxPickup':
+			case 'HD355BoxPickup':
+				HDUPK b = HDUPK(targetActor);
+				BoxReplacer(b.GetClassName(), b.pickuptype.GetClassName(), b.amount, targetActor);
 				break;
 			case 'ShellPickup':
 			case 'HDShellAmmo':
 				UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * min(OverspawnFactor-ScarcityFactor, 1.0))), targetActor.pos, true);
-				break;
-			case 'ShellBoxPickup':
-				BoxReplacer('ShellBoxPickup', 'HDFumblingShell', 20, targetActor);
-				break;
-			case 'HDBattery':
-				int MagCap = int(20 * min(OverspawnFactor - ScarcityFactor, 1.0));
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { HDMagAmmo.SpawnMag(targetActor, 'HDBattery', random(0, MagCap)); }
 				break;
 			case 'RocketBigPickup':
 				for(int i = 1; i <= 5; i++) {

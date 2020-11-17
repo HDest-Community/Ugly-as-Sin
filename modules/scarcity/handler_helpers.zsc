@@ -11,7 +11,7 @@ extend class UaS_Scarcity_Handler {
 			HDMagAmmo.SpawnMag(spawnPointer, MagName, packed);
 		}
 		//spill the rest on the ground
-		UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
+		if (ammoName != "None") { UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos); }
 	}
 
 	//Generic function for reducing amount in map-spawned ammo boxes, without removal since boxes are already rare
