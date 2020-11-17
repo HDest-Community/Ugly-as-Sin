@@ -21,22 +21,22 @@ class UaS_WeaponJammer : Inventory {
 		if (!wep) { return; }
 
 		// Reroll the jam chance every shot and track shots fired
+		JamCheck = weightedroll(JamThresh);
 		if (JustFired) {
 			wep.weaponstatus[JamSlot]++;
-			JamCheck = weightedroll(JamThresh);
 			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck); }
 		}
 
 		// Check for failure thresholds
 		if (JustFed && JamCheck < wep.weaponstatus[JamSlot]) {
-			if (UaS_Debug & Jamming) { console.printf("Failure to feed"); }
+			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck.." -- Failure to feed"); }
 			wep.weaponstatus[ChamberSlot] = WJ_EMPTY;
 			wep.weaponstatus[MagSlot]++;
 			wep.weaponstatus[JamSlot] /= 4;
 			return;
 		}
 		else if (JustFed && JamCheck == JamThresh) {
-			if (UaS_Debug & Jamming) { console.printf("Next round bad"); }
+			if (UaS_Debug & Jamming) { console.printf("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck.." -- Next round bad"); }
 			wep.weaponstatus[ChamberSlot] = WJ_SHELL;
 			wep.weaponstatus[JamSlot] /= 4;
 			return;
