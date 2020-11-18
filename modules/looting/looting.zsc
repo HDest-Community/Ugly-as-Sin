@@ -69,7 +69,7 @@ class UaS_Looting_Handler : Inventory {
 				currentWeapon.A_WeaponMessage(searchMarker.lastMessage);
 				return;
 			}
-			owner.A_StartSound("weapons/pocket", volume: frandom(0.0, 0.5));
+			owner.A_StartSound("weapons/pocket", volume: frandom(0.5, 0.75));
 			searchMarker.searchedAmount += frandom(0.05, 0.1);
 			anglevel += frandom[loot](-1, 1);
 			pitchvel += frandom[loot](-1, 1);
