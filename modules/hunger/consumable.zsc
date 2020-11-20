@@ -1,5 +1,5 @@
 // A base class for all consumable (food) items to inherit from
-class UaS_Consumable : HDPickup {
+class UaS_Consumable : HDPickup abstract {
 	uint ConsumableFlags;
 	int energy;
 	int fluid;
