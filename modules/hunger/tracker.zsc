@@ -15,146 +15,16 @@ class UaS_HungerTracker : Inventory {
 
 	override void DoEffect() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
-		if (o.fatigue > 0) {
-			if (o.beatcounter % 2 == 0 && o.beatcount == 0 && energy > 0) {
-				int cals = (random[hunger](2,8) + random[hunger](2,8) + random[hunger](2,8)) / 3;
-				o.fatigue = max(o.fatigue - 1, 0);
-				energy = max(energy - cals, 0);
-				console.printf("fatigue "..o.fatigue.." energy "..energy.." cals "..cals);
-			}
+		if (energy <= 0) { return; }
+		if (o.beatcount > 0) { return; }
+
+		// base drain
+		energy = max(energy - 1, 0);
+
+		if (o.fatigue > 0 && o.beatcounter % 2 == 0) {
+			o.fatigue = max(o.fatigue - 1, 0);
+			energy = max(energy - (o.fatigue / 5), 0);
+			if(UaS_Debug & Hunger) { o.A_Log(string.format("Fatigue %i, energy %i", o.fatigue, energy), true); }
 		}
 	}
 }
-
-
-
-
-
-/////// oldstuff
-
-
-
-	// double calories, lastcalories;
-	// double water, lastwater;
-	// double lastmeal, lastdrink;
-	// double foodfatigue, waterfatigue;
-	// double second, minute, hour, day;
-	// string statusMessage;
-	// HDPlayerPawn ownr;
-//
-	// override void PostBeginPlay() {
-		// super.PostBeginPlay();
-		// //Initial starting calories
-		// calories = random[hunger](1500,2000);
-		// water = random[hunger](1500,2000);
-	// }
-	// override void DoEffect() {
-		// super.DoEffect();
-		// let ownr = HDPlayerPawn(owner);
-		// if(!ownr || !ownr.player) { return; }
-//
-		// //Time-scaled values
-		// second = 35 / UaS_HungerTimeScale;
-		// minute = (second * 60);
-		// hour = (minute * 60);
-		// day = (hour * 24);
-//
-		// //Minfatigue increase if starving or dehydrated
-		// if(calories <= 0) { foodfatigue += (1 / day); }
-		// if(water <= 0) { waterfatigue += (3 / day); }
-//
-		// //Minfatigue decrease if fed and hydrated
-		// if(calories > 0) { foodfatigue -= (1 / hour); }
-		// if(water > 0) { waterfatigue -= (1 / minute); }
-//
-		// //Enforce and clamp minfatigue
-		// if(foodfatigue < 0) { foodfatigue = 0; }
-		// if(waterfatigue < 0) { waterfatigue = 0; }
-		// double minfatigue = max(foodfatigue, waterfatigue);
-		// ownr.fatigue = int(max(ownr.fatigue, minfatigue));
-//
-		// //Reduce calories
-		// double foodburn = (1 / minute) * max(calories / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		// if (ownr.fatigue > minfatigue * 1.25) { foodburn *= 1.25; }
-		// calories -= foodburn;
-		// if(calories < 0) {
-			// calories = 0;
-			// lastcalories += (1 / minute);
-			// lastmeal += (1 / minute);
-		// }
-//
-		// //Reduce water
-		// double waterburn = (1 / minute) * max(water / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		// if (ownr.fatigue > minfatigue * 1.25) { waterburn *= 1.5; }
-		// water -= waterburn;
-		// if(water < 0) {
-			// water = 0;
-			// lastwater += (1 / minute);
-			// lastdrink += (1 / minute);
-		// }
-//
-		// //Status updates and debugging messages periodically depending on timescale
-		// //Slower timescales won't meaningfully change values second-to-second
-		// if(level.time % int(minute) == 1) {
-			// HungerStatus();
-			// ThirstStatus();
-			// if(UaS_Debug & Hunger) {
-				// A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
-			// }
-			// if(UaS_Debug & Hunger) {
-				// A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
-				// A_Log(string.format("MinFatigue: %i", minfatigue));
-			// }
-		// }
-	// }
-//
-	// void HungerStatus() {
-		// //Hunger status messages
-		// statusMessage = "";
-		// if(calories >= 2000) { statusMessage = statusMessage.."Your stomach feels full. "; }
-		// else if(calories >= 500 && calories < 1000) { statusMessage = statusMessage.."Your stomach grumbles. "; }
-		// else if(calories >= 250 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
-		// else if(calories >= 0 && calories < 250) { statusMessage = statusMessage.."Your stomach clenches. "; }
-		// //Last meal messages
-		// int mealdelta = int(lastmeal - calories);
-		// if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
-		// else if(mealdelta >= 1000 && mealdelta <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
-		// else if(mealdelta >= 1500 && mealdelta <2000) { statusMessage = statusMessage.."When did you last eat? "; }
-		// else if(mealdelta >= 2000 && mealdelta <2500) { statusMessage = statusMessage.."You can't remember your last meal... "; }
-		// //Reset delta if calories increase
-		// if(calories > lastcalories) {
-			// lastmeal = calories;
-			// lastcalories = calories;
-		// }
-		// //Display message if delta over threshold, and reset
-		// if(abs(lastcalories - calories) >= 250 && statusmessage != "") {
-			// owner.A_Log("\ci"..statusMessage, true);
-			// lastcalories = calories;
-		// }
-	// }
-//
-	// void ThirstStatus() {
-		// //Thirst status messages
-		// statusMessage = "";
-		// if(water >= 2000) { statusMessage = statusMessage.."Your stomach feels sloshy. "; }
-		// if(water >= 500 && water < 1000) { statusMessage = statusMessage.."You feel a bit thirsty. "; }
-		// else if(water >= 250 && water < 500) { statusMessage = statusMessage.."Your mouth is dry. "; }
-		// else if(water >= 0 && water < 250) { statusMessage = statusMessage.."Your throat is parched. "; }
-		// //Last drink messages
-		// int drinkdelta = int(lastdrink - water);
-		// if(drinkdelta >= 500 && drinkdelta <1000) { statusMessage = statusMessage.."Time for another drink?"; }
-		// else if(drinkdelta >= 1000 && drinkdelta <1500) { statusMessage = statusMessage.."It's been a while since you drank something. "; }
-		// else if(drinkdelta >= 1500 && drinkdelta <2000) { statusMessage = statusMessage.."When did you last have some water? "; }
-		// else if(drinkdelta >= 2000 && drinkdelta <2500) { statusMessage = statusMessage.."You can't remember your last drink... "; }
-		// //Reset delta if water increases
-		// if(water > lastwater) {
-			// lastdrink = water;
-			// lastwater = water;
-		// }
-		// //Display message if delta over threshold, and reset
-		// if(abs(lastwater - water) >= 200 && statusmessage != "") {
-			// owner.A_Log("\cv"..statusMessage, true);
-			// lastwater = water;
-		// }
-	// }
-// }
