@@ -1,18 +1,5 @@
 // A base class for all consumable (food) items to inherit from
-class UaS_Consumable : HDPickup abstract {
-	uint ConsumableFlags;
-	int energy;
-	int fluid;
-	bool opened;
-	double consumed;
-	string description;
-	string opensound;
-	property Energy: energy;
-	property Fluid: fluid;
-	property Description: description;
-	property OpenSound: opensound;
-	flagdef DRINKABLE: ConsumableFlags, 0;
-
+class UaS_Consumable : HDWeapon abstract {
 	default {
 		UaS_Consumable.Energy 0;
 		UaS_Consumable.Fluid 0;
@@ -20,17 +7,91 @@ class UaS_Consumable : HDPickup abstract {
 		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		Inventory.PickupMessage "Picked up a generic consumable. You really shouldn't have this.";
 		Inventory.Icon "HSCVB0";
-		Inventory.PickupSound "weapons/pocket";
 		tag "Generic Consumable";
-		HDPickup.Bulk 5;
-		-INVENTORY.INVBAR;
+	}
+}
+
+// =========================
+// PAY NO ATTENTION TO THE
+// CODE BEHIND THE CURTAIN
+// =========================
+extend class UaS_Consumable {
+	uint ConsumableFlags;
+	int energy;
+	int fluid;
+	bool opened;
+	double consumed;
+	string description;
+	string opensound;
+	string statusMessage;
+	property Energy: energy;
+	property Fluid: fluid;
+	property Description: description;
+	property OpenSound: opensound;
+	flagdef DRINKABLE: ConsumableFlags, 0;
+	flagdef RESEALABLE: ConsumableFlags, 1;
+	UaS_HungerTracker tracker;
+
+	default {
+		Inventory.PickupSound "weapons/pocket";
+		+INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
+		+WEAPON.DONTBOB;
+	}
+
+	override double weaponbulk() { return 15; }
+
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+		HandleInput();
+		A_WeaponMessage(statusMessage);
+	}
+
+	bool CriticalChecks() {
+		// Skip all interaction if not selected
+		if (!owner) { return false; }
+		if (!(owner.player.readyweapon is 'UaS_Consumable')) { return false; }
+
+		// Set up tracker connection
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		//if (!tracker) { console.printf("no hunger tracker!"); return false; }
+
+		return true;
+	}
+
+	bool mouthclear() {
+		return (weaponstatus[MKS_BITE] <= 0 && weaponstatus[MKS_SIP] <= 0);
+	}
+
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+
+		//Take a bite
+		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
+			if (bDRINKABLE) {
+				int sipsize = fluid / weaponbulk();
+				weaponstatus[MKS_SIP] = sipsize;
+				consumed += 1.0;
+				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+			}
+			else {
+				int bitesize = energy / (weaponbulk() * 2);
+				int sipsize = fluid / (weaponbulk() * 2);
+				weaponstatus[MKS_BITE] = bitesize;
+				weaponstatus[MKS_SIP] = sipsize;
+				consumed += 0.5;
+			}
+		}
 	}
 
 	States {
 		Spawn:
 			TNT1 A -1 { invoker.UpdateSprite(); }
 			Stop;
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
 	}
 
 	override void BeginPlay() {
@@ -44,5 +105,18 @@ class UaS_Consumable : HDPickup abstract {
 		string fr = ic.Mid(4, 1);
 		sprite = GetSpriteIndex(sp);
 		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
+		sb.drawimage(TexMan.GetName(icon),(0,0),
+			sb.DI_SCREEN_CENTER|sb.DI_ITEM_CENTER|sb.DI_TRANSLATABLE,
+			scale:(2,2)
+		);
+	}
+
+	enum Slots {
+		MKS_SELECTED,
+		MKS_BITE,
+		MKS_SIP,
 	}
 }

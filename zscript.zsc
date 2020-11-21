@@ -17,7 +17,7 @@ version "4.5"
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"
 #include "modules/hunger/items.zsc"
-#include "modules/hunger/messkit/messkit.zsc"
+//#include "modules/hunger/messkit/messkit.zsc"
 #include "modules/hunger/consumable.zsc"
 
 // Scarcity scripts
