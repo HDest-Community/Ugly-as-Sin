@@ -1,5 +1,5 @@
 class UaS_HungerTracker : Inventory {
-	int energy;
+	int energy, instant, fast, slow;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -11,17 +11,35 @@ class UaS_HungerTracker : Inventory {
 		super.PostBeginPlay();
 		//Initial starting calories
 		energy = 1000;
+		instant = 5;
+		fast = 5;
+		slow = 5;
 	}
 
 	override void DoEffect() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
-		if (o.fatigue > 0) {
-			if (o.beatcounter % 2 == 0 && o.beatcount == 0 && energy > 0) {
-				int cals = (random[hunger](2,8) + random[hunger](2,8) + random[hunger](2,8)) / 3;
-				o.fatigue = max(o.fatigue - 1, 0);
-				energy = max(energy - cals, 0);
-				console.printf("fatigue "..o.fatigue.." energy "..energy.." cals "..cals);
-			}
+
+		bool DoRecharge = (
+			o.beatcount == 0 &&
+			//o.beatcounter % 30 == 0 &&
+			o.fatigue == 0 &&
+			energy > 0);
+
+		if (DoRecharge) {
+			//if (UaS_HungerBaseDrain) { energy--; }
+			if (instant < 10) { instant++; energy -= 5; }
+			else if (fast < 10) { fast++; energy -= 2; }
+			else if (slow < 10) { slow++; energy -= 1;}
+			if(UaS_Debug & Hunger) { o.A_Log(string.format("%i %i %i %i %i", instant, fast, slow, energy, o.fatigue), true); }
+		}
+
+
+		if (o.beatcount == 0 && o.fatigue > 0) {
+			if (o.beatcounter % 1 == 0 && instant > 0) { o.fatigue--; instant--; }
+			else if (o.beatcounter % 2 == 0 && fast > 0) { o.fatigue--; fast--; }
+			else if (o.beatcounter % 5 == 0 && slow > 0) { o.fatigue--; slow--; }
+			else if (o.beatcounter % 10 == 0 && energy > 0) { o.fatigue--; energy--; }
+			if(UaS_Debug & Hunger) { o.A_Log(string.format("%i %i %i %i %i", instant, fast, slow, energy, o.fatigue), true); }
 		}
 	}
 }
