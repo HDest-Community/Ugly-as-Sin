@@ -179,7 +179,7 @@ class UaS_RocketBox : UaS_AmmoBox {
 		HDMagAmmo.inserttime 8;
 		HDMagAmmo.MagBulk 5;
 		scale 0.6;
-		HDMagAmmo.MaxPerUnit 4;
+		HDMagAmmo.MaxPerUnit 5;
 		HDMagAmmo.RoundType "HDRocketAmmo";
 		HDMagAmmo.RoundBulk ENC_ROCKETLOADED*1.25;
 		tag "Reusable gyro-grenade box";
