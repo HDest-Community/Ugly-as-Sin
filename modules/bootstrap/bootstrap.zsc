@@ -4,11 +4,11 @@ class UaS_Bootstrap : EventHandler {
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
-			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
 			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 			if (UaS_JammingEnabled) { Jamming_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Medical_Bootstrap(i);
+			Hunger_Bootstrap(i);
 			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}
 	}
@@ -30,7 +30,6 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_HungerTracker")) {
 			p.mo.giveinventory("UaS_HungerTracker", 1);
-			//p.mo.giveinventory("UaS_MessKit", 1);
 			if(UaS_Debug & Hunger) { console.printf("Hunger: Player "..pnum.." given tracker."); }
 		}
 	}

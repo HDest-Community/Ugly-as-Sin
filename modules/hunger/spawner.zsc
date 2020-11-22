@@ -4,13 +4,10 @@ extend class UaS_Spawner {
 
 	//Set up spawns
 	void HungerSpawns(WorldEvent e) {
-		if(UaS_HungerTimeScale == 0 || UaS_HungerEnabled == false) { return; }
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
 
-		spawnRate = UaS_HungerTimeScale * UaS_HungerRationRate;
-		spawnRate = max(spawnRate, 0);
 		spawnPos = e.Thing.pos;
 
 		name toSpawnClass = 'UaS_FoodRation';
@@ -24,22 +21,22 @@ extend class UaS_Spawner {
 
 		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			MaybeSpawnRation(toSpawnClass, 0.005 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.3);
 		}
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			MaybeSpawnRation(toSpawnClass, 0.0025 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.15);
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 	}
 

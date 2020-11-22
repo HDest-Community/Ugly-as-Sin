@@ -29,19 +29,20 @@ class UaS_HungerTracker : Inventory {
 		hydro = max(hydro - 1, 0);
 
 		// drain from fatigue
-		if (o.fatigue > 0) {
-			energy = max(energy - 1, 0);
-			hydro = max(hydro - 1, 0);
+		// All this disabled by cvar
+		if (UaS_HungerEnabled && o.fatigue > 0) {
+			energy = max(energy - 2, 0);
+			hydro = max(hydro - 2, 0);
 
 			// fatigue recovery and additional drain
 			if (energy > 0 && o.beatcounter % 7 == 0) {
 				o.fatigue = max(o.fatigue - 1, 0);
-				energy = max(energy - 1, 0);
+				energy = max(energy - 2, 0);
 				debugmsg = debugmsg.." recovered by energy ";
 			}
 			if (hydro > 0 && o.beatcounter % 4 == 0) {
 				o.fatigue = max(o.fatigue - 1, 0);
-				hydro = max(hydro - 1, 0);
+				hydro = max(hydro - 2, 0);
 				debugmsg = debugmsg.." recovered by hydro ";
 			}
 		}
