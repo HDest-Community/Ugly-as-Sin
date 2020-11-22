@@ -43,12 +43,12 @@ extend class UaS_Consumable {
 		+WEAPON.DONTBOB;
 	}
 
-	override double weaponbulk() { return bulk - weaponstatus[UGCS_CONSUMED]; }
+	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
 
 	override void DoEffect() {
 		if (!CriticalChecks()) { return; }
 		HandleInput();
-		A_WeaponMessage(statusMessage..weaponbulk());
+		DoMessage();
 	}
 
 	override void Tick() {
@@ -67,6 +67,40 @@ extend class UaS_Consumable {
 		if (!tracker) { console.printf("no hunger tracker!"); return false; }
 
 		return true;
+	}
+
+	void DoMessage() {
+		statusMessage =
+			"\cj"..gettag().."\n"..
+			"---------------\n"..
+			description.."\n";
+		// ===word-wrap routine, not necessary===
+		// string descline;
+		// array<string> desc;
+		// description.split(desc, " ");
+		// for (int i=0; i<desc.size(); i++) {
+			// descline.appendformat(desc[i].." ");
+			// if (descline.length() > 25 || i == desc.size() - 1) {
+				// descline.appendformat("\n");
+				// statusMessage.appendformat(descline);
+				// descline = "";
+			// }
+		// }
+		//statusMessage.appendformat("\n");
+		for (int i=1; i<=10; i++) {
+			statusMessage.appendformat("\n");
+		}
+		statusMessage.appendformat(
+			"\ce%i Calories\n"..
+			"\ce%i mL Fluids\n\n"..
+			"\cw%.2f%% left\n",
+			calories, fluid, (weaponbulk()/bulk)*100);
+
+		if (!tracker.mouthclear() && level.time % 10 != 0) {
+			statusMessage.appendformat("Consuming...");
+		}
+
+		A_WeaponMessage(statusMessage);
 	}
 
 	void HandleInput() {
