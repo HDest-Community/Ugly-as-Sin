@@ -6,9 +6,7 @@ $random UaS/FoodScoop {
 	UaS/FoodScoop2
 }
 
-UaS/Chew1	dspocket
-UaS/Chew2	dsfrgrol
-$random UaS/Chew { UaS/Chew1 UaS/Chew2 }
+UaS/Chew	dsfrgrol
 UaS/Sip		dsslp
 UaS/Swish	dspbtl
 UaS/Swallow	dsgulp

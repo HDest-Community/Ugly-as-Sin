@@ -109,9 +109,9 @@ extend class UaS_Consumable {
 
 		//Take a bite
 		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
-			int bitesize = int(calories / (weaponbulk() * 2));
-			int sipsize = int(fluid / (weaponbulk() * 2));
-			tracker.mouth = random[hunger](10,20);
+			int bitesize = int(calories / (bulk));
+			int sipsize = int(fluid / (bulk));
+			tracker.mouth = random[uas_hunger](3,5);
 			tracker.mouth_calories = bitesize;
 			tracker.mouth_fluid = sipsize;
 			weaponstatus[UGCS_CONSUMED]++;
