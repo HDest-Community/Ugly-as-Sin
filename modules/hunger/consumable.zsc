@@ -1,10 +1,13 @@
 // A base class for all consumable (food) items to inherit from
 class UaS_Consumable : HDWeapon abstract {
 	default {
-		UaS_Consumable.Energy 0;
-		UaS_Consumable.Fluid 0;
+		UaS_Consumable.Calories 0; // Calories / kCals provided by this consumable
+		UaS_Consumable.Fluid 0; // Milliliteres of hydration provided by this consumable
+		UaS_Consumable.Bulk 5;
 		UaS_Consumable.Description "A generic block of vaguely food-like mush with moderate nutritional value. Probably obtained via console commands.";
 		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		-UaS_Consumable.RESEALABLE;
+
 		Inventory.PickupMessage "Picked up a generic consumable. You really shouldn't have this.";
 		Inventory.Icon "HSCVB0";
 		tag "Generic Consumable";
@@ -17,19 +20,20 @@ class UaS_Consumable : HDWeapon abstract {
 // =========================
 extend class UaS_Consumable {
 	uint ConsumableFlags;
-	int energy;
+	int calories;
 	int fluid;
-	bool opened;
-	double consumed;
+	double bulk;
 	string description;
 	string opensound;
 	string statusMessage;
-	property Energy: energy;
+	property Calories: calories;
 	property Fluid: fluid;
+	property Bulk: bulk;
 	property Description: description;
 	property OpenSound: opensound;
-	flagdef DRINKABLE: ConsumableFlags, 0;
-	flagdef RESEALABLE: ConsumableFlags, 1;
+	flagdef RESEALABLE: ConsumableFlags, 0;
+	flagdef DRINKABLE: ConsumableFlags, 1;
+	flagdef PACKAGED: ConsumableFlags, 2;
 	UaS_HungerTracker tracker;
 
 	default {
@@ -39,28 +43,30 @@ extend class UaS_Consumable {
 		+WEAPON.DONTBOB;
 	}
 
-	override double weaponbulk() { return 15; }
+	override double weaponbulk() { return bulk - weaponstatus[UGCS_CONSUMED]; }
 
 	override void DoEffect() {
 		if (!CriticalChecks()) { return; }
 		HandleInput();
-		A_WeaponMessage(statusMessage);
+		A_WeaponMessage(statusMessage..weaponbulk());
+	}
+
+	override void Tick() {
+		super.tick();
+		if (weaponbulk() <= 0) { destroy(); }
 	}
 
 	bool CriticalChecks() {
 		// Skip all interaction if not selected
 		if (!owner) { return false; }
 		if (!(owner.player.readyweapon is 'UaS_Consumable')) { return false; }
+		if (owner.health <= 0) { return false; }
 
 		// Set up tracker connection
 		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
-		//if (!tracker) { console.printf("no hunger tracker!"); return false; }
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
 
 		return true;
-	}
-
-	bool mouthclear() {
-		return (weaponstatus[MKS_BITE] <= 0 && weaponstatus[MKS_SIP] <= 0);
 	}
 
 	void HandleInput() {
@@ -68,19 +74,16 @@ extend class UaS_Consumable {
 		int bto = owner.player.oldbuttons;
 
 		//Take a bite
-		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
+		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
+			int bitesize = calories / (weaponbulk() * 2);
+			int sipsize = fluid / (weaponbulk() * 2);
+			tracker.mouth = random[hunger](10,20);
+			tracker.mouth_calories = bitesize;
+			tracker.mouth_fluid = sipsize;
+			weaponstatus[UGCS_CONSUMED]++;
 			if (bDRINKABLE) {
-				int sipsize = fluid / weaponbulk();
-				weaponstatus[MKS_SIP] = sipsize;
-				consumed += 1.0;
+				tracker.drinking = true;
 				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
-			}
-			else {
-				int bitesize = energy / (weaponbulk() * 2);
-				int sipsize = fluid / (weaponbulk() * 2);
-				weaponstatus[MKS_BITE] = bitesize;
-				weaponstatus[MKS_SIP] = sipsize;
-				consumed += 0.5;
 			}
 		}
 	}
@@ -99,6 +102,11 @@ extend class UaS_Consumable {
 		super.BeginPlay();
 	}
 
+	override void InitializeWepStats(bool idfa) {
+		weaponstatus[UGCS_CONSUMED] = 0;
+		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
+	}
+
 	void UpdateSprite() {
 		string ic = TexMan.GetName(icon);
 		string sp = ic.Left(4);
@@ -113,10 +121,9 @@ extend class UaS_Consumable {
 			scale:(2,2)
 		);
 	}
+}
 
-	enum Slots {
-		MKS_SELECTED,
-		MKS_BITE,
-		MKS_SIP,
-	}
+enum ConsumableSlots {
+	UGCS_CONSUMED,
+	UGCS_OPEN,
 }

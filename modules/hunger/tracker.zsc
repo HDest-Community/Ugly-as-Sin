@@ -1,5 +1,10 @@
 class UaS_HungerTracker : Inventory {
 	int energy;
+	int hydro;
+	int mouth;
+	int mouth_calories;
+	int mouth_fluid;
+	bool drinking;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -7,24 +12,62 @@ class UaS_HungerTracker : Inventory {
 		-INVENTORY.INVBAR;
 	}
 
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		//Initial starting calories
-		energy = 1000;
+	override void DoEffect() {
+		if (owner.health <= 0) { return; }
+		Consume();
+		BurnEnergy();
 	}
 
-	override void DoEffect() {
+	void BurnEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
-		if (energy <= 0) { return; }
+		string debugmsg = "Fatigue %i, energy %i, hydro %i";
 		if (o.beatcount > 0) { return; }
+		if (energy <= 0 && hydro <= 0) { return; }
 
 		// base drain
 		energy = max(energy - 1, 0);
+		hydro = max(hydro - 1, 0);
 
-		if (o.fatigue > 0 && o.beatcounter % 2 == 0) {
-			o.fatigue = max(o.fatigue - 1, 0);
-			energy = max(energy - (o.fatigue / 5), 0);
-			if(UaS_Debug & Hunger) { o.A_Log(string.format("Fatigue %i, energy %i", o.fatigue, energy), true); }
+		// drain from fatigue
+		if (o.fatigue > 0) {
+			energy = max(energy - 1, 0);
+			hydro = max(hydro - 1, 0);
+
+			// fatigue recovery and additional drain
+			if (energy > 0 && o.beatcounter % 7 == 0) {
+				o.fatigue = max(o.fatigue - 1, 0);
+				energy = max(energy - 1, 0);
+				debugmsg = debugmsg.." recovered by energy ";
+			}
+			if (hydro > 0 && o.beatcounter % 4 == 0) {
+				o.fatigue = max(o.fatigue - 1, 0);
+				hydro = max(hydro - 1, 0);
+				debugmsg = debugmsg.." recovered by hydro ";
+			}
 		}
+
+		if(UaS_Debug & Hunger) { o.A_Log(string.format(debugmsg, o.fatigue, energy, hydro), true); }
+	}
+
+	void Consume() {
+		if (mouthclear()) { return; }
+		if (level.maptime % 5 == 0) {
+			if (drinking) { owner.A_StartSound("UaS/Sip", CHAN_VOICE, CHANF_NOSTOP, volume: frandom[uas_mk](0.25, 0.5)); }
+			else { owner.A_StartSound("UaS/Chew", CHAN_VOICE, CHANF_NOSTOP, volume: frandom[uas_mk](0.4, 0.75)); }
+			mouth--;
+		}
+		if (mouthclear()) {
+			owner.A_StartSound("UaS/Swallow", CHAN_VOICE);
+			energy += mouth_calories;
+			hydro += mouth_fluid;
+			mouth_calories = 0;
+			mouth_fluid = 0;
+			drinking = false;
+			return;
+		}
+	}
+
+	bool mouthclear() {
+		return (mouth <= 0);
 	}
 }
