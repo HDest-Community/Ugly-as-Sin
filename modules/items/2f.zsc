@@ -7,7 +7,7 @@ class UaS_2F_Handler : Inventory {
 		//assume 7 auto-sutures per module, default 42 sutures = 6 modules
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr || !ownr.player.ReadyWeapon) { return; }
-		if(!(ownr.player.ReadyWeapon is 'HDMedikitter')) { return; }
+		if(ownr.player.ReadyWeapon.GetClassName() != "HDMedikitter") { return; }
 
 		HDPlayerPawn(owner).wephelptext = HDWeapon(owner.player.ReadyWeapon).gethelptext().."\n"..
 			WEPHELP_UNLOAD.."   Remove a suture module\n"..
