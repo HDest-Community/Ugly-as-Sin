@@ -8,6 +8,7 @@ class UaS_FoodRation : UaS_Consumable {
 		Inventory.PickupMessage "Picked up a military food ration.";
 		tag "Food Ration (400kcal)";
 		Inventory.Icon "HSCVA0";
+		hdweapon.refid UAS_HDLD_FRATION;
 	}
 }
 
@@ -22,6 +23,7 @@ class UaS_WaterRation : UaS_Consumable {
 		Inventory.PickupMessage "Picked up a military water ration.";
 		tag "Water Ration (250ml)";
 		Inventory.Icon "HSCVR0";
+		hdweapon.refid UAS_HDLD_WRATION;
 	}
 }
 
@@ -33,6 +35,6 @@ class UaS_CurryRiceMRE : UaS_Consumable {
 		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a sealed meal pack.";
 		Inventory.PickupMessage "Picked up a curry rice MRE.";
 		tag "Curry Rice MRE";
-		Inventory.Icon "";
+		Inventory.Icon "HSCVA0";
 	}
 }
