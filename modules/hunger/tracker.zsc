@@ -25,7 +25,7 @@ class UaS_HungerTracker : Inventory {
 		if (energy <= 0 && hydro <= 0) { return; }
 
 		// base drain, disabled via cvar
-		if (UaS_HungerMetabolism) {
+		if (UaS_HungerEnabled && UaS_HungerMetabolism && o.beatcounter % 2 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
 		}
@@ -66,8 +66,10 @@ class UaS_HungerTracker : Inventory {
 		}
 		if (mouthclear()) {
 			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
-			energy += mouth_calories;
-			hydro += mouth_fluid;
+			if (UaS_HungerEnabled) { // Don't actually add calories if disabled
+				energy += mouth_calories;
+				hydro += mouth_fluid;
+			}
 			mouth_calories = 0;
 			mouth_fluid = 0;
 			drinking = false;
