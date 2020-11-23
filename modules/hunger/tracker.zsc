@@ -24,9 +24,11 @@ class UaS_HungerTracker : Inventory {
 		if (o.beatcount > 0) { return; }
 		if (energy <= 0 && hydro <= 0) { return; }
 
-		// base drain
-		energy = max(energy - 1, 0);
-		hydro = max(hydro - 1, 0);
+		// base drain, disabled via cvar
+		if (UaS_HungerMetabolism) {
+			energy = max(energy - 1, 0);
+			hydro = max(hydro - 1, 0);
+		}
 
 		// drain from fatigue
 		// All this disabled by cvar

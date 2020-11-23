@@ -1,4 +1,5 @@
 server bool UaS_HungerEnabled = false;
+server bool UaS_HungerMetabolism = true;
 
 server bool UaS_ScarcityEnabled = false;
 server int UaS_ScarcityRate = 50;
