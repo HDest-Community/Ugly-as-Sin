@@ -99,7 +99,7 @@ extend class UaS_Consumable {
 			statusMessage.appendformat("Package Closed\n");
 		}
 		else {
-			statusMessage.appendformat("%.2f Remaining\n", (weaponbulk()/bulk)*100);
+			statusMessage.appendformat("\cw%.1f%% Remaining\n", (weaponbulk()/bulk)*100);
 		}
 
 		if (!tracker.mouthclear() && level.time % 10 != 0) {
