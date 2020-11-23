@@ -92,9 +92,15 @@ extend class UaS_Consumable {
 		}
 		statusMessage.appendformat(
 			"\ce%i Calories\n"..
-			"\ce%i mL Fluids\n\n"..
-			"\cw%.2f%% left\n",
-			calories, fluid, (weaponbulk()/bulk)*100);
+			"\ce%i mL Fluids\n\n",
+			calories, fluid);
+
+		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			statusMessage.appendformat("Package Closed\n");
+		}
+		else {
+			statusMessage.appendformat("%.2f Remaining\n", (weaponbulk()/bulk)*100);
+		}
 
 		if (!tracker.mouthclear() && level.time % 10 != 0) {
 			statusMessage.appendformat("Consuming...");
@@ -108,17 +114,28 @@ extend class UaS_Consumable {
 		int bto = owner.player.oldbuttons;
 
 		//Take a bite
-		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
-			int bitesize = int(calories / (bulk));
-			int sipsize = int(fluid / (bulk));
-			tracker.mouth = random[uas_hunger](3,5);
-			tracker.mouth_calories = bitesize;
-			tracker.mouth_fluid = sipsize;
-			weaponstatus[UGCS_CONSUMED]++;
-			if (bDRINKABLE) {
-				tracker.drinking = true;
-				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
+				int bitesize = int(calories / (bulk));
+				int sipsize = int(fluid / (bulk));
+				tracker.mouth = random[uas_hunger](3,5);
+				tracker.mouth_calories = bitesize;
+				tracker.mouth_fluid = sipsize;
+				weaponstatus[UGCS_CONSUMED]++;
+				if (bDRINKABLE) {
+					tracker.drinking = true;
+					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+				}
 			}
+		}
+		else if (weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
+				owner.A_StartSound(opensound,
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.25, ATTN_STATIC, pitch: 0.9);
+				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+			}
+
 		}
 	}
 
@@ -160,4 +177,9 @@ extend class UaS_Consumable {
 enum ConsumableSlots {
 	UGCS_CONSUMED,
 	UGCS_OPEN,
+}
+
+enum ConsumableStatusFlags {
+	UGCSF_SEALED = 0,
+	UGCSF_OPENED = 1,
 }

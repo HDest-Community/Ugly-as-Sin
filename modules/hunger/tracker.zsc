@@ -60,12 +60,12 @@ class UaS_HungerTracker : Inventory {
 			else { snd = "UaS/Chew"; }
 			owner.A_StartSound(snd,
 				CHAN_BODY, CHANF_OVERLAP,
-				frandom[uas_hunger](0.4, 0.75), ATTN_STATIC,
+				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
 				frandom[uas_hunger](0.9, 1.1));
 			mouth--;
 		}
 		if (mouthclear()) {
-			owner.A_StartSound("UaS/Swallow", CHAN_VOICE);
+			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
 			energy += mouth_calories;
 			hydro += mouth_fluid;
 			mouth_calories = 0;
