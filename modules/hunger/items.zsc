@@ -37,6 +37,7 @@ class UaS_CurryRiceMRE : UaS_Consumable {
 		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a sealed meal pack.";
 		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		+UaS_Consumable.PACKAGED;
+		+UaS_Consumable.RESEALABLE;
 		Inventory.PickupMessage "Picked up a curry rice MRE.";
 		tag "Curry Rice MRE";
 		Inventory.Icon "HSCVA0";

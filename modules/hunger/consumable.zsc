@@ -113,8 +113,9 @@ extend class UaS_Consumable {
 		int bt = owner.player.cmd.buttons;
 		int bto = owner.player.oldbuttons;
 
-		//Take a bite
+		// when consumable open
 		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			//Take a bite
 			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
 				int bitesize = int(calories / (bulk));
 				int sipsize = int(fluid / (bulk));
@@ -127,7 +128,15 @@ extend class UaS_Consumable {
 					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
 				}
 			}
+			// reseal package (may add spoilage later)
+			if (bRESEALABLE && (bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+				weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
+				owner.A_StartSound("weapons/pocket",
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.75, ATTN_STATIC, pitch: 1.15);
+			}
 		}
+		// when consumable sealed
 		else if (weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
 			if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
 				owner.A_StartSound(opensound,
