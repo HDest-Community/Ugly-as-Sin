@@ -7,7 +7,7 @@ class UaS_FoodRation : UaS_Consumable {
 		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military food ration.";
-		tag "Food Ration (400kcal)";
+		tag "Food Ration";
 		Inventory.Icon "HSCVA0";
 		hdweapon.refid UAS_HDLD_FRATION;
 	}
@@ -23,7 +23,7 @@ class UaS_WaterRation : UaS_Consumable {
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military water ration.";
-		tag "Water Ration (250ml)";
+		tag "Water Ration";
 		Inventory.Icon "HSCVR0";
 		hdweapon.refid UAS_HDLD_WRATION;
 	}

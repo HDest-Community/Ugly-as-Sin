@@ -41,9 +41,12 @@ extend class UaS_Consumable {
 		+INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.DONTBOB;
+		+HDWEAPON.FITSINBACKPACK;
 	}
 
 	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
+	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
+	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
 
 	override void DoEffect() {
 		if (!CriticalChecks()) { return; }
@@ -59,7 +62,7 @@ extend class UaS_Consumable {
 	bool CriticalChecks() {
 		// Skip all interaction if not selected
 		if (!owner) { return false; }
-		if (!(owner.player.readyweapon is 'UaS_Consumable')) { return false; }
+		if (!(owner.player.readyweapon == self)) { return false; }
 		if (owner.health <= 0) { return false; }
 
 		// Set up tracker connection
