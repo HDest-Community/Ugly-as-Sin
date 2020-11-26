@@ -74,8 +74,7 @@ extend class UaS_Consumable {
 
 	void DoMessage() {
 		statusMessage =
-			"\cj"..gettag().."\n"..
-			"---------------\n"..
+			"--- \cj"..gettag().."\c- ---\n"..
 			description.."\n";
 		// ===word-wrap routine, not necessary===
 		// string descline;
