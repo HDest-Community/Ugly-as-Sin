@@ -1,9 +1,11 @@
 class UaS_HungerTracker : Inventory {
 	int energy;
 	int hydro;
-	int mouth;
+	int mouthtime;
 	int mouth_calories;
 	int mouth_fluid;
+	int pending_calories;
+	int pending_fluid;
 	bool drinking;
 
 	default {
@@ -15,39 +17,48 @@ class UaS_HungerTracker : Inventory {
 	override void DoEffect() {
 		if (owner.health <= 0) { return; }
 		Consume();
-		BurnEnergy();
+		ProcessEnergy();
 	}
 
-	void BurnEnergy() {
+	void ProcessEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
 		string debugmsg = "Fatigue %i, energy %i, hydro %i";
 		if (o.beatcount > 0) { return; }
-		if (energy <= 0 && hydro <= 0) { return; }
+
+		if (!UaS_HungerEnabled) { return; }
 
 		// base drain, disabled via cvar
-		if (UaS_HungerEnabled && UaS_HungerMetabolism && o.beatcounter % 2 == 0) {
+		if (UaS_HungerMetabolism && o.beatcounter % 35 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
+			debugmsg.appendformat(" \cdbase\c- ");
+		}
+
+		// Drain from jogging
+		if (o.runwalksprint >= 0 && o.beatcounter % 5 == 0) {
+			energy = max(energy - 1, 0);
+			hydro = max(hydro - 1, 0);
+			debugmsg.appendformat(" \ciexertion\c- ");
 		}
 
 		// drain from fatigue
-		// All this disabled by cvar
-		if (UaS_HungerEnabled && o.fatigue > 0) {
-			energy = max(energy - 1, 0);
-			hydro = max(hydro - 1, 0);
-
+		if (o.fatigue > 0) {
 			// fatigue recovery and additional drain
-			if (energy > 0 && o.beatcounter % 7 == 0) {
-				o.fatigue = max(o.fatigue - 1, 0);
-				energy = max(energy - 1, 0);
-				debugmsg = debugmsg.." recovered by energy ";
-			}
 			if (hydro > 0 && o.beatcounter % 4 == 0) {
 				o.fatigue = max(o.fatigue - 1, 0);
 				hydro = max(hydro - 1, 0);
-				debugmsg = debugmsg.." recovered by hydro ";
+				debugmsg.appendformat(" \cafatigue\c- ");
+			}
+			else if (energy > 0 && o.beatcounter % 6 == 0) {
+				o.fatigue = max(o.fatigue - 1, 0);
+				energy = max(energy - 1, 0);
+				debugmsg.appendformat(" \cafatigue\c- ");
 			}
 		}
+
+		// Process consumed food into energy
+		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
+		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
 		if(UaS_Debug & Hunger) { o.A_Log(string.format(debugmsg, o.fatigue, energy, hydro), true); }
 	}
@@ -62,13 +73,13 @@ class UaS_HungerTracker : Inventory {
 				CHAN_BODY, CHANF_OVERLAP,
 				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
 				frandom[uas_hunger](0.9, 1.1));
-			mouth--;
+			mouthtime--;
 		}
 		if (mouthclear()) {
 			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
 			if (UaS_HungerEnabled) { // Don't actually add calories if disabled
-				energy += mouth_calories;
-				hydro += mouth_fluid;
+				pending_calories += mouth_calories;
+				pending_fluid += mouth_fluid;
 			}
 			mouth_calories = 0;
 			mouth_fluid = 0;
@@ -77,7 +88,13 @@ class UaS_HungerTracker : Inventory {
 		}
 	}
 
+	void EatOrDrink(int addcalories = 0, int addfluid = 0, int addtime = 5) {
+		mouth_calories += addcalories;
+		mouth_fluid += addfluid;
+		mouthtime = addtime;
+	}
+
 	bool mouthclear() {
-		return (mouth <= 0);
+		return (mouthtime <= 0);
 	}
 }
