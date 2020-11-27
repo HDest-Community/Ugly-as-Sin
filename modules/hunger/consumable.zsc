@@ -1,16 +1,21 @@
 // A base class for all consumable (food) items to inherit from
 class UaS_Consumable : HDWeapon abstract {
 	default {
-		UaS_Consumable.Calories 0; // Calories / kCals provided by this consumable
-		UaS_Consumable.Fluid 0; // Milliliteres of hydration provided by this consumable
-		UaS_Consumable.Bulk 5;
-		UaS_Consumable.Description "A generic block of vaguely food-like mush with moderate nutritional value. Probably obtained via console commands.";
-		UaS_Consumable.OpenSound "UaS/FoodOpen";
-		-UaS_Consumable.RESEALABLE;
+		UaS_Consumable.Calories 100; // Calories / kCals provided by this consumable
+		UaS_Consumable.Fluid 25; // Milliliteres of hydration provided by this consumable
+		UaS_Consumable.Bulk 2; // Bulk Units, also influences number of "swallows" when consumed
+		UaS_Consumable.Description ""; // Description shown to player
+		UaS_Consumable.OpenMessage1 ""; // Random message shown when opening or selecting
+		UaS_Consumable.OpenMessage2 ""; // Random message shown when opening or selecting
+		UaS_Consumable.OpenMessage3 ""; // Random message shown when opening or selecting
+		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
+		//+UaS_Consumable.RESEALABLE;
+		//+UaS_Consumable.DRINKABLE;
+		//+UaS_Consumable.PACKAGED;
 
-		Inventory.PickupMessage "Picked up a generic consumable. You really shouldn't have this.";
-		Inventory.Icon "HSCVB0";
-		tag "Generic Consumable";
+		Inventory.PickupMessage "";
+		Inventory.Icon "";
+		tag "";
 	}
 }
 
@@ -25,11 +30,15 @@ extend class UaS_Consumable {
 	double bulk;
 	string description;
 	string opensound;
+	string openmessage1, openmessage2, openmessage3;
 	string statusMessage;
 	property Calories: calories;
 	property Fluid: fluid;
 	property Bulk: bulk;
 	property Description: description;
+	property OpenMessage1: openmessage1;
+	property OpenMessage2: openmessage2;
+	property OpenMessage3: openmessage3;
 	property OpenSound: opensound;
 	flagdef RESEALABLE: ConsumableFlags, 0;
 	flagdef DRINKABLE: ConsumableFlags, 1;
@@ -144,6 +153,7 @@ extend class UaS_Consumable {
 					CHAN_WEAPON, CHANF_OVERLAP,
 					volume: 0.25, ATTN_STATIC, pitch: 0.9);
 				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomMessage()), true);
 			}
 
 		}
@@ -153,9 +163,28 @@ extend class UaS_Consumable {
 		Spawn:
 			TNT1 A -1 { invoker.UpdateSprite(); }
 			Stop;
+		Select:
+			TNT1 A 0 { invoker.SelectMessage(); }
+			goto super::Select;
 		Ready:
 			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
 			Loop;
+	}
+
+	void SelectMessage() {
+		// if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			// owner.A_Log(RandomMessage(), true);
+		// }
+	}
+
+	string RandomMessage() {
+		int r = randompick[uas_hunger](1,2,3);
+		switch(r) {
+			case 1: return openmessage1; break;
+			case 2: return openmessage1; break;
+			case 3: return openmessage1; break;
+		}
+		return "";
 	}
 
 	override void BeginPlay() {
