@@ -1,12 +1,4 @@
 class UaS_FoodPackage : HDWeapon abstract {
-	array<string> FoodList;
-	array<string> NiceFoodList;
-	string description;
-	string opensound;
-	double calculatedbulk;
-	property Description: description;
-	property OpenSound: opensound;
-
 	default {
 		Inventory.PickupSound "weapons/pocket";
 		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
@@ -17,6 +9,21 @@ class UaS_FoodPackage : HDWeapon abstract {
 	}
 
 	abstract void Contents();
+		// AddItem("UaS_FoodRation");
+}
+
+// =========================
+// PAY NO ATTENTION TO THE
+// CODE BEHIND THE CURTAIN
+// =========================
+extend class UaS_FoodPackage {
+	array<string> FoodList;
+	array<string> NiceFoodList;
+	string description;
+	string opensound;
+	double calculatedbulk;
+	property Description: description;
+	property OpenSound: opensound;
 
 	void AddItem(string FoodItem, int quantity = 1) {
 		class<actor> newItem = (class<actor>)(FoodItem);
