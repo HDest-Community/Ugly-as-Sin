@@ -37,6 +37,7 @@ extend class UaS_Consumable {
 	UaS_HungerTracker tracker;
 
 	default {
+		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		Inventory.PickupSound "weapons/pocket";
 		+INVENTORY.INVBAR;
 		+INVENTORY.IGNORESKILL;

@@ -4,7 +4,6 @@ class UaS_FoodRation : UaS_Consumable {
 		UaS_Consumable.Fluid 0;
 		UaS_Consumable.Bulk 4;
 		UaS_Consumable.Description "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
-		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military food ration.";
 		tag "Food Ration";
@@ -19,7 +18,6 @@ class UaS_WaterRation : UaS_Consumable {
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Bulk 6;
 		UaS_Consumable.Description "A disposable tear-open water pouch, about equivalent to a single glass of water.";
-		UaS_Consumable.OpenSound "UaS/FoodOpen";
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military water ration.";
@@ -29,17 +27,31 @@ class UaS_WaterRation : UaS_Consumable {
 	}
 }
 
-class UaS_CurryRiceMRE : UaS_Consumable {
+class UaS_CurryRice : UaS_Consumable {
 	default {
 		UaS_Consumable.Calories 500;
 		UaS_Consumable.Fluid 200;
 		UaS_Consumable.Bulk 8;
-		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a sealed meal pack.";
-		UaS_Consumable.OpenSound "UaS/FoodOpen";
+		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a vacuum-sealed meal pack.";
 		+UaS_Consumable.PACKAGED;
 		+UaS_Consumable.RESEALABLE;
-		Inventory.PickupMessage "Picked up a curry rice MRE.";
-		tag "Curry Rice MRE";
+		Inventory.PickupMessage "Picked up a vacuum-sealed curry and rice meal.";
+		tag "Curry Rice Meal";
 		Inventory.Icon "HSCVA0";
+	}
+}
+
+class UaS_ExampleFoodPackage : UaS_FoodPackage {
+	default {
+		UaS_FoodPackage.Description "This is probably the saddest example MRE you've ever seen.";
+		Inventory.PickupMessage "Picked up a terrible example MRE.";
+		tag "World's Worst MRE";
+		Inventory.Icon "HSCVA0";
+	}
+	override void Contents() {
+		AddItem("UaS_FoodRation");
+		AddItem("UaS_WaterRation", 2);
+		AddItem("UaS_CurryRice");
+		AddItem("Clip");
 	}
 }

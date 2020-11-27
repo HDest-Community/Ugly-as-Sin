@@ -60,7 +60,7 @@ class UaS_HungerTracker : Inventory {
 		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
-		if(UaS_Debug & Hunger) { o.A_Log(string.format(debugmsg, o.fatigue, energy, hydro), true); }
+		if(UaS_Debug & Hunger && o.beatcounter % 35) { o.A_Log(string.format(debugmsg, o.fatigue, energy, hydro), true); }
 	}
 
 	void Consume() {

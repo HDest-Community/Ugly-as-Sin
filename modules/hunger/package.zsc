@@ -1,0 +1,107 @@
+class UaS_FoodPackage : HDWeapon abstract {
+	array<string> FoodList;
+	array<string> NiceFoodList;
+	string description;
+	string opensound;
+	double calculatedbulk;
+	property Description: description;
+	property OpenSound: opensound;
+
+	default {
+		Inventory.PickupSound "weapons/pocket";
+		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
+		+INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.DONTBOB;
+		+HDWEAPON.FITSINBACKPACK;
+	}
+
+	abstract void Contents();
+
+	void AddItem(string FoodItem, int quantity = 1) {
+		class<actor> newItem = (class<actor>)(FoodItem);
+		if (!newItem || !(newItem is (class<actor>)('UaS_Consumable'))) {
+			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), newItem.GetClassName()));
+			return;
+		}
+		for (int i=1; i<= quantity; i++) {
+			FoodList.push(FoodItem);
+			NiceFoodList.push(getdefaultbytype(newItem).gettag());
+			calculatedbulk += UaS_Consumable(getdefaultbytype((class<actor>)(FoodItem))).bulk;
+		}
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		if (!(owner.player.readyweapon == self)) { return; }
+		if (owner.health <= 0) { return; }
+
+		// for (int i=0; i<FoodList.size(); i++) {
+			// for (int j=0; j<allactorclasses.size(); j++) {
+				// string checkclass = allactorclasses[j].getclassname();
+				// string foodclass = FoodList[i];
+				// string nicename = "";
+				// if (checkclass == foodclass) {
+					// nicename = getdefaultbytype((class<actor>)(allactorclasses[j])).gettag();
+					// statusMessage.appendformat("%i: \ce%s\n", i, nicename);
+				// }
+			// }
+		// }
+
+		string statusMessage;
+		statusMessage.appendformat("--- \cp%s\c- ---\n", gettag());
+		statusMessage.appendformat("%s\n\n\n\ccContents\n", description);
+		for (int i=0; i<NiceFoodList.size(); i++) {
+			statusMessage.appendformat("\ce%s\n", NiceFoodList[i]);
+		}
+
+		HandleInput();
+		A_WeaponMessage(statusMessage);
+	}
+
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+		if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
+			owner.A_Log("Opened "..gettag(), true);
+			owner.A_StartSound(opensound,
+				CHAN_WEAPON, CHANF_OVERLAP,
+				volume: 0.25, ATTN_STATIC, pitch: 0.9);
+			for (int i=0; i<FoodList.size(); i++) {
+				owner.A_GiveInventory(FoodList[i]);
+			}
+			destroy();
+		}
+	}
+
+	override void InitializeWepStats(bool idfa) {
+		Contents();
+	}
+
+	override double weaponbulk() { return calculatedbulk * 0.7; }
+
+	States {
+		Spawn:
+			TNT1 A -1 { invoker.UpdateSprite(); }
+			Stop;
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
+	}
+
+	override void BeginPlay() {
+		UpdateSprite();
+		super.BeginPlay();
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
+	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
+}
