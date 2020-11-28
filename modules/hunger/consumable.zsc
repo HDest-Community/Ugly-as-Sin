@@ -28,7 +28,7 @@ extend class UaS_Consumable {
 	uint ConsumableFlags;
 	int calories;
 	int fluid;
-	double bulk;
+	double bulk, diffbulk;
 	property Calories: calories;
 	property Fluid: fluid;
 	property Bulk: bulk;
@@ -56,7 +56,8 @@ extend class UaS_Consumable {
 
 	override void Tick() {
 		super.tick();
-		if (weaponbulk() <= 0) { destroy(); }
+		if (int(weaponbulk() + diffbulk) <= 0) { destroy(); }
+		if (diffbulk > 0) { diffbulk *= 0.9; }
 	}
 
 	bool CriticalChecks() {
@@ -82,7 +83,7 @@ extend class UaS_Consumable {
 			"\ce%i mL Fluids\n\n",
 			calories, fluid);
 		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) { statusMessage.appendformat("Package Closed\n"); }
-		else { statusMessage.appendformat("\cw%.0f%% Remaining\n", (weaponbulk()/bulk)*100); }
+		else { statusMessage.appendformat("\cw%.0f%% Remaining\n", ((weaponbulk()/bulk)*100) + max(diffbulk, 0)); }
 		if (!tracker.mouthclear() && level.time % 10 != 0) { statusMessage.appendformat("Consuming..."); }
 		A_WeaponMessage(statusMessage);
 	}
@@ -92,13 +93,14 @@ extend class UaS_Consumable {
 		int bto = owner.player.oldbuttons;
 
 		// when consumable open
-		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED && weaponbulk() > 0) {
 			//Take a bite
 			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
 				int bitesize = int(calories / (bulk));
 				int sipsize = int(fluid / (bulk));
 				tracker.EatOrDrink(bitesize, sipsize, random[uas_hunger](3,5));
 				weaponstatus[UGCS_CONSUMED]++;
+				diffbulk = 100/bulk;
 				if (bDRINKABLE) {
 					tracker.drinking = true;
 					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
