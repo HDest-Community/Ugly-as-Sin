@@ -1,11 +1,12 @@
 class UaS_FoodPackage : HDWeapon abstract {
 	default {
-		Inventory.PickupSound "weapons/pocket";
-		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
-		+INVENTORY.INVBAR;
-		+INVENTORY.IGNORESKILL;
-		+WEAPON.DONTBOB;
-		+HDWEAPON.FITSINBACKPACK;
+		UaS_FoodPackage.Description ""; // Description shown to player
+		UaS_FoodPackage.OpenMessage1 ""; // Random message shown when opening or selecting
+		UaS_FoodPackage.OpenMessage2 ""; // Random message shown when opening or selecting
+		UaS_FoodPackage.OpenMessage3 ""; // Random message shown when opening or selecting
+		Inventory.PickupMessage "";
+		Inventory.Icon "";
+		tag "";
 	}
 
 	abstract void Contents();
@@ -17,13 +18,19 @@ class UaS_FoodPackage : HDWeapon abstract {
 // CODE BEHIND THE CURTAIN
 // =========================
 extend class UaS_FoodPackage {
+	mixin UaS_FoodItemMixin;
 	array<string> FoodList;
 	array<string> NiceFoodList;
-	string description;
-	string opensound;
 	double calculatedbulk;
-	property Description: description;
-	property OpenSound: opensound;
+
+	default {
+		Inventory.PickupSound "weapons/pocket";
+		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
+		+INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.DONTBOB;
+		+HDWEAPON.FITSINBACKPACK;
+	}
 
 	void AddItem(string FoodItem, int quantity = 1) {
 		class<actor> newItem = (class<actor>)(FoodItem);
@@ -42,18 +49,6 @@ extend class UaS_FoodPackage {
 		if (!owner) { return; }
 		if (!(owner.player.readyweapon == self)) { return; }
 		if (owner.health <= 0) { return; }
-
-		// for (int i=0; i<FoodList.size(); i++) {
-			// for (int j=0; j<allactorclasses.size(); j++) {
-				// string checkclass = allactorclasses[j].getclassname();
-				// string foodclass = FoodList[i];
-				// string nicename = "";
-				// if (checkclass == foodclass) {
-					// nicename = getdefaultbytype((class<actor>)(allactorclasses[j])).gettag();
-					// statusMessage.appendformat("%i: \ce%s\n", i, nicename);
-				// }
-			// }
-		// }
 
 		string statusMessage;
 		statusMessage.appendformat("--- \cp%s\c- ---\n", gettag());
@@ -81,34 +76,7 @@ extend class UaS_FoodPackage {
 		}
 	}
 
-	override void InitializeWepStats(bool idfa) {
-		Contents();
-	}
+	override void InitializeWepStats(bool idfa) { Contents(); }
 
 	override double weaponbulk() { return calculatedbulk * 0.7; }
-
-	States {
-		Spawn:
-			TNT1 A -1 { invoker.UpdateSprite(); }
-			Stop;
-		Ready:
-			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
-			Loop;
-	}
-
-	override void BeginPlay() {
-		UpdateSprite();
-		super.BeginPlay();
-	}
-
-	void UpdateSprite() {
-		string ic = TexMan.GetName(icon);
-		string sp = ic.Left(4);
-		string fr = ic.Mid(4, 1);
-		sprite = GetSpriteIndex(sp);
-		frame = (fr.ByteAt(0)-65);
-	}
-
-	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
-	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
 }

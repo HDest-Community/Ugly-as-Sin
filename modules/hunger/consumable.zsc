@@ -24,22 +24,15 @@ class UaS_Consumable : HDWeapon abstract {
 // CODE BEHIND THE CURTAIN
 // =========================
 extend class UaS_Consumable {
+	mixin UaS_FoodItemMixin;
 	uint ConsumableFlags;
 	int calories;
 	int fluid;
 	double bulk;
-	string description;
-	string opensound;
-	string openmessage1, openmessage2, openmessage3;
 	string statusMessage;
 	property Calories: calories;
 	property Fluid: fluid;
 	property Bulk: bulk;
-	property Description: description;
-	property OpenMessage1: openmessage1;
-	property OpenMessage2: openmessage2;
-	property OpenMessage3: openmessage3;
-	property OpenSound: opensound;
 	flagdef RESEALABLE: ConsumableFlags, 0;
 	flagdef DRINKABLE: ConsumableFlags, 1;
 	flagdef PACKAGED: ConsumableFlags, 2;
@@ -55,8 +48,6 @@ extend class UaS_Consumable {
 	}
 
 	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
-	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
-	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
 
 	override void DoEffect() {
 		if (!CriticalChecks()) { return; }
@@ -86,19 +77,6 @@ extend class UaS_Consumable {
 		statusMessage =
 			"--- \cj"..gettag().."\c- ---\n"..
 			description.."\n";
-		// ===word-wrap routine, not necessary===
-		// string descline;
-		// array<string> desc;
-		// description.split(desc, " ");
-		// for (int i=0; i<desc.size(); i++) {
-			// descline.appendformat(desc[i].." ");
-			// if (descline.length() > 25 || i == desc.size() - 1) {
-				// descline.appendformat("\n");
-				// statusMessage.appendformat(descline);
-				// descline = "";
-			// }
-		// }
-		//statusMessage.appendformat("\n");
 		for (int i=1; i<=10; i++) {
 			statusMessage.appendformat("\n");
 		}
@@ -159,24 +137,6 @@ extend class UaS_Consumable {
 		}
 	}
 
-	States {
-		Spawn:
-			TNT1 A -1 { invoker.UpdateSprite(); }
-			Stop;
-		Select:
-			TNT1 A 0 { invoker.SelectMessage(); }
-			goto super::Select;
-		Ready:
-			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
-			Loop;
-	}
-
-	void SelectMessage() {
-		// if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
-			// owner.A_Log(RandomMessage(), true);
-		// }
-	}
-
 	string RandomMessage() {
 		int r = randompick[uas_hunger](1,2,3);
 		switch(r) {
@@ -187,29 +147,9 @@ extend class UaS_Consumable {
 		return "";
 	}
 
-	override void BeginPlay() {
-		UpdateSprite();
-		super.BeginPlay();
-	}
-
 	override void InitializeWepStats(bool idfa) {
 		weaponstatus[UGCS_CONSUMED] = 0;
 		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
-	}
-
-	void UpdateSprite() {
-		string ic = TexMan.GetName(icon);
-		string sp = ic.Left(4);
-		string fr = ic.Mid(4, 1);
-		sprite = GetSpriteIndex(sp);
-		frame = (fr.ByteAt(0)-65);
-	}
-
-	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
-		sb.drawimage(TexMan.GetName(icon),(0,0),
-			sb.DI_SCREEN_CENTER|sb.DI_ITEM_CENTER|sb.DI_TRANSLATABLE,
-			scale:(2,2)
-		);
 	}
 }
 

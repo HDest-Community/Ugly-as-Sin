@@ -14,6 +14,7 @@ version "4.5"
 #include "modules/spawner/spawner.zsc"
 
 // Hunger and Thirst scripts
+#include "modules/hunger/mixin.zsc"
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"
 #include "modules/hunger/consumable.zsc"

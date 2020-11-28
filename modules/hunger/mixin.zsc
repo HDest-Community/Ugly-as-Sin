@@ -1,0 +1,41 @@
+mixin class UaS_FoodItemMixin {
+	string description;
+	string opensound;
+	string openmessage1, openmessage2, openmessage3;
+	property Description: description;
+	property OpenMessage1: openmessage1;
+	property OpenMessage2: openmessage2;
+	property OpenMessage3: openmessage3;
+	property OpenSound: opensound;
+	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
+	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
+
+	States {
+		Spawn:
+			TNT1 A -1 { invoker.UpdateSprite(); }
+			Stop;
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
+	}
+
+	override void BeginPlay() {
+		UpdateSprite();
+		super.BeginPlay();
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
+		sb.drawimage(TexMan.GetName(icon),(0,0),
+			sb.DI_SCREEN_CENTER|sb.DI_ITEM_CENTER|sb.DI_TRANSLATABLE,
+			scale:(2,2)
+		);
+	}
+}
