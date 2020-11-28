@@ -1,6 +1,17 @@
 extend class UaS_Spawner {
 	double spawnRate;
 	vector3 spawnPos;
+	array<string> FoodSpawnList;
+
+	void BuildFoodSpawnList() {
+		for (int i=0; i<allactorclasses.size(); i++) {
+			bool valid = (
+				(allactorclasses[i] is 'UaS_Consumable' || allactorclasses[i] is 'UaS_FoodPackage') &&
+				(allactorclasses[i].GetClassName() != "UaS_Consumable" && allactorclasses[i].GetClassName() != "UaS_FoodPackage")
+			);
+			if (valid) { FoodSpawnList.push(allactorclasses[i].GetClassName()); }
+		}
+	}
 
 	//Set up spawns
 	void HungerSpawns(WorldEvent e) {
@@ -10,13 +21,12 @@ extend class UaS_Spawner {
 
 		spawnPos = e.Thing.pos;
 
-		name toSpawnClass = 'UaS_FoodRation';
-		if(UaS.RandomChance(0.5)) { toSpawnClass = 'UaS_WaterRation'; }
+		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); }
+		name toSpawnClass = FoodSpawnList[random(0,FoodSpawnList.size()-1)];
 
-		//Spawn rations on backpacks, with a chance of an extra ration
+		//Spawn rations on backpacks
 		if(e.Thing.GetClassName() == "HDBackpack") {
-			UaS.SpawnStuff('UaS_FoodRation', 1, spawnPos);
-			UaS.SpawnStuff('UaS_WaterRation', 1, spawnPos);
+			MaybeSpawnRation(toSpawnClass, 1);
 		}
 
 		//Randomly spawn on ammo boxes
@@ -26,12 +36,12 @@ extend class UaS_Spawner {
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			MaybeSpawnRation(toSpawnClass, 0.15);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			MaybeSpawnRation(toSpawnClass, 0.1);
+			MaybeSpawnRation(toSpawnClass, 0.15);
 		}
 
 		//Randomly spawn on marine corpses
