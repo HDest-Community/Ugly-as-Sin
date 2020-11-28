@@ -50,14 +50,17 @@ extend class UaS_FoodPackage {
 		if (!(owner.player.readyweapon == self)) { return; }
 		if (owner.health <= 0) { return; }
 
-		string statusMessage;
-		statusMessage.appendformat("--- \cp%s\c- ---\n", gettag());
-		statusMessage.appendformat("%s\n\n\n\ccContents\n", description);
-		for (int i=0; i<NiceFoodList.size(); i++) {
-			statusMessage.appendformat("\ce%s\n", NiceFoodList[i]);
-		}
-
+		DoMessage();
 		HandleInput();
+	}
+
+	void DoMessage() {
+		string statusMessage;
+		statusMessage.appendformat("--- \cc%s\c- ---\n", gettag());
+		statusMessage.appendformat("%s\n", description);
+		for (int i=1; i<=int(description.length()/40)+1; i++) { statusMessage.appendformat("\n"); }
+		statusMessage.appendformat("\cpContents\n");
+		for (int i=0; i<NiceFoodList.size(); i++) { statusMessage.appendformat("\ce%s\n", NiceFoodList[i]); }
 		A_WeaponMessage(statusMessage);
 	}
 

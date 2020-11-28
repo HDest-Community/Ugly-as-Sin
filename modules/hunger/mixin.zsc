@@ -33,8 +33,9 @@ mixin class UaS_FoodItemMixin {
 	}
 
 	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
-		sb.drawimage(TexMan.GetName(icon),(0,0),
-			sb.DI_SCREEN_CENTER|sb.DI_ITEM_CENTER|sb.DI_TRANSLATABLE,
+		vector2 mugsize = TexMan.GetScaledSize(sb.GetMugShot(5,Mugshot.CUSTOM,sb.getmug(hpl.mugshot)));
+		sb.drawimage(TexMan.GetName(icon), (0, -14 - (mugsize.y * 1.25)),
+			sb.DI_SCREEN_CENTER_BOTTOM|sb.DI_ITEM_BOTTOM,
 			scale:(2,2)
 		);
 	}

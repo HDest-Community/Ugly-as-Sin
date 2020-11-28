@@ -29,7 +29,6 @@ extend class UaS_Consumable {
 	int calories;
 	int fluid;
 	double bulk;
-	string statusMessage;
 	property Calories: calories;
 	property Fluid: fluid;
 	property Bulk: bulk;
@@ -74,28 +73,17 @@ extend class UaS_Consumable {
 	}
 
 	void DoMessage() {
-		statusMessage =
-			"--- \cj"..gettag().."\c- ---\n"..
-			description.."\n";
-		for (int i=1; i<=10; i++) {
-			statusMessage.appendformat("\n");
-		}
+		string statusMessage;
+		statusMessage.appendformat("--- \cj%s\c- ---\n", gettag());
+		statusMessage.appendformat("%s\n", description);
+		for (int i=1; i<=int(description.length()/40)+1; i++) { statusMessage.appendformat("\n"); }
 		statusMessage.appendformat(
 			"\ce%i Calories\n"..
 			"\ce%i mL Fluids\n\n",
 			calories, fluid);
-
-		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
-			statusMessage.appendformat("Package Closed\n");
-		}
-		else {
-			statusMessage.appendformat("\cw%.1f%% Remaining\n", (weaponbulk()/bulk)*100);
-		}
-
-		if (!tracker.mouthclear() && level.time % 10 != 0) {
-			statusMessage.appendformat("Consuming...");
-		}
-
+		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) { statusMessage.appendformat("Package Closed\n"); }
+		else { statusMessage.appendformat("\cw%.0f%% Remaining\n", (weaponbulk()/bulk)*100); }
+		if (!tracker.mouthclear() && level.time % 10 != 0) { statusMessage.appendformat("Consuming..."); }
 		A_WeaponMessage(statusMessage);
 	}
 
