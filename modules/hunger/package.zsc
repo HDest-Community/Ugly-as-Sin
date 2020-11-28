@@ -73,7 +73,12 @@ extend class UaS_FoodPackage {
 				CHAN_WEAPON, CHANF_OVERLAP,
 				volume: 0.25, ATTN_STATIC, pitch: 0.9);
 			for (int i=0; i<FoodList.size(); i++) {
-				owner.A_GiveInventory(FoodList[i]);
+				owner.A_GiveInventory("HDWeaponGiver");
+				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+				wg.weapontogive = FoodList[i];
+				wg.spawnactualweapon();
+				wg.destroy();
+				//owner.A_GiveInventory(FoodList[i]);
 			}
 			destroy();
 		}

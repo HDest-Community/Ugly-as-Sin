@@ -44,6 +44,9 @@ extend class UaS_Consumable {
 		+INVENTORY.IGNORESKILL;
 		+WEAPON.DONTBOB;
 		+HDWEAPON.FITSINBACKPACK;
+		-UaS_Consumable.RESEALABLE;
+		-UaS_Consumable.DRINKABLE;
+		-UaS_Consumable.PACKAGED;
 	}
 
 	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
@@ -56,7 +59,10 @@ extend class UaS_Consumable {
 
 	override void Tick() {
 		super.tick();
-		if (int(weaponbulk() + diffbulk) <= 0) { destroy(); }
+		if (int(weaponbulk() + diffbulk) <= 0) {
+			if(owner) { owner.dropinventory(self); }
+			else { destroy(); }
+		}
 		if (diffbulk > 0) { diffbulk *= 0.9; }
 	}
 
@@ -130,6 +136,7 @@ extend class UaS_Consumable {
 	override void InitializeWepStats(bool idfa) {
 		weaponstatus[UGCS_CONSUMED] = 0;
 		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
+		else { weaponstatus[UGCS_OPEN] = true; }
 	}
 }
 
