@@ -19,7 +19,7 @@ class UaS_HungerTracker : CustomInventory {
 		calories = random[hunger](1500,2000);
 		water = random[hunger](1500,2000);
 		//starts the player with a messkit.
-		//the check is so insurgents won't have a chance of getting a uneeded messkit.
+		//the check is so insurgents won't have a chance of getting an uneeded messkit.
 		let ownr = HDPlayerPawn(owner);
 		if (!ownr.countinv("UaS_MessKit")) {
 			ownr.giveinventory("UaS_MessKit", 1);
