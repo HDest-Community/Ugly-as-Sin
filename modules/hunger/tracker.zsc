@@ -18,6 +18,12 @@ class UaS_HungerTracker : CustomInventory {
 		//Initial starting calories
 		calories = random[hunger](1500,2000);
 		water = random[hunger](1500,2000);
+		//starts the player with a messkit.
+		//the check is so insurgents won't have a chance of getting a uneeded messkit.
+		let ownr = HDPlayerPawn(owner);
+		if (!ownr.countinv("UaS_MessKit")) {
+			ownr.giveinventory("UaS_MessKit", 1);
+			}
 	}
 
 	override void DoEffect() {
