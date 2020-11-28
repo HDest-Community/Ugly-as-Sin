@@ -10,6 +10,16 @@ mixin class UaS_FoodItemMixin {
 	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
 	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
 
+	string RandomMessage() {
+		int r = randompick[uas_hunger](1,2,3);
+		switch(r) {
+			case 1: return openmessage1; break;
+			case 2: return openmessage1; break;
+			case 3: return openmessage1; break;
+		}
+		return "";
+	}
+
 	States {
 		Spawn:
 			TNT1 A -1 { invoker.UpdateSprite(); }

@@ -127,16 +127,6 @@ extend class UaS_Consumable {
 		}
 	}
 
-	string RandomMessage() {
-		int r = randompick[uas_hunger](1,2,3);
-		switch(r) {
-			case 1: return openmessage1; break;
-			case 2: return openmessage1; break;
-			case 3: return openmessage1; break;
-		}
-		return "";
-	}
-
 	override void InitializeWepStats(bool idfa) {
 		weaponstatus[UGCS_CONSUMED] = 0;
 		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }

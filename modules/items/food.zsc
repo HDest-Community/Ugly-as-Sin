@@ -53,6 +53,9 @@ class UaS_CurryRice : UaS_Consumable {
 class UaS_ExampleFoodPackage : UaS_FoodPackage {
 	default {
 		UaS_FoodPackage.Description "This is probably the saddest example MRE you've ever seen.";
+		UaS_FoodPackage.OpenMessage1 "Let's see...";
+		UaS_FoodPackage.OpenMessage2 "Hope this is edible...";
+		UaS_FoodPackage.OpenMessage3 "Chow time!";
 		Inventory.PickupMessage "Picked up a terrible example MRE.";
 		tag "World's Worst MRE";
 		Inventory.Icon "HSCVA0";
