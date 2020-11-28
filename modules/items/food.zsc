@@ -64,6 +64,5 @@ class UaS_ExampleFoodPackage : UaS_FoodPackage {
 		AddItem("UaS_FoodRation");
 		AddItem("UaS_WaterRation", 2);
 		AddItem("UaS_CurryRice");
-		AddItem("Clip");
 	}
 }
