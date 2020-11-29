@@ -22,7 +22,7 @@ class UaS_HungerTracker : Inventory {
 
 	void ProcessEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
-		string debugmsg = "Fatigue %i, energy %i, hydro %i";
+		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i";
 		if (o.beatcount > 0) { return; }
 
 		if (!UaS_HungerEnabled) { return; }
@@ -60,15 +60,15 @@ class UaS_HungerTracker : Inventory {
 		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
-		if(UaS_Debug & Hunger && o.beatcounter % 35) { o.A_Log(string.format(debugmsg, o.fatigue, energy, hydro), true); }
+		if(UaS_Debug & Hunger && o.beatcounter % 35 == 0) { o.A_Log(string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid), true); }
 	}
 
 	void Consume() {
 		if (mouthclear()) { return; }
-		if (level.maptime % 12 == 0) {
-			string snd;
-			if (drinking) { snd="UaS/Sip"; }
-			else { snd = "UaS/Chew"; }
+		if (level.maptime % howfull() == 0) {
+			string snd = "";
+			if (!drinking) { snd="UaS/Chew"; }
+			else if (random[uas_hunger](false, true)) { snd = "UaS/Sip"; }
 			owner.A_StartSound(snd,
 				CHAN_BODY, CHANF_OVERLAP,
 				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
@@ -84,6 +84,7 @@ class UaS_HungerTracker : Inventory {
 			mouth_calories = 0;
 			mouth_fluid = 0;
 			drinking = false;
+			if(UaS_Debug & Hunger) { owner.A_Log("fullness delay "..howfull()); }
 			return;
 		}
 	}
@@ -96,5 +97,10 @@ class UaS_HungerTracker : Inventory {
 
 	bool mouthclear() {
 		return (mouthtime <= 0);
+	}
+
+	int howfull() {
+		int r = (pending_calories + pending_fluid) / 40;
+		return clamp(r, 12, 30);
 	}
 }

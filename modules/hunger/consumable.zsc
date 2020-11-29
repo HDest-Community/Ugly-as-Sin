@@ -104,13 +104,15 @@ extend class UaS_Consumable {
 			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
 				int bitesize = int(calories / (bulk));
 				int sipsize = int(fluid / (bulk));
-				tracker.EatOrDrink(bitesize, sipsize, random[uas_hunger](3,5));
+				int mouthful = random[uas_hunger](4,6);
 				weaponstatus[UGCS_CONSUMED]++;
 				diffbulk = 100/bulk;
 				if (bDRINKABLE) {
 					tracker.drinking = true;
 					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+					mouthful = int(mouthful / 2);
 				}
+				tracker.EatOrDrink(bitesize, sipsize, mouthful);
 			}
 			// reseal package (may add spoilage later)
 			if (bRESEALABLE && (bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
