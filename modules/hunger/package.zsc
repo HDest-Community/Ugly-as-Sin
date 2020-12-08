@@ -1,9 +1,6 @@
 class UaS_FoodPackage : HDWeapon abstract {
 	default {
 		UaS_FoodPackage.Description ""; // Description shown to player
-		UaS_FoodPackage.OpenMessage1 ""; // Random message shown when opening or selecting
-		UaS_FoodPackage.OpenMessage2 ""; // Random message shown when opening or selecting
-		UaS_FoodPackage.OpenMessage3 ""; // Random message shown when opening or selecting
 		Inventory.PickupMessage "";
 		Inventory.Icon "";
 		tag "";
@@ -68,7 +65,7 @@ extend class UaS_FoodPackage {
 		int bt = owner.player.cmd.buttons;
 		int bto = owner.player.oldbuttons;
 		if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
-			owner.A_Log(string.format("Opened %s. %s", gettag(), RandomMessage()), true);
+			owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
 			owner.A_StartSound(opensound,
 				CHAN_WEAPON, CHANF_OVERLAP,
 				volume: 0.25, ATTN_STATIC, pitch: 0.9);

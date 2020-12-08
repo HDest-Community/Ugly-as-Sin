@@ -4,13 +4,15 @@ class UaS_FoodRation : UaS_Consumable {
 		UaS_Consumable.Fluid 0;
 		UaS_Consumable.Bulk 4;
 		UaS_Consumable.Description "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
-		UaS_Consumable.OpenMessage1 "Doesn't look very appealing...";
-		UaS_Consumable.OpenMessage2 "It's nutritious at least...";
-		UaS_Consumable.OpenMessage3 "They should add some flavor next time.";
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military food ration.";
 		tag "Food Ration";
 		Inventory.Icon "HSCVA0";
+	}
+	override void Messages() {
+		AddOpenText("Doesn't look very appealing...");
+		AddOpenText("It's nutritious at least...");
+		AddOpenText("They should add some flavor next time.");
 	}
 }
 
@@ -20,14 +22,16 @@ class UaS_WaterRation : UaS_Consumable {
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Bulk 6;
 		UaS_Consumable.Description "A disposable tear-open water pouch, about equivalent to a single glass of water.";
-		UaS_Consumable.OpenMessage1 "Refreshing and plastic-flavored.";
-		UaS_Consumable.OpenMessage2 "Water is water.";
-		UaS_Consumable.OpenMessage3 "Sometimes simpler is better.";
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "Picked up a military water ration.";
 		tag "Water Ration";
 		Inventory.Icon "HSCVR0";
+	}
+	override void Messages() {
+		AddOpenText("Refreshing and plastic-flavored.");
+		AddOpenText("Water is water.");
+		AddOpenText("Sometimes simpler is better.");
 	}
 }
 
@@ -37,23 +41,22 @@ class UaS_CurryRice : UaS_Consumable {
 		UaS_Consumable.Fluid 200;
 		UaS_Consumable.Bulk 8;
 		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a vacuum-sealed meal pack.";
-		UaS_Consumable.OpenMessage1 "Finally something exciting.";
-		UaS_Consumable.OpenMessage2 "Maybe this batch won't upset your stomach.";
-		UaS_Consumable.OpenMessage3 "Hope the rice isn't mushy.";
 		+UaS_Consumable.PACKAGED;
 		+UaS_Consumable.RESEALABLE;
 		Inventory.PickupMessage "Picked up a vacuum-sealed curry and rice meal.";
 		tag "Curry Rice Meal";
 		Inventory.Icon "HSCVA0";
 	}
+	override void Messages() {
+		AddOpenText("Finally something exciting.");
+		AddOpenText("Maybe this batch won't upset your stomach.");
+		AddOpenText("Hope the rice isn't mushy.");
+	}
 }
 
 class UaS_ExampleFoodPackage : UaS_FoodPackage {
 	default {
 		UaS_FoodPackage.Description "This is probably the saddest example MRE you've ever seen.";
-		UaS_FoodPackage.OpenMessage1 "Let's see...";
-		UaS_FoodPackage.OpenMessage2 "Hope this is edible...";
-		UaS_FoodPackage.OpenMessage3 "Chow time!";
 		Inventory.PickupMessage "Picked up a terrible example MRE.";
 		tag "World's Worst MRE";
 		Inventory.Icon "HSCVA0";

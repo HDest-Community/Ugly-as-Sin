@@ -5,16 +5,13 @@ class UaS_Consumable : HDWeapon abstract {
 		UaS_Consumable.Fluid 25; // Milliliteres of hydration provided by this consumable
 		UaS_Consumable.Bulk 2; // Bulk Units, also influences number of "swallows" when consumed
 		UaS_Consumable.Description ""; // Description shown to player
-		UaS_Consumable.OpenMessage1 ""; // Random message shown when opening or selecting
-		UaS_Consumable.OpenMessage2 ""; // Random message shown when opening or selecting
-		UaS_Consumable.OpenMessage3 ""; // Random message shown when opening or selecting
 		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
 		//+UaS_Consumable.RESEALABLE;
 		//+UaS_Consumable.DRINKABLE;
 		//+UaS_Consumable.PACKAGED;
 
 		Inventory.PickupMessage "";
-		Inventory.Icon "";
+		Inventory.Icon "HSCVA0";
 		tag "";
 	}
 }
@@ -129,7 +126,7 @@ extend class UaS_Consumable {
 					CHAN_WEAPON, CHANF_OVERLAP,
 					volume: 0.25, ATTN_STATIC, pitch: 0.9);
 				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
-				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomMessage()), true);
+				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
 			}
 
 		}
