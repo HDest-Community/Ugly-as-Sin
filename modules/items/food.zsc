@@ -1,3 +1,6 @@
+#include "modules/items/food/meals.zsc"
+#include "modules/items/food/packages.zsc"
+
 class UaS_FoodRation : UaS_Consumable {
 	default {
 		UaS_Consumable.Calories 400;
@@ -32,38 +35,5 @@ class UaS_WaterRation : UaS_Consumable {
 		AddOpenText("Refreshing and plastic-flavored.");
 		AddOpenText("Water is water.");
 		AddOpenText("Sometimes simpler is better.");
-	}
-}
-
-class UaS_CurryRice : UaS_Consumable {
-	default {
-		UaS_Consumable.Calories 500;
-		UaS_Consumable.Fluid 200;
-		UaS_Consumable.Bulk 8;
-		UaS_Consumable.Description "Spicy red rice with potatos and sauce in a vacuum-sealed meal pack.";
-		+UaS_Consumable.PACKAGED;
-		+UaS_Consumable.RESEALABLE;
-		Inventory.PickupMessage "Picked up a vacuum-sealed curry and rice meal.";
-		tag "Curry Rice Meal";
-		Inventory.Icon "HSCVA0";
-	}
-	override void Messages() {
-		AddOpenText("Finally something exciting.");
-		AddOpenText("Maybe this batch won't upset your stomach.");
-		AddOpenText("Hope the rice isn't mushy.");
-	}
-}
-
-class UaS_ExampleFoodPackage : UaS_FoodPackage {
-	default {
-		UaS_FoodPackage.Description "This is probably the saddest example MRE you've ever seen.";
-		Inventory.PickupMessage "Picked up a terrible example MRE.";
-		tag "World's Worst MRE";
-		Inventory.Icon "HSCVA0";
-	}
-	override void Contents() {
-		AddItem("UaS_FoodRation");
-		AddItem("UaS_WaterRation", 2);
-		AddItem("UaS_CurryRice");
 	}
 }

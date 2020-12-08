@@ -1,0 +1,69 @@
+mixin class UaS_BigMREPouch {
+	default {
+		UaS_Consumable.Calories 800;
+		UaS_Consumable.Fluid 400;
+		UaS_Consumable.Bulk 18;
+		+UaS_Consumable.PACKAGED;
+		+UaS_Consumable.RESEALABLE;
+		Inventory.PickupMessage "Picked up a large vacuum-sealed MRE pouch.";
+	}
+}
+
+class UaS_GarlicBeefStroganoffMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Beef and Garlic Stroganoff";
+		UaS_Consumable.Description "Tasty beef and hearty pasta in garlic cream sauce.";
+	}
+	override void Messages() {
+		AddOpenText("The garlic sauce is sublime.");
+		AddOpenText("The beef is actually tasty!");
+	}
+}
+
+class UaS_CurryRiceMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Curry and Rice";
+		UaS_Consumable.Description "Spicy red curry with rice and potatos.";
+	}
+	override void Messages() {
+		AddOpenText("Finally something exciting.");
+		AddOpenText("Maybe this batch won't upset your stomach.");
+		AddOpenText("Hope the rice isn't mushy.");
+	}
+}
+
+class UaS_SpaghettiMeatballMarinaraMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Spaghetti with Meatballs";
+		UaS_Consumable.Description "Old Faithful. Spaghetti and meatballs in a hearty marinara sauce.";
+	}
+	override void Messages() {
+		AddOpenText("Just like home... kinda.");
+	}
+}
+
+class UaS_BeefTeryakiRiceMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Beef Teriyaki on Rice";
+		UaS_Consumable.Description "Tender shredded beef in a basic teriyaki sauce, mixed with white rice.";
+	}
+	override void Messages() {
+		AddOpenText("This rice shouldn't be this good!");
+		AddOpenText("That spice packet might cause a stomach ache...");
+	}
+}
+
+class UaS_ChiliMacMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Chili-Mac";
+		UaS_Consumable.Description "Blue-box macaroni and 'cheese' mixed with chile con carne.";
+	}
+	override void Messages() {
+		AddOpenText("Hard to improve on perfection but the army chefs sure tried.");
+	}
+}

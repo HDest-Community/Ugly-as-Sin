@@ -1,0 +1,13 @@
+class UaS_ExampleFoodPackage : UaS_FoodPackage {
+	default {
+		UaS_FoodPackage.Description "This is probably the saddest example MRE you've ever seen.";
+		Inventory.PickupMessage "Picked up a terrible example MRE.";
+		tag "World's Worst MRE";
+		Inventory.Icon "HSCVA0";
+	}
+	override void Contents() {
+		AddItem("UaS_FoodRation");
+		AddItem("UaS_WaterRation", 2);
+		AddItem("UaS_CurryRice");
+	}
+}
