@@ -11,13 +11,12 @@ extend class UaS_Looting_Handler {
 		returnMessage = returnMessage.." nothing";
 		if (foundSomething) { returnMessage = returnMessage.." else"; }
 		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.." here"; }
-		if (UaS.RandomChance(0.0)) {
+		if (UaS.RandomChance(0.5)) {
 			returnMessage = returnMessage..".";
 			return returnMessage;
 		}
 		returnMessage = returnMessage..JoinerWords[random(0, JoinerWords.Size() - 1)];
 		returnMessage = returnMessage..BuildItemString();
-		for (int i=1; i<100; i++) { BuildItemString(); }
 		return returnMessage;
 	}
 
@@ -65,25 +64,26 @@ extend class UaS_Looting_Handler {
 		ItemStrings.Push(" {some|a piece of} pocket lint.");
 		ItemStrings.Push(" {an empty|a {cracked|broken|}} potion bottle{, missing a cork|. The cork is tightly sealed|.}");
 		ItemStrings.Push(" a {broken|} PDA. {It looks like it's been {crushed with a hammer.|shot.}}");
-		ItemStrings.Push(" a pinup poster{||||||||||of Betty Grable|of Imp-tan}.");
-		ItemStrings.Push(" two floppy disks, labeled DOOM.");
-		// ItemStrings.Push(" a paper labeled \"TPS REPORT.\"");
-		// ItemStrings.Push(" a movie script.");
-		// ItemStrings.Push(" some electrical cables.");
-		// ItemStrings.Push(" an empty beer bottle.");
-		// ItemStrings.Push(" a family photo.");
-		// ItemStrings.Push(" an action figure.");
-		// ItemStrings.Push(" a VHS tape titled \"Demolition Man.\"");
-		// ItemStrings.Push(" the secret Ugly as Sin feature.");
-		// ItemStrings.Push(" a glass jar.");
-		// ItemStrings.Push(" an SD card.");
-		// ItemStrings.Push(" some old paper currency.");
-		// ItemStrings.Push(" a plush emoji toy.");
-		// ItemStrings.Push(" a Rainbow Dash figurine.");
-		// ItemStrings.Push(" a delicate gold chain.");
-		// ItemStrings.Push(" two AA batteries.");
-		// ItemStrings.Push(" a tape player.");
-		// ItemStrings.Push(" a cassete tape.");
+		ItemStrings.Push(" a pinup poster{|||||||||| of Betty Grable| of Imp-tan}.");
+		ItemStrings.Push(" two floppy disks, labeled \"DOOM.\"");
+		ItemStrings.Push(" 27 floppy disks, labeled \"Windows 95.\"");
+		ItemStrings.Push(" a {torn|dirty|scorched} paper titled \"TPS REPORT.\"");
+		ItemStrings.Push(" a movie script. {There are notes written in the margins.}");
+		ItemStrings.Push(" some {electrical|USB} cables.");
+		ItemStrings.Push(" an empty {beer|soda|wine|champagne} bottle. {It is {cracked|broken|unlabeled}.}");
+		ItemStrings.Push(" a family photo. {One of the faces has been {scratched|burned|scribbled|cut} out.}");
+		ItemStrings.Push(" {an action figure|a doll}. {|||||||||||||It is naked.}");
+		ItemStrings.Push(" a {VHS tape|DVD} titled \"{Demolition Man|The Matrix|Total Recall|The Way of the Gun|Falling Down}.\"");
+		ItemStrings.Push(" the secret Ugly as Sin feature.");
+		ItemStrings.Push(" a glass jar.");
+		ItemStrings.Push(" {an SD|a micro-SD|a {PS1|PS2|flash} memory} card.");
+		ItemStrings.Push(" some old paper currency. {It's worthless.|}");
+		ItemStrings.Push(" a {small|large|||} plush {emoji toy|cacodemon|teddy bear|furbie}.");
+		ItemStrings.Push(" a {Rainbow Dash|Twilight Sparkle|Pinkie Pie|Fluttershy|Applejack|Rarity} figurine.");
+		ItemStrings.Push(" a {delicate|intricate|chunky||||} {gold|silver} chain. {There is a charm on it.||||}");
+		ItemStrings.Push(" two A{A|AA} batteries.");
+		ItemStrings.Push(" a {Walkman-brand} {tape|CD} player.");
+		ItemStrings.Push(" a cassete tape{.| labeled \"DOOM.\"}");
 
 		JoinerWords.Push(", except");
 		JoinerWords.Push(", except for");
