@@ -1,54 +1,89 @@
 extend class UaS_Looting_Handler {
-	array<string> FunnyItems;
+	array<string> ItemStrings;
 	array<string> JoinerWords;
+	array<string> Keywords;
+	array<string> Conditions;
 
 	string FlavorText(bool foundSomething) {
-		if (FunnyItems.Size() == 0 || JoinerWords.Size() == 0) { InitializeStrings(); }
+		if (ItemStrings.Size() == 0 || JoinerWords.Size() == 0) { InitializeStrings(); }
 		string returnMessage = "";
 		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.."There's"; }
 		returnMessage = returnMessage.." nothing";
 		if (foundSomething) { returnMessage = returnMessage.." else"; }
 		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.." here"; }
-		if (UaS.RandomChance(0.5)) {
+		if (UaS.RandomChance(0.0)) {
 			returnMessage = returnMessage..".";
 			return returnMessage;
 		}
 		returnMessage = returnMessage..JoinerWords[random(0, JoinerWords.Size() - 1)];
-		returnMessage = returnMessage..FunnyItems[random(0, FunnyItems.Size() - 1)];
+		returnMessage = returnMessage..BuildItemString();
+		for (int i=1; i<100; i++) { BuildItemString(); }
 		return returnMessage;
 	}
 
+	string BuildItemString() {
+		string item = ItemStrings[random(0, ItemStrings.Size() - 1)];
+
+		// Collapse substrings
+		while (true) {
+			int LeftBrace, RightBrace;
+			LeftBrace = item.RightIndexOf("{");
+			RightBrace = item.IndexOf("}",LeftBrace+1);
+			if (LeftBrace == -1 || RightBrace == -1) { break; }
+
+			string substring = item.Mid(LeftBrace+1, (RightBrace-LeftBrace)-1);
+			item.Remove(LeftBrace+1, (RightBrace-LeftBrace)-1);
+
+			array<string> substrings;
+			substring.Split(substrings,"|");
+
+			item.Replace("{}", substrings[random(0,substrings.Size()-1)]);
+		}
+
+		// Remove double-spaces
+		while (true) {
+			if (item.IndexOf("  ", 0) > -1) { item.Replace("  ", " "); }
+			else { break; }
+		}
+
+		console.printf(item);
+		return item;
+	}
+
 	void InitializeStrings() {
-		FunnyItems.Push(" an empty ration.");
-		FunnyItems.Push(" a crusty ration wrapper.");
-		FunnyItems.Push(" a small collection of grenade pins.");
-		FunnyItems.Push(" a revenant finger bone.");
-		FunnyItems.Push(" a wad of chewing gum.");
-		FunnyItems.Push(" an oily gun part.");
-		FunnyItems.Push(" a coin.");
-		FunnyItems.Push(" some empty brass casings.");
-		FunnyItems.Push(" some pocket lint.");
-		FunnyItems.Push(" an empty potion bottle.");
-		FunnyItems.Push(" a broken PDA.");
-		FunnyItems.Push(" a pinup poster.");
-		FunnyItems.Push(" two floppy disks, labeled DOOM.");
-		FunnyItems.Push(" a paper labeled \"TPS REPORT.\"");
-		FunnyItems.Push(" a movie script.");
-		FunnyItems.Push(" some electrical cables.");
-		FunnyItems.Push(" an empty beer bottle.");
-		FunnyItems.Push(" a family photo.");
-		FunnyItems.Push(" an action figure.");
-		FunnyItems.Push(" a VHS tape titled \"Demolition Man.\"");
-		FunnyItems.Push(" the secret Ugly as Sin feature.");
-		FunnyItems.Push(" a glass jar.");
-		FunnyItems.Push(" an SD card.");
-		FunnyItems.Push(" some old paper currency.");
-		FunnyItems.Push(" a plush emoji toy.");
-		FunnyItems.Push(" a Rainbow Dash figurine.");
-		FunnyItems.Push(" a delicate gold chain.");
-		FunnyItems.Push(" two AA batteries.");
-		FunnyItems.Push(" a tape player.");
-		FunnyItems.Push(" a cassete tape.");
+		// Define substring lists with { } (curly brackets)
+		// Lists may be nested!
+		// Separate string items with | (pipe)
+		// Add leading or trailing pipe characters for chance of blank strings
+		ItemStrings.Push(" {an empty|{a {half-eaten|spoiled|rotten|moldy|||}}} {ration|ration wrapper}{, covered in filth|}");
+		ItemStrings.Push(" a {small|} collection of {bent|rusty|} grenade pins.");
+		ItemStrings.Push(" {a revenant|an imp} finger bone.");
+		ItemStrings.Push(" a {hairy||||} wad of chewing gum.");
+		ItemStrings.Push(" {an oily|{a rusty|a damaged|a}} gun part.");
+		ItemStrings.Push(" a {small|large|||} {rusty|shiny|chipped|||} {gold|silver|copper||||||} coin.");
+		ItemStrings.Push(" some {tarnished|empty|dented|cracked} {brass|steel|polymer} casings.");
+		ItemStrings.Push(" {some|a piece of} pocket lint.");
+		ItemStrings.Push(" {an empty|a {cracked|broken|}} potion bottle{, missing a cork|. The cork is tightly sealed|.}");
+		ItemStrings.Push(" a {broken|} PDA. {It looks like it's been {crushed with a hammer.|shot.}}");
+		ItemStrings.Push(" a pinup poster{||||||||||of Betty Grable|of Imp-tan}.");
+		ItemStrings.Push(" two floppy disks, labeled DOOM.");
+		// ItemStrings.Push(" a paper labeled \"TPS REPORT.\"");
+		// ItemStrings.Push(" a movie script.");
+		// ItemStrings.Push(" some electrical cables.");
+		// ItemStrings.Push(" an empty beer bottle.");
+		// ItemStrings.Push(" a family photo.");
+		// ItemStrings.Push(" an action figure.");
+		// ItemStrings.Push(" a VHS tape titled \"Demolition Man.\"");
+		// ItemStrings.Push(" the secret Ugly as Sin feature.");
+		// ItemStrings.Push(" a glass jar.");
+		// ItemStrings.Push(" an SD card.");
+		// ItemStrings.Push(" some old paper currency.");
+		// ItemStrings.Push(" a plush emoji toy.");
+		// ItemStrings.Push(" a Rainbow Dash figurine.");
+		// ItemStrings.Push(" a delicate gold chain.");
+		// ItemStrings.Push(" two AA batteries.");
+		// ItemStrings.Push(" a tape player.");
+		// ItemStrings.Push(" a cassete tape.");
 
 		JoinerWords.Push(", except");
 		JoinerWords.Push(", except for");
