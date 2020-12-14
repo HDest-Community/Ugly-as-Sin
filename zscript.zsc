@@ -13,6 +13,9 @@ version "4.5"
 // General spawner
 #include "modules/spawner/spawner.zsc"
 
+// Population adjustment
+#include "modules/population/population.zsc"
+
 // Hunger and Thirst scripts
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"

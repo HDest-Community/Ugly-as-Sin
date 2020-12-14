@@ -1,0 +1,12 @@
+class UaS_PopulationAdjust : EventHandler {
+	bool delete;
+
+	override void WorldThingSpawned(WorldEvent e) {
+		if (level.maptime > 1) { return; }
+		if(level.maptime > 1) { return; }
+		if(!e.thing) { return; }
+		if(!(e.thing is 'HDMobBase')) { return; }
+		if(e.thing.health < 1) { return; }
+		if(!e.thing.bIsMonster) { return; }
+	}
+}
