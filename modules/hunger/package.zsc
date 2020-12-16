@@ -32,7 +32,7 @@ extend class UaS_FoodPackage {
 	void AddItem(string FoodItem, int quantity = 1) {
 		class<actor> newItem = (class<actor>)(FoodItem);
 		if (!newItem || !(newItem is (class<actor>)('UaS_Consumable'))) {
-			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), newItem.GetClassName()));
+			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), FoodItem));
 			return;
 		}
 		for (int i=1; i<= quantity; i++) {
