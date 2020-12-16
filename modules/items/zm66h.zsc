@@ -1,0 +1,32 @@
+class UaS_ZM66Heavy : ZM66AssaultRifle {
+	default {
+		tag "ZM66H assault rifle (heavy barrel)";
+		hdweapon.refid UAS_HDLD_ZM66H;
+	}
+	override string pickupmessage() { return "Picked up a heavy-barreled automatic rifle."; }
+
+	override double weaponbulk() { return 20 + super.weaponbulk(); }
+
+	override void InitializeWepStats(bool idfa) {
+		weaponstatus[ZM66S_FLAGS]|=ZM66F_NOLAUNCHER;
+		super.InitializeWepStats(idfa);
+	}
+
+	override void tick() {
+		if (weaponstatus[ZM66S_HEAT] == HDCONST_ZM66COOKOFF) {
+			weaponstatus[ZM66S_BORESTRETCHED]++;
+			console.printf("overheat... "..weaponstatus[ZM66S_BORESTRETCHED]);
+		}
+		else if (random(0, 350) < weaponstatus[ZM66S_BORESTRETCHED]) {
+			weaponstatus[ZM66S_BORESTRETCHED]--;
+			console.printf("cooling... "..weaponstatus[ZM66S_BORESTRETCHED]);
+		}
+
+		weaponstatus[ZM66S_HEAT] = clamp(
+			weaponstatus[ZM66S_HEAT],
+			weaponstatus[ZM66S_BORESTRETCHED],
+			HDCONST_ZM66COOKOFF - 2);
+
+		super.tick();
+	}
+}
