@@ -6,7 +6,7 @@ extend class UaS_AI_Handler {
 
 	void Flashlight() {
 		if (owner.isFrozen() || level.isFrozen()) { return; }
-		// Only do light for human-type classes
+		// Only do light for human-type classes and robots
 		bool BotClass = (
 			owner is "HERPBot" ||
 			owner is "DERPBot"
@@ -24,6 +24,8 @@ extend class UaS_AI_Handler {
 			llm = UaS_LaserLightModule(owner.FindInventory("UaS_LaserLightModule"));
 			llm.ModeSwitch(random[aillm](0,2));
 		}
+
+		if (!UaS_AI_Flashlights) { llm.activated = false; return; }
 
 		if (HumanClass && recheck <= 0) {
 			llm.offset = 8;
