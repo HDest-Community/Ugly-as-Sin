@@ -15,10 +15,10 @@ Features are typically implemented as toggleable modules with various customizab
 * **Visual Weapons** - Changes Marines and Tangos sprites to reflect their current weapon.
 * **Aim Swaying** - Extra inertia for player aiming, especially when fatigued.
 * **Focus Zoom** - Slight zoom-in effect when focused or aiming and not moving or stunned.
-* **Laser/Flashlight** - A PEQ-style combination laser and flashlight module.
+* [**Laser/Flashlight**](./manual/laserlight.md) - A PEQ-style combination laser and flashlight module.
 * **Death Fading** - Fades the player's vision to black on death, faster or slower depending on final damage received.
-* **Weapon Jamming** - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
-* **Better Ammoboxes** - Simple lightweight reusable boxes that can be packed like magazines to reduce the bulk of loose ammunition significantly.
+* [**Weapon Jamming**](./manual/jamming.md) - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
+* [**Better Ammoboxes**](./manual/ammoboxes.md) - Simple lightweight reusable boxes that can be packed like magazines to reduce the bulk of loose ammunition significantly.
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing.
 * **Flares/Glowsticks** - Simple disposable lightsources for marking rooms or wandering in darkness.
 * **Respirator** - Rechargable emergency air tank for extended underwater excursions. Drains faster the more fatigued you are.
