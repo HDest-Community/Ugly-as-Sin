@@ -1,0 +1,274 @@
+// A base class for all consumable (food) items to inherit from
+class UaS_Consumable : HDWeapon abstract {
+	default {
+		UaS_Consumable.Calories 0; // Calories / kCals provided by this consumable
+		UaS_Consumable.Fluid 0; // Milliliteres of hydration provided by this consumable
+		UaS_Consumable.Bulk 2; // Bulk Units, also influences number of "swallows" when consumed
+		UaS_Consumable.Description ""; // Description shown to player
+		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
+		//+UaS_Consumable.RESEALABLE;
+		//+UaS_Consumable.DRINKABLE;
+		//+UaS_Consumable.PACKAGED;
+
+		Inventory.PickupMessage "";
+		Inventory.Icon "HSCVA0";
+		tag "";
+	}
+
+	virtual void Contents() {
+		// For packages that contain other items
+		// Automatically adds the +PACKAGED flag
+		// AddItem("UaS_FoodRation");
+	}
+
+	virtual void Messages() {
+		// Override this for custom randomized messages
+		// AddOpenText("Opened the package");
+		// AddConsumeText("mmmm yummy");
+	}
+}
+
+// =========================
+// PAY NO ATTENTION TO THE
+// CODE BEHIND THE CURTAIN
+// =========================
+
+extend class UaS_Consumable {
+	//bool candestroy;
+	uint ConsumableFlags;
+	int calories;
+	int fluid;
+	double bulk, diffbulk;
+	string description;
+	string opensound;
+	array<string> OpenText;
+	array<string> ConsumeText;
+	array<string> FoodList;
+	array<string> NiceFoodList;
+	property Calories: calories;
+	property Fluid: fluid;
+	property Bulk: bulk;
+	flagdef RESEALABLE: ConsumableFlags, 0;
+	flagdef DRINKABLE: ConsumableFlags, 1;
+	flagdef PACKAGED: ConsumableFlags, 2;
+	property Description: description;
+	property OpenSound: opensound;
+	UaS_HungerTracker tracker;
+
+	default {
+		+INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+		+HDWEAPON.FITSINBACKPACK;
+		+WEAPON.DONTBOB;
+		-UaS_Consumable.RESEALABLE;
+		-UaS_Consumable.DRINKABLE;
+		-UaS_Consumable.PACKAGED;
+		Inventory.PickupSound "weapons/pocket";
+	}
+
+	// Setters for randomized text
+	void AddOpenText(string msg) { OpenText.Push(msg); }
+	void AddConsumeText(string msg) { ConsumeText.Push(msg); }
+
+	// Getters for randomized text
+	string RandomOpenMessage() { return OpenText[random[uas_hunger](0,OpenText.Size()-1)]; }
+	string RandomConsumeMessage() { return ConsumeText[random[uas_hunger](0,ConsumeText.Size()-1)]; }
+
+	// Add items to the package contents list
+	void AddItem(string FoodItem, int quantity = 1) {
+		bPACKAGED = true;
+		class<actor> newItem = (class<actor>)(FoodItem);
+		bool valid = (newItem && (newItem is (class<actor>)('UaS_Consumable')));
+		if (!valid) {
+			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), FoodItem));
+			return;
+		}
+		for (int i=1; i<= quantity; i++) {
+			FoodList.push(FoodItem);
+			NiceFoodList.push(getdefaultbytype(newItem).gettag());
+			bulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodItem))).bulk) * 0.7;
+		}
+	}
+
+	override void Tick() {
+		// bool candestroy = (
+			// (int(weaponbulk() + diffbulk) <= 0) ||
+			// ((calories <= 0 || fluid <= 0) && (FoodList.size() <= 0))
+		// );
+		// if (candestroy) {
+			// console.printf("BUGCATCHER");
+			// if(owner) { owner.dropinventory(self); } // This line is causing a super-weird error. TODO: Refactor destruction to somewhere more sane
+			// else { destroy(); }
+		// }
+		super.tick();
+		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
+	}
+
+	void DoMessage() {
+		string statusMessage;
+		statusMessage.appendformat("--- \cc%s\c- ---\n", gettag());
+		statusMessage.appendformat("%s\n", description);
+		for (int i=1; i<=int(description.length()/40)+1; i++) { statusMessage.appendformat("\n"); }
+		statusMessage.appendformat(DisplayFoodlist());
+		statusMessage.appendformat(DisplayNutrition());
+		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) { statusMessage.appendformat("Package Closed\n"); }
+		else { statusMessage.appendformat("\cw%.0f%% Remaining\n", ((weaponbulk()/bulk)*100) + max(diffbulk, 0)); }
+		if (!tracker.mouthclear() && level.time % 10 != 0) { statusMessage.appendformat("Consuming..."); }
+		A_WeaponMessage(statusMessage);
+	}
+
+	string DisplayFoodlist() {
+		string r;
+		if (FoodList.size() > 0) {
+			r.appendformat("\cpContents\n");
+			for (int i=0; i<NiceFoodList.size(); i++) { r.appendformat("\ce%s\n", NiceFoodList[i]); }
+			r.appendformat("\n");
+		}
+		return r;
+	}
+
+	string DisplayNutrition() {
+		string r;
+		if (calories > 0 || fluid > 0) {
+			r.appendformat(
+				"\ce%i Calories\n"..
+				"\ce%i mL Fluids\n\n",
+				calories, fluid);
+		}
+		return r;
+	}
+
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+
+		// when consumable open
+		bool canconsume = (
+			(weaponstatus[UGCS_OPEN] == UGCSF_OPENED) &&
+			(weaponbulk() > 0) &&
+			(calories > 0 || fluid > 0)
+		);
+
+		if (canconsume) {
+			//Take a bite
+			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
+				int bitesize = int(calories / (bulk));
+				int sipsize = int(fluid / (bulk));
+				int mouthful = random[uas_hunger](4,6);
+				weaponstatus[UGCS_CONSUMED]++;
+				diffbulk = 100/bulk;
+				if (bDRINKABLE) {
+					tracker.drinking = true;
+					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+					mouthful = int(mouthful / 2);
+				}
+				tracker.EatOrDrink(bitesize, sipsize, mouthful);
+			}
+			// reseal package (may add spoilage later)
+			if (bRESEALABLE && (bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+				weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
+				owner.A_StartSound("weapons/pocket",
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.75, ATTN_STATIC, pitch: 1.15);
+			}
+		}
+		// when consumable sealed
+		else if (weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
+				owner.A_StartSound(opensound,
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.25, ATTN_STATIC, pitch: 0.9);
+				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+				for (int i=0; i<FoodList.size(); i++) {
+					owner.A_GiveInventory("HDWeaponGiver");
+					HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+					wg.weapontogive = FoodList[i];
+					wg.spawnactualweapon();
+					wg.destroy();
+					//owner.A_GiveInventory(FoodList[i]);
+				}
+				FoodList.Clear();
+				NiceFoodList.Clear();
+				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
+			}
+
+		}
+	}
+
+	override void InitializeWepStats(bool idfa) {
+		Contents();
+		weaponstatus[UGCS_CONSUMED] = 0;
+		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
+		else { weaponstatus[UGCS_OPEN] = true; }
+	}
+
+
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+		DoMessage();
+		HandleInput();
+	}
+
+	override void BeginPlay() {
+		UpdateSprite();
+		//Some generic open messages
+		AddOpenText("Let's see..");
+		AddOpenText("Hope this is edible...");
+		AddOpenText("Chow time!");
+		//Process user's custom messages
+		Messages();
+		super.BeginPlay();
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
+		vector2 mugsize = TexMan.GetScaledSize(sb.GetMugShot(5,Mugshot.CUSTOM,sb.getmug(hpl.mugshot)));
+		sb.drawimage(TexMan.GetName(icon), (0, -14 - (mugsize.y * 1.25)),
+			sb.DI_SCREEN_CENTER_BOTTOM|sb.DI_ITEM_BOTTOM,
+			scale:(2,2)
+		);
+	}
+
+	bool CriticalChecks() {
+		// Skip all interaction if not selected
+		if (!owner) { return false; }
+		if (!(owner.player.readyweapon == self)) { return false; }
+		if (owner.health <= 0) { return false; }
+
+		// Set up tracker connection
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
+
+		return true;
+	}
+
+	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
+	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
+	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
+
+	States {
+		Spawn:
+			TNT1 A -1 { invoker.UpdateSprite(); }
+			Stop;
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
+	}
+}
+
+enum ConsumableSlots {
+	UGCS_CONSUMED,
+	UGCS_OPEN,
+}
+
+enum ConsumableStatusFlags {
+	UGCSF_SEALED = 0,
+	UGCSF_OPENED = 1,
+}

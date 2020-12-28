@@ -6,8 +6,8 @@ extend class UaS_Spawner {
 	void BuildFoodSpawnList() {
 		for (int i=0; i<allactorclasses.size(); i++) {
 			bool valid = (
-				(allactorclasses[i] is 'UaS_Consumable' || allactorclasses[i] is 'UaS_FoodPackage') &&
-				(allactorclasses[i].GetClassName() != "UaS_Consumable" && allactorclasses[i].GetClassName() != "UaS_FoodPackage")
+				(allactorclasses[i] is 'UaS_Consumable') &&
+				(allactorclasses[i].GetClassName() != "UaS_Consumable")
 			);
 			if (valid) { FoodSpawnList.push(allactorclasses[i].GetClassName()); }
 		}
