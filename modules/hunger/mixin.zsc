@@ -7,6 +7,15 @@ mixin class UaS_FoodItemMixin {
 	property OpenSound: opensound;
 	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
 	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
+	UaS_HungerTracker tracker;
+
+	default {
+		Inventory.PickupSound "weapons/pocket";
+		+INVENTORY.INVBAR;
+		+INVENTORY.IGNORESKILL;
+		+HDWEAPON.FITSINBACKPACK;
+		+WEAPON.DONTBOB;
+	}
 
 	//Override this for custom messages
 	virtual void Messages() {}
@@ -25,6 +34,12 @@ mixin class UaS_FoodItemMixin {
 		Ready:
 			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
 			Loop;
+	}
+
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+		DoMessage();
+		HandleInput();
 	}
 
 	override void BeginPlay() {
@@ -52,5 +67,18 @@ mixin class UaS_FoodItemMixin {
 			sb.DI_SCREEN_CENTER_BOTTOM|sb.DI_ITEM_BOTTOM,
 			scale:(2,2)
 		);
+	}
+
+	bool CriticalChecks() {
+		// Skip all interaction if not selected
+		if (!owner) { return false; }
+		if (!(owner.player.readyweapon == self)) { return false; }
+		if (owner.health <= 0) { return false; }
+
+		// Set up tracker connection
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
+
+		return true;
 	}
 }

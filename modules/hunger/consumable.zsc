@@ -32,27 +32,14 @@ extend class UaS_Consumable {
 	flagdef RESEALABLE: ConsumableFlags, 0;
 	flagdef DRINKABLE: ConsumableFlags, 1;
 	flagdef PACKAGED: ConsumableFlags, 2;
-	UaS_HungerTracker tracker;
 
 	default {
-		UaS_Consumable.OpenSound "UaS/FoodOpen";
-		Inventory.PickupSound "weapons/pocket";
-		+INVENTORY.INVBAR;
-		+INVENTORY.IGNORESKILL;
-		+WEAPON.DONTBOB;
-		+HDWEAPON.FITSINBACKPACK;
 		-UaS_Consumable.RESEALABLE;
 		-UaS_Consumable.DRINKABLE;
 		-UaS_Consumable.PACKAGED;
 	}
 
 	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
-
-	override void DoEffect() {
-		if (!CriticalChecks()) { return; }
-		HandleInput();
-		DoMessage();
-	}
 
 	override void Tick() {
 		super.tick();
@@ -61,19 +48,6 @@ extend class UaS_Consumable {
 			else { destroy(); }
 		}
 		if (diffbulk > 0) { diffbulk *= 0.9; }
-	}
-
-	bool CriticalChecks() {
-		// Skip all interaction if not selected
-		if (!owner) { return false; }
-		if (!(owner.player.readyweapon == self)) { return false; }
-		if (owner.health <= 0) { return false; }
-
-		// Set up tracker connection
-		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
-		if (!tracker) { console.printf("no hunger tracker!"); return false; }
-
-		return true;
 	}
 
 	void DoMessage() {

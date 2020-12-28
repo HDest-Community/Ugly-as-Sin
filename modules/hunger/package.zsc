@@ -1,6 +1,7 @@
 class UaS_FoodPackage : HDWeapon abstract {
 	default {
 		UaS_FoodPackage.Description ""; // Description shown to player
+		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
 		Inventory.PickupMessage "";
 		Inventory.Icon "";
 		tag "";
@@ -20,15 +21,6 @@ extend class UaS_FoodPackage {
 	array<string> NiceFoodList;
 	double calculatedbulk;
 
-	default {
-		Inventory.PickupSound "weapons/pocket";
-		UaS_FoodPackage.OpenSound "UaS/FoodOpen";
-		+INVENTORY.INVBAR;
-		+INVENTORY.IGNORESKILL;
-		+WEAPON.DONTBOB;
-		+HDWEAPON.FITSINBACKPACK;
-	}
-
 	void AddItem(string FoodItem, int quantity = 1) {
 		class<actor> newItem = (class<actor>)(FoodItem);
 		if (!newItem || !(newItem is (class<actor>)('UaS_Consumable'))) {
@@ -40,15 +32,6 @@ extend class UaS_FoodPackage {
 			NiceFoodList.push(getdefaultbytype(newItem).gettag());
 			calculatedbulk += UaS_Consumable(getdefaultbytype((class<actor>)(FoodItem))).bulk;
 		}
-	}
-
-	override void DoEffect() {
-		if (!owner) { return; }
-		if (!(owner.player.readyweapon == self)) { return; }
-		if (owner.health <= 0) { return; }
-
-		DoMessage();
-		HandleInput();
 	}
 
 	void DoMessage() {
