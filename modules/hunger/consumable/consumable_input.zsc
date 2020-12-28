@@ -1,0 +1,58 @@
+extend class UaS_Consumable {
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+
+		// when consumable open
+		bool canconsume = (
+			(weaponstatus[UGCS_OPEN] == UGCSF_OPENED) &&
+			(weaponbulk() > 0) &&
+			(calories > 0 || fluid > 0)
+		);
+
+		if (canconsume) {
+			//Take a bite
+			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
+				int bitesize = int(calories / (bulk));
+				int sipsize = int(fluid / (bulk));
+				int mouthful = random[uas_hunger](4,6);
+				weaponstatus[UGCS_CONSUMED]++;
+				diffbulk = 100/bulk;
+				if (bDRINKABLE) {
+					tracker.drinking = true;
+					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+					mouthful = int(mouthful / 2);
+				}
+				tracker.EatOrDrink(bitesize, sipsize, mouthful);
+			}
+			// reseal package (may add spoilage later)
+			if (bRESEALABLE && (bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+				weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
+				owner.A_StartSound("weapons/pocket",
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.75, ATTN_STATIC, pitch: 1.15);
+			}
+		}
+		// when consumable sealed
+		else if (weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
+				owner.A_StartSound(opensound,
+					CHAN_WEAPON, CHANF_OVERLAP,
+					volume: 0.25, ATTN_STATIC, pitch: 0.9);
+				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+				for (int i=0; i<FoodList.size(); i++) {
+					owner.A_GiveInventory("HDWeaponGiver");
+					HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+					wg.weapontogive = FoodList[i];
+					wg.spawnactualweapon();
+					wg.destroy();
+					//owner.A_GiveInventory(FoodList[i]);
+				}
+				FoodList.Clear();
+				NiceFoodList.Clear();
+				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
+			}
+
+		}
+	}
+}

@@ -1,0 +1,17 @@
+extend class UaS_Consumable {
+	// Add items to the package contents list
+	void AddItem(string FoodItem, int quantity = 1) {
+		bPACKAGED = true;
+		class<actor> newItem = (class<actor>)(FoodItem);
+		bool valid = (newItem && (newItem is (class<actor>)('UaS_Consumable')));
+		if (!valid) {
+			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), FoodItem));
+			return;
+		}
+		for (int i=1; i<= quantity; i++) {
+			FoodList.push(FoodItem);
+			NiceFoodList.push(getdefaultbytype(newItem).gettag());
+			bulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodItem))).bulk) * 0.7;
+		}
+	}
+}

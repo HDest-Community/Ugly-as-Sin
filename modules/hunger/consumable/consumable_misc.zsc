@@ -1,0 +1,100 @@
+extend class UaS_Consumable {
+	// Setters for randomized text
+	void AddOpenText(string msg) { OpenText.Push(msg); }
+	void AddConsumeText(string msg) { ConsumeText.Push(msg); }
+
+	// Getters for randomized text
+	string RandomOpenMessage() { return OpenText[random[uas_hunger](0,OpenText.Size()-1)]; }
+	string RandomConsumeMessage() { return ConsumeText[random[uas_hunger](0,ConsumeText.Size()-1)]; }
+
+	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
+	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
+	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
+
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+		DoMessage();
+		HandleInput();
+	}
+
+	override void Tick() {
+		// bool candestroy = (
+			// (int(weaponbulk() + diffbulk) <= 0) ||
+			// ((calories <= 0 || fluid <= 0) && (FoodList.size() <= 0))
+		// );
+		// if (candestroy) {
+			// console.printf("BUGCATCHER");
+			// if(owner) { owner.dropinventory(self); } // This line is causing a super-weird error. TODO: Refactor destruction to somewhere more sane
+			// else { destroy(); }
+		// }
+		super.tick();
+		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
+	}
+
+
+	bool CriticalChecks() {
+		// Skip all interaction if not selected
+		if (!owner) { return false; }
+		if (!(owner.player.readyweapon == self)) { return false; }
+		if (owner.health <= 0) { return false; }
+
+		// Set up tracker connection
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
+
+		return true;
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb,HDWeapon hdw,HDPlayerPawn hpl) {
+		vector2 mugsize = TexMan.GetScaledSize(sb.GetMugShot(5,Mugshot.CUSTOM,sb.getmug(hpl.mugshot)));
+		sb.drawimage(TexMan.GetName(icon), (0, -14 - (mugsize.y * 1.25)),
+			sb.DI_SCREEN_CENTER_BOTTOM|sb.DI_ITEM_BOTTOM,
+			scale:(2,2)
+		);
+	}
+
+	override void InitializeWepStats(bool idfa) {
+		Contents();
+		weaponstatus[UGCS_CONSUMED] = 0;
+		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
+		else { weaponstatus[UGCS_OPEN] = true; }
+	}
+
+	override void BeginPlay() {
+		UpdateSprite();
+		//Some generic open messages
+		AddOpenText("Let's see..");
+		AddOpenText("Hope this is edible...");
+		AddOpenText("Chow time!");
+		//Process user's custom messages
+		Messages();
+		super.BeginPlay();
+	}
+
+	States {
+		Spawn:
+			TNT1 A -1 { invoker.UpdateSprite(); }
+			Stop;
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
+	}
+}
+
+enum ConsumableSlots {
+	UGCS_CONSUMED,
+	UGCS_OPEN,
+}
+
+enum ConsumableStatusFlags {
+	UGCSF_SEALED = 0,
+	UGCSF_OPENED = 1,
+}
