@@ -1,0 +1,21 @@
+mixin class UaS_SodaMixin {
+	default {
+		UaS_Consumable.Calories 120;
+		UaS_Consumable.Fluid 350;
+		UaS_Consumable.Bulk 8;
+		+UaS_Consumable.DRINKABLE;
+		+UaS_Consumable.PACKAGED;
+		Inventory.PickupMessage "Picked up a can of soda.";
+		Inventory.Icon "HSCVR0";
+		scale 0.45;
+	}
+}
+
+
+class UaS_DrCola : UaS_Consumable {
+	mixin UaS_SodaMixin;
+	default {
+		UaS_Consumable.Description "Fizzy sugary cola goodness in a classic red aluminium can.";
+		tag "Dr. Cola soda";
+	}
+}

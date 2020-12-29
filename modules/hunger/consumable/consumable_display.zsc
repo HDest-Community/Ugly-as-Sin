@@ -18,7 +18,7 @@ extend class UaS_Consumable {
 
 	string DisplayFoodlist() {
 		string r;
-		if (weaponstatus[UGCS_GAVECONTENTS] == false) {
+		if (weaponstatus[UGCS_GAVECONTENTS] == false && FoodList.Size() > 0) {
 			r.appendformat("\cpContents\n");
 			for (int i=0; i<NiceFoodList.size(); i++) { r.appendformat("\ce%s\n", NiceFoodList[i]); }
 			r.appendformat("\n");

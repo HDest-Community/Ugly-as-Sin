@@ -7,7 +7,15 @@ extend class UaS_Consumable {
 	string RandomOpenMessage() { return OpenText[random[uas_hunger](0,OpenText.Size()-1)]; }
 	string RandomConsumeMessage() { return ConsumeText[random[uas_hunger](0,ConsumeText.Size()-1)]; }
 
-	override double weaponbulk() { return bulk - (weaponstatus[UGCS_CONSUMED]); }
+	override double weaponbulk() {
+		double itemsbulk = 0;
+		if (weaponstatus[UGCS_GAVECONTENTS] == false) {
+			for (int i=0; i < FoodList.size(); i++) {
+				itemsbulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodList[i]))).bulk) * 0.7;
+			}
+		}
+		return (bulk - (weaponstatus[UGCS_CONSUMED])) + itemsbulk;
+	}
 	override bool AddSpareWeapon(actor newowner){return AddSpareWeaponRegular(newowner);}
 	override hdweapon GetSpareWeapon(actor newowner,bool reverse,bool doselect){return GetSpareWeaponRegular(newowner,reverse,doselect);}
 

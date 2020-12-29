@@ -11,7 +11,6 @@ extend class UaS_Consumable {
 		for (int i=1; i<= quantity; i++) {
 			FoodList.push(FoodItem);
 			NiceFoodList.push(getdefaultbytype(newItem).gettag());
-			bulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodItem))).bulk) * 0.7;
 		}
 	}
 }
