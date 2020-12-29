@@ -1,58 +1,79 @@
 extend class UaS_Consumable {
 	void HandleInput() {
+		if (CheckButton(BT_ATTACK, CBM_PRESSED)) { Consume(); }
+		else if (CheckButton(BT_RELOAD, CBM_PRESSED)) { ResealPackage(); }
+		else if (CheckButton(BT_UNLOAD, CBM_PRESSED)) { OpenPackage(); }
+	}
+
+	void Consume() {
+		if (!tracker.mouthclear()) { return; }
+		if (weaponstatus[UGCS_OPEN] != UGCSF_OPENED) { return; }
+		if (weaponbulk() <= 0) { return; }
+		if (!(calories > 0 || fluid > 0)) { return; }
+		int bitesize = int(calories / (bulk));
+		int sipsize = int(fluid / (bulk));
+		int mouthful = random[uas_hunger](4,6);
+		weaponstatus[UGCS_CONSUMED]++;
+		diffbulk = 100/bulk;
+		if (bDRINKABLE) {
+			tracker.drinking = true;
+			owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+			mouthful = int(mouthful / 2);
+		}
+		tracker.EatOrDrink(bitesize, sipsize, mouthful);
+	}
+
+	void OpenPackage() {
+		if (weaponstatus[UGCS_OPEN] != UGCSF_SEALED) { return; }
+		owner.A_StartSound(opensound,
+			CHAN_WEAPON, CHANF_OVERLAP,
+			volume: 0.25, ATTN_STATIC, pitch: 0.9);
+		weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+		owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
+		GiveContents();
+	}
+
+	void GiveContents() {
+		if (weaponstatus[UGCS_GAVECONTENTS] == true) { return; }
+		for (int i=0; i<FoodList.size(); i++) {
+			owner.A_GiveInventory("HDWeaponGiver");
+			HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+			wg.weapontogive = FoodList[i];
+			wg.postbeginplay();
+			wg.tick();
+			wg.tick();
+			wg.tick();
+			wg.destroy();
+		}
+		weaponstatus[UGCS_GAVECONTENTS] = true;
+	}
+
+	void ResealPackage() {
+		if (!bRESEALABLE) { return; }
+		owner.A_StartSound("weapons/pocket",
+			CHAN_WEAPON, CHANF_OVERLAP,
+			volume: 0.75, ATTN_STATIC, pitch: 1.15);
+		weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
+	}
+
+	// Generalized button checker
+	bool CheckButton(int button, int mode = 0) {
 		int bt = owner.player.cmd.buttons;
 		int bto = owner.player.oldbuttons;
-
-		// when consumable open
-		bool canconsume = (
-			(weaponstatus[UGCS_OPEN] == UGCSF_OPENED) &&
-			(weaponbulk() > 0) &&
-			(calories > 0 || fluid > 0)
-		);
-
-		if (canconsume) {
-			//Take a bite
-			if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && tracker.mouthclear()) {
-				int bitesize = int(calories / (bulk));
-				int sipsize = int(fluid / (bulk));
-				int mouthful = random[uas_hunger](4,6);
-				weaponstatus[UGCS_CONSUMED]++;
-				diffbulk = 100/bulk;
-				if (bDRINKABLE) {
-					tracker.drinking = true;
-					owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
-					mouthful = int(mouthful / 2);
-				}
-				tracker.EatOrDrink(bitesize, sipsize, mouthful);
-			}
-			// reseal package (may add spoilage later)
-			if (bRESEALABLE && (bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
-				weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
-				owner.A_StartSound("weapons/pocket",
-					CHAN_WEAPON, CHANF_OVERLAP,
-					volume: 0.75, ATTN_STATIC, pitch: 1.15);
-			}
+		switch (mode) {
+			case CBM_DOWN:		return (bt & button);
+			case CBM_PRESSED:	return ((bt & button) && !(bto & button));
+			case CBM_HOLDING:	return ((bt & button) && (bto & button));
+			case CBM_RELEASED:	return (!(bt & button) && (bto & button));
 		}
-		// when consumable sealed
-		else if (weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
-			if ((bt & BT_UNLOAD) && !(bto & BT_UNLOAD)) {
-				owner.A_StartSound(opensound,
-					CHAN_WEAPON, CHANF_OVERLAP,
-					volume: 0.25, ATTN_STATIC, pitch: 0.9);
-				weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
-				for (int i=0; i<FoodList.size(); i++) {
-					owner.A_GiveInventory("HDWeaponGiver");
-					HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
-					wg.weapontogive = FoodList[i];
-					wg.spawnactualweapon();
-					wg.destroy();
-					//owner.A_GiveInventory(FoodList[i]);
-				}
-				FoodList.Clear();
-				NiceFoodList.Clear();
-				owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
-			}
+		console.printf("CheckButton() failed to find valid condition");
+		return false;
+	}
 
-		}
+	enum CheckButtonMode {
+		CBM_DOWN,
+		CBM_PRESSED,
+		CBM_HOLDING,
+		CBM_RELEASED
 	}
 }

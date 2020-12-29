@@ -9,6 +9,19 @@ class UaS_ExampleFoodPackage : UaS_Consumable {
 		AddItem("UaS_FoodRation");
 		AddItem("UaS_WaterRation", 2);
 		AddItem("UaS_CurryRice");
-		AddItem("UaS_ExampleFoodPackage");
+		AddItem("UaS_ExampleSidePackage");
+	}
+}
+
+class UaS_ExampleSidePackage : UaS_Consumable {
+	default {
+		UaS_Consumable.Description "A combo package containing two small side dishes.";
+		Inventory.PickupMessage "Picked up a side-dish combo pack";
+		tag "Side-dish combo pack";
+		Inventory.Icon "HSCVA0";
+	}
+	override void Contents() {
+		AddItem("UaS_LentilChili");
+		AddItem("UaS_CacoGiblets");
 	}
 }

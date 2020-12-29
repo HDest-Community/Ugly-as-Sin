@@ -17,20 +17,19 @@ extend class UaS_Consumable {
 		HandleInput();
 	}
 
-	override void Tick() {
-		// bool candestroy = (
-			// (int(weaponbulk() + diffbulk) <= 0) ||
-			// ((calories <= 0 || fluid <= 0) && (FoodList.size() <= 0))
-		// );
-		// if (candestroy) {
-			// console.printf("BUGCATCHER");
-			// if(owner) { owner.dropinventory(self); } // This line is causing a super-weird error. TODO: Refactor destruction to somewhere more sane
-			// else { destroy(); }
-		// }
-		super.tick();
-		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
+	void CheckAutoDestroy() {
+		bool candestroy = (
+			(int(weaponbulk() + diffbulk) <= 0) ||
+			((calories <= 0 && fluid <= 0) && (weaponstatus[UGCS_GAVECONTENTS] == true))
+		);
+		if (candestroy) { destroy(); }
 	}
 
+	override void Tick() {
+		super.tick();
+		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
+		CheckAutoDestroy();
+	}
 
 	bool CriticalChecks() {
 		// Skip all interaction if not selected
@@ -64,8 +63,9 @@ extend class UaS_Consumable {
 	override void InitializeWepStats(bool idfa) {
 		Contents();
 		weaponstatus[UGCS_CONSUMED] = 0;
-		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = false; }
-		else { weaponstatus[UGCS_OPEN] = true; }
+		weaponstatus[UGCS_GAVECONTENTS] = false;
+		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
+		else { weaponstatus[UGCS_OPEN] = UGCSF_OPENED; }
 	}
 
 	override void BeginPlay() {
@@ -92,6 +92,7 @@ extend class UaS_Consumable {
 enum ConsumableSlots {
 	UGCS_CONSUMED,
 	UGCS_OPEN,
+	UGCS_GAVECONTENTS,
 }
 
 enum ConsumableStatusFlags {
