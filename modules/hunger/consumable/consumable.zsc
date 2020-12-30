@@ -30,6 +30,7 @@ class UaS_Consumable : HDWeapon abstract {
 	virtual void Messages() {
 		// Override this for custom randomized messages
 		// AddOpenText("Opened the package");
+		// AddOpenText("Doesn't look very appealing...");
 		// AddConsumeText("mmmm yummy");
 	}
 }
