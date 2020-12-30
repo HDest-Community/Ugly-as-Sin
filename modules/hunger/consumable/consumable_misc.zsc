@@ -23,14 +23,7 @@ extend class UaS_Consumable {
 		if (!CriticalChecks()) { return; }
 		DoMessage();
 		HandleInput();
-	}
-
-	void CheckAutoDestroy() {
-		bool candestroy = (
-			(int(weaponbulk() + diffbulk) <= 0) ||
-			((calories <= 0 && fluid <= 0) && (weaponstatus[UGCS_GAVECONTENTS] == true))
-		);
-		if (candestroy) { destroy(); }
+		CheckAutoDrop();
 	}
 
 	override void Tick() {
@@ -38,6 +31,10 @@ extend class UaS_Consumable {
 		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
 		CheckAutoDestroy();
 	}
+
+	bool UsedUp() {	return ((int(weaponbulk() + diffbulk) <= 0) || ((calories <= 0 && fluid <= 0) && (weaponstatus[UGCS_GAVECONTENTS] == true))); }
+	void CheckAutoDrop() { if (UsedUp()) { owner.DropInventory(self); } }
+	void CheckAutoDestroy() { if (UsedUp() && !owner) { destroy(); } }
 
 	bool CriticalChecks() {
 		// Skip all interaction if not selected
