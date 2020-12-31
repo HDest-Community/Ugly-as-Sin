@@ -31,6 +31,7 @@
 # Sounds
 * Respirator breathing sound by Benboncan https://freesound.org/s/64377/
 * Respirator valve sound by SamuelGremaud https://freesound.org/s/462922/
+* Flashlight On/Off Click by mshahen https://freesound.org/s/271109/ (modified) CC BY 3.0
 * Flare sound from Tomb Raider
 
 I try to add credits for anyone who contributes significantly to the development of my projects. However I am sometimes forgetful or dense when working. If your name is not listed here and you feel it should be, please contact me.

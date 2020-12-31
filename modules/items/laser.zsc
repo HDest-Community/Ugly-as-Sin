@@ -46,8 +46,22 @@ class UaS_LaserLightModule : HDPickup {
 			stop;
 	}
 
-	void ToggleSwitch() { activated = !activated; }
+	void ToggleSwitch() {
+		owner.A_StartSound("UaS/llm/toggle",
+			CHAN_AUTO,
+			CHANF_OVERLAP,
+			volume: frandom[llm](0.8,1.0),
+			attenuation: ATTN_STATIC,
+			pitch: frandom[llm](0.9, 1.1));
+		activated = !activated;
+	}
 	void ModeSwitch(int direct = -1) {
+		owner.A_StartSound("UaS/llm/toggle",
+			CHAN_AUTO,
+			CHANF_OVERLAP,
+			volume: frandom[llm](0.5,0.7),
+			attenuation: ATTN_STATIC,
+			pitch: frandom[llm](0.7, 0.8));
 		if (direct >= 0) { mode = direct; }
 		else { mode = (mode + 1) % 3; }
 	}
