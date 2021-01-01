@@ -1,3 +1,7 @@
+// --------------------
+// Soda / Pop
+// --------------------
+
 mixin class UaS_SodaMixin {
 	default {
 		UaS_Consumable.Calories 120;
@@ -16,5 +20,70 @@ class UaS_DrCola : UaS_Consumable {
 	default {
 		UaS_Consumable.Description "Fizzy sugary cola goodness in a classic red aluminium can.";
 		tag "Dr. Cola soda";
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_LemonFizzSoda : UaS_Consumable {
+	mixin UaS_SodaMixin;
+	default {
+		UaS_Consumable.Description "A can of tart lemon-flavored carbonated water.";
+		tag "Lemon Fizz Soda";
+	}
+}
+
+// --------------------
+// Coffee
+// --------------------
+
+// by Fort of Hard Knox
+mixin class UaS_CoffeePack {
+	default {
+		UaS_Consumable.Calories 150;
+		UaS_Consumable.Fluid 250;
+		UaS_Consumable.Bulk 5;
+        UaS_Consumable.Description "";
+		+UaS_Consumable.DRINKABLE;
+		+UaS_Consumable.PACKAGED;
+		Inventory.PickupMessage "Picked up a disposable, self-heating water pouch with a pack of coffee mix.";
+		Inventory.Icon "HSCVR0";
+		scale 0.45;
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_NeoEnglandMix : UaS_Consumable {
+	mixin UaS_CoffeePack;
+	default {
+		UaS_Consumable.Description "One of three Coffee Blends still legal in the Reformed United Kingdom.";
+		tag "EnglandCoffee";
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_KnoxCoffee : UaS_Consumable {
+	mixin UaS_CoffeePack;
+	default {
+		UaS_Consumable.Calories 200;
+		UaS_Consumable.Fluid 200;
+		UaS_Consumable.Description "A bootlegged coffee pouch. Best Served Very Hot.";
+		tag "KnoxCoffee";
+	}
+	override void Messages() {
+		AddOpenText("It'll heat up more than your mouth!");
+		AddOpenText("An illegal but tasty cup of hazelnut coffee.");
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_SpaceCoffee : UaS_Consumable {
+	mixin UaS_CoffeePack;
+	default {
+		UaS_Consumable.Description "A pouch of coffee served on space stations in Earth's orbit.";
+		tag "SpaceCoffee";
+	}
+	override void Messages() {
+		AddOpenText("Contractually described as hearty and energizing!");
+		AddOpenText("Who would want this deep space swill?");
 	}
 }

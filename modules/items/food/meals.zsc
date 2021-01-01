@@ -67,3 +67,32 @@ class UaS_ChiliMacMRE : UaS_Consumable {
 		AddOpenText("Hard to improve on perfection but the army chefs sure tried.");
 	}
 }
+
+// by Fort of Hard Knox
+class UaS_ChickenDumpMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Chicken and Dumplings";
+		UaS_Consumable.Description "Chicken Dumplings with Vegetables.";
+	}
+	override void Messages() {
+		AddOpenText("The sauce is pretty thick.");
+		AddOpenText("The vegetables are super tender!");
+		AddOpenText("How do they keep the chicken moist?");
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_EnchCassMRE : UaS_Consumable {
+    mixin UaS_BigMREPouch;
+    default {
+        tag "Enchilada Casserole";
+        UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
+    }
+    override void Messages() {
+        AddOpenText("Man, the sauce has some kick!");
+        AddOpenText("They never include enough refried beans.");
+        AddOpenText("Wish I had a honey packet for this.");
+        AddOpenText("Spicy and smooth!");
+    }
+}
