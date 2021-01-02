@@ -93,5 +93,8 @@ class UaS_WoundHandler : Inventory {
 	void RemoveWound(int w) {
 		critwounds[w].destroy();
 		critwounds.delete(w);
+        if (weaponstatus[TK_WOUNDINDEX] > w) {
+            weaponstatus[TK_WOUNDINDEX]--;
+        }
 	}
 }
