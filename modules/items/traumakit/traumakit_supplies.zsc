@@ -54,13 +54,24 @@ extend class UaS_TraumaKit {
 		weaponstatus[TKS_STAPLES] = TKS_MAX_STAPLES;
 	}
 
+	// Copied from HD to avoid inheritance chain
+	// Thanks to MarinaGryphon (jade-2562) for figuring this out
+	void TakeInjector(class<inventory> injectortype) {
+		let mmm=HDMagAmmo(owner.findinventory(injectortype));
+		if(mmm){
+			mmm.amount--;
+			if(mmm.amount<1)mmm.destroy();
+			else if(mmm.mags.size())mmm.mags.pop();
+		}
+	}
+
 	void HandleSupplies() {
 		if((owner.player.cmd.buttons & BT_ALTFIRE) && !(owner.player.oldbuttons & BT_ALTFIRE)) {
 
 			switch (weaponstatus[TK_SELECTED]) {
 				case T_PAINKILLER:
 					if(owner.countinv("PortableStimpack") > 0) {
-						owner.TakeInventory("PortableStimpack", 1);
+						TakeInjector("PortableStimpack");
 						weaponstatus[TKS_PAINKILLER] += 20;
 						currentmessage.text = "\cvRefilled anesthetic.\nconsumed one stimpack";
 						currentmessage.timeout = 2*35;
@@ -72,7 +83,7 @@ extend class UaS_TraumaKit {
 					break;
 				case T_SALINE:
 					if(owner.countinv("SecondBlood") > 0) {
-						owner.TakeInventory("SecondBlood", 1);
+						TakeInjector("SecondBlood");
 						weaponstatus[TKS_SALINE] += 1000;
 						currentmessage.text = "\cvRefilled saline.\nconsumed one Second Blood pack";
 						currentmessage.timeout = 2*35;
