@@ -60,7 +60,7 @@ extend class UaS_TraumaKit {
 			switch (weaponstatus[TK_SELECTED]) {
 				case T_PAINKILLER:
 					if(owner.countinv("PortableStimpack") > 0) {
-						owner.TakeInventory("PortableStimpack", 1);
+						owner.TakeInjector("PortableStimpack");
 						weaponstatus[TKS_PAINKILLER] += 20;
 						currentmessage.text = "\cvRefilled anesthetic.\nconsumed one stimpack";
 						currentmessage.timeout = 2*35;
@@ -72,7 +72,7 @@ extend class UaS_TraumaKit {
 					break;
 				case T_SALINE:
 					if(owner.countinv("SecondBlood") > 0) {
-						owner.TakeInventory("SecondBlood", 1);
+						owner.TakeInjector("SecondBlood");
 						weaponstatus[TKS_SALINE] += 1000;
 						currentmessage.text = "\cvRefilled saline.\nconsumed one Second Blood pack";
 						currentmessage.timeout = 2*35;
