@@ -43,7 +43,7 @@ class UaS_WoundHandler : Inventory {
 			if (!critwounds[i]) { critwounds.delete(i); continue; }
 			if (critwounds[i].clear) {
 				if (UaS_Debug & Med) { plr.A_Log("Cured "..critwounds[i].description, true); }
-				else { plr.A_Log("Your condition improves."); }
+				else { plr.A_Log("Your condition improves.", true); }
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
 				RemoveWound(i);
 				continue;
