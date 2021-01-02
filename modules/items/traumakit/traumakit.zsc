@@ -135,10 +135,25 @@ class UaS_TraumaKit : HDWeapon {
 		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
 		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
 
+		A_StopTreating(); // let current woundhandler (if it exists) know we're done
 		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
 		if (!wh) { console.printf("No wound handler!"); return; }
+		wh.treating_kits.push(self);
 		if (patient != lastpatient) { currentWound = null; }
 		lastpatient = patient;
+	}
+
+	action void A_StopTreating(){
+		if (!wh) { return; }
+		int self_idx = wh.treating_kits.find(self);
+		if (!self_idx) { return; }
+		wh.treating_kits.delete(self_idx);
+	}
+
+	states{
+	deselect:
+		TNT1 A 0 A_StopTreating();
+		TNT1 A 0 A_StartDeselect();
 	}
 
 	void TickMessages() {

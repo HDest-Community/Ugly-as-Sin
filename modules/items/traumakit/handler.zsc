@@ -3,6 +3,7 @@
 class UaS_WoundHandler : Inventory {
 	array<WoundInfo> critwounds;
 	int nextwound;
+	array<UaS_TraumaKit> treating_kits; // which trauma kits are being used to treat us
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -93,8 +94,13 @@ class UaS_WoundHandler : Inventory {
 	void RemoveWound(int w) {
 		critwounds[w].destroy();
 		critwounds.delete(w);
-        if (weaponstatus[TK_WOUNDINDEX] > w) {
-            weaponstatus[TK_WOUNDINDEX]--;
-        }
+		int treat_size = treating_kits.size();
+		if (treat_size <= 0) { return; }
+		for (int i=0; i<treat_size; i++) {
+			UaS_TraumaKit tk = treating_kits[i];
+			if(tk && tk.weaponstatus[TK_WOUNDINDEX] > w) {
+				tk.weaponstatus[TK_WOUNDINDEX]--; // this will always be in bounds
+			}
+		}
 	}
 }
