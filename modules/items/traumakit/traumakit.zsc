@@ -144,10 +144,10 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	action void A_StopTreating(){
-		if (!wh) { return; }
-		int self_idx = wh.treating_kits.find(self);
-		if (!self_idx) { return; }
-		wh.treating_kits.delete(self_idx);
+		if (!invoker.wh) { return; }
+		int sidx = invoker.wh.treating_kits.find(invoker);
+		if (!sidx) { return; }
+		invoker.wh.treating_kits.delete(sidx);
 	}
 
 	states{

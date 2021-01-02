@@ -98,8 +98,8 @@ class UaS_WoundHandler : Inventory {
 		if (treat_size <= 0) { return; }
 		for (int i=0; i<treat_size; i++) {
 			UaS_TraumaKit tk = treating_kits[i];
-			if(tk && tk.weaponstatus[TK_WOUNDINDEX] > w) {
-				tk.weaponstatus[TK_WOUNDINDEX]--; // this will always be in bounds
+			if(tk && tk.weaponstatus[UaS_TraumaKit.TK_WOUNDINDEX] > w) {
+				tk.weaponstatus[UaS_TraumaKit.TK_WOUNDINDEX]--; // this will always be in bounds
 			}
 		}
 	}
