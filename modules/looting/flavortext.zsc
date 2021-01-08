@@ -65,10 +65,11 @@ extend class UaS_Looting_Handler {
 		ItemStrings.Push(" {an empty|a {cracked|broken|}} potion bottle{, missing a cork|. The cork is tightly sealed|.}");
 		ItemStrings.Push(" a {broken |}{standard issue |}PDA. {It looks like it's been {crushed with a hammer.|shot.}}");
 		ItemStrings.Push(" a pinup poster{|||||||||| of Betty Grable| of Imp-tan| of a woman| of a muscular man{|||| holding two grenades| holding a pistol{|| suggestively}}}.");
-		ItemStrings.Push(" two floppy disks, labeled \"DOOM.\"");
+		ItemStrings.Push(" two floppy disks, labeled \"DOOM{.| 2.}\"");
 		ItemStrings.Push(" 27 floppy disks, labeled \"Windows 95.\"");
+		ItemStrings.Push(" {|||1{2|3|4|5|6|7|8|9}} {{3.5" |4.5" }floppy disks|CDs|DVDs}, with {missing|torn|no|blank} labels.");
 		ItemStrings.Push(" a {torn|dirty|scorched} paper titled \"TPS REPORT.\"");
-		ItemStrings.Push(" a movie script. {There are notes written in the margins.}");
+		ItemStrings.Push(" a movie script. {There are {handwritten|} notes written in the {margins|headers|footers}.}");
 		ItemStrings.Push(" some {electrical|USB} cables.");
 		ItemStrings.Push(" an empty {beer|soda|wine|champagne} bottle. {It is {cracked|broken|unlabeled}.}");
 		ItemStrings.Push(" a family photo{.|.|.|, of a marine and ... an imp?} {One of the faces has been {scratched|burned|scribbled|cut} out.}");
