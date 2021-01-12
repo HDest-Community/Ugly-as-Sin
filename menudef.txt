@@ -71,8 +71,8 @@ OptionMenu "UaS_Options" {
 OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module"
 	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
-	StaticText "Adds need to eat / drink, with messkit."
-	StaticText "Starvation / dehydration causes fatigue."
+	StaticText "Being fed and hydrated provides a small"
+	StaticText "passive bonus to stamina regeneration."
 	StaticText " "
 	StaticText "Base metabolism controls whether energy"
 	StaticText "is passively burned when not fatigued."
