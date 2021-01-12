@@ -39,7 +39,7 @@ version "4.5"
 
 // Corpse Looting
 #include "modules/looting/looting.zsc"
-#include "modules/looting/loottables.zsc"
+//#include "modules/looting/loottables.zsc"
 #include "modules/looting/flavortext.zsc"
 
 // Visual Weapons
