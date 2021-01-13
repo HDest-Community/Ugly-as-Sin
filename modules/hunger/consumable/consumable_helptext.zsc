@@ -1,0 +1,29 @@
+extend class UaS_Consumable {
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+
+	override string gethelptext(){
+		string r;
+		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			r.AppendFormat(WEPHELP_UNLOAD.."  Open packaged item\n");
+		}
+		if (bRESEALABLE && weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			r.AppendFormat(WEPHELP_RELOAD.."  Reseal packaged item\n");
+		}
+
+		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			if (bDRINKABLE) {
+				r.AppendFormat(WEPHELP_FIRE.."  Drink\n");
+			}
+			else {
+				r.AppendFormat(WEPHELP_FIRE.."  Eat\n");
+			}
+		}
+		return r;
+	}
+}

@@ -3,6 +3,7 @@
 #include "modules/hunger/consumable/consumable_input.zsc"
 #include "modules/hunger/consumable/consumable_display.zsc"
 #include "modules/hunger/consumable/consumable_misc.zsc"
+#include "modules/hunger/consumable/consumable_helptext.zsc"
 
 // A base class for all consumable (food) items to inherit from
 class UaS_Consumable : HDWeapon abstract {
