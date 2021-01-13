@@ -84,15 +84,44 @@ class UaS_ChickenDumpMRE : UaS_Consumable {
 
 // by Fort of Hard Knox
 class UaS_EnchCassMRE : UaS_Consumable {
-    mixin UaS_BigMREPouch;
-    default {
-        tag "Enchilada Casserole";
-        UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
-    }
-    override void Messages() {
-        AddOpenText("Man, the sauce has some kick!");
-        AddOpenText("They never include enough refried beans.");
-        AddOpenText("Wish I had a honey packet for this.");
-        AddOpenText("Spicy and smooth!");
-    }
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Enchilada Casserole";
+		UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
+	}
+	override void Messages() {
+		AddOpenText("Man, the sauce has some kick!");
+		AddOpenText("They never include enough refried beans.");
+		AddOpenText("Wish I had a honey packet for this.");
+		AddOpenText("Spicy and smooth!");
+	}
+}
+
+class UaS_FireballMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Fireball Scramble";
+		UaS_Consumable.Description "Hearty Fireball Breakfast Scramble.";
+	}
+	override void Messages() {
+		AddOpenText("Three kinds of meat! Two kinds of Potato!");
+		AddOpenText("Mix the 1st and 3rd hot sauce. Always skip Sauce 2.");
+		AddOpenText("A hearty breakfast meal that works anytime.");
+	}
+}
+
+class UaS_GrabbagMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Mystery Mix MRE";
+		UaS_Consumable.Description "An MRE that was assembled with whatever was available.";
+	}
+	override void Messages () {
+		AddOpenText("It's just a mix of crackers and patte...");
+		AddOpenText("Two grain bread and processed cheese, huh?");
+		AddOpenText("Why would you pack three kinds of rice and ketchup?");
+		AddOpenText("Salad and barbecue sauce?");
+		AddOpenText("Beef strips, Grape candy, and pear cubes...");
+		AddOpenText("Four cans of energy drink and six energy bars?");
+	}
 }
