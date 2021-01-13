@@ -5,9 +5,9 @@ class UaS_Bootstrap : EventHandler {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
-			if (UaS_LootingEnabled) { Looting_Bootstrap(i); }
 			if (UaS_JammingEnabled) { Jamming_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
+			Looting_Bootstrap(i);
 			Medical_Bootstrap(i);
 			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}

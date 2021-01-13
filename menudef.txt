@@ -52,10 +52,6 @@ OptionMenu "UaS_Options" {
 	SubMenu "Settings and Info", "UaS_AI_Options"
 	StaticText " "
 
-	Option "Corpse Looting","UaS_LootingEnabled","OnOff"
-	SubMenu "Settings and Info", "UaS_Looting_Options"
-	StaticText " "
-
 	Option "Visual Weapons","UaS_VisWepsEnabled","OnOff"
 	SubMenu "Settings and Info", "UaS_VisWep_Options"
 	StaticText " "
@@ -103,12 +99,16 @@ OptionMenu "UaS_Scarcity_Options" {
 	Title "Scarcity Module"
 	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
 	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
+	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
 	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
 	StaticText "Removes or reduces map spawns, forcing"
 	StaticText "you to scavenge for your supplies."
 	StaticText " "
 	StaticText "Scarcity controls removal percentage."
 	StaticText "Overspawn controls what's left over."
+	StaticText " "
+	StaticText "Loot Factor is maximum chance"
+	StaticText "for finding loot from corpses."
 	StaticText " "
 	StaticText "Disable drops prevents monsters"
 	StaticText "from dropping ammo or weapons"
@@ -175,15 +175,6 @@ OptionMenu "UaS_AI_Options" {
 	StaticText " "
 	StaticText "Toggling module requires new map or game."
 	StaticText "Behaviors can be toggled when AI active."
-}
-
-OptionMenu "UaS_Looting_Options" {
-	Title "Corpse Looting Module"
-	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
-	StaticText "Allows searching corpses for supplies."
-	StaticText " "
-	StaticText "Loot Factor controls maximum"
-	StaticText "chance for finding loot."
 }
 
 OptionMenu "UaS_VisWep_Options" {
