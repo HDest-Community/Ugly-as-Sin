@@ -4,6 +4,7 @@
 
 * **Scarcity Rate** - The random chance for map-spawned items to be removed / replaced upon map load.
 * **Overspawn Ratio** - Allows for some usable portion or variant to remain in place of the removed item.
+* **Loot Factor** - Controls amount of [loot](./looting.md) which may be found on corpses.
 
 ## Mechanics
 

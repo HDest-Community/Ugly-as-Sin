@@ -11,7 +11,7 @@ Features are typically implemented as toggleable modules with various customizab
 * [**Fragshard Reducer**](./manual/fragfactor.md) - Specifies chance for enemy-reviving fragshards to spawn.
 * **Allied Marines** - Friendly marine reinforcements that randomly replace human-type corpses.
 * **Advanced AI** - Extra monster behaviors, such as searching, wounding, and flashlights/lasers.
-* **Corpse Looting** - Human-type corpses can be searched for useful items.
+* [**Corpse Looting**](./manual/looting.md) - Human-type corpses can be searched for useful items.
 * **Visual Weapons** - Changes Marines and Tangos sprites to reflect their current weapon.
 * **Aim Swaying** - Extra inertia for player aiming, especially when fatigued.
 * **Focus Zoom** - Slight zoom-in effect when focused or aiming and not moving or stunned.
