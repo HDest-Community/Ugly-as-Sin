@@ -22,6 +22,7 @@ class UaS_HungerTracker : Inventory {
 
 	void ProcessEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
+		if (!o) { return; }
 		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i";
 		if (o.beatcount > 0) { return; }
 
