@@ -1,8 +1,8 @@
-extend class UaS_Spawner {
-	double spawnRate;
-	vector3 spawnPos;
+class UaS_FoodList : EventHandler {
 	array<string> FoodSpawnList;
-
+	override void OnRegister() {
+		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); }
+	}
 	void BuildFoodSpawnList() {
 		for (int i=0; i<allactorclasses.size(); i++) {
 			bool valid = (
@@ -13,6 +13,17 @@ extend class UaS_Spawner {
 		}
 	}
 
+	string RandomFoodItem() {
+		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); console.printf("ERROR: Rebuilding foodlist..."); }
+		return FoodSpawnList[random(0,FoodSpawnList.size()-1)];
+	}
+}
+
+extend class UaS_Spawner {
+	double spawnRate;
+	vector3 spawnPos;
+
+
 	//Set up spawns
 	void HungerSpawns(WorldEvent e) {
 		if(level.maptime > 1) { return; }
@@ -21,8 +32,8 @@ extend class UaS_Spawner {
 
 		spawnPos = e.Thing.pos;
 
-		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); }
-		name toSpawnClass = FoodSpawnList[random(0,FoodSpawnList.size()-1)];
+		let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
+		name toSpawnClass = fl.RandomFoodItem(); //FoodSpawnList[random(0,FoodSpawnList.size()-1)];
 
 		//Spawn rations on backpacks
 		if(e.Thing.GetClassName() == "HDBackpack") {

@@ -6,4 +6,5 @@ GameInfo {
 	AddEventHandlers = "UaS_AI_Bootstrap"
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
 	AddEventHandlers = "UaS_YOLO_Handler"
+	AddEventHandlers = "UaS_Foodlist"
 }
