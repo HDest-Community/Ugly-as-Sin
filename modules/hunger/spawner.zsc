@@ -1,21 +1,41 @@
 class UaS_FoodList : EventHandler {
 	array<string> FoodSpawnList;
+	array<string> DrinkSpawnList;
+	array<string> ConsumableSpawnList;
 	override void OnRegister() {
-		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); }
+		if (FoodSpawnList.size() <= 0) { BuildSpawnLists(); }
 	}
-	void BuildFoodSpawnList() {
+	void BuildSpawnLists() {
 		for (int i=0; i<allactorclasses.size(); i++) {
 			bool valid = (
 				(allactorclasses[i] is 'UaS_Consumable') &&
 				(allactorclasses[i].GetClassName() != "UaS_Consumable")
 			);
-			if (valid) { FoodSpawnList.push(allactorclasses[i].GetClassName()); }
+			if (valid) {
+				bool isDrink = UaS_Consumable(getdefaultbytype(allactorclasses[i])).bDRINKABLE;
+				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
+				if (isDrink) {
+					DrinkSpawnList.push(allactorclasses[i].GetClassName());
+					console.printf("added drink");
+				}
+				else {
+					console.printf("added food");
+					FoodSpawnList.push(allactorclasses[i].GetClassName());
+				}
+			}
 		}
 	}
 
 	string RandomFoodItem() {
-		if (FoodSpawnList.size() <= 0) { BuildFoodSpawnList(); console.printf("ERROR: Rebuilding foodlist..."); }
 		return FoodSpawnList[random(0,FoodSpawnList.size()-1)];
+	}
+
+	string RandomDrinkItem() {
+		return DrinkSpawnList[random(0,DrinkSpawnList.size()-1)];
+	}
+
+	string RandomConsumableItem() {
+		return ConsumableSpawnList[random(0,ConsumableSpawnList.size()-1)];
 	}
 }
 
@@ -33,7 +53,7 @@ extend class UaS_Spawner {
 		spawnPos = e.Thing.pos;
 
 		let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
-		name toSpawnClass = fl.RandomFoodItem(); //FoodSpawnList[random(0,FoodSpawnList.size()-1)];
+		name toSpawnClass = fl.RandomConsumableItem();
 
 		//Spawn rations on backpacks
 		if(e.Thing.GetClassName() == "HDBackpack") {
@@ -72,15 +92,18 @@ extend class UaS_Spawner {
 class UaS_RandomConsumable : HDPickup {
 	default {
 		-hdpickup.fitsinbackpack
-		hdpickup.refid UAS_HDLD_FRATION;
-		tag "Random food or drink";
+		hdpickup.refid UAS_HDLD_CONSUMABLE;
+		tag "Random food or drink item";
 	}
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		for (int i=0; i<amount; i++) {
 			let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
-			class<UaS_Consumable> GiveClass = fl.RandomFoodItem();
+			class<UaS_Consumable> GiveClass;
+			if (refid == UAS_HDLD_CONSUMABLE) { GiveClass = fl.RandomConsumableItem(); }
+			else if (refid == UAS_HDLD_FRATION) { GiveClass = fl.RandomFoodItem(); }
+			else if (refid == UAS_HDLD_WRATION) { GiveClass = fl.RandomDrinkItem(); }
 			owner.A_GiveInventory("HDWeaponGiver");
 			HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
 			wg.weapontogive = GiveClass;
@@ -88,5 +111,19 @@ class UaS_RandomConsumable : HDPickup {
 			wg.destroy();
 		}
 		destroy();
+	}
+}
+
+class UaS_RandomFood: UaS_RandomConsumable {
+	default {
+		hdpickup.refid UAS_HDLD_FRATION;
+		tag "Random food item";
+	}
+}
+
+class UaS_RandomDrink : UaS_RandomConsumable {
+	default {
+		hdpickup.refid UAS_HDLD_WRATION;
+		tag "Random drink item";
 	}
 }
