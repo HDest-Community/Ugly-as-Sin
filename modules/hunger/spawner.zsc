@@ -91,9 +91,9 @@ extend class UaS_Spawner {
 
 class UaS_RandomConsumable : HDPickup {
 	default {
-		-hdpickup.fitsinbackpack
 		hdpickup.refid UAS_HDLD_CONSUMABLE;
 		tag "Random food or drink item";
+		Inventory.Icon "HSCVA0";
 	}
 
 	override void PostBeginPlay() {
@@ -104,11 +104,17 @@ class UaS_RandomConsumable : HDPickup {
 			if (refid == UAS_HDLD_CONSUMABLE) { GiveClass = fl.RandomConsumableItem(); }
 			else if (refid == UAS_HDLD_FRATION) { GiveClass = fl.RandomFoodItem(); }
 			else if (refid == UAS_HDLD_WRATION) { GiveClass = fl.RandomDrinkItem(); }
-			owner.A_GiveInventory("HDWeaponGiver");
-			HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
-			wg.weapontogive = GiveClass;
-			wg.postbeginplay();
-			wg.destroy();
+			if (owner) {
+				owner.A_GiveInventory("HDWeaponGiver");
+				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+				wg.weapontogive = GiveClass;
+				wg.postbeginplay();
+				wg.destroy();
+			}
+			else {
+				let s = actor.Spawn(GiveClass, pos, ALLOW_REPLACE);
+				s.vel = vel;
+			}
 		}
 		destroy();
 	}
@@ -118,6 +124,7 @@ class UaS_RandomFood: UaS_RandomConsumable {
 	default {
 		hdpickup.refid UAS_HDLD_FRATION;
 		tag "Random food item";
+		Inventory.Icon "HSCVA0";
 	}
 }
 
@@ -125,5 +132,6 @@ class UaS_RandomDrink : UaS_RandomConsumable {
 	default {
 		hdpickup.refid UAS_HDLD_WRATION;
 		tag "Random drink item";
+		Inventory.Icon "HSCVR0";
 	}
 }
