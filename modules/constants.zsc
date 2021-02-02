@@ -11,3 +11,6 @@ const UAS_HDLD_SHELLBOX = "sbx";
 const UAS_HDLD_7MMBOX = "7bx";
 const UAS_HDLD_355BOX = "3bx";
 const UAS_HDLD_RKTBOX = "rbx";
+
+const UAS_HDLD_FRATION = "frt";
+//const UAS_HDLD_WRATION = "wrt";
