@@ -16,11 +16,11 @@ class UaS_FoodList : EventHandler {
 				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
 				if (isDrink) {
 					DrinkSpawnList.push(allactorclasses[i].GetClassName());
-					console.printf("added drink");
+					if(UaS_Debug & Hunger) { console.printf("added drink to spawn pool"); }
 				}
 				else {
-					console.printf("added food");
 					FoodSpawnList.push(allactorclasses[i].GetClassName());
+					if(UaS_Debug & Hunger) { console.printf("added food to spawn pool"); }
 				}
 			}
 		}
