@@ -154,15 +154,19 @@ class UaS_TraumaKit : HDWeapon {
 			statusmessage = statusmessage.."No treatable wounds\n\n";
 			return;
 		}
-		int loopmin = min(weaponstatus[TK_WOUNDINDEX] - 2, wh.critwounds.size() - 5);
-		int loopmax = max(weaponstatus[TK_WOUNDINDEX] + 2, 4);
+		int idx = 0;
+		if (currentWound) {
+			idx = wh.critwounds.Find(currentWound);
+		}
+		int loopmin = min(idx - 2, wh.critwounds.size() - 5);
+		int loopmax = max(idx + 2, 4);
 		if (loopmin > 0) { statusmessage = statusmessage..". . .\n"; }
 		else { statusmessage = statusmessage.."\n"; }
 		for (int i = loopmin; i <= loopmax; i++) {
 			if(i<0 || i > wh.critwounds.size()-1) { continue; }
 			string hilite;
-			if (currentWound == wh.critwounds[i]) {
-				if (wh.critwounds[i].AverageStatus() >= 15) { hilite = "\ca"; }
+			if (currentWound && i == idx) {
+				if (currentWound.AverageStatus() >= 15) { hilite = "\ca"; }
 				else { hilite = "\cd"; }
 			}
 			else {
@@ -177,18 +181,18 @@ class UaS_TraumaKit : HDWeapon {
 	}
 
 	void CycleWounds() {
-		if (!currentWound) { weaponstatus[TK_WOUNDINDEX] = -1; }
 		if (wh.critwounds.size() == 0) { return; }
+		int idx = 0;
+		if (currentWound) { idx = wh.critwounds.Find(currentWound); }
 		if (!(owner.player.cmd.buttons & BT_FIREMODE)) { return; }
 		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
-			weaponstatus[TK_WOUNDINDEX] = (weaponstatus[TK_WOUNDINDEX] + 1) % wh.critwounds.size();
-			currentWound = GetWound(weaponstatus[TK_WOUNDINDEX]);
+			idx = (idx + 1) % wh.critwounds.size();
 		}
 		else if ((owner.player.cmd.buttons & BT_ALTRELOAD) && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
-			weaponstatus[TK_WOUNDINDEX] = (weaponstatus[TK_WOUNDINDEX] - 1) % wh.critwounds.size();
-			if(weaponstatus[TK_WOUNDINDEX] < 0) { weaponstatus[TK_WOUNDINDEX] = wh.critwounds.size() - 1; }
-			currentWound = GetWound(weaponstatus[TK_WOUNDINDEX]);
+			idx = (idx - 1) % wh.critwounds.size();
+			if(idx < 0) { idx = wh.critwounds.size() - 1; }
 		}
+		currentWound = GetWound(idx);
 	}
 
 	void CycleTools(int set = -1) {
@@ -265,7 +269,6 @@ class UaS_TraumaKit : HDWeapon {
 		TK_SELECTED,
 		TK_BUTTON,
 		TK_HOLD,
-		TK_WOUNDINDEX,
 
 		//supply slots
 		TKS_PAINKILLER,

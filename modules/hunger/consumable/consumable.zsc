@@ -1,0 +1,37 @@
+#include "modules/hunger/consumable/consumable_base.zsc"
+#include "modules/hunger/consumable/consumable_package.zsc"
+#include "modules/hunger/consumable/consumable_input.zsc"
+#include "modules/hunger/consumable/consumable_display.zsc"
+#include "modules/hunger/consumable/consumable_misc.zsc"
+#include "modules/hunger/consumable/consumable_helptext.zsc"
+
+// A base class for all consumable (food) items to inherit from
+class UaS_Consumable : HDWeapon abstract {
+	default {
+		UaS_Consumable.Calories 0; // Calories / kCals provided by this consumable
+		UaS_Consumable.Fluid 0; // Milliliteres of hydration provided by this consumable
+		UaS_Consumable.Bulk 0; // Bulk Units, also influences number of "swallows" when consumed
+		UaS_Consumable.Description ""; // Description shown to player
+		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
+		//+UaS_Consumable.RESEALABLE;
+		//+UaS_Consumable.DRINKABLE;
+		//+UaS_Consumable.PACKAGED;
+
+		Inventory.PickupMessage "";
+		Inventory.Icon "HSCVA0";
+		tag "";
+	}
+
+	virtual void Contents() {
+		// For packages that contain other items
+		// Automatically adds the +PACKAGED flag
+		// AddItem("UaS_FoodRation");
+	}
+
+	virtual void Messages() {
+		// Override this for custom randomized messages
+		// AddOpenText("Opened the package");
+		// AddOpenText("Doesn't look very appealing...");
+		// AddConsumeText("mmmm yummy");
+	}
+}

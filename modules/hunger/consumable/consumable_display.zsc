@@ -1,0 +1,51 @@
+extend class UaS_Consumable {
+	void DoMessage() {
+		string statusMessage;
+		statusMessage.appendformat(DisplayDescription());
+		statusMessage.appendformat(DisplayFoodlist());
+		statusMessage.appendformat(DisplayNutrition());
+		statusMessage.appendformat(DisplayStatus());
+		A_WeaponMessage(statusMessage);
+	}
+
+	string DisplayDescription() {
+		string r;
+		r.appendformat("--- \cc%s\c- ---\n", gettag());
+		r.appendformat("%s\n", description);
+		for (int i=1; i<=int(description.length()/40)+1; i++) { r.appendformat("\n"); }
+		return r;
+	}
+
+	string DisplayFoodlist() {
+		string r;
+		if (weaponstatus[UGCS_GAVECONTENTS] == false && FoodList.Size() > 0) {
+			r.appendformat("\cpContents\n");
+			for (int i=0; i<NiceFoodList.size(); i++) { r.appendformat("\ce%s\n", NiceFoodList[i]); }
+			r.appendformat("\n");
+		}
+		return r;
+	}
+
+	string DisplayNutrition() {
+		string r;
+		if (calories > 0 || fluid > 0) {
+			r.appendformat(
+				"\ce%i Calories\n"..
+				"\ce%i mL Fluids\n\n",
+				calories, fluid);
+		}
+		return r;
+	}
+
+	string DisplayStatus() {
+		string r;
+		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
+			r.appendformat("Package Closed\n");
+		}
+		else if (calories > 0 || fluid > 0) {
+			r.appendformat("\cw%.0f%% Remaining\n", ((weaponbulk()/bulk)*100) + max(diffbulk, 0));
+		}
+		if (!tracker.mouthclear() && level.time % 10 != 0) { r.appendformat("Consuming..."); }
+		return r;
+	}
+}

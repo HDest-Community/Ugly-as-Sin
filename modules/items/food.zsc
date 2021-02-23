@@ -1,0 +1,5 @@
+#include "modules/items/food/basics.zsc"
+#include "modules/items/food/meals.zsc"
+#include "modules/items/food/packages.zsc"
+#include "modules/items/food/sides.zsc"
+#include "modules/items/food/drinks.zsc"

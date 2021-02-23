@@ -1,0 +1,70 @@
+extend class UaS_Messkit {
+	override void DoEffect() {
+		if (!CriticalChecks()) { return; }
+
+		statusMessage = "... \cjMesskit\c- ...\n\n";
+
+		DisplayList();
+		HandleInput();
+
+		A_WeaponMessage(statusMessage);
+	}
+
+	void DisplayList() {
+		if (foodarray.size() == 0 || !item) {
+			statusmessage = statusmessage.."Nothing to consume!\n\n";
+			return;
+		}
+		for (int i=0; i < foodarray.size(); i++) {
+			if (i == weaponstatus[MKS_SELECTED]) { statusmessage = statusmessage.."\cb"; }
+			statusmessage = statusmessage
+				..foodarray[i].gettag().." \c-x"
+				..owner.countinv(foodarray[i].GetClassName()).."\n";
+		}
+		debugstatus();
+		statusmessage = statusmessage.."\n"..item.description.."\n";
+	}
+
+	void debugstatus() {
+		if (!(UaS_Debug & Hunger)) { return; }
+		if (!item) { return; }
+		statusMessage = statusMessage.."\n"
+			.."energy "..int(item.energy * (1.0 - (item.consumed / item.bulk))).."\n"
+			.."fluid "..int(item.fluid * (1.0 - (item.consumed / item.bulk))).."\n";
+	}
+
+
+	void HandleInput() {
+		int bt = owner.player.cmd.buttons;
+		int bto = owner.player.oldbuttons;
+
+		if (foodarray.size() == 0) { return; }
+
+		//Take a bite
+		if ((bt & BT_ATTACK) && !(bto & BT_ATTACK) && mouthclear()) {
+			if (item.bDRINKABLE) {
+				int sipsize = item.fluid / item.bulk;
+				weaponstatus[MKS_SIP] = sipsize;
+				item.consumed += 1.0;
+				owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
+			}
+			else {
+				int bitesize = item.energy / (item.bulk * 2);
+				int sipsize = item.fluid / (item.bulk * 2);
+				weaponstatus[MKS_BITE] = bitesize;
+				weaponstatus[MKS_SIP] = sipsize;
+				item.consumed += 0.5;
+			}
+		}
+		// Cycle down
+		else if ((bt & BT_RELOAD) && !(bto & BT_RELOAD)) {
+			weaponstatus[MKS_SELECTED]++;
+			if (weaponstatus[MKS_SELECTED] >= foodarray.size()) { weaponstatus[MKS_SELECTED] = 0; }
+		}
+		// Cycle up
+		else if ((bt & BT_ALTRELOAD) && !(bto & BT_ALTRELOAD)) {
+			weaponstatus[MKS_SELECTED]--;
+			if (weaponstatus[MKS_SELECTED] < 0) { weaponstatus[MKS_SELECTED] = foodarray.size()-1; }
+		}
+	}
+}

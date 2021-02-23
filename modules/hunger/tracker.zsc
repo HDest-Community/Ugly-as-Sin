@@ -1,141 +1,107 @@
-class UaS_HungerTracker : CustomInventory {
-	double calories, lastcalories;
-	double water, lastwater;
-	double lastmeal, lastdrink;
-	double foodfatigue, waterfatigue;
-	double second, minute, hour, day;
-	string statusMessage;
-	HDPlayerPawn ownr;
+class UaS_HungerTracker : Inventory {
+	int energy;
+	int hydro;
+	int mouthtime;
+	int mouth_calories;
+	int mouth_fluid;
+	int pending_calories;
+	int pending_fluid;
+	bool drinking;
 
 	default {
-		+INVENTORY.AUTOACTIVATE;
 		+INVENTORY.PERSISTENTPOWER;
 		+INVENTORY.UNTOSSABLE;
-	}
-
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		//Initial starting calories
-		calories = random[hunger](1500,2000);
-		water = random[hunger](1500,2000);
+		-INVENTORY.INVBAR;
 	}
 
 	override void DoEffect() {
-		super.DoEffect();
-		let ownr = HDPlayerPawn(owner);
-		if(!ownr || !ownr.player) { return; }
+		if (owner.health <= 0) { return; }
+		Consume();
+		ProcessEnergy();
+	}
 
-		//Time-scaled values
-		second = 35 / UaS_HungerTimeScale;
-		minute = (second * 60);
-		hour = (minute * 60);
-		day = (hour * 24);
+	void ProcessEnergy() {
+		HDPlayerPawn o = HDPlayerPawn(owner);
+		if (!o) { return; }
+		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i";
+		if (o.beatcount > 0) { return; }
 
-		//Minfatigue increase if starving or dehydrated
-		if(calories <= 0) { foodfatigue += (1 / day); }
-		if(water <= 0) { waterfatigue += (3 / day); }
+		if (!UaS_HungerEnabled) { return; }
 
-		//Minfatigue decrease if fed and hydrated
-		if(calories > 0) { foodfatigue -= (1 / hour); }
-		if(water > 0) { waterfatigue -= (1 / minute); }
-
-		//Enforce and clamp minfatigue
-		if(foodfatigue < 0) { foodfatigue = 0; }
-		if(waterfatigue < 0) { waterfatigue = 0; }
-		double minfatigue = max(foodfatigue, waterfatigue);
-		ownr.fatigue = int(max(ownr.fatigue, minfatigue));
-
-		//Reduce calories
-		double foodburn = (1 / minute) * max(calories / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		if (ownr.fatigue > minfatigue * 1.25) { foodburn *= 1.25; }
-		calories -= foodburn;
-		if(calories < 0) {
-			calories = 0;
-			lastcalories += (1 / minute);
-			lastmeal += (1 / minute);
+		// base drain, disabled via cvar
+		if (UaS_HungerMetabolism && o.beatcounter % 35 == 0) {
+			energy = max(energy - 1, 0);
+			hydro = max(hydro - 1, 0);
+			debugmsg.appendformat(" \cdbase\c- ");
 		}
 
-		//Reduce water
-		double waterburn = (1 / minute) * max(water / 1500, 0.75) * frandom[hunger](0.95, 1.05);
-		if (ownr.fatigue > minfatigue * 1.25) { waterburn *= 1.5; }
-		water -= waterburn;
-		if(water < 0) {
-			water = 0;
-			lastwater += (1 / minute);
-			lastdrink += (1 / minute);
+		// Drain from jogging
+		if (o.runwalksprint >= 0 && o.beatcounter % 5 == 0) {
+			energy = max(energy - 1, 0);
+			hydro = max(hydro - 1, 0);
+			debugmsg.appendformat(" \ciexertion\c- ");
 		}
 
-		//Status updates and debugging messages periodically depending on timescale
-		//Slower timescales won't meaningfully change values second-to-second
-		if(level.time % int(minute) == 1) {
-			HungerStatus();
-			ThirstStatus();
-			if(UaS_Debug & Hunger) {
-				A_Log(string.format("Energy: %i, \tWater: %i", calories, water));
+		// drain from fatigue
+		if (o.fatigue > 0) {
+			// fatigue recovery and additional drain
+			if (hydro > 0 && o.beatcounter % 4 == 0) {
+				o.fatigue = max(o.fatigue - 1, 0);
+				hydro = max(hydro - 1, 0);
+				debugmsg.appendformat(" \cafatigue\c- ");
 			}
-			if(UaS_Debug & Hunger) {
-				A_Log(string.format("Last meal: %i, \tLast drink: %i", lastmeal, lastdrink));
-				A_Log(string.format("MinFatigue: %i", minfatigue));
+			else if (energy > 0 && o.beatcounter % 6 == 0) {
+				o.fatigue = max(o.fatigue - 1, 0);
+				energy = max(energy - 1, 0);
+				debugmsg.appendformat(" \cafatigue\c- ");
 			}
 		}
+
+		// Process consumed food into energy
+		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
+		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
+
+		if(UaS_Debug & Hunger && o.beatcounter % 35 == 0) { o.A_Log(string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid), true); }
 	}
 
-	void HungerStatus() {
-		//Hunger status messages
-		statusMessage = "";
-		if(calories >= 2000) { statusMessage = statusMessage.."Your stomach feels full. "; }
-		else if(calories >= 500 && calories < 1000) { statusMessage = statusMessage.."Your stomach grumbles. "; }
-		else if(calories >= 250 && calories < 500) { statusMessage = statusMessage.."Your stomach aches. "; }
-		else if(calories >= 0 && calories < 250) { statusMessage = statusMessage.."Your stomach clenches. "; }
-		//Last meal messages
-		int mealdelta = int(lastmeal - calories);
-		if(mealdelta >= 500 && mealdelta <1000) { statusMessage = statusMessage.."Time for another meal?"; }
-		else if(mealdelta >= 1000 && mealdelta <1500) { statusMessage = statusMessage.."It's been a while since you ate. "; }
-		else if(mealdelta >= 1500 && mealdelta <2000) { statusMessage = statusMessage.."When did you last eat? "; }
-		else if(mealdelta >= 2000 && mealdelta <2500) { statusMessage = statusMessage.."You can't remember your last meal... "; }
-		//Reset delta if calories increase
-		if(calories > lastcalories) {
-			lastmeal = calories;
-			lastcalories = calories;
+	void Consume() {
+		if (mouthclear()) { return; }
+		if (level.maptime % howfull() == 0) {
+			string snd = "";
+			if (!drinking) { snd="UaS/Chew"; }
+			else if (random[uas_hunger](false, true)) { snd = "UaS/Sip"; }
+			owner.A_StartSound(snd,
+				CHAN_BODY, CHANF_OVERLAP,
+				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
+				frandom[uas_hunger](0.9, 1.1));
+			mouthtime--;
 		}
-		//Display message if delta over threshold, and reset
-		if(abs(lastcalories - calories) >= 250 && statusmessage != "") {
-			owner.A_Log("\ci"..statusMessage, true);
-			lastcalories = calories;
-		}
-	}
-
-	void ThirstStatus() {
-		//Thirst status messages
-		statusMessage = "";
-		if(water >= 2000) { statusMessage = statusMessage.."Your stomach feels sloshy. "; }
-		if(water >= 500 && water < 1000) { statusMessage = statusMessage.."You feel a bit thirsty. "; }
-		else if(water >= 250 && water < 500) { statusMessage = statusMessage.."Your mouth is dry. "; }
-		else if(water >= 0 && water < 250) { statusMessage = statusMessage.."Your throat is parched. "; }
-		//Last drink messages
-		int drinkdelta = int(lastdrink - water);
-		if(drinkdelta >= 500 && drinkdelta <1000) { statusMessage = statusMessage.."Time for another drink?"; }
-		else if(drinkdelta >= 1000 && drinkdelta <1500) { statusMessage = statusMessage.."It's been a while since you drank something. "; }
-		else if(drinkdelta >= 1500 && drinkdelta <2000) { statusMessage = statusMessage.."When did you last have some water? "; }
-		else if(drinkdelta >= 2000 && drinkdelta <2500) { statusMessage = statusMessage.."You can't remember your last drink... "; }
-		//Reset delta if water increases
-		if(water > lastwater) {
-			lastdrink = water;
-			lastwater = water;
-		}
-		//Display message if delta over threshold, and reset
-		if(abs(lastwater - water) >= 200 && statusmessage != "") {
-			owner.A_Log("\cv"..statusMessage, true);
-			lastwater = water;
+		if (mouthclear()) {
+			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
+			if (UaS_HungerEnabled) { // Don't actually add calories if disabled
+				pending_calories += mouth_calories;
+				pending_fluid += mouth_fluid;
+			}
+			mouth_calories = 0;
+			mouth_fluid = 0;
+			drinking = false;
+			if(UaS_Debug & Hunger) { owner.A_Log("fullness delay "..howfull()); }
+			return;
 		}
 	}
 
-	States {
-		Spawn:
-			TNT1 A -1;
-			stop;
-		Use:
-			TNT1 A 1;
-			loop;
+	void EatOrDrink(int addcalories = 0, int addfluid = 0, int addtime = 5) {
+		mouth_calories += addcalories;
+		mouth_fluid += addfluid;
+		mouthtime = addtime;
+	}
+
+	bool mouthclear() {
+		return (mouthtime <= 0);
+	}
+
+	int howfull() {
+		int r = (pending_calories + pending_fluid) / 40;
+		return clamp(r, 12, 30);
 	}
 }

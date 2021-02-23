@@ -9,6 +9,7 @@ class UaS_Bootstrap : EventHandler {
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Looting_Bootstrap(i);
 			Medical_Bootstrap(i);
+			Hunger_Bootstrap(i);
 			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}
 	}

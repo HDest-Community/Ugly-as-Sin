@@ -1,45 +1,83 @@
+class UaS_FoodList : EventHandler {
+	array<string> FoodSpawnList;
+	array<string> DrinkSpawnList;
+	array<string> ConsumableSpawnList;
+	override void OnRegister() {
+		if (FoodSpawnList.size() <= 0) { BuildSpawnLists(); }
+	}
+	void BuildSpawnLists() {
+		for (int i=0; i<allactorclasses.size(); i++) {
+			bool valid = (
+				(allactorclasses[i] is 'UaS_Consumable') &&
+				(allactorclasses[i].GetClassName() != "UaS_Consumable")
+			);
+			if (valid) {
+				bool isDrink = UaS_Consumable(getdefaultbytype(allactorclasses[i])).bDRINKABLE;
+				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
+				if (isDrink) {
+					DrinkSpawnList.push(allactorclasses[i].GetClassName());
+					if(UaS_Debug & Hunger) { console.printf("added drink to spawn pool"); }
+				}
+				else {
+					FoodSpawnList.push(allactorclasses[i].GetClassName());
+					if(UaS_Debug & Hunger) { console.printf("added food to spawn pool"); }
+				}
+			}
+		}
+	}
+
+	string RandomFoodItem() {
+		return FoodSpawnList[random(0,FoodSpawnList.size()-1)];
+	}
+
+	string RandomDrinkItem() {
+		return DrinkSpawnList[random(0,DrinkSpawnList.size()-1)];
+	}
+
+	string RandomConsumableItem() {
+		return ConsumableSpawnList[random(0,ConsumableSpawnList.size()-1)];
+	}
+}
+
 extend class UaS_Spawner {
 	double spawnRate;
 	vector3 spawnPos;
 
+
 	//Set up spawns
 	void HungerSpawns(WorldEvent e) {
-		if(UaS_HungerTimeScale == 0 || UaS_HungerEnabled == false) { return; }
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
 
-		spawnRate = UaS_HungerTimeScale * UaS_HungerRationRate;
-		spawnRate = max(spawnRate, 0);
 		spawnPos = e.Thing.pos;
 
-		name toSpawnClass = 'UaS_FoodRation';
-		if(UaS.RandomChance(0.5)) { toSpawnClass = 'UaS_WaterRation'; }
+		let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
+		name toSpawnClass = fl.RandomConsumableItem();
 
-		//Spawn rations on backpacks, with a chance of an extra ration
+		//Spawn rations on backpacks
 		if(e.Thing.GetClassName() == "HDBackpack") {
-			UaS.SpawnStuff('UaS_FoodRation', 1, spawnPos);
-			UaS.SpawnStuff('UaS_WaterRation', 1, spawnPos);
+			MaybeSpawnRation(toSpawnClass, 1);
 		}
 
 		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			MaybeSpawnRation(toSpawnClass, 0.005 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.3);
 		}
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			MaybeSpawnRation(toSpawnClass, 0.0025 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.15);
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			MaybeSpawnRation(toSpawnClass, 0.002 * spawnRate);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 	}
 
@@ -48,5 +86,52 @@ extend class UaS_Spawner {
 			UaS.SpawnStuff(spawnClass, 1, spawnPos);
 			if(UaS_Debug & Hunger) { console.printf("Spawned Ration."); }
 		}
+	}
+}
+
+class UaS_RandomConsumable : HDPickup {
+	default {
+		hdpickup.refid UAS_HDLD_CONSUMABLE;
+		tag "Random food or drink item";
+		Inventory.Icon "HSCVA0";
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		for (int i=0; i<amount; i++) {
+			let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
+			class<UaS_Consumable> GiveClass;
+			if (refid == UAS_HDLD_CONSUMABLE) { GiveClass = fl.RandomConsumableItem(); }
+			else if (refid == UAS_HDLD_FRATION) { GiveClass = fl.RandomFoodItem(); }
+			else if (refid == UAS_HDLD_WRATION) { GiveClass = fl.RandomDrinkItem(); }
+			if (owner) {
+				owner.A_GiveInventory("HDWeaponGiver");
+				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+				wg.weapontogive = GiveClass;
+				wg.postbeginplay();
+				wg.destroy();
+			}
+			else {
+				let s = actor.Spawn(GiveClass, pos, ALLOW_REPLACE);
+				s.vel = vel;
+			}
+		}
+		destroy();
+	}
+}
+
+class UaS_RandomFood: UaS_RandomConsumable {
+	default {
+		hdpickup.refid UAS_HDLD_FRATION;
+		tag "Random food item";
+		Inventory.Icon "HSCVA0";
+	}
+}
+
+class UaS_RandomDrink : UaS_RandomConsumable {
+	default {
+		hdpickup.refid UAS_HDLD_WRATION;
+		tag "Random drink item";
+		Inventory.Icon "HSCVR0";
 	}
 }

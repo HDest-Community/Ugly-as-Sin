@@ -1,0 +1,46 @@
+mixin class UaS_SmallMREItem {
+	default {
+		UaS_Consumable.Calories 400;
+		UaS_Consumable.Fluid 200;
+		UaS_Consumable.Bulk 12;
+		+UaS_Consumable.PACKAGED;
+		Inventory.PickupMessage "Picked up a small vacuum-sealed MRE item.";
+		scale 0.65;
+	}
+}
+
+class UaS_LentilChili : UaS_Consumable {
+	mixin UaS_SmallMREItem;
+	default {
+		tag "Lentil Chili";
+		UaS_Consumable.Description "Spicy stewed lentils.";
+	}
+	override void Messages() {
+		AddOpenText("Surprisingly filling!");
+	}
+}
+
+class UaS_BreakfastHashbrowns : UaS_Consumable {
+	mixin UaS_SmallMREItem;
+	default {
+		tag "Breakfast Hashbrowns";
+		UaS_Consumable.Description "Crispy fried potato shavings, just as good as the restaurant.";
+	}
+	override void Messages() {
+		AddOpenText("It's always sunny at Denny's...");
+		AddOpenText("How do they keep these crispy?");
+	}
+}
+
+class UaS_CacoGiblets : UaS_Consumable {
+	mixin UaS_SmallMREItem;
+	default {
+		tag "Cacodemon Giblets";
+		UaS_Consumable.Description "Fully cooked cacodemon entrails, for the adventurous connoisseur.";
+	}
+	override void Messages() {
+		AddOpenText("They're... blue. Shouldn't be surprising but still...");
+		AddOpenText("It's kinda like sardines... right?");
+		AddOpenText("[zap] ouch!");
+	}
+}

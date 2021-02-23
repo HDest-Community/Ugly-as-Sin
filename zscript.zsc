@@ -16,8 +16,8 @@ version "4.5"
 // Hunger and Thirst scripts
 #include "modules/hunger/spawner.zsc"
 #include "modules/hunger/tracker.zsc"
-#include "modules/hunger/items.zsc"
-#include "modules/hunger/messkit.zsc"
+#include "modules/hunger/consumable/consumable.zsc"
+#include "modules/items/food.zsc"
 
 // Scarcity scripts
 #include "modules/scarcity/handler.zsc"

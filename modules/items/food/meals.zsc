@@ -1,0 +1,127 @@
+mixin class UaS_BigMREPouch {
+	default {
+		UaS_Consumable.Calories 800;
+		UaS_Consumable.Fluid 400;
+		UaS_Consumable.Bulk 18;
+		+UaS_Consumable.PACKAGED;
+		+UaS_Consumable.RESEALABLE;
+		Inventory.PickupMessage "Picked up a large vacuum-sealed MRE pouch.";
+	}
+}
+
+class UaS_GarlicBeefStroganoffMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Beef and Garlic Stroganoff";
+		UaS_Consumable.Description "Tasty beef and hearty pasta in garlic cream sauce.";
+	}
+	override void Messages() {
+		AddOpenText("The garlic sauce is sublime.");
+		AddOpenText("The beef is actually tasty!");
+	}
+}
+
+class UaS_CurryRiceMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Curry and Rice";
+		UaS_Consumable.Description "Spicy red curry with rice and potatos.";
+	}
+	override void Messages() {
+		AddOpenText("Finally something exciting.");
+		AddOpenText("Maybe this batch won't upset your stomach.");
+		AddOpenText("Hope the rice isn't mushy.");
+	}
+}
+
+class UaS_SpaghettiMeatballMarinaraMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Spaghetti with Meatballs";
+		UaS_Consumable.Description "Old Faithful. Spaghetti and meatballs in a hearty marinara sauce.";
+	}
+	override void Messages() {
+		AddOpenText("Just like home... kinda.");
+	}
+}
+
+class UaS_BeefTeryakiRiceMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Beef Teriyaki on Rice";
+		UaS_Consumable.Description "Tender shredded beef in a basic teriyaki sauce, mixed with white rice.";
+	}
+	override void Messages() {
+		AddOpenText("This rice shouldn't be this good!");
+		AddOpenText("That spice packet might cause a stomach ache...");
+	}
+}
+
+class UaS_ChiliMacMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Chili-Mac";
+		UaS_Consumable.Description "Blue-box macaroni and 'cheese' mixed with chile con carne.";
+	}
+	override void Messages() {
+		AddOpenText("Hard to improve on perfection but the army chefs sure tried.");
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_ChickenDumpMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Chicken and Dumplings";
+		UaS_Consumable.Description "Chicken Dumplings with Vegetables.";
+	}
+	override void Messages() {
+		AddOpenText("The sauce is pretty thick.");
+		AddOpenText("The vegetables are super tender!");
+		AddOpenText("How do they keep the chicken moist?");
+	}
+}
+
+// by Fort of Hard Knox
+class UaS_EnchCassMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Enchilada Casserole";
+		UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
+	}
+	override void Messages() {
+		AddOpenText("Man, the sauce has some kick!");
+		AddOpenText("They never include enough refried beans.");
+		AddOpenText("Wish I had a honey packet for this.");
+		AddOpenText("Spicy and smooth!");
+	}
+}
+
+class UaS_FireballMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Fireball Scramble";
+		UaS_Consumable.Description "Hearty Fireball Breakfast Scramble.";
+	}
+	override void Messages() {
+		AddOpenText("Three kinds of meat! Two kinds of Potato!");
+		AddOpenText("Mix the 1st and 3rd hot sauce. Always skip Sauce 2.");
+		AddOpenText("A hearty breakfast meal that works anytime.");
+	}
+}
+
+class UaS_GrabbagMRE : UaS_Consumable {
+	mixin UaS_BigMREPouch;
+	default {
+		tag "Mystery Mix MRE";
+		UaS_Consumable.Description "An MRE that was assembled with whatever was available.";
+	}
+	override void Messages () {
+		AddOpenText("It's just a mix of crackers and patte...");
+		AddOpenText("Two grain bread and processed cheese, huh?");
+		AddOpenText("Why would you pack three kinds of rice and ketchup?");
+		AddOpenText("Salad and barbecue sauce?");
+		AddOpenText("Beef strips, Grape candy, and pear cubes...");
+		AddOpenText("Four cans of energy drink and six energy bars?");
+	}
+}

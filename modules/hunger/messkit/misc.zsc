@@ -1,0 +1,35 @@
+extend class UaS_Messkit {
+	override double weaponbulk(){
+		return 15;
+	}
+
+	bool CriticalChecks() {
+		// Skip all interaction if not selected
+		if (!(owner.player.readyweapon is 'UaS_Messkit')) { return false; }
+
+		// Set up tracker connection
+		tracker = UaS_HungerTracker(owner.FindInventory("UaS_HungerTracker"));
+		if (!tracker) { console.printf("no hunger tracker!"); return false; }
+
+		// Verify foodlist and set valid consumable
+		item = null;
+		if (foodarray.size() > 0) {
+			weaponstatus[MKS_SELECTED] = clamp(weaponstatus[MKS_SELECTED], 0, foodarray.size() - 1);
+			item = foodarray[weaponstatus[MKS_SELECTED]];
+		}
+		return true;
+	}
+
+
+	bool mouthclear() {
+		return (weaponstatus[MKS_BITE] <= 0 && weaponstatus[MKS_SIP] <= 0);
+	}
+
+	override int getsbarnum(int flags){return foodarray.size();}
+
+	enum Slots {
+		MKS_SELECTED,
+		MKS_BITE,
+		MKS_SIP,
+	}
+}

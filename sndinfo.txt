@@ -6,6 +6,12 @@ $random UaS/FoodScoop {
 	UaS/FoodScoop2
 }
 
+UaS/Chew	dspocket
+UaS/Sip		dsslp
+UaS/Swish	dspbtl
+UaS/Swallow	dsgulp
+UaS/FoodOpen	dsclaw
+
 UaS/Glowstick	dsrifclk
 UaS/Flare		"sounds/tr_flare.wav"
 
@@ -17,3 +23,5 @@ UaS/respirator/click		"sounds/dsgrload.wav"
 UaS/respirator/pump			"sounds/dsland.ogg"
 
 UaS/traumakit/biofoam		"dsfwoosh"
+
+UaS/llm/toggle				"sounds/llm_toggle.ogg"

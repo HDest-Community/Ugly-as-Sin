@@ -1,0 +1,12 @@
+class UaS_BasicMRE : UaS_Consumable {
+	default {
+		UaS_Consumable.Description "This is probably the saddest MRE you've ever seen.";
+		Inventory.PickupMessage "Picked up a terrible basic MRE.";
+		tag "World's Worst MRE";
+		Inventory.Icon "HSCVA0";
+	}
+	override void Contents() {
+		AddItem("UaS_FoodRation");
+		AddItem("UaS_WaterRation", 2);
+	}
+}
