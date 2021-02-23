@@ -22,7 +22,8 @@ extend class UaS_Looting_Handler {
 	}
 
 	string BuildItemString() {
-		string item = ItemStrings[random(0, ItemStrings.Size() - 1)];
+		//SetRandomSeed[lootflavor](5);  //TODO Maybe use this to make persistant "item journal" with reproducible seeds stored in cvar???
+		string item = ItemStrings[random[lootflavor](0, ItemStrings.Size() - 1)];
 
 		// Collapse substrings
 		while (true) {
@@ -37,7 +38,7 @@ extend class UaS_Looting_Handler {
 			array<string> substrings;
 			substring.Split(substrings,"|");
 
-			item.Replace("{}", substrings[random(0,substrings.Size()-1)]);
+			item.Replace("{}", substrings[random[lootflavor](0,substrings.Size()-1)]);
 		}
 
 		// Remove double-spaces
@@ -75,7 +76,7 @@ extend class UaS_Looting_Handler {
 		ItemStrings.Push(" a family photo{.|.|.|, of a marine and ... an imp?} {One of the faces has been {scratched|burned|scribbled|cut} out.}");
 		ItemStrings.Push(" {an action figure|a doll}. {|||||||||||||It is naked.}");
 		ItemStrings.Push(" a {VHS tape|DVD} titled \"{Demolition Man|The Matrix|Total Recall|The Way of the Gun|Falling Down}.\"");
-		ItemStrings.Push(" the secret Ugly as Sin feature.");
+		ItemStrings.Push(" the secret Ugly as Sin feature (no, this isn't it).");
 		ItemStrings.Push(" a glass jar.");
 		ItemStrings.Push(" {an SD|a micro-SD|a {PS1|PS2|flash} memory} card.");
 		ItemStrings.Push(" some old paper currency. {It's worthless.|}");
@@ -99,7 +100,7 @@ extend class UaS_Looting_Handler {
 		ItemStrings.Push(" some scraps of {parchment|paper|leather|human skin|demon skin} with various {generic|horror-movie|spooky|arcane|profane|disturbing} phrases scribbled on them.");
 		ItemStrings.Push(" a {blue|red|yellow} {keycard|access card}, {broken in half|caked in blood|melted} and unusable.}");
 		ItemStrings.Push(" a fake {red|blue|yellow} skull{.|, made of{plastic|glass|metal}.}");
-		ItemStrings.Push(" the scrawlings of a madman.");
+		ItemStrings.Push(" the scrawlings of a mad{man|woman}.");
 		ItemStrings.Push(" {some|a cocktail of|a collection of} {homemade|illegal|unknown} drugs.");
 		ItemStrings.Push(" {an IED|a dead-man's switch}. Thankfully it's {a dud|inert|improperly wired}.");
 		ItemStrings.Push(" a Game{Dude|Bro|Guy} {Advance|Pro|Touch|Color|3D} {game cartridge|, with no cartridge or batteries}.");
@@ -110,7 +111,8 @@ extend class UaS_Looting_Handler {
 		ItemStrings.Push(" an {||intercepted} {||enemy|friendly} {communique|message}. It's {illegible|encrypted|heavily redacted|...completely mundane}.");
 		ItemStrings.Push(" a suitcase. It's {empty|empty|empty|empty|empty|empty|filled with {hat designs|playing cards|paperback novels|pornography}}.");
 		ItemStrings.Push(" a perfectly square cube of {stone|gravel|dirt|sand}.");
-		ItemStrings.Push(" some custom grips for a 9mm handgun. They {serve no tactical purpose|provide no tactical advantage} whatsoever.");
+		ItemStrings.Push(" some custom grips for a {9mm|1911} handgun. They {serve no tactical purpose|provide no tactical advantage} whatsoever.");
+		ItemStrings.Push(" a {red|brown|orange|yellow|pink|purple|blue|cyan|green|lime|white|black} toy {spaceman|astronaut}. {||||||||||A tiny voice says \"sus\" when you squeeze it.}");
 		// ItemStrings.Push(" ");
 
 

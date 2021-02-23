@@ -1,49 +1,67 @@
-// class UaS_SearchedCorpseMarker : Inventory {
-	// double searchedAmount;
-	// bool foundSomething;
-	// string lastMessage;
-// }
-
 class UaS_SearchedCorpseMarker : Inventory {
 	array<string> Loot;
 	int searchedAmount;
 	bool foundSomething;
 	string lastMessage;
+	bool fullysearched;
+
+	// TODO replace this with actual tables
+	void InitLoot() {
+		Loot.Push("HD4mMag");
+		Loot.Push("");
+		Loot.Push("HD9mMag15");
+		Loot.Push("");
+		Loot.Push("PortableStimpack");
+	}
 
 	void ReturnLoot() {
-		if (Loot.Size() <= 0) { Loot.Push("HD4mMag"); }
 		int check = (
 			random[loot](0,100) +
 			random[loot](0,100) +
 			random[loot](0,100)) / 3;
 
 		if (check < searchedAmount) {
-			// Actually spawn the picked thing and return true
-			if(UaS_Debug & Looting) { console.printf("Loot spawn: "..Loot[0]); }
-			UaS.SpawnStuff(Loot[0], 1, owner.pos, true);
-			Loot.Delete(0);
-			SearchedAmount = 0;
+			// On successful search check, see if there's actually loot in this pocket
+			if(Loot[0] == "") {
+				// Spawn some debris for an empty pocket
+				if(UaS_Debug & Looting) { console.printf("Empty pocket..."); }
+				SpawnLootDebris();
+				SearchedAmount = 0;
+				Loot.Delete(0);
+			}
+			else {
+				// Actually spawn the loot and reset
+				if(UaS_Debug & Looting) { console.printf("Loot spawn: "..Loot[0]); }
+				UaS.SpawnStuff(Loot[0], 1, owner.pos, true);
+				Loot.Delete(0);
+				SearchedAmount = 0;
+				foundSomething = true;
+			}
 		}
 		else {
-			// Otherwise spawn some random debris and increment progress
-			for (int i = 0; i < 3; i++) {
-				owner.A_SpawnItemEx("TinyWallChunk",
-					zofs: 4,
-					xvel: frandom[loot](4, 7),
-					yvel: frandom[loot](-2, 2),
-					zvel: frandom[loot](-2, 1),
-					flags: SXF_NOCHECKPOSITION,
-					failchance: 128);
-			}
-			searchedAmount += random[loot](5,10);
+			// Otherwise just increment progress
+			searchedAmount += random[loot](5,25);
 			if(UaS_Debug & Looting) { console.printf("Check "..check.." -- Progress "..searchedAmount); }
+		}
+		// Mark complete if no more loot entries
+		if (Loot.Size() <= 0) { fullysearched = true; }
+	}
+
+	void SpawnLootDebris() {
+		for (int i = 0; i < 5; i++) {
+			owner.A_SpawnItemEx("TinyWallChunk",
+				zofs: 4,
+				xvel: frandom[loot](4, 7),
+				yvel: frandom[loot](-2, 2),
+				zvel: frandom[loot](-2, 1),
+				flags: SXF_NOCHECKPOSITION,
+				failchance: 64);
 		}
 	}
 }
 
 class UaS_Looting_Handler : Inventory {
 	int cooldown;
-	bool foundSomething;
 	double anglevel, pitchvel;
 
 	default {
@@ -94,33 +112,32 @@ class UaS_Looting_Handler : Inventory {
 	void DoSearch(actor searchTarget) {
 		UaS_SearchedCorpseMarker searchMarker;
 		if (!searchTarget) { return; }
-		if (searchTarget.countinv("UaS_SearchedCorpseMarker") == 0) { searchTarget.GiveInventory("UaS_SearchedCorpseMarker", 1); }
+		if (searchTarget.countinv("UaS_SearchedCorpseMarker") == 0) {
+			searchTarget.GiveInventory("UaS_SearchedCorpseMarker", 1);
+			searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
+			searchMarker.InitLoot();
+		}
 		searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
 		if (!searchMarker) { return; }
 
 		//Actually do the search
 		if (cooldown == 0) {
-			// if (searchMarker.SearchedAmount >= 1.0) {
-				// HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
-				// if(searchMarker.lastMessage == "") { searchMarker.lastMessage = FlavorText(searchMarker.foundSomething); }
-				// currentWeapon.A_WeaponMessage(searchMarker.lastMessage);
-				// return;
-			// }
+			if (searchMarker.fullysearched) {
+				HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
+				if(searchMarker.lastMessage == "") { searchMarker.lastMessage = FlavorText(searchMarker.foundSomething); }
+				currentWeapon.A_WeaponMessage(searchMarker.lastMessage);
+				return;
+			}
 			owner.A_StartSound("weapons/pocket", volume: frandom(0.5, 0.75));
-			//searchMarker.searchedAmount += frandom(0.05, 0.1);
 			anglevel += frandom[loot](-1, 1);
 			pitchvel += frandom[loot](-1, 1);
 			cooldown = random[loot](10,25);
 			searchMarker.ReturnLoot();
-			// double chance = clamp(searchMarker.searchedAmount, 0, UaS_LootingFactor);
-			// if (UaS.RandomChance(chance)) {
-				// if(SpawnLoot(searchTarget)) {
-					// searchMarker.searchedAmount += frandom[loot](0.0, 1.0 - UaS_LootingFactor);
-					// searchMarker.foundSomething = true;
-				// }
-			// }
 		}
 	}
+}
+
+// TODO Actually re-implement all this crap somehow
 
 	// bool SpawnLoot(actor spawnTarget) {
 		// int tableSize = 0;
@@ -218,7 +235,6 @@ class UaS_Looting_Handler : Inventory {
 			// }
 		// }
 	// }
-}
 
 // class UaS_LootEntry {
 	// name itemName;
