@@ -1,0 +1,31 @@
+class UaS_AmmoPouch : HDBackpack {
+	default {
+		tag "Ammo Pouch";
+		HDBackpack.MaxCapacity 250;
+	}
+
+	override double WeaponBulk() { return max((Storage ? Storage.TotalBulk * 0.60 : 0), 100); }
+
+	override void BeginPlay() {
+		super.BeginPlay();
+		Storage = new('AmmoPouch_ItemStorage');
+		UpdateCapacity();
+	}
+}
+
+class AmmoPouch_ItemStorage : ItemStorage {
+	override int CheckConditions(Inventory item, class<Inventory> cls) {
+		if (item && !(item is 'HDRoundAmmo')) { return IType_Invalid; }
+		if (cls  && !(cls  is 'HDRoundAmmo')) { return IType_Invalid; }
+		return super.CheckConditions(item,cls);
+	}
+
+	override int GetOperationSpeed(class<Inventory> item, int operation) {
+		switch (clamp(operation, 0, 2)) {
+			case 0: return 6; break;	//extract
+			case 1: return 2; break;	//pocket
+			case 2: return 2; break;	//insert
+		}
+		return 10;
+	}
+}
