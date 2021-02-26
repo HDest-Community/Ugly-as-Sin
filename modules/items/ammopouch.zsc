@@ -2,14 +2,23 @@ class UaS_AmmoPouch : HDBackpack {
 	default {
 		tag "Ammo Pouch";
 		HDBackpack.MaxCapacity 250;
+		Inventory.Icon "UGSIJ0";
+		scale 0.6;
 	}
 
-	override double WeaponBulk() { return max((Storage ? Storage.TotalBulk * 0.60 : 0), 100); }
+	override double WeaponBulk() { return max((Storage ? Storage.TotalBulk * 0.60 : 0), 25); }
+	override string, double GetPickupSprite() { return "UGSIJ0", 1.0; }
 
 	override void BeginPlay() {
 		super.BeginPlay();
 		Storage = new('AmmoPouch_ItemStorage');
 		UpdateCapacity();
+	}
+
+	States {
+		Spawn:
+			UGSI J -1 NoDelay;
+			Stop;
 	}
 }
 

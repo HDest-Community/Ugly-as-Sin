@@ -159,3 +159,9 @@ Sprite "UGSII0", 32, 12
 	Offset 16, 12
 	Patch "patches/UaS_RocketBox.png", 0, 0
 }
+
+Sprite "UGSIJ0", 22, 27
+{
+	Offset 11, 27
+	Patch "patches/UaS_AmmoPouch.png", 0, 0
+}
