@@ -1,13 +1,16 @@
+//==================================================
+// Base Definition
+//==================================================
 class UaS_AmmoPouch : HDBackpack {
 	default {
 		tag "Ammo Pouch";
-		HDBackpack.MaxCapacity 250;
+		HDBackpack.MaxCapacity 200;
 		Inventory.Icon "UGSIJ0";
+		Inventory.PickupMessage "Picked up an ammo pouch!";
 		scale 0.6;
 		hdweapon.refid UAS_HDLD_AMMOPOUCH;
 	}
 
-	override double WeaponBulk() { return max((Storage ? Storage.TotalBulk * 0.60 : 0), 25); }
 	override string, double GetPickupSprite() { return "UGSIJ0", 1.0; }
 
 	override void BeginPlay() {
@@ -23,6 +26,62 @@ class UaS_AmmoPouch : HDBackpack {
 	}
 }
 
+//==================================================
+// Bulk and Multiple Pouches
+//==================================================
+extend class UaS_AmmoPouch {
+	override double WeaponBulk() {
+		double reductionfactor = 1.0 - (0.5 / max(amount - 1, 1));
+		double basebulk = 20 * amount;
+		//console.printf("ammopouch: bulk factor "..reductionfactor.." --- base bulk: "..basebulk);
+		return max((Storage ? Storage.TotalBulk * reductionfactor : 0), basebulk);
+	}
+
+	override void UpdateCapacity() {
+		MaxCapacity = default.MaxCapacity / max(hd_encumbrance, 0.01);
+		Storage.MaxBulk = MaxCapacity * amount;
+	}
+
+	override void actualpickup(actor other,bool silent) {
+		UaS_AmmoPouch HeldPouch=UaS_AmmoPouch(other.findinventory("UaS_AmmoPouch"));
+		if (HeldPouch) {
+			HeldPouch.amount++;
+			HeldPouch.UpdateCapacity();
+			for (int i = 0; i < Storage.Items.Size(); i++) {
+				StorageItem MoveItem = Storage.Items[i];
+				int AmountToMove = MoveItem.Amounts.Size() > 0 ? MoveItem.Amounts[0] : 0;
+				//console.printf(""..AmountToMove);
+				HeldPouch.Storage.AddAmount(MoveItem.ItemClass, AmountToMove);
+				Storage.RemoveItem(MoveItem, null, null, AmountToMove);
+			}
+			self.destroy();
+			return;
+		}
+		super.actualpickup(other, silent);
+	}
+
+	override inventory CreateTossable(int amount) {
+		UaS_AmmoPouch DroppedPouch = UaS_AmmoPouch(super.CreateTossable(amount));
+		StorageItem SelItem = Storage.GetSelectedItem();
+		if (!SelItem) { return DroppedPouch; }
+		int AmountInPouch = SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0;
+		double UnitBulk = HDPickup(getdefaultbytype(SelItem.ItemClass)).bulk * hdmath.getencumbrancemult();
+		int AmountToMove = int((DroppedPouch.Storage.MaxBulk - DroppedPouch.Storage.TotalBulk) / UnitBulk);
+		AmountToMove = min(AmountToMove, AmountInPouch);
+		//console.printf(""..SelItem.GetBulk());
+		//console.printf(""..UnitBulk);
+		//console.printf(""..AmountToMove);
+		//console.printf("AmountInPouch "..AmountInPouch);
+		DroppedPouch.Storage.AddAmount(SelItem.ItemClass, AmountToMove);
+		Storage.RemoveItem(SelItem, null, null, AmountToMove);
+		return DroppedPouch;
+	}
+}
+
+//==================================================
+// Item Storage Definitions
+// Expand this later with UASINFO?
+//==================================================
 class AmmoPouch_ItemStorage : ItemStorage {
 	override int CheckConditions(Inventory item, class<Inventory> cls) {
 		bool valid = (
@@ -53,7 +112,9 @@ extend class UaS_AmmoPouch {
 		int BaseOffset = -80;
 
 		sb.DrawString(sb.pSmallFont, "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []", (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
-		sb.DrawString(sb.pSmallFont, "Total Bulk: \cf"..int(Storage.TotalBulk).."\c-", (0, BaseOffset + 10), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
+		string BulkString = "Total Bulk: \cf"..int(Storage.TotalBulk).."\c-";
+		if  (amount > 1) { BulkString = BulkString.." --- Pouches: \cf"..amount.."\c-"; }
+		sb.DrawString(sb.pSmallFont, BulkString, (0, BaseOffset + 10), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
 
 		int ItemCount = Storage.Items.Size();
 
