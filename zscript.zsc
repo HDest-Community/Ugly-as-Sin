@@ -55,7 +55,6 @@ version "4.5"
 #include "modules/items/traumakit/handler.zsc"
 #include "modules/items/traumakit/traumakit.zsc"
 #include "modules/items/traumakit/stabilize.zsc"
-#include "modules/items/ammoboxes.zsc"
 #include "modules/items/ammopouch.zsc"
 
 #include "modules/aimsway/aimsway.zsc"
