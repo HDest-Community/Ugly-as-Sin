@@ -31,15 +31,17 @@ class UaS_AmmoPouch : HDBackpack {
 //==================================================
 extend class UaS_AmmoPouch {
 	override double WeaponBulk() {
-		double reductionfactor = 0.45 + min(0.05 * amount, 0.5);
-		double basebulk = 20 * amount;
+		int calcamount = min(amount, 5);
+		double reductionfactor = 0.45 + min(0.05 * calcamount, 0.5);
+		double basebulk = 20 * calcamount;
 		//console.printf("ammopouch: bulk factor "..reductionfactor.." --- base bulk: "..basebulk);
 		return max((Storage ? Storage.TotalBulk * reductionfactor : 0), basebulk);
 	}
 
 	override void UpdateCapacity() {
+		int calcamount = min(amount, 5);
 		MaxCapacity = default.MaxCapacity / max(hd_encumbrance, 0.01);
-		Storage.MaxBulk = MaxCapacity * amount;
+		Storage.MaxBulk = MaxCapacity * calcamount;
 	}
 
 	override void actualpickup(actor other,bool silent) {
@@ -127,7 +129,7 @@ extend class UaS_Spawner {
 			e.Thing.GetClassName() == "DeadRifleman" ||
 			e.Thing.GetClassName() == "ReallyDeadRifleman");
 
-		if(spawnable && randompick[ammopouch](0,0,0,1) == 1) {
+		if(spawnable && randompick(0,0,0,1) == 1) {
 			UaS.SpawnStuff('UaS_WildAmmoPouch', 1, e.Thing.pos);
 			if (e.Thing.GetClassName() == "HDAmBox") { e.Thing.destroy(); }
 		}
