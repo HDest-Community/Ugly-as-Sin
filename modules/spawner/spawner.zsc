@@ -20,5 +20,6 @@ class UaS_Spawner : EventHandler {
 		FlareSpawns(e);
 		LLMSpawns(e);
 		TraumakitSpawns(e);
+		AmmoPouchSpawns(e);
 	}
 }
