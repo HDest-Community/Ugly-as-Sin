@@ -29,6 +29,7 @@ extend class UaS_Consumable {
 
 	override void Tick() {
 		super.tick();
+		bfitsinbackpack = true;
 		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
 		CheckAutoDestroy();
 	}

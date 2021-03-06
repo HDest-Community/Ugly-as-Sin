@@ -57,27 +57,27 @@ extend class UaS_Spawner {
 
 		//Spawn rations on backpacks
 		if(e.Thing.GetClassName() == "HDBackpack") {
-			MaybeSpawnRation(toSpawnClass, 1);
+			MaybeSpawnRation(toSpawnClass, 0.2);
 		}
 
 		//Randomly spawn on ammo boxes
 		else if(e.Thing.GetClassName() == "HDAmBox" || e.Thing.GetClassName() == "HDAmBoxUnarmed") {
-			MaybeSpawnRation(toSpawnClass, 0.3);
+			MaybeSpawnRation(toSpawnClass, 0.1);
 		}
 
 		//Randomly spawn on stimpacks
 		else if(e.Thing.GetClassName() == "PortableStimpack") {
-			MaybeSpawnRation(toSpawnClass, 0.1);
+			MaybeSpawnRation(toSpawnClass, 0.025);
 		}
 
 		//Rarely spawn on medikits
 		else if(e.Thing.GetClassName() == "PortableMedikit") {
-			MaybeSpawnRation(toSpawnClass, 0.15);
+			MaybeSpawnRation(toSpawnClass, 0.025);
 		}
 
 		//Randomly spawn on marine corpses
 		else if(e.Thing.GetClassName() == "DeadRifleman" || e.Thing.GetClassName() == "ReallyDeadRifleman") {
-			MaybeSpawnRation(toSpawnClass, 0.1);
+			MaybeSpawnRation(toSpawnClass, 0.05);
 		}
 	}
 
@@ -94,6 +94,7 @@ class UaS_RandomConsumable : HDPickup {
 		hdpickup.refid UAS_HDLD_CONSUMABLE;
 		tag "Random food or drink item";
 		Inventory.Icon "HSCVA0";
+		HDPickup.bulk 10;
 	}
 
 	override void PostBeginPlay() {

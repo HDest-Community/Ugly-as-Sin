@@ -23,7 +23,8 @@ class UaS_HungerTracker : Inventory {
 	void ProcessEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
 		if (!o) { return; }
-		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i";
+		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i %s";
+		string debugtype = "";
 		if (o.beatcount > 0) { return; }
 
 		if (!UaS_HungerEnabled) { return; }
@@ -32,14 +33,14 @@ class UaS_HungerTracker : Inventory {
 		if (UaS_HungerMetabolism && o.beatcounter % 35 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
-			debugmsg.appendformat(" \cdbase\c- ");
+			debugtype.appendformat(" \cdbase\c- ");
 		}
 
 		// Drain from jogging
 		if (o.runwalksprint >= 0 && o.beatcounter % 5 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
-			debugmsg.appendformat(" \ciexertion\c- ");
+			debugtype.appendformat(" \ciexertion\c- ");
 		}
 
 		// drain from fatigue
@@ -48,12 +49,12 @@ class UaS_HungerTracker : Inventory {
 			if (hydro > 0 && o.beatcounter % 4 == 0) {
 				o.fatigue = max(o.fatigue - 1, 0);
 				hydro = max(hydro - 1, 0);
-				debugmsg.appendformat(" \cafatigue\c- ");
+				debugtype.appendformat(" \cafatigue\c- ");
 			}
 			else if (energy > 0 && o.beatcounter % 6 == 0) {
 				o.fatigue = max(o.fatigue - 1, 0);
 				energy = max(energy - 1, 0);
-				debugmsg.appendformat(" \cafatigue\c- ");
+				debugtype.appendformat(" \cafatigue\c- ");
 			}
 		}
 
@@ -61,7 +62,7 @@ class UaS_HungerTracker : Inventory {
 		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
-		if(UaS_Debug & Hunger && o.beatcounter % 35 == 0) { o.A_Log(string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid), true); }
+		if(UaS_Debug & Hunger && (o.beatcounter % 35 == 0 || debugtype != "")) { o.A_Log(string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid, debugtype), true); }
 	}
 
 	void Consume() {
