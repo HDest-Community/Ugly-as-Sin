@@ -1,3 +1,4 @@
+const UAS_HDLD_RESPIRATOR = "rsp";
 const CHAN_RESP = 82698380;
 const CHAN_BREATH = 82698381;
 

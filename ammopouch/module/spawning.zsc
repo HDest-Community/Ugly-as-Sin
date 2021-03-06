@@ -11,8 +11,8 @@ class UaS_WildAmmoPouch : IdleDummy {
 	}
 }
 
-extend class UaS_Spawner {
-	void AmmoPouchSpawns(WorldEvent e) {
+class UaS_AmmoPouchSpawner : EventHandler {
+	override void WorldThingSpawned(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
@@ -23,7 +23,10 @@ extend class UaS_Spawner {
 			e.Thing.GetClassName() == "ReallyDeadRifleman");
 
 		if(spawnable && randompick(0,0,0,1) == 1) {
-			UaS.SpawnStuff('UaS_WildAmmoPouch', 1, e.Thing.pos);
+			let SpawnedPouch = Actor.Spawn('UaS_WildAmmoPouch', (e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z + 5));
+			SpawnedPouch.vel.x += frandom(-2,2);
+			SpawnedPouch.vel.y += frandom[spawnstuff](-2,2);
+			SpawnedPouch.vel.z += frandom[spawnstuff](1,2);
 			if (e.Thing.GetClassName() == "HDAmBox") { e.Thing.destroy(); }
 		}
 	}
