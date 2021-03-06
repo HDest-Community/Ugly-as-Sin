@@ -1,0 +1,24 @@
+//==================================================
+// Item Storage Definitions
+// Expand this later with UASINFO?
+//==================================================
+class AmmoPouch_ItemStorage : ItemStorage {
+	override int CheckConditions(Inventory item, class<Inventory> cls) {
+		bool valid = (
+			(item && (item is 'HDRoundAmmo' || item is 'FourMilAmmo')) ||
+			(cls  && (cls  is 'HDRoundAmmo' || item is 'FourMilAmmo'))
+		);
+
+		if (!valid) { return IType_Invalid; }
+		return super.CheckConditions(item,cls);
+	}
+
+	override int GetOperationSpeed(class<Inventory> item, int operation) {
+		switch (clamp(operation, 0, 2)) {
+			case 0: return 3; break;	//extract
+			case 1: return 1; break;	//pocket
+			case 2: return 1; break;	//insert
+		}
+		return 10;
+	}
+}

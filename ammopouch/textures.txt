@@ -1,0 +1,5 @@
+Sprite "UGSIJ0", 22, 27
+{
+	Offset 11, 27
+	Patch "patches/UaS_AmmoPouch.png", 0, 0
+}

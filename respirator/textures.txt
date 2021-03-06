@@ -1,0 +1,7 @@
+Sprite "UGSID0", 48, 48
+{
+	XScale 2.500
+	YScale 3.000
+	Offset 24, 46
+	Patch "patches/UaS_Respirator.png", 0, 0
+}

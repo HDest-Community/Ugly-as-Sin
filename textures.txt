@@ -135,7 +135,7 @@ Sprite "UGSID0", 48, 48
 	XScale 2.500
 	YScale 3.000
 	Offset 24, 46
-	Patch "patches/UaS_Respirator.png", 0, 0
+	Patch "respirator/patches/UaS_Respirator.png", 0, 0
 }
 
 Sprite "UGSIE0", 25, 14
@@ -163,5 +163,5 @@ Sprite "UGSII0", 32, 12
 Sprite "UGSIJ0", 22, 27
 {
 	Offset 11, 27
-	Patch "patches/UaS_AmmoPouch.png", 0, 0
+	Patch "ammopouch/patches/UaS_AmmoPouch.png", 0, 0
 }

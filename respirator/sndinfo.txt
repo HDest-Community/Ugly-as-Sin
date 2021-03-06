@@ -1,0 +1,6 @@
+UaS/respirator/vent			"sounds/resp_vent.wav"
+UaS/respirator/breathing	"sounds/resp_breathing.wav"
+UaS/respirator/toggle		"sounds/resp_toggle.wav"
+UaS/respirator/empty		"sounds/resp_empty.wav"
+UaS/respirator/click		"sounds/dsgrload.wav"
+UaS/respirator/pump			"sounds/dsland.ogg"

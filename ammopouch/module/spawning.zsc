@@ -1,0 +1,30 @@
+//============================================
+// Spawning, 25% chance on corpses / boxes
+//============================================
+class UaS_WildAmmoPouch : IdleDummy {
+	override void postbeginplay() {
+		super.postbeginplay();
+		let SpawnedPouch=UaS_AmmoPouch(spawn("UaS_AmmoPouch",pos,ALLOW_REPLACE));
+		SpawnedPouch.vel = vel;
+		SpawnedPouch.RandomContents();
+		self.destroy();
+	}
+}
+
+extend class UaS_Spawner {
+	void AmmoPouchSpawns(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.Thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "DeadRifleman" ||
+			e.Thing.GetClassName() == "ReallyDeadRifleman");
+
+		if(spawnable && randompick(0,0,0,1) == 1) {
+			UaS.SpawnStuff('UaS_WildAmmoPouch', 1, e.Thing.pos);
+			if (e.Thing.GetClassName() == "HDAmBox") { e.Thing.destroy(); }
+		}
+	}
+}
