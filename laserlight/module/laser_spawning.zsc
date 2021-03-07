@@ -1,0 +1,19 @@
+//============================================
+// Spawning
+//============================================
+class UaS_LLMSpawner : EventHandler {
+	override void WorldThingSpawned(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "PortableLiteAmp" ||
+			e.Thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable && randompick(0,0,1) == 1) {
+			UaS.SpawnStuff('UaS_LaserLightModule', 1, e.Thing.pos);
+		}
+	}
+}

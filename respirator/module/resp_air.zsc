@@ -1,0 +1,60 @@
+//==================================================
+// Air control functions
+//==================================================
+extend class UaS_Respirator {
+	void DoRefill() {
+		if (owner.waterlevel >= 3 ) {
+			owner.A_Log("Can't refill canister underwater.", true);
+			refill = false;
+			return;
+		}
+
+		if (mags[0] >= maxperunit) {
+			owner.A_Log("Canister full.", true);
+			refill = false;
+			return;
+		}
+
+		if (level.maptime % 5 == 0) {
+			owner.A_StartSound("UaS/respirator/pump",
+				CHAN_RESP, CHANF_OVERLAP, 0.1, ATTN_STATIC, 2.0 - (mags[0]/double(maxperunit)));
+		}
+		if (level.maptime % 15 == 0) { mags[0]++; }
+		if (level.maptime % 35 == 0) {
+			owner.A_StartSound("UaS/respirator/toggle",
+				CHAN_RESP, CHANF_OVERLAP, 0.2, ATTN_STATIC, 2.0 - (mags[0]/double(maxperunit)));
+		}
+	}
+
+	// Bleed air
+	override bool Extract() {
+		SyncAmount();
+		if (mags.size() < 1 || mags[mags.size()-1] < 1) { return false; }
+		mags[mags.size()-1]--;
+		owner.A_StartSound("UaS/respirator/vent",
+			CHAN_RESP, CHANF_OVERLAP, 0.3, ATTN_STATIC, 2.0);
+		return true;
+	}
+
+	// Fill from lowest available other tank
+	override bool Insert() {
+		SyncAmount();
+		if(amount < 2) { return mags[0]; }
+		if (mags[mags.size()-1] >= maxperunit) { return false; }
+		int lowestindex =- 1;
+		int lowest = maxperunit;
+		for (int i=0; i<amount-1; i++){
+			if(lowest > mags[i] && mags[i] > 0){
+				lowest = mags[i];
+				lowestindex = i;
+			}
+		}
+		if (lowestindex < 0) { return false; }
+		if (mags[lowestindex] < 1) { return false; }
+		mags[lowestindex]--;
+		mags[mags.size()-1]++;
+		owner.A_StartSound("UaS/respirator/vent",
+			CHAN_RESP, CHANF_OVERLAP, 0.3, ATTN_STATIC, 3.0);
+		return true;
+	}
+}

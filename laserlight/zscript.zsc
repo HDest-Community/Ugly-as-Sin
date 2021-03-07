@@ -1,0 +1,4 @@
+version "4.5"
+
+#include "module/laser.zsc"
+#include "module/laser_spawning.zsc"

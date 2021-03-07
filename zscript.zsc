@@ -1,10 +1,10 @@
 version "4.5"
 
-// Static functions
-#include "modules/static.zsc"
-
-// Debugging
-#include "modules/debug.zsc"
+// Core
+#include "core/module/core.zsc"
+#include "core/module/core_spawnstuff.zsc"
+#include "core/module/core_randomchance.zsc"
+#include "core/module/core_debug.zsc"
 
 // Constants
 #include "modules/constants.zsc"
@@ -50,11 +50,20 @@ version "4.5"
 #include "modules/items/sling.zsc"
 #include "modules/items/glowstick.zsc"
 #include "modules/items/flare.zsc"
-#include "modules/items/laser.zsc"
-#include "respirator/module/resp.zsc"
 #include "modules/items/traumakit/handler.zsc"
 #include "modules/items/traumakit/traumakit.zsc"
 #include "modules/items/traumakit/stabilize.zsc"
+
+// Laser-Light
+#include "laserlight/module/laser.zsc"
+
+// Respirator
+#include "respirator/module/resp.zsc"
+#include "respirator/module/resp_air.zsc"
+#include "respirator/module/resp_controls.zsc"
+#include "respirator/module/resp_functions.zsc"
+
+// Ammopouch
 #include "ammopouch/module/ammopouch.zsc"
 #include "ammopouch/module/ammopouch_bulk.zsc"
 #include "ammopouch/module/ammopouch_hud.zsc"

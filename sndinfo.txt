@@ -24,4 +24,4 @@ UaS/respirator/pump			"respirator/sounds/dsland.ogg"
 
 UaS/traumakit/biofoam		"dsfwoosh"
 
-UaS/llm/toggle				"sounds/llm_toggle.ogg"
+UaS/llm/toggle				"laserlight/sounds/llm_toggle.ogg"

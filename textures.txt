@@ -143,7 +143,7 @@ Sprite "UGSIE0", 25, 14
 	XScale 1.500
 	YScale 1.500
 	Offset 12, 14
-	Patch "patches/UaS_LaserLight.png", 0, 0
+	Patch "laserlight/patches/UaS_LaserLight.png", 0, 0
 }
 
 Sprite "UGSIF0", 17, 18

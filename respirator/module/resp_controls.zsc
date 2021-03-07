@@ -1,0 +1,31 @@
+extend class UaS_Respirator {
+	override bool Use(bool pickup) {
+		PlayerPawn o = playerpawn(owner);
+
+		if (!activated && (o.player.buttons & BT_USE)) { refill = !refill; return false; }
+
+		if (mags[0] == 0) {
+			owner.A_Log("Canister empty. Hold [use] and activate to refill.", true);
+			return false;
+		}
+
+		else if (mags[0] > 0) {
+			ToggleRespirator();
+		}
+
+		return false;
+	}
+
+	void ToggleRespirator() {
+		owner.A_StopSound(CHAN_BREATH);
+		owner.A_StartSound("UaS/respirator/click",
+			CHAN_AUTO, 0, 1, ATTN_STATIC);
+		PlayerPawn o = playerpawn(owner);
+		owner.A_StartSound("UaS/respirator/toggle",
+			CHAN_AUTO, 0, 1, ATTN_STATIC);
+		reserve = clamp(o.player.air_finished - Level.maptime, 0, level.AirSupply);
+		breath = 0;
+		activated = !(activated);
+		refill = false;
+	}
+}

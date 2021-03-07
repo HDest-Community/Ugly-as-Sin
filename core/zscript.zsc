@@ -1,0 +1,6 @@
+version "4.5"
+
+#include "module/core.zsc"
+#include "module/core_spawnstuff.zsc"
+#include "module/core_randomchance.zsc"
+#include "module/core_debug.zsc"

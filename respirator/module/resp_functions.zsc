@@ -1,0 +1,80 @@
+extend class UaS_Respirator {
+	override void DoEffect() {
+		//console.printf("breath "..owner.player.air_finished - Level.maptime);
+		//console.printf(""..airunits);
+		super.DoEffect();
+		if (mags.size() < 1) { return; }
+
+		if (activated) {
+			// use sub-units of air so player has at least one breath per mag unit
+			if (airunits <= 0 && mags[0] > 0) {
+				airunits += 105;
+				mags[0]--;
+			}
+			if(airunits > 0) {
+				Breathe();
+				owner.player.air_finished = Level.maptime + reserve;
+			}
+			else if (mags[0] == 0 || owner.health <= 0) {
+				owner.A_StopSound(CHAN_BREATH);
+				owner.A_StartSound("UaS/respirator/empty",
+					CHAN_RESP, CHANF_OVERLAP, 1, ATTN_STATIC, 1);
+				activated = false;
+			}
+		}
+
+		if (!activated && refill) { DoRefill(); }
+	}
+
+	void Breathe() {
+		hdplayerpawn o = hdplayerpawn(owner);
+		int increment = 1 + (o.fatigue / 5);
+		if (breath == 0)   { BreathSound(1.1); }
+		if (breath == 120) { BreathSound(0.9); breath = -breath; }
+		if (breath >= 0)   { breath = min(breath + increment, 120); }
+		if (breath <  0)   { breath = min(breath + increment, 0); }
+		if (reserve < level.AirSupply) { reserve++; }
+		airunits -= increment;
+	}
+
+	void BreathSound(double breathpitch) {
+		owner.A_StartSound("UaS/respirator/breathing",
+			CHAN_BREATH, 0, frandom[uas_resp](0.25, 0.5), ATTN_STATIC, breathpitch);
+	}
+
+	override string PickupMessage() {
+		string msg = super.PickupMessage();
+		string status;
+		if (mags[mags.size()-1] >= maxperunit) {
+			status = "It is full.";
+		}
+		else if (mags[mags.size()-1] == 0) {
+			status = "It is empty.";
+		}
+		else {
+			status = string.format("It is at "..mags[mags.size()-1].." percent capacity");
+		}
+		return string.format(""..msg.." "..status);
+	}
+
+	override string,string,name,double getmagsprite(int thismagamt){
+		string magsprite="UGSID0";
+		return magsprite,"","",0.6;
+	}
+
+	override int getsbarnum(int flags){
+		if (mags.size() < 1) { return 0; }
+		return int(mags[0]);
+	}
+
+	override void DetachFromOwner() {
+		if (activated) { ToggleRespirator(); }
+		super.DetachFromOwner();
+	}
+
+	states {
+		spawn:
+			UGSI D 0 -1;
+			stop;
+	}
+}
