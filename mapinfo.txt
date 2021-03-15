@@ -1,6 +1,7 @@
 GameInfo {
 	AddEventHandlers = "UaS_Spawner"
 	AddEventHandlers = "UaS_AmmoPouchSpawner"
+	AddEventHandlers = "UaS_LLMSpawner"
 	AddEventHandlers = "UaS_Bootstrap"
 	AddEventHandlers = "UaS_Scarcity_Handler"
 	AddEventHandlers = "UaS_FragRemovalHandler"

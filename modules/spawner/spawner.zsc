@@ -18,7 +18,6 @@ class UaS_Spawner : EventHandler {
 		SlingSpawns(e);
 		GlowstickSpawns(e);
 		FlareSpawns(e);
-		LLMSpawns(e);
 		TraumakitSpawns(e);
 	}
 }
