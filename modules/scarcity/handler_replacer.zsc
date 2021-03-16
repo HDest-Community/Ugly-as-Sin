@@ -19,7 +19,7 @@ extend class UaS_Scarcity_Handler {
 				break;
 			case 'ShellPickup':
 			case 'HDShellAmmo':
-				UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * min(OverspawnFactor-ScarcityFactor, 1.0))), targetActor.pos, true);
+				UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * UaS_ScarcityOverspawn)), targetActor.pos, true);
 				break;
 			case 'RocketBigPickup':
 				for(int i = 1; i <= 5; i++) {

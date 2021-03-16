@@ -5,12 +5,10 @@
 
 class UaS_Scarcity_Handler : EventHandler {
 	double ScarcityFactor;
-	double OverspawnFactor;
 	actor spawneditem;
 
 	override void OnRegister() {
 		ScarcityFactor = double(UaS_ScarcityRate) / 100.0;
-		OverspawnFactor = UaS_ScarcityOverspawn + 1.0;
 	}
 
 	override void WorldTick() {
