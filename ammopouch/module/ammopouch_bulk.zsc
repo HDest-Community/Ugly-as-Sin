@@ -3,23 +3,22 @@
 //==================================================
 extend class UaS_AmmoPouch {
 	override double WeaponBulk() {
-		int calcamount = min(amount, 5);
+		int calcamount = min(weaponstatus[APS_AMOUNT], 5);
 		double reductionfactor = 0.45 + min(0.05 * calcamount, 0.5);
-		double basebulk = 20 * calcamount;
+		double basebulk = 20 * weaponstatus[APS_AMOUNT];
 		//console.printf("ammopouch: bulk factor "..reductionfactor.." --- base bulk: "..basebulk);
 		return max((Storage ? Storage.TotalBulk * reductionfactor : 0), basebulk);
 	}
 
 	override void UpdateCapacity() {
-		int calcamount = min(amount, 5);
 		MaxCapacity = default.MaxCapacity / max(hd_encumbrance, 0.01);
-		Storage.MaxBulk = MaxCapacity * calcamount;
+		Storage.MaxBulk = MaxCapacity * weaponstatus[APS_AMOUNT];
 	}
 
 	override void actualpickup(actor other,bool silent) {
 		UaS_AmmoPouch HeldPouch=UaS_AmmoPouch(other.findinventory("UaS_AmmoPouch"));
 		if (HeldPouch) {
-			HeldPouch.amount++;
+			HeldPouch.weaponstatus[APS_AMOUNT]++;
 			HeldPouch.UpdateCapacity();
 			for (int i = 0; i < Storage.Items.Size(); i++) {
 				StorageItem MoveItem = Storage.Items[i];
@@ -34,20 +33,30 @@ extend class UaS_AmmoPouch {
 		super.actualpickup(other, silent);
 	}
 
-	override inventory CreateTossable(int amount) {
-		UaS_AmmoPouch DroppedPouch = UaS_AmmoPouch(super.CreateTossable(amount));
-		StorageItem SelItem = Storage.GetSelectedItem();
-		if (!SelItem) { return DroppedPouch; }
-		int AmountInPouch = SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0;
-		double UnitBulk = HDPickup(getdefaultbytype(SelItem.ItemClass)).bulk * hdmath.getencumbrancemult();
-		int AmountToMove = int((DroppedPouch.Storage.MaxBulk - DroppedPouch.Storage.TotalBulk) / UnitBulk);
-		AmountToMove = min(AmountToMove, AmountInPouch);
-		//console.printf(""..SelItem.GetBulk());
-		//console.printf(""..UnitBulk);
-		//console.printf(""..AmountToMove);
-		//console.printf("AmountInPouch "..AmountInPouch);
-		DroppedPouch.Storage.AddAmount(SelItem.ItemClass, AmountToMove);
-		Storage.RemoveItem(SelItem, null, null, AmountToMove);
+	override inventory CreateTossable(int amt) {
+		bool DoSplit = (weaponstatus[APS_AMOUNT] > 1);
+		amount = weaponstatus[APS_AMOUNT]; // Hack to satisfy CreateTossable expectations
+		UaS_AmmoPouch DroppedPouch = UaS_AmmoPouch(super.CreateTossable(amt));
+		DroppedPouch.weaponstatus[APS_AMOUNT] = 1;
+		DroppedPouch.UpdateCapacity();
+
+		if (DoSplit) {
+			weaponstatus[APS_AMOUNT]--;
+			StorageItem SelItem = Storage.GetSelectedItem();
+			if (!SelItem) { SelItem = Storage.Items[0]; }
+			if (!SelItem) { console.printf("ammopouch: Split error!"); }
+			int AmountInPouch = SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0;
+			double UnitBulk = HDPickup(getdefaultbytype(SelItem.ItemClass)).bulk * hdmath.getencumbrancemult();
+			int AmountToMove = int((DroppedPouch.Storage.MaxBulk - DroppedPouch.Storage.TotalBulk) / UnitBulk);
+			AmountToMove = min(AmountToMove, AmountInPouch);
+			// console.printf(""..SelItem.GetBulk());
+			// console.printf(""..UnitBulk);
+			// console.printf(""..AmountToMove);
+			// console.printf("AmountInPouch "..AmountInPouch);
+			DroppedPouch.Storage.AddAmount(SelItem.ItemClass, AmountToMove);
+			Storage.RemoveItem(SelItem, null, null, AmountToMove);
+		}
+
 		return DroppedPouch;
 	}
 }

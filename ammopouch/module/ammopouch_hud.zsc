@@ -8,7 +8,7 @@ extend class UaS_AmmoPouch {
 
 		sb.DrawString(sb.pSmallFont, "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []", (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
 		string BulkString = "Total Bulk: \cf"..int(Storage.TotalBulk).."\c-";
-		if  (amount > 1) { BulkString = BulkString.." --- Pouches: \cf"..amount.."\c-"; }
+		if  (weaponstatus[APS_AMOUNT] > 1) { BulkString = BulkString.." --- Pouches: \cf"..weaponstatus[APS_AMOUNT].."\c-"; }
 		sb.DrawString(sb.pSmallFont, BulkString, (0, BaseOffset + 10), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
 
 		int ItemCount = Storage.Items.Size();
