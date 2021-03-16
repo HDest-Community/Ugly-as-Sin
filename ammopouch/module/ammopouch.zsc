@@ -25,5 +25,8 @@ class UaS_AmmoPouch : HDBackpack {
 		Spawn:
 			UGSI J -1 NoDelay;
 			Stop;
+		User3:
+			#### # 0 A_MagManager("");
+			goto Ready;
 	}
 }
