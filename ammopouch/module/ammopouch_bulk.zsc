@@ -20,9 +20,10 @@ extend class UaS_AmmoPouch {
 		if (HeldPouch) {
 			HeldPouch.weaponstatus[APS_AMOUNT]++;
 			HeldPouch.UpdateCapacity();
-			while (Storage.Items.Size() > 0) {
-				StorageItem MoveItem = Storage.Items[0];
+			for (int i = 0; i < Storage.Items.Size(); i++) {
+				StorageItem MoveItem = Storage.Items[i];
 				int AmountToMove = MoveItem.Amounts.Size() > 0 ? MoveItem.Amounts[0] : 0;
+				//console.printf(""..AmountToMove);
 				HeldPouch.Storage.AddAmount(MoveItem.ItemClass, AmountToMove);
 				Storage.RemoveItem(MoveItem, null, null, AmountToMove);
 			}
