@@ -75,7 +75,13 @@ extend class UaS_Consumable {
 		else { weaponstatus[UGCS_OPEN] = UGCSF_OPENED; }
 	}
 
+	override void PostBeginPlay() {
+		bfitsinbackpack = true;
+		super.PostBeginPlay();
+	}
+
 	override void BeginPlay() {
+		bfitsinbackpack = true;
 		UpdateSprite();
 		//Some generic open messages
 		AddOpenText("Let's see..");
