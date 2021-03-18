@@ -1,0 +1,4 @@
+server bool UaS_ScarcityEnabled = false;
+server int UaS_ScarcityRate = 50;
+server float UaS_ScarcityOverspawn = 0.5;
+server bool UaS_ScarcityDisableDrops = false;

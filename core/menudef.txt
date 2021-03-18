@@ -1,0 +1,19 @@
+AddOptionMenu "OptionsMenu" {
+	StaticText " "
+	Submenu "Ugly as Sin Settings", "UaS_Options"
+}
+
+AddOptionMenu "HDOptionsMenu" after "HDControlsMenu" {
+	Submenu "Ugly as Sin Settings", "UaS_Options"
+}
+
+// ---------------
+// Main Options / Core Menu
+// ---------------
+
+OptionMenu "UaS_Options" {
+	Title "Ugly as Sin Settings"
+
+	StaticText " "
+	StaticText "=Loaded Modules="
+}

@@ -20,8 +20,12 @@ version "4.5"
 #include "modules/items/food.zsc"
 
 // Scarcity scripts
-#include "modules/scarcity/handler.zsc"
-#include "modules/scarcity/items.zsc"
+#include "scarcity/module/scarcity.zsc"
+#include "scarcity/module/scarcity_drops.zsc"
+#include "scarcity/module/scarcity_helpers.zsc"
+#include "scarcity/module/scarcity_remover.zsc"
+#include "scarcity/module/scarcity_replacer.zsc"
+#include "scarcity/module/scarcity_items.zsc"
 
 // Frag spawning factor
 #include "modules/fragfactor/fragfactor.zsc"
