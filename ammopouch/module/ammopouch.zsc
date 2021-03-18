@@ -18,6 +18,7 @@ class UaS_AmmoPouch : HDBackpack {
 	override void BeginPlay() {
 		super.BeginPlay();
 		Storage = new('AmmoPouch_ItemStorage');
+		weaponstatus[APS_AMOUNT] = max(weaponstatus[APS_AMOUNT], 1);
 		UpdateCapacity();
 	}
 
