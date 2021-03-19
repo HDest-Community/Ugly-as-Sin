@@ -25,7 +25,7 @@ Sprite "HSCVC0", 23, 11
 	XScale 3.000
 	YScale 3.000
 	Offset 11, 10
-	Patch "patches/UaS_RationDebris.png", 0, 0
+	Patch "scarcity/patches/UaS_RationDebris.png", 0, 0
 }
 
 Sprite "HSCVB0", 28, 16
@@ -37,7 +37,7 @@ Sprite "HSCVB0", 28, 16
 Sprite "HSCVE0", 15, 20
 {
 	Offset 8, 19
-	Patch "patches/UaS_StimDebris.png", 0, 0
+	Patch "scarcity/patches/UaS_StimDebris.png", 0, 0
 	{
 		Translation "176:191=124:127"
 	}
@@ -46,7 +46,7 @@ Sprite "HSCVE0", 15, 20
 Sprite "HSCVF0", 28, 23
 {
 	Offset 12, 22
-	Patch "patches/UaS_MedikitDebris.png", 0, 0
+	Patch "scarcity/patches/UaS_MedikitDebris.png", 0, 0
 	{
 		Translation "176:191=124:127", "32:47=124:127"
 	}
@@ -55,7 +55,7 @@ Sprite "HSCVF0", 28, 23
 Sprite "HSCVG0", 28, 23
 {
 	Offset 12, 22
-	Patch "patches/UaS_ZerkDebris.png", 0, 0
+	Patch "scarcity/patches/UaS_ZerkDebris.png", 0, 0
 }
 
 Sprite "HSCVI0", 28, 33
@@ -67,37 +67,37 @@ Sprite "HSCVI0", 28, 33
 Sprite "HSCVJ0", 28, 26
 {
 	Offset 13, 24
-	Patch "patches/UaS_MapDamaged1.png", 0, 0
+	Patch "scarcity/patches/UaS_MapDamaged1.png", 0, 0
 }
 
 Sprite "HSCVK0", 28, 26
 {
 	Offset 13, 24
-	Patch "patches/UaS_MapDamaged2.png", 0, 0
+	Patch "scarcity/patches/UaS_MapDamaged2.png", 0, 0
 }
 
 Sprite "HSCVL0", 28, 26
 {
 	Offset 13, 24
-	Patch "patches/UaS_MapDamaged3.png", 0, 0
+	Patch "scarcity/patches/UaS_MapDamaged3.png", 0, 0
 }
 
 Sprite "HSCVM0", 28, 26
 {
 	Offset 13, 24
-	Patch "patches/UaS_MapDamaged4.png", 0, 0
+	Patch "scarcity/patches/UaS_MapDamaged4.png", 0, 0
 }
 
 Sprite "HSCVN0", 28, 26
 {
 	Offset 13, 24
-	Patch "patches/UaS_MapDamaged5.png", 0, 0
+	Patch "scarcity/patches/UaS_MapDamaged5.png", 0, 0
 }
 
 Sprite "HSCVO0", 28, 12
 {
 	Offset 13, 9
-	Patch "patches/UaS_NVGBroken.png", 0, 0
+	Patch "scarcity/patches/UaS_NVGBroken.png", 0, 0
 }
 
 Sprite "HSCVP0", 9, 11
