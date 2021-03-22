@@ -1,0 +1,3 @@
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Laser / Flashlight"
+}

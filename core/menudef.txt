@@ -14,6 +14,13 @@ AddOptionMenu "HDOptionsMenu" after "HDControlsMenu" {
 OptionMenu "UaS_Options" {
 	Title "Ugly as Sin Settings"
 
+	StaticText "=== Loaded Modules ==="
+	Submenu "View All", "UaS_LoadedModules"
 	StaticText " "
-	StaticText "=Loaded Modules="
+	StaticText "=== Configurable Modules ==="
+}
+
+OptionMenu "UaS_LoadedModules" {
+	Title "All Loaded Modules"
+	StaticText "Core"
 }
