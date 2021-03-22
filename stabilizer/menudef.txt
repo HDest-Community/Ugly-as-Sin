@@ -1,0 +1,14 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Stabilizer", "UaS_Stabilizer_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Stabilizer"
+}
+
+OptionMenu "UaS_Stabilizer_Options" {
+	Title "Stabilizer Module Settings"
+
+	Option "Spawns Enabled","UaS_SlingSpawns","OnOff"
+	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
+}

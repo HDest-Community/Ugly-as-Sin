@@ -51,7 +51,7 @@ version "4.5"
 
 // Standalone items
 #include "modules/items/2f.zsc"
-#include "modules/items/sling.zsc"
+#include "stabilizer/module/sling.zsc"
 #include "modules/items/glowstick.zsc"
 #include "modules/items/flare.zsc"
 #include "modules/items/traumakit/handler.zsc"

@@ -1,0 +1,2 @@
+server bool UaS_SlingSpawns = true;
+user int UaS_SlingDelay = 35;

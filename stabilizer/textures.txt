@@ -1,0 +1,5 @@
+Sprite "HSCVI0", 28, 33
+{
+	Offset 15, 16
+	Patch "patches/UaS_Sling.png", 0, 0
+}

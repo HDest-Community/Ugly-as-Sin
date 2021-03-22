@@ -1,0 +1,26 @@
+class UaS_SlingSpawner : EventHandler {
+	override void WorldLoaded(WorldEvent e) {
+		if(!UaS_SlingSpawns) { self.Destroy(); return;  }
+	}
+
+	override void WorldThingSpawned(WorldEvent e) {
+		if(level.maptime > 0) { self.Destroy(); return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (
+			e.Thing.GetClassName() == "hdsmg" ||
+			e.Thing.GetClassName() == "hunter" ||
+			e.Thing.GetClassName() == "slayer" ||
+			e.Thing.GetClassName() == "zm66assaultrifle" ||
+			e.Thing.GetClassName() == "zm66semi" ||
+			e.Thing.GetClassName() == "zm66regular" ||
+			e.Thing.GetClassName() == "vulcanette" ||
+			e.Thing.GetClassName() == "liberatorrifle" ||
+			e.Thing.GetClassName() == "liberatornogl" ||
+			e.Thing.GetClassName() == "bossrifle"
+		);
+
+		if (spawnable && UaS.RandomChance(0.2)) { UaS.SpawnStuff("UaS_WeaponSling", 1, e.Thing.pos); }
+	}
+}
