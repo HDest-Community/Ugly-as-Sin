@@ -1,11 +1,3 @@
-Sprite "HSCVC0", 23, 11
-{
-	XScale 3.000
-	YScale 3.000
-	Offset 11, 10
-	Patch "patches/UaS_RationDebris.png", 0, 0
-}
-
 Sprite "HSCVE0", 15, 20
 {
 	Offset 8, 19

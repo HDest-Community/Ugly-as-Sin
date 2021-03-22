@@ -25,7 +25,7 @@ Sprite "HSCVC0", 23, 11
 	XScale 3.000
 	YScale 3.000
 	Offset 11, 10
-	Patch "scarcity/patches/UaS_RationDebris.png", 0, 0
+	Patch "patches/UaS_RationDebris.png", 0, 0
 }
 
 Sprite "HSCVB0", 28, 16
@@ -152,12 +152,6 @@ Sprite "UGSIF0", 17, 18
 	YScale 1.500
 	Offset 7, 18
 	Patch "patches/UaS_TraumaKit.png", 0, 0
-}
-
-Sprite "UGSII0", 32, 12
-{
-	Offset 16, 12
-	Patch "patches/UaS_RocketBox.png", 0, 0
 }
 
 Sprite "UGSIJ0", 22, 27
