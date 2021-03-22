@@ -7,6 +7,7 @@ server float UaS_ScarcityOverspawn = 0.5;
 server bool UaS_ScarcityDisableDrops = false;
 
 user int UaS_SlingDelay = 35;
+server bool UaS_SlingSpawns = true;
 
 server bool UaS_FragReducerEnabled = false;
 server int UaS_FragSpawnRate = 100;
