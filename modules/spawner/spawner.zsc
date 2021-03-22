@@ -15,7 +15,6 @@ class UaS_Spawner : EventHandler {
 
 		HungerSpawns(e);
 		AllySpawns(e);
-		SlingSpawns(e);
 		GlowstickSpawns(e);
 		FlareSpawns(e);
 		TraumakitSpawns(e);

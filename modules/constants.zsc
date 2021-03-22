@@ -1,4 +1,3 @@
-const UAS_HDLD_SLING = "slg";
 const UAS_HDLD_2FMOD = "2fm";
 const UAS_HDLD_GLOWSTICK = "gls";
 const UAS_HDLD_FLARE = "flr";
