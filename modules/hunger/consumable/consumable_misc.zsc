@@ -4,8 +4,14 @@ extend class UaS_Consumable {
 	void AddConsumeText(string msg) { ConsumeText.Push(msg); }
 
 	// Getters for randomized text
-	string RandomOpenMessage() { return OpenText[random[uas_hunger](0,OpenText.Size()-1)]; }
-	string RandomConsumeMessage() { return ConsumeText[random[uas_hunger](0,ConsumeText.Size()-1)]; }
+	string RandomOpenMessage() {
+		if (OpenText.Size() <= 0) { return ""; }
+		return OpenText[random[uas_hunger](0,OpenText.Size()-1)];
+	}
+	string RandomConsumeMessage() {
+		if (ConsumeText.Size() <= 0) { return ""; }
+		return ConsumeText[random[uas_hunger](0,ConsumeText.Size()-1)];
+	}
 
 	override double weaponbulk() {
 		double itemsbulk = 0;
