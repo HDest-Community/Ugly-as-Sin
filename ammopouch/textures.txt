@@ -1,5 +1,23 @@
-Sprite "UGSIJ0", 22, 27
+Sprite "UGSPA0", 22, 27
 {
 	Offset 11, 27
 	Patch "patches/UaS_AmmoPouch.png", 0, 0
+}
+
+Sprite "UGSPB0", 27, 22
+{
+	Offset 12, 22
+	xscale 0.87
+	yscale 1.2
+	Patch "patches/UaS_AmmoPouch.png", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "UGSPC0", 22, 27
+{
+	Offset 11, 27
+	Patch "patches/UaS_AmmoPouch.png", 0, 0
+	Patch "STASQGR", 15, 12
 }
