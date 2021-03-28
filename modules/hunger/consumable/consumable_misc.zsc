@@ -83,10 +83,6 @@ extend class UaS_Consumable {
 	override void BeginPlay() {
 		bfitsinbackpack = true;
 		UpdateSprite();
-		//Some generic open messages
-		AddOpenText("Let's see..");
-		AddOpenText("Hope this is edible...");
-		AddOpenText("Chow time!");
 		//Process user's custom messages
 		Messages();
 		super.BeginPlay();
