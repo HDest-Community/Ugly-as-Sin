@@ -10,4 +10,6 @@ GameInfo {
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
 	AddEventHandlers = "UaS_YOLO_Handler"
 	AddEventHandlers = "UaS_Foodlist"
+	AddEventHandlers = "UaS_Jamming_Bootstrap"
+	AddEventHandlers = "UaS_DeathFade_Bootstrap"
 }

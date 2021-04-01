@@ -5,23 +5,15 @@ class UaS_Bootstrap : EventHandler {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
 			if (UaS_HungerEnabled) { Hunger_Bootstrap(i); }
-			if (UaS_JammingEnabled) { Jamming_Bootstrap(i); }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Looting_Bootstrap(i);
 			Medical_Bootstrap(i);
 			Hunger_Bootstrap(i);
-			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
 		}
 	}
 
 	override void PlayerEntered(PlayerEvent e) {
 		if (!e.IsReturn) AimSway_Bootstrap(e.PlayerNumber);
-	}
-
-	override void PlayerDied(PlayerEvent e) {
-		if (!deathfade) { deathfade = CVar.GetCVar("UaS_DeathFade", players[e.PlayerNumber]); }
-		if (deathfade.GetBool() == false) { return; }
-		Deathfade_Bootstrap(e.PlayerNumber, true);
 	}
 }
 
@@ -80,27 +72,6 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_StealthHandler")) {
 			p.mo.Giveinventory("UaS_StealthHandler", 1);
-		}
-	}
-
-	void Deathfade_Bootstrap(int pnum, bool activate) {
-		Shader.SetEnabled(players[pnum].mo.player, "deathfade", activate);
-		if (!activate) { return; }
-		UaS_DeathFader df = new("UaS_DeathFader");
-		df.plr = HDPlayerPawn(players[pnum].mo);
-		df.counttoblack = (11 - min(abs(players[pnum].mo.health),10)) * 35;
-		if(!df.plr) {
-			console.printf("new deathfader failed for "..pnum) ;
-			df.destroy();
-			return;
-		}
-	}
-
-	void Jamming_Bootstrap(int pnum) {
-		PlayerInfo p = players[pnum];
-		if (!p.mo) { return; }
-		if (!p.mo.countinv("UaS_WeaponJammer")) {
-			p.mo.Giveinventory("UaS_WeaponJammer", 1);
 		}
 	}
 }

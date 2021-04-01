@@ -1,0 +1,13 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Jamming", "UaS_Jamming_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Jamming"
+}
+
+OptionMenu "UaS_Jamming_Options" {
+	Title "JammingModule Settings"
+
+	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
+}

@@ -1,0 +1,48 @@
+class UaS_DeathFade_Bootstrap : EventHandler {
+	transient cvar deathfade;
+
+	override void WorldTick() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
+		}
+	}
+
+	bool DoDeathFade(int pnum) {
+		if (!deathfade) { deathfade = CVar.GetCVar("UaS_DeathFade", players[pnum]); }
+		if (!deathfade) { return true; }
+		return deathfade.GetBool();
+	}
+
+	override void PlayerDied(PlayerEvent e) {
+		if (!DoDeathFade(e.PlayerNumber)) { return; }
+		Deathfade_Bootstrap(e.PlayerNumber, true);
+	}
+
+	void Deathfade_Bootstrap(int pnum, bool activate) {
+		Shader.SetEnabled(players[pnum].mo.player, "deathfade", activate);
+		if (!activate) { return; }
+		UaS_DeathFader df = new("UaS_DeathFader");
+		df.plr = HDPlayerPawn(players[pnum].mo);
+		df.counttoblack = (11 - min(abs(players[pnum].mo.health),10)) * 35;
+		if(!df.plr) {
+			console.printf("new deathfader failed for "..pnum) ;
+			df.destroy();
+			return;
+		}
+	}
+}
+
+
+class UaS_DeathFader : Thinker {
+	HDPlayerPawn plr;
+	double fadeamount;
+	double counttoblack;
+
+	override void Tick() {
+		super.Tick();
+		fadeamount = min(fadeamount + (1.0/counttoblack), 1.0);
+		Shader.SetUniform1f(plr.player, "deathfade", "fadeamount", fadeamount);
+		if (fadeamount >= 1.0 || plr.health > 0) { destroy(); }
+	}
+}

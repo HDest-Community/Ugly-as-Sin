@@ -1,0 +1,6 @@
+version "4.5"
+
+#include "module/jamming.zsc"
+#include "module/jam_lib.zsc"
+#include "module/jam_pis.zsc"
+#include "module/jam_smg.zsc"

@@ -15,6 +15,6 @@ HardwareShader PostProcess scene
 HardwareShader PostProcess scene
 {
 	Name "deathfade"
-	Shader "shaders/uas_deathfade.fp" 330
+	Shader "deathfade/shaders/uas_deathfade.fp" 330
 	Uniform float fadeamount
 }

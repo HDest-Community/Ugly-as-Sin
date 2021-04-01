@@ -78,6 +78,11 @@ version "4.5"
 
 
 #include "modules/aimsway/aimsway.zsc"
-#include "modules/deathfade/deathfade.zsc"
+#include "deathfade/module/deathfade.zsc"
 #include "modules/yolo/yolo.zsc"
-#include "modules/jamming/jamming.zsc"
+
+// Jamming
+#include "jamming/module/jamming.zsc"
+#include "jamming/module/jam_lib.zsc"
+#include "jamming/module/jam_pis.zsc"
+#include "jamming/module/jam_smg.zsc"
