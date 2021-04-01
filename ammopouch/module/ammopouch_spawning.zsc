@@ -1,5 +1,5 @@
 //============================================
-// Spawning, 25% chance on corpses / boxes
+// Spawning
 //============================================
 class UaS_WildAmmoPouch : IdleDummy {
 	override void postbeginplay() {
@@ -12,6 +12,9 @@ class UaS_WildAmmoPouch : IdleDummy {
 }
 
 class UaS_AmmoPouchSpawner : EventHandler {
+	int alreadyspawned;
+	int failspawn;
+
 	override void WorldThingSpawned(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
@@ -22,12 +25,23 @@ class UaS_AmmoPouchSpawner : EventHandler {
 			e.Thing.GetClassName() == "DeadRifleman" ||
 			e.Thing.GetClassName() == "ReallyDeadRifleman");
 
-		if(spawnable && randompick(0,0,0,1) == 1) {
-			let SpawnedPouch = Actor.Spawn('UaS_WildAmmoPouch', (e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z + 5));
-			SpawnedPouch.vel.x += frandom(-2,2);
-			SpawnedPouch.vel.y += frandom[spawnstuff](-2,2);
-			SpawnedPouch.vel.z += frandom[spawnstuff](1,2);
-			if (e.Thing.GetClassName() == "HDAmBox") { e.Thing.destroy(); }
+		int chance = 5 + (5 * failspawn) - (50 * alreadyspawned);
+		chance = clamp(chance, 0, 100);
+
+		if(spawnable) {
+			if (random(0, 100) <= chance) {
+				console.printf("ammopouch spawn chance %i, success", chance);
+				let SpawnedPouch = Actor.Spawn('UaS_WildAmmoPouch', (e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z + 5));
+				SpawnedPouch.vel.x += frandom(-2,2);
+				SpawnedPouch.vel.y += frandom[spawnstuff](-2,2);
+				SpawnedPouch.vel.z += frandom[spawnstuff](1,2);
+				alreadyspawned++;
+				if (e.Thing.GetClassName() == "HDAmBox") { e.Thing.destroy(); }
+			}
+			else {
+				console.printf("ammopouch spawn chance %i, fail", chance);
+				failspawn++;
+			}
 		}
 	}
 }
