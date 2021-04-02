@@ -28,7 +28,7 @@ version "4.5"
 #include "scarcity/module/scarcity_items.zsc"
 
 // Frag spawning factor
-#include "modules/fragfactor/fragfactor.zsc"
+#include "fragfactor/module/fragfactor.zsc"
 
 // Allied marine spawning
 #include "modules/allies/spawner.zsc"

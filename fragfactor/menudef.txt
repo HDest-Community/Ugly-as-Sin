@@ -1,0 +1,14 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Fragshard Reducer", "UaS_Frag_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Fragshard Reducer"
+}
+
+OptionMenu "UaS_Frag_Options" {
+	Title "Fragshard Reducer Module Settings"
+
+	ScaleSlider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, "Frag Disabled"
+	Command "Remove Frag", "netevent UaS_RemoveFrag"
+}
