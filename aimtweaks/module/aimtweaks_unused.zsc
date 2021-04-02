@@ -1,0 +1,49 @@
+extend class UaS_Aim_Thinker {
+	// aim offseting variables
+	vector2 aimoffset;
+	vector2 aimswayrandom;
+	vector2 aimswayrandomspeed;
+
+	void AimSway() {
+
+		// add random jitter
+		aimoffset += RandomSway() * 0.1;
+
+		// prevent from going outside bounds
+		aimoffset.x = clamp(aimoffset.x, -45, 45);
+		aimoffset.y = clamp(aimoffset.y, -45, 45);
+
+		// keep in a reasonably sane area
+		aimoffset *= 0.95;
+		console.printf(""..aimoffset.length());
+		// double coefficient = 0.5;
+		// if (plr.stunned > 0) { coefficient *= 0.5; }
+		// aimoffset *= ((plr.fatigue + 1) / 50.0) ** coefficient;
+
+		// recenter for focus and bracing, separately
+		if (plr.isFocussing) { aimoffset *= 0.95; }
+		if (plr.gunbraced) { aimoffset *= 0.95; }
+
+		// apply to player
+		plr.hudbob += aimoffset;
+	}
+
+	vector2 RandomSway() {
+		// Get player mouse input and add to offset
+		vector2 playerlook = (-plr.player.cmd.yaw, -plr.player.cmd.pitch) * 0.001;
+		aimswayrandomspeed += playerlook;
+
+		if (random(1, 4) == 1) {
+			aimswayrandomspeed.x += ((frandom(-1.0, 1.0) + frandom(-1.0, 1.0) + frandom(-1.0, 1.0)) / 3);
+		}
+		if (random(1, 4) == 1) {
+			aimswayrandomspeed.y += ((frandom(-1.0, 1.0) + frandom(-1.0, 1.0) + frandom(-1.0, 1.0)) / 3);
+		}
+
+		if (plr.isFocussing) { aimswayrandomspeed *= 0.75; }
+		if (plr.gunbraced) { aimswayrandomspeed *= 0.0; }
+
+		aimswayrandomspeed *= 0.9;
+		return aimswayrandomspeed;
+	}
+}

@@ -1,0 +1,3 @@
+server bool UaS_FocusZoomEnabled = false;
+server int UaS_FocusZoomMode = 0;
+server bool UaS_AimSwayEnabled = false;
