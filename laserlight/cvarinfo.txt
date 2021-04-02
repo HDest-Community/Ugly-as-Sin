@@ -1,1 +1,0 @@
-user bool UaS_FlashlightParticles = true;

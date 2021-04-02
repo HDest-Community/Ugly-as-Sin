@@ -7,7 +7,7 @@ AddOptionMenu "UaS_LoadedModules" {
 }
 
 OptionMenu "UaS_Jamming_Options" {
-	Title "JammingModule Settings"
+	Title "Jamming Module Settings"
 
 	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
 }
