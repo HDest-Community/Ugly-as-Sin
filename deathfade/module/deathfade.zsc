@@ -1,6 +1,14 @@
 class UaS_DeathFade_Bootstrap : EventHandler {
 	transient cvar deathfade;
 
+	override void OnRegister() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			deathfade = CVar.GetCVar("UaS_DeathFade", players[i]);
+			if (!deathfade) { console.printf("CVar UaS_DeathFade ignored in standalone mode"); }
+		}
+	}
+
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
