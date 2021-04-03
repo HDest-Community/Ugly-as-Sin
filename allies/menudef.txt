@@ -1,0 +1,12 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Allied Marines", "UaS_Ally_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Allied Marines"
+}
+
+OptionMenu "UaS_Ally_Options" {
+	Title "Allied Marines Module"
+	ScaleSlider "Ally spawn rate","UaS_AllySpawnRate", 0, 100, 5, "Disabled"
+}

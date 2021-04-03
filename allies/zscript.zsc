@@ -1,0 +1,4 @@
+version "4.5"
+
+#include "module/allies.zsc"
+#include "module/allies_spawner.zsc"

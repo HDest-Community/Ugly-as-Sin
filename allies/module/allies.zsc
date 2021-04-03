@@ -1,78 +1,18 @@
-extend class UaS_Spawner {
-	double spawnChance;
-
-	override void WorldLoaded(WorldEvent e) {
-		spawnChance = UaS_AllySpawnRate;
-		spawnChance /= 100.0;
-		if (UaS_Debug & Allies) { console.printf("Ally spawn debugging on. Spawnchance = "..spawnChance); }
-	}
-
-	//Spawn allied marines randomly
-	void AllySpawns(WorldEvent e) {
-		bool replaced = false;
-
-		// Conditions for skipping spawns
-		if(!UaS_AlliesEnabled) { return; }
-		if(!UaS.RandomChance(spawnChance)) { return; }
-		if(level.maptime > 5) { return; }
-		if(!e.Thing) { return; }
-
-		bool corpseType = (
-			e.Thing.GetClassName() == 'DeadZombieStormtrooper' ||
-			e.Thing.GetClassName() == 'DeadHideousShotgunGuy' ||
-			e.Thing.GetClassName() == 'DeadRifleman' ||
-			e.Thing.GetClassName() == 'ReallyDeadRifleman'
-		);
-
-		if(corpseType) {
-			//Make CheckPosition ignore the corpse
-			bool prevNoclip = e.Thing.bNOCLIP;
-			e.Thing.bNOCLIP = true;
-
-			replaced = SpawnAlly(e.Thing.pos);
-			if (replaced) {
-				if (UaS_Debug & Allies) { console.printf("Spawned ally"); }
-				e.Thing.Destroy();
-			}
-			else { e.Thing.bNOCLIP = prevNoclip; }
-		}
-	}
-
-	bool SpawnAlly(vector3 pos) {
-		HDMarine ally = HDMarine(actor.spawn('HDMarine', pos));
-		if (!ally) { return false; }
-		if (!ally.CheckPosition(pos.xy)) {
-			ally.Destroy();
-			return false;
-		}
-		switch (UaS_AllyPreferred) {
-			case 1:
-				ally.painsound="marine/pain";
-				ally.deathsound="marine/death";
-				break;
-			case 2:
-				ally.painsound="marinef/pain";
-				ally.deathsound="marinef/death";
-				break;
-		}
-		ally.GiveInventory("UaS_Ally_Activator", 1);
-		return true;
-	}
-}
-
 class UaS_Ally_Activator : Inventory {
 	double closestPlayer;
 	bool LoSPlayer;
+	int PlayerToCheck;
 
 	override void DoEffect() {
 		closestPlayer = 32767;
 		LoSPlayer = false;
 		owner.SetStateLabel("noshot");
-		for (int i = 0; i < MAXPLAYERS; i++) {
-			if(!playerInGame[i]) continue;
-			closestPlayer = min(owner.distance2D(players[i].mo), closestPlayer);
-			LoSPlayer = owner.CheckSight(players[i].mo);
+		if(playerInGame[PlayerToCheck]) {
+			closestPlayer = min(owner.distance2D(players[PlayerToCheck].mo), closestPlayer);
+			LoSPlayer = owner.CheckSight(players[PlayerToCheck].mo);
 		}
+		PlayerToCheck++;
+		if (PlayerToCheck >= MAXPLAYERS) { PlayerToCheck = 0; }
 		if (closestPlayer <= (random[ally](6, 10) * 128) || LoSPlayer) {
 			destroy();
 		}
