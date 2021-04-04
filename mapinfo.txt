@@ -12,4 +12,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Foodlist"
 	AddEventHandlers = "UaS_Jamming_Bootstrap"
 	AddEventHandlers = "UaS_DeathFade_Bootstrap"
+	AddEventHandlers = "UaS_Ally_Spawner"
 }

@@ -1,18 +1,21 @@
 class UaS_Ally_Spawner : EventHandler {
 	double spawnChance;
+	bool doSpawns;
 
 	override void WorldLoaded(WorldEvent e) {
+		if (UaS.CVarCheck("UaS_AlliesEnabled")) { doSpawns = UaS_AlliesEnabled; }
+		else { doSpawns = true; }
 		spawnChance = UaS_AllySpawnRate;
 		spawnChance /= 100.0;
 		if (UaS_Debug & Allies) { console.printf("Ally spawn debugging on. Spawnchance = "..spawnChance); }
 	}
 
 	//Spawn allied marines randomly
-	void AllySpawns(WorldEvent e) {
+	override void WorldThingSpawned(WorldEvent e) {
 		bool replaced = false;
 
 		// Conditions for skipping spawns
-		if(!UaS_AlliesEnabled) { return; }
+		if(!doSpawns) { return; }
 		if(!UaS.RandomChance(spawnChance)) { return; }
 		if(level.maptime > 5) { return; }
 		if(!e.Thing) { return; }

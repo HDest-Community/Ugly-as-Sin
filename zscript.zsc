@@ -5,6 +5,7 @@ version "4.5"
 #include "core/module/core_spawnstuff.zsc"
 #include "core/module/core_randomchance.zsc"
 #include "core/module/core_debug.zsc"
+#include "core/module/core_cvarcheck.zsc"
 
 // Constants
 #include "modules/constants.zsc"
@@ -31,7 +32,8 @@ version "4.5"
 #include "fragfactor/module/fragfactor.zsc"
 
 // Allied marine spawning
-#include "modules/allies/spawner.zsc"
+#include "allies/module/allies.zsc"
+#include "allies/module/allies_spawner.zsc"
 
 // Monster AI
 #include "modules/ai/bootstrap.zsc"
