@@ -103,7 +103,7 @@ Sprite "HSCVO0", 28, 12
 Sprite "HSCVP0", 9, 11
 {
 	Offset 4, 11
-	Patch "patches/UaS_2FCartridge.png", 0, 0
+	Patch "2fcartridges/patches/UaS_2FCartridge.png", 0, 0
 }
 
 Sprite "HSCVR0", 23, 12

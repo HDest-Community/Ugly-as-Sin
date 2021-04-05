@@ -13,4 +13,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Jamming_Bootstrap"
 	AddEventHandlers = "UaS_DeathFade_Bootstrap"
 	AddEventHandlers = "UaS_Ally_Spawner"
+	AddEventHandlers = "UaS_2F_Bootstrap"
 }

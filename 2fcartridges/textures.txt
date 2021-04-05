@@ -1,0 +1,5 @@
+Sprite "HSCVP0", 9, 11
+{
+	Offset 4, 11
+	Patch "patches/UaS_2FCartridge.png", 0, 0
+}

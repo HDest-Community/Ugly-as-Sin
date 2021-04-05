@@ -35,9 +35,6 @@ extend class UaS_BootStrap {
 	void Medical_Bootstrap(int pnum) {
 		PlayerInfo p = players[pnum];
 		if (!p.mo) { return; }
-		if (!p.mo.countinv("UaS_2F_Handler")) {
-			p.mo.giveinventory("UaS_2F_Handler", 1);
-		}
 		if (!p.mo.countinv("UaS_WoundStabilization")) {
 			p.mo.giveinventory("UaS_WoundStabilization", 1);
 		}

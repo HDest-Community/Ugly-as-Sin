@@ -52,7 +52,6 @@ version "4.5"
 #include "modules/visweps/visweps.zsc"
 
 // Standalone items
-#include "modules/items/2f.zsc"
 #include "stabilizer/module/sling.zsc"
 #include "stabilizer/module/sling_spawning.zsc"
 #include "modules/items/glowstick.zsc"
@@ -78,13 +77,31 @@ version "4.5"
 #include "ammopouch/module/ammopouch_itemstorage.zsc"
 #include "ammopouch/module/ammopouch_spawning.zsc"
 
-
+// AimTweaks
 #include "aimtweaks/module/aimtweaks.zsc"
 #include "deathfade/module/deathfade.zsc"
-#include "modules/yolo/yolo.zsc"
 
 // Jamming
 #include "jamming/module/jamming.zsc"
 #include "jamming/module/jam_lib.zsc"
 #include "jamming/module/jam_pis.zsc"
 #include "jamming/module/jam_smg.zsc"
+
+// 2F Cartridges
+#include "2fcartridges/module/2f.zsc"
+#include "2fcartridges/module/2f_bootstrap.zsc"
+#include "2fcartridges/module/2f_handler.zsc"
+
+#include "modules/yolo/yolo.zsc"
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+//Cartridge handler
+class UaS_2F_Handler : Inventory {
+	int cooldown;
+
+	override void DoEffect() {
+		super.DoEffect();
+		//assume 7 auto-sutures per module, default 42 sutures = 6 modules
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr || !ownr.player.ReadyWeapon) { return; }
+		if(ownr.player.ReadyWeapon.GetClassName() != "HDMedikitter") { return; }
+
+		HDPlayerPawn(owner).wephelptext = HDWeapon(owner.player.ReadyWeapon).gethelptext().."\n"..
+			WEPHELP_UNLOAD.."   Remove a suture module\n"..
+			WEPHELP_ALTRELOAD.."   Insert a suture module\n";
+
+		if(cooldown == 0) {
+			if(ownr.player.cmd.buttons & BT_USER4) {
+				if(HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] >= 7) {
+					HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] -= 7;
+					owner.A_GiveInventory('UaS_2FCartridge', 1);
+					owner.A_StartSound("weapons/rifleclick", volume: 0.5);
+					cooldown = 20;
+				}
+				else { HDMedikitter(ownr.player.ReadyWeapon).A_WeaponMessage("Can't remove partial auto-suture cartridge", 70); }
+			}
+
+			else if((ownr.player.cmd.buttons & BT_USER1) && owner.countinv('UaS_2FCartridge') > 0) {
+				if(HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] <= MEDIKIT_MAXFLESH - 7) {
+					HDMedikitter(ownr.player.ReadyWeapon).weaponstatus[MEDS_SECONDFLESH] += 7;
+					owner.A_TakeInventory('UaS_2FCartridge', 1);
+					owner.A_StartSound("weapons/rifleload", volume: 0.75);
+					cooldown = 20;
+				}
+				else { HDMedikitter(ownr.player.ReadyWeapon).A_WeaponMessage("Not enough space to insert auto-suture cartridge", 70); }
+			}
+		}
+		cooldown = clamp(cooldown - 1, 0, 20);
+	}
+}
