@@ -27,7 +27,7 @@ extend class UaS_Consumable {
 		if (weaponstatus[UGCS_OPEN] != UGCSF_SEALED) { return; }
 		owner.A_StartSound(opensound,
 			CHAN_WEAPON, CHANF_OVERLAP,
-			volume: 0.25, ATTN_STATIC, pitch: 0.9);
+			attenuation: ATTN_STATIC);
 		weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
 		owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
 		GiveContents();
@@ -50,9 +50,9 @@ extend class UaS_Consumable {
 
 	void ResealPackage() {
 		if (!bRESEALABLE) { return; }
-		owner.A_StartSound("weapons/pocket",
+		owner.A_StartSound("UaS/FoodClose",
 			CHAN_WEAPON, CHANF_OVERLAP,
-			volume: 0.75, ATTN_STATIC, pitch: 1.15);
+			attenuation: ATTN_STATIC);
 		weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
 	}
 

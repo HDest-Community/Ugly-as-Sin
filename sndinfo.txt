@@ -11,6 +11,12 @@ UaS/Sip		dsslp
 UaS/Swish	dspbtl
 UaS/Swallow	dsgulp
 UaS/FoodOpen	dsclaw
+UaS/FoodClose	dspocket
+
+$pitchset UaS/FoodOpen 0.9
+$pitchset UaS/FoodClose 1.15
+$volume UaS/FoodOpen 0.25
+$volume UaS/FoodClose 0.75
 
 UaS/Glowstick	dsrifclk
 UaS/Flare		"sounds/tr_flare.wav"
