@@ -1,22 +1,3 @@
-extend class UaS_Spawner {
-	//Set up spawns
-	void FlareSpawns(WorldEvent e) {
-		if(level.maptime > 1) { return; }
-		if(!e.Thing) { return; }
-		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
-
-		bool spawnable = (
-			e.thing.GetClassName() == "HDAmBox" ||
-			e.Thing.GetClassName() == "PortableStimpack" ||
-			e.Thing.GetClassName() == "PortableMedikit" ||
-			e.Thing.GetClassName() == "HDBackpack");
-
-		if(spawnable) {
-			UaS.SpawnStuff('UaS_flare', randompick[flare](0, 0, 0, 1), e.Thing.pos);
-		}
-	}
-}
-
 class UaS_Flare : HDPickup {
 	bool Activated, Thrown;
 	DynamicLight FlareLight;

@@ -52,10 +52,6 @@ version "4.5"
 #include "modules/visweps/visweps.zsc"
 
 // Standalone items
-#include "stabilizer/module/sling.zsc"
-#include "stabilizer/module/sling_spawning.zsc"
-#include "modules/items/glowstick.zsc"
-#include "modules/items/flare.zsc"
 #include "modules/items/traumakit/handler.zsc"
 #include "modules/items/traumakit/traumakit.zsc"
 #include "modules/items/traumakit/stabilize.zsc"
@@ -79,6 +75,8 @@ version "4.5"
 
 // AimTweaks
 #include "aimtweaks/module/aimtweaks.zsc"
+
+// Deathfade
 #include "deathfade/module/deathfade.zsc"
 
 // Jamming
@@ -92,16 +90,13 @@ version "4.5"
 #include "2fcartridges/module/2f_bootstrap.zsc"
 #include "2fcartridges/module/2f_handler.zsc"
 
+// Markers
+#include "markers/module/markers_flare.zsc"
+#include "markers/module/markers_glowstick.zsc"
+#include "markers/module/markers_spawner.zsc"
+
+// Stabilizer
+#include "stabilizer/module/sling.zsc"
+#include "stabilizer/module/sling_spawning.zsc"
+
 #include "modules/yolo/yolo.zsc"
-
-
-
-
-
-
-
-
-
-
-
-

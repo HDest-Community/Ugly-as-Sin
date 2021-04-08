@@ -1,21 +1,3 @@
-extend class UaS_Spawner {
-	void GlowstickSpawns(WorldEvent e) {
-		if(level.maptime > 1) { return; }
-		if(!e.Thing) { return; }
-		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
-
-		bool spawnable = (
-			e.thing.GetClassName() == "HDAmBox" ||
-			e.Thing.GetClassName() == "PortableStimpack" ||
-			e.Thing.GetClassName() == "PortableMedikit" ||
-			e.Thing.GetClassName() == "HDBackpack");
-
-		if(spawnable) {
-			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 0, 1), e.Thing.pos);
-		}
-	}
-}
-
 class UaS_Glowstick : HDPickup {
 	bool Activated, Thrown;
 	DynamicLight GlowLight;

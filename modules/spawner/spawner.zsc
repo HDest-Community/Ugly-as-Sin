@@ -14,8 +14,6 @@ class UaS_Spawner : EventHandler {
 		if (level.maptime > 1) { return; }
 
 		HungerSpawns(e);
-		GlowstickSpawns(e);
-		FlareSpawns(e);
 		TraumakitSpawns(e);
 	}
 }

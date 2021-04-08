@@ -119,7 +119,7 @@ Sprite "UGSIB0", 72, 16
 	XScale 8.000
 	YScale 8.000
 	Offset 36, 8
-	Patch "patches/UaS_Glowstick.png", 0, 0
+	Patch "markers/patches/UaS_Glowstick.png", 0, 0
 }
 
 Sprite "UGSIC0", 72, 16
@@ -127,7 +127,7 @@ Sprite "UGSIC0", 72, 16
 	XScale 8.000
 	YScale 8.000
 	Offset 36, 8
-	Patch "patches/UaS_GlowstickLit.png", 0, 0
+	Patch "markers/patches/UaS_GlowstickLit.png", 0, 0
 }
 
 Sprite "UGSID0", 48, 48

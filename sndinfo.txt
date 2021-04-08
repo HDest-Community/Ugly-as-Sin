@@ -19,7 +19,7 @@ $volume UaS/FoodOpen 0.25
 $volume UaS/FoodClose 0.75
 
 UaS/Glowstick	dsrifclk
-UaS/Flare		"sounds/tr_flare.wav"
+UaS/Flare		"markers/sounds/tr_flare.wav"
 
 UaS/respirator/vent			"respirator/sounds/resp_vent.wav"
 UaS/respirator/breathing	"respirator/sounds/resp_breathing.wav"

@@ -1,0 +1,29 @@
+Sprite "UGSIB0", 72, 16
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 36, 8
+	Patch "patches/UaS_Glowstick.png", 0, 0
+}
+
+Sprite "UGSIC0", 72, 16
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 36, 8
+	Patch "patches/UaS_GlowstickLit.png", 0, 0
+}
+
+Sprite "UGSIH0", 5, 10
+{
+	XScale 1.500
+	Offset 3, -2
+	Sprite "CANDA0", -6, -3
+}
+
+Sprite "UGSIG0", 5, 13
+{
+	XScale 1.500
+	Offset 3, 1
+	Patch "CANDA0", -6, 0
+}

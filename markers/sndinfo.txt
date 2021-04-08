@@ -1,0 +1,2 @@
+UaS/Glowstick	dsrifclk
+UaS/Flare		"sounds/tr_flare.wav"

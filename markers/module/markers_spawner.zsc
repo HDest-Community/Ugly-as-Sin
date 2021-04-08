@@ -1,0 +1,19 @@
+class UaS_Markers_Spawner : EventHandler {
+
+	override void WorldThingSpawned(WorldEvent e) {
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+		if (level.maptime > 1) { return; }
+
+		bool spawnable = (
+			e.thing.GetClassName() == "HDAmBox" ||
+			e.Thing.GetClassName() == "PortableStimpack" ||
+			e.Thing.GetClassName() == "PortableMedikit" ||
+			e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable) {
+			UaS.SpawnStuff('UaS_Flare', randompick[flare](0, 0, 0, 0, 1), e.Thing.pos);
+			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 0, 0, 1), e.Thing.pos);
+		}
+	}
+}
