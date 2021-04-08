@@ -218,22 +218,6 @@ class UaS_TraumaKit : HDWeapon {
 		return wh.critwounds[index];
 	}
 
-	// Copied from HD, non-action version
-	void PlaySkinSound(int which,sound fallback,int channel=CHAN_VOICE,int flags=0){
-		let ppp=hdplayerpawn(owner);
-		sound sss;
-		if(ppp)switch(which){
-		case SKINSOUND_TAUNT:sss=ppp.tauntsound;break;
-		case SKINSOUND_XDEATH:sss=ppp.xdeathsound;break;
-		case SKINSOUND_GRUNT:sss=ppp.gruntsound;break;
-		case SKINSOUND_LAND:sss=ppp.landsound;break;
-		case SKINSOUND_MEDS:sss=ppp.medsound;break;
-		default:return;
-		}
-		else sss=fallback;
-		owner.A_StartSound(sss,channel,flags);
-	}
-
 	void DebugStatus() {
 		if (currentWound) {
 			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
