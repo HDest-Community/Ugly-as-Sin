@@ -1,3 +1,5 @@
+const UAS_HDLD_FLARE = "flr";
+
 class UaS_Flare : HDPickup {
 	bool Activated, Thrown;
 	DynamicLight FlareLight;

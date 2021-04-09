@@ -1,3 +1,5 @@
+const UAS_HDLD_GLOWSTICK = "gls";
+
 class UaS_Glowstick : HDPickup {
 	bool Activated, Thrown;
 	DynamicLight GlowLight;
