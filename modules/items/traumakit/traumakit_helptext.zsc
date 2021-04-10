@@ -42,6 +42,12 @@ extend class UaS_TraumaKit {
 				break;
 			case T_SCALPEL:
 				r.AppendFormat(WEPHELP_FIRE.."  Re-open wound\n");
+				if (weaponstatus[TK_SCALPEL_CAP] == 1) {
+					r.AppendFormat(WEPHELP_UNLOAD.."  Remove safety cap\n");
+				}
+				else {
+					r.AppendFormat(WEPHELP_UNLOAD.."  Replace safety cap\n");
+				}
 				break;
 		}
 		return r;

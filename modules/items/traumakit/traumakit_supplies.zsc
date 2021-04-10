@@ -52,6 +52,7 @@ extend class UaS_TraumaKit {
 		weaponstatus[TKS_SALINE] = TKS_MAX_SALINE;
 		weaponstatus[TKS_BIOFOAM] = TKS_MAX_BIOFOAM;
 		weaponstatus[TKS_STAPLES] = TKS_MAX_STAPLES;
+		weaponstatus[TK_SCALPEL_CAP] = 1;
 	}
 
 	// Copied from HD to avoid inheritance chain

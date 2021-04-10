@@ -253,6 +253,7 @@ class UaS_TraumaKit : HDWeapon {
 		TK_SELECTED,
 		TK_BUTTON,
 		TK_HOLD,
+		TK_SCALPEL_CAP,
 
 		//supply slots
 		TKS_PAINKILLER,
