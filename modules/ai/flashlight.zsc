@@ -2,7 +2,7 @@ extend class UaS_AI_Handler {
 	UaS_LaserLightModule llm;
 	int	recheck;
 	bool flashing;
-	int flashrate;
+	int prefmode;
 
 	void Flashlight() {
 		if (owner.isFrozen() || level.isFrozen()) { return; }
@@ -39,10 +39,9 @@ extend class UaS_AI_Handler {
 			else { llm.activated = false; }
 
 			// misc other adjustments
-			flashrate = random[aillm](2, 4);
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
-			if (random[aillm](0,1) > 0.75) { llm.ModeSwitch(random[aillm](0,2)); }
-			if (random[aillm](0,128) > lightlevel) { llm.ModeSwitch(randompick[aillm](0,2)); }
+			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
+			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
 		}
 
 		if (owner is "HERPBot") {
@@ -65,10 +64,12 @@ extend class UaS_AI_Handler {
 		flashing = (
 			owner.target &&
 			isowneraiming &&
+			!BotClass &&
 			(llm.mode == 0 || llm.mode == 2)
 		);
 
-		if (flashing && level.maptime & flashrate) { llm.ToggleSwitch(); }
+		if (flashing) { llm.ModeSwitch(3); }
+		else { llm.ModeSwitch(prefmode); }
 
 		// Handle random light movement
 		if ((level.maptime % 10 == 0) && !BotClass) {

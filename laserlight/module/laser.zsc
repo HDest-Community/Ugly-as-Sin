@@ -40,14 +40,16 @@ class UaS_LaserLightModule : HDPickup {
 		activated = !activated;
 	}
 	void ModeSwitch(int direct = -1) {
-		owner.A_StartSound("UaS/llm/toggle",
-			CHAN_AUTO,
-			CHANF_OVERLAP,
-			volume: frandom[llm](0.5,0.7),
-			attenuation: ATTN_STATIC,
-			pitch: frandom[llm](0.7, 0.8));
 		if (direct >= 0) { mode = direct; }
-		else { mode = (mode + 1) % 3; }
+		else {
+			owner.A_StartSound("UaS/llm/toggle",
+				CHAN_AUTO,
+				CHANF_OVERLAP,
+				volume: frandom[llm](0.5,0.7),
+				attenuation: ATTN_STATIC,
+				pitch: frandom[llm](0.7, 0.8));
+			mode = (mode + 1) % 3;
+		}
 	}
 
 	override void PostBeginPlay() {
@@ -80,6 +82,9 @@ class UaS_LaserLightModule : HDPickup {
 				case 2: //Both
 					Light(true);
 					Laser(true);
+					break;
+				case 3: //Flash
+					Light(level.maptime % 2);
 					break;
 			}
 		}
