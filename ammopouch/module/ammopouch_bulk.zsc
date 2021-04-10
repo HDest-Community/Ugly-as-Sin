@@ -42,6 +42,7 @@ extend class UaS_AmmoPouch {
 			if (!SelItem || Storage.Items.Size() <= 0) { return DroppedPouch;}
 			int AmountInPouch = SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0;
 			double UnitBulk = HDPickup(getdefaultbytype(SelItem.ItemClass)).bulk * hdmath.getencumbrancemult();
+			UnitBulk = max(UnitBulk, 0.01);
 			int AmountToMove = int((DroppedPouch.Storage.MaxBulk - DroppedPouch.Storage.TotalBulk) / UnitBulk);
 			AmountToMove = min(AmountToMove, AmountInPouch);
 			DroppedPouch.Storage.AddAmount(SelItem.ItemClass, AmountToMove);
