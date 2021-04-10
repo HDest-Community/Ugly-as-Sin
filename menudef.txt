@@ -5,7 +5,6 @@ OptionValue "FocusModes" {
 }
 
 AddOptionMenu "OptionsMenu" {
-	StaticText " "
 	Submenu "Ugly as Sin Settings", "UaS_Options"
 }
 
