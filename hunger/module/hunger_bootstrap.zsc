@@ -6,7 +6,7 @@ class UaS_Hunger_Bootstrap : EventHandler {
 			if (!p.mo) { return; }
 			if (!p.mo.countinv("UaS_HungerTracker")) {
 				p.mo.giveinventory("UaS_HungerTracker", 1);
-				if(UaS_Debug & Hunger) { console.printf("Hunger: Player "..i.." given tracker."); }
+				UaS.LogDebug(DBG_Hunger, string.format("Hunger: Player "..i.." given tracker."));
 			}
 		}
 	}

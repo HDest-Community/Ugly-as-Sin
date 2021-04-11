@@ -42,8 +42,8 @@ class UaS_WoundHandler : Inventory {
 		for(int i = 0; i <= critwounds.size() - 1; i++) {
 			if (!critwounds[i]) { critwounds.delete(i); continue; }
 			if (critwounds[i].clear) {
-				if (UaS_Debug & Med) { plr.A_Log("Cured "..critwounds[i].description, true); }
-				else { plr.A_Log("Your condition improves.", true); }
+				UaS.LogDebug(DBG_Med, string.format("Cured "..critwounds[i].description), plr);
+				plr.A_Log("Your condition improves.", true);
 				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
 				RemoveWound(i);
 				continue;
@@ -65,7 +65,7 @@ class UaS_WoundHandler : Inventory {
 			int newsize = nextwound;
 			newsize = min(newsize, diffwounds);
 			critwounds.push(WoundInfo.Create(newsize));
-			if (UaS_Debug & Med) { console.printf("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize); }
+			UaS.LogDebug(DBG_Med, string.format("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize));
 			nextwound = random[uas_wh](1, 5);
 		}
 
@@ -75,7 +75,7 @@ class UaS_WoundHandler : Inventory {
 			// Look for oldest wound of the right size to remove
 			for (int i = 0; i < critwounds.size(); i++) {
 				if (critwounds[i].size == abs(diffwounds)) {
-					if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[i].description.." with size "..critwounds[i].size); }
+					UaS.LogDebug(DBG_Med, string.format("passively healed "..critwounds[i].description.." with size "..critwounds[i].size));
 					RemoveWound(i);
 					removedone = true;
 					break;
@@ -84,7 +84,7 @@ class UaS_WoundHandler : Inventory {
 			}
 			//Remove the oldest wound if none appropriate
 			if (!removedone && (diffwounds < -5 || plr.oldwoundcount <=0)) {
-				if (UaS_Debug & Med) { console.printf("passively healed "..critwounds[0].description.." with size "..critwounds[0].size.. "for diffwound "..diffwounds); }
+				UaS.LogDebug(DBG_Med, string.format("passively healed "..critwounds[0].description.." with size "..critwounds[0].size.. "for diffwound "..diffwounds));
 				RemoveWound(0);
 			}
 		}

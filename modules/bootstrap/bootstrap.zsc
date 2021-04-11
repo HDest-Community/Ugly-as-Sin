@@ -17,7 +17,7 @@ extend class UaS_BootStrap {
 		if (!p.mo) { return; }
 		if (!p.mo.countinv("UaS_Looting_Handler")) {
 			p.mo.giveinventory("UaS_Looting_Handler", 1);
-			if(UaS_Debug & Looting) { console.printf("Looting: Player "..pnum.." given tracker."); }
+			UaS.LogDebug(DBG_Looting, string.format("Looting: Player "..pnum.." given tracker."));
 		}
 	}
 

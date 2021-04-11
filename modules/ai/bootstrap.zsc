@@ -12,8 +12,8 @@ class UaS_AI_Bootstrap : EventHandler {
 			givenHandler.ProcessAI = false;
 			givenHandler.RecheckAI = random[ai_proc](35, 350);
 			givenAIHandlers++;
-			if(e.Thing.CountInv("UaS_AI_Handler") == 1 && UaS_Debug & AI) {
-				console.printf("Gave AI tracker "..givenHandler.score.." to "..e.Thing.GetClassName());
+			if(e.Thing.CountInv("UaS_AI_Handler") == 1) {
+				UaS.LogDebug(DBG_AI, string.format("Gave AI tracker "..givenHandler.score.." to "..e.Thing.GetClassName()));
 			}
 		}
 	}

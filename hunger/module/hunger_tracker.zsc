@@ -62,7 +62,7 @@ class UaS_HungerTracker : Inventory {
 		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
-		if(UaS_Debug & Hunger && (o.beatcounter % 35 == 0 || debugtype != "")) { o.A_Log(string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid, debugtype), true); }
+		if (o.beatcounter % 35 == 0 || debugtype != "") { UaS.LogDebug(DBG_Hunger, string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid, debugtype), o); }
 	}
 
 	void Consume() {
@@ -86,7 +86,7 @@ class UaS_HungerTracker : Inventory {
 			mouth_calories = 0;
 			mouth_fluid = 0;
 			drinking = false;
-			if(UaS_Debug & Hunger) { owner.A_Log("fullness delay "..howfull()); }
+			UaS.LogDebug(DBG_Hunger, string.format("fullness delay "..howfull()), owner);
 			return;
 		}
 	}

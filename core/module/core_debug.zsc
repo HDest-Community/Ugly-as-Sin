@@ -1,14 +1,26 @@
 enum UaS_Debug_Flags {
-	Hunger = 1,
-	Scarcity = 2,
-	Debris = 4,
-	Sling = 8,
-	Frag = 16,
-	Med = 32,
-	Allies = 64,
-	AI = 128,
-	Jamming = 256,
-	Looting = 512,
-	Stealth = 1024,
-	Searching = 2048,
+	DBG_Hunger = 1,
+	DBG_Scarcity = 2,
+	DBG_Debris = 4,
+	DBG_Sling = 8,
+	DBG_Frag = 16,
+	DBG_Med = 32,
+	DBG_Allies = 64,
+	DBG_AI = 128,
+	DBG_Jamming = 256,
+	DBG_Looting = 512,
+	DBG_Stealth = 1024,
+	DBG_Searching = 2048,
 };
+
+extend class UaS {
+	static play void LogDebug(int module, string message, actor recip = null) {
+		if (!(UaS_Debug & module)) { return; }
+		if (recip && recip is "PlayerPawn") { recip.A_Log(message, true); }
+		else { console.printf(message); }
+	}
+
+	static play bool DebugEnabled(int module) {
+		return (UaS_Debug & module);
+	}
+}

@@ -12,7 +12,7 @@ extend class UaS_Scarcity_Handler {
 
 		int targetAmount = int(thingArray.Size() * targetPercent);
 		while(thingArray.Size() > targetAmount) {
-			if(UaS_Debug & Scarcity) { console.printf("Modified or removed "..checkClass); }
+			UaS.LogDebug(DBG_Scarcity, string.format("Modified or removed "..checkClass));
 			int index = random(0, thingArray.Size()-1);
 			//actor mo = thingArray[index];
 			DoReplacement(thingArray[index]);
@@ -20,7 +20,7 @@ extend class UaS_Scarcity_Handler {
 			thingArray.Delete(index);
 		}
 
-		if(UaS_Debug & Scarcity) { console.printf(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount); }
+		UaS.LogDebug(DBG_Scarcity, string.format(checkClass.." %i, %i, %i", originalcount, ThingArray.Size(), targetAmount));
 		thingArray.Clear();
 	}
 }

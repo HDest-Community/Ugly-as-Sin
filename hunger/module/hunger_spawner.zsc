@@ -16,15 +16,15 @@ class UaS_FoodList : EventHandler {
 				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
 				if (isDrink) {
 					DrinkSpawnList.push(allactorclasses[i].GetClassName());
-					if(UaS_Debug & Hunger) { console.printf("added drink "..allactorclasses[i].GetClassName().." to spawn pool"); }
+					UaS.LogDebug(DBG_Hunger, string.format("added drink "..allactorclasses[i].GetClassName().." to spawn pool"));
 				}
 				else {
 					FoodSpawnList.push(allactorclasses[i].GetClassName());
-					if(UaS_Debug & Hunger) { console.printf("added food "..allactorclasses[i].GetClassName().." to spawn pool"); }
+					UaS.LogDebug(DBG_Hunger, string.format("added food "..allactorclasses[i].GetClassName().." to spawn pool"));
 				}
 			}
 		}
-		if ((UaS_Debug & Hunger) && !AvailableConsumable()) { console.printf("Hunger: No consumables added to list."); }
+		if (!AvailableConsumable()) { UaS.LogDebug(DBG_Hunger, "Hunger: No consumables added to list."); }
 	}
 
 	string RandomFoodItem() {
@@ -92,7 +92,7 @@ class UaS_Food_Spawner : EventHandler {
 	void MaybeSpawnRation(name spawnClass, double spawnChance) {
 		if(UaS.RandomChance(clamp(spawnChance, 0, 1))) {
 			UaS.SpawnStuff(spawnClass, 1, spawnPos);
-			if(UaS_Debug & Hunger) { console.printf("Spawned Ration."); }
+			UaS.LogDebug(DBG_Hunger, "Spawned Ration.");
 		}
 	}
 }

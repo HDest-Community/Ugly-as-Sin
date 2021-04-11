@@ -29,12 +29,11 @@ class UaS_AI_Handler : Inventory {
 
 		SearchBehavior();
 		Flashlight();
-		if (UaS_Debug & AI) {
-			console.printf(level.maptime
-				..": Processed AI for "
-				..owner.GetClassName()
-				..score);
-		}
+		UaS.LogDebug(DBG_AI, string.format(
+			level.maptime
+			..": Processed AI for "
+			..owner.GetClassName()
+			..score));
 	}
 
 	bool PlayerProxCheck() {
@@ -43,13 +42,12 @@ class UaS_AI_Handler : Inventory {
 			if(!playerInGame[i]) continue;
 			closestPlayer = min(owner.Distance3DSquared(players[i].mo), closestPlayer);
 		}
-		if (UaS_Debug & AI) {
-			console.printf(level.maptime
-				..": Proxcheck AI for "
-				..owner.GetClassName()
-				..score.." "
-				..bool(closestPlayer <= (UAS_AI_PROC_RANGE**2)));
-		}
+		UaS.LogDebug(DBG_AI, string.format(
+			level.maptime
+			..": Proxcheck AI for "
+			..owner.GetClassName()
+			..score.." "
+			..bool(closestPlayer <= (UAS_AI_PROC_RANGE**2))));
 		return (closestPlayer <= (2048**2));
 	}
 }

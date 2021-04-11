@@ -82,7 +82,7 @@ extend class UaS_Scarcity_Handler {
 				avgint *= UaS_ScarcityOverspawn;
 				avgint  = clamp(avgint,0,400);
 				PortableLiteAmp(spawnedLiteAmp).setintegrity(int(avgint));
-				if(UaS_Debug & Scarcity) { console.printf("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()); }
+				UaS.LogDebug(DBG_Scarcity, string.format("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()));
 				break;
 		}
 	}

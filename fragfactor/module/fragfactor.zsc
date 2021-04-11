@@ -9,7 +9,7 @@ class UaS_FragRemovalHandler : EventHandler {
 			//case 'NecroShard':
 			case 'NecroGhostShard':
 				if(UaS.RandomChance(removeChance)) {
-					if(UaS_Debug & Frag) { console.printf("%s despawned %f", e.Thing.GetClassName(), removeChance); }
+					UaS.LogDebug(DBG_Frag, string.format("%s despawned %f", e.Thing.GetClassName(), removeChance));
 					e.Thing.Destroy();
 				}
 				break;

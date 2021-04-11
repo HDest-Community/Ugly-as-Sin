@@ -16,7 +16,7 @@ extend class UaS_AI_Handler {
 			// Clear ambush flag if needed
 			if (owner.CheckIfTargetInLOS() && owner.bAMBUSH) {
 				owner.bAMBUSH = false;
-				if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." ambush flag cleared."); }
+				UaS.LogDebug(DBG_Searching, string.format(owner.GetClassName()..score.." ambush flag cleared."));
 			}
 
 			// Forget player and set a search node if out of LoS, shadow, and not ambushing
@@ -28,7 +28,7 @@ extend class UaS_AI_Handler {
 					ForgetTarget(owner);
 					owner.goal = lastKnown;
 					owner.target = lastKnown;
-					if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." lost target!"); }
+					UaS.LogDebug(DBG_Searching, string.format(owner.GetClassName()..score.." lost target!"));
 				}
 				else { ForgetTarget(owner); }
 			}
@@ -63,18 +63,18 @@ extend class UaS_AI_Handler {
 			lastKnown.angle = nextAngle;
 			owner.goal = lastKnown;
 			owner.target = lastKnown;
-			if(UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." picked new pathnode."); }
+			UaS.LogDebug(DBG_Searching, string.format(owner.GetClassName()..score.." picked new pathnode."));
 		}
 
 		// Give up the search when the countdown runs out
 		if (countdown == 0) {
 			if (lastknown) { lastKnown.destroy(); }
-			if (UaS_Debug & Searching) { A_Log(owner.GetClassName()..score.." gave up the search"); }
+			UaS.LogDebug(DBG_Searching, string.format(owner.GetClassName()..score.." gave up the search"));
 		}
 
 		// Decrement timer
 		countdown = max(countdown - 1, -1);
-		if ((UaS_Debug & Searching) && (countdown % 175 == 1)) { A_Log(owner.GetClassName()..score.." searching for "..(countdown/35)); }
+		if (countdown % 175 == 1) { UaS.LogDebug(DBG_Searching, string.format(owner.GetClassName()..score.." searching for "..(countdown/35))); }
 	}
 
 	void ForgetTarget(actor which) {
@@ -121,7 +121,7 @@ class UaS_LastKnownMarker : Actor {
 	spawn:
 		TNT1 A 0 NoDelay {
 			SetOrigin((pos.xy, floorz),false);
-			if(UaS_Debug & Searching) { sprite = GetSpriteIndex('AMRK'); }
+			if(UaS.DebugEnabled(DBG_Searching)) { sprite = GetSpriteIndex('AMRK'); }
 		}
 		"####" A 700 BRIGHT;
 		stop;

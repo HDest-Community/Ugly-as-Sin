@@ -40,7 +40,7 @@ extend class UaS_AI_Handler {
 			}
 			painCountdown = max(painCountDown - 1, 0);
 
-			if(level.maptime % 35 == 1 && UaS_Debug & AI) { console.printf(owner.GetClassName().." health factor"..healthFactor); }
+			if(level.maptime % 35 == 1) { UaS.LogDebug(DBG_AI, string.format(owner.GetClassName().." health factor"..healthFactor)); }
 		}
 	}
 }
