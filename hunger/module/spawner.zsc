@@ -16,27 +16,36 @@ class UaS_FoodList : EventHandler {
 				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
 				if (isDrink) {
 					DrinkSpawnList.push(allactorclasses[i].GetClassName());
-					if(UaS_Debug & Hunger) { console.printf("added drink to spawn pool"); }
+					if(UaS_Debug & Hunger) { console.printf("added drink "..allactorclasses[i].GetClassName().." to spawn pool"); }
 				}
 				else {
 					FoodSpawnList.push(allactorclasses[i].GetClassName());
-					if(UaS_Debug & Hunger) { console.printf("added food to spawn pool"); }
+					if(UaS_Debug & Hunger) { console.printf("added food "..allactorclasses[i].GetClassName().." to spawn pool"); }
 				}
 			}
 		}
+		if ((UaS_Debug & Hunger) && !AvailableConsumable()) { console.printf("Hunger: No consumables added to list."); }
 	}
 
 	string RandomFoodItem() {
+		if (!AvailableFood()) { return ""; }
 		return FoodSpawnList[random(0,FoodSpawnList.size()-1)];
 	}
 
 	string RandomDrinkItem() {
+		if (!AvailableDrink()) { return ""; }
 		return DrinkSpawnList[random(0,DrinkSpawnList.size()-1)];
 	}
 
 	string RandomConsumableItem() {
+		if (!AvailableConsumable()) { return ""; }
 		return ConsumableSpawnList[random(0,ConsumableSpawnList.size()-1)];
 	}
+
+	bool AvailableFood() { return (FoodSpawnList.size() > 0); }
+	bool AvailableDrink() { return (DrinkSpawnList.size() > 0); }
+	bool AvailableConsumable() { return (ConsumableSpawnList.size() > 0); }
+
 }
 
 class UaS_Food_Spawner : EventHandler {
@@ -51,6 +60,7 @@ class UaS_Food_Spawner : EventHandler {
 		spawnPos = e.Thing.pos;
 
 		let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
+		if (!fl.AvailableConsumable()) { return; }
 		name toSpawnClass = fl.RandomConsumableItem();
 
 		//Spawn rations on backpacks
@@ -99,10 +109,17 @@ class UaS_RandomConsumable : HDPickup {
 		super.PostBeginPlay();
 		for (int i=0; i<amount; i++) {
 			let fl = UaS_FoodList(EventHandler.Find("UaS_FoodList"));
+			if (!fl.AvailableConsumable()) { destroy(); return; }
 			class<UaS_Consumable> GiveClass;
 			if (refid == UAS_HDLD_CONSUMABLE) { GiveClass = fl.RandomConsumableItem(); }
-			else if (refid == UAS_HDLD_FRATION) { GiveClass = fl.RandomFoodItem(); }
-			else if (refid == UAS_HDLD_WRATION) { GiveClass = fl.RandomDrinkItem(); }
+			else if (refid == UAS_HDLD_FRATION) {
+				if (!fl.AvailableFood()) { destroy(); return; }
+				GiveClass = fl.RandomFoodItem();
+			}
+			else if (refid == UAS_HDLD_WRATION) {
+				if (!fl.AvailableDrink()) { destroy(); return; }
+				GiveClass = fl.RandomDrinkItem();
+			}
 			if (owner) {
 				owner.A_GiveInventory("HDWeaponGiver");
 				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));

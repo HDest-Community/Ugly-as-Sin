@@ -1,4 +1,5 @@
 GameInfo {
 	AddEventHandlers = "UaS_Hunger_Bootstrap"
+	AddEventHandlers = "UaS_FoodList"
 	AddEventHandlers = "UaS_Food_Spawner"
 }
