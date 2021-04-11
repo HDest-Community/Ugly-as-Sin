@@ -14,8 +14,6 @@ version "4.5"
 // General spawner
 #include "modules/spawner/spawner.zsc"
 
-#include "modules/items/food.zsc"
-
 // Scarcity scripts
 #include "scarcity/module/scarcity.zsc"
 #include "scarcity/module/scarcity_drops.zsc"
@@ -109,5 +107,11 @@ version "4.5"
 #include "hunger/module/consumable/consumable_misc.zsc"
 #include "hunger/module/consumable/consumable_helptext.zsc"
 
+// Food
+#include "food/module/food_basics.zsc"
+#include "food/module/food_meals.zsc"
+#include "food/module/food_packages.zsc"
+#include "food/module/food_sides.zsc"
+#include "food/module/food_drinks.zsc"
 
 #include "modules/yolo/yolo.zsc"
