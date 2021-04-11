@@ -2,8 +2,8 @@ version "4.5"
 
 // Hunger and Thirst scripts
 #include "module/hunger_bootstrap.zsc"
-#include "module/spawner.zsc"
-#include "module/tracker.zsc"
+#include "module/hunger_spawner.zsc"
+#include "module/hunger_tracker.zsc"
 
 // Consumable
 #include "module/consumable/consumable.zsc"

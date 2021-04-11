@@ -97,8 +97,8 @@ version "4.5"
 
 // Hunger and Thirst
 #include "hunger/module/hunger_bootstrap.zsc"
-#include "hunger/module/spawner.zsc"
-#include "hunger/module/tracker.zsc"
+#include "hunger/module/hunger_spawner.zsc"
+#include "hunger/module/hunger_tracker.zsc"
 
 // Consumable
 #include "hunger/module/consumable/consumable.zsc"
