@@ -25,7 +25,10 @@ class UaS_AI_Handler : Inventory {
 			ProcessAI = PlayerProxCheck();
 			RecheckAI = random[ai_proc](35,350);
 		}
-		if(!ProcessAI) { return; }
+		if(!ProcessAI) {
+			if (owner is "HERPBot" || owner is "DERPBot") { Flashlight(); }
+			return;
+		}
 
 		SearchBehavior();
 		Flashlight();

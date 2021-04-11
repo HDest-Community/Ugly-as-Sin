@@ -25,6 +25,18 @@ extend class UaS_AI_Handler {
 			llm.ModeSwitch(random[aillm](0,2));
 		}
 
+		bool isowneraiming = (
+			owner.frame ==  4 || owner.frame ==  5 ||
+			owner.frame == 23 || owner.frame == 24
+		);
+
+		flashing = (
+			owner.target &&
+			isowneraiming &&
+			!BotClass &&
+			(llm.mode == 0 || llm.mode == 2)
+		);
+
 		if (!UaS_AI_Flashlights) { llm.activated = false; return; }
 
 		if (HumanClass && recheck <= 0) {
@@ -42,34 +54,22 @@ extend class UaS_AI_Handler {
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
 			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
 			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
+			if (flashing) { llm.ModeSwitch(3); }
+			else { llm.ModeSwitch(prefmode); }
 		}
+		else if (BotClass) {
+			if (owner is "HERPBot") {
+				llm.mode = 1;
+				llm.activated = true;
+				llm.offset = 8;
+			}
 
-		if (owner is "HERPBot") {
-			llm.mode = 1;
-			llm.activated = true;
-			llm.offset = 8;
+			if (owner is "DERPBot") {
+				llm.mode = 0;
+				llm.activated = true;
+				llm.offset = 2;
+			}
 		}
-
-		if (owner is "DERPBot") {
-			llm.mode = 0;
-			llm.activated = true;
-			llm.offset = 2;
-		}
-
-		// Some bools
-		bool isowneraiming = (
-			owner.frame ==  4 || owner.frame ==  5 ||
-			owner.frame == 23 || owner.frame == 24
-		);
-		flashing = (
-			owner.target &&
-			isowneraiming &&
-			!BotClass &&
-			(llm.mode == 0 || llm.mode == 2)
-		);
-
-		if (flashing) { llm.ModeSwitch(3); }
-		else { llm.ModeSwitch(prefmode); }
 
 		// Handle random light movement
 		if ((level.maptime % 10 == 0) && !BotClass) {
