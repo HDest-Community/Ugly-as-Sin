@@ -1,5 +1,1 @@
 const UAS_HDLD_TRAUMAKIT = "trk";
-
-const UAS_HDLD_FRATION = "frt";
-const UAS_HDLD_WRATION = "wrt";
-const UAS_HDLD_CONSUMABLE = "csm";

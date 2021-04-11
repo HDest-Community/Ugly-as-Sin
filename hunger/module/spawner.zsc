@@ -39,13 +39,11 @@ class UaS_FoodList : EventHandler {
 	}
 }
 
-extend class UaS_Spawner {
+class UaS_Food_Spawner : EventHandler {
 	double spawnRate;
 	vector3 spawnPos;
 
-
-	//Set up spawns
-	void HungerSpawns(WorldEvent e) {
+	override void WorldThingSpawned(WorldEvent e) {
 		if(level.maptime > 1) { return; }
 		if(!e.Thing) { return; }
 		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }

@@ -14,10 +14,6 @@ version "4.5"
 // General spawner
 #include "modules/spawner/spawner.zsc"
 
-// Hunger and Thirst scripts
-#include "modules/hunger/spawner.zsc"
-#include "modules/hunger/tracker.zsc"
-#include "modules/hunger/consumable/consumable.zsc"
 #include "modules/items/food.zsc"
 
 // Scarcity scripts
@@ -98,5 +94,20 @@ version "4.5"
 // Stabilizer
 #include "stabilizer/module/sling.zsc"
 #include "stabilizer/module/sling_spawning.zsc"
+
+// Hunger and Thirst
+#include "hunger/module/hunger_bootstrap.zsc"
+#include "hunger/module/spawner.zsc"
+#include "hunger/module/tracker.zsc"
+
+// Consumable
+#include "hunger/module/consumable/consumable.zsc"
+#include "hunger/module/consumable/consumable_base.zsc"
+#include "hunger/module/consumable/consumable_package.zsc"
+#include "hunger/module/consumable/consumable_input.zsc"
+#include "hunger/module/consumable/consumable_display.zsc"
+#include "hunger/module/consumable/consumable_misc.zsc"
+#include "hunger/module/consumable/consumable_helptext.zsc"
+
 
 #include "modules/yolo/yolo.zsc"

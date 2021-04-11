@@ -1,0 +1,13 @@
+class UaS_Hunger_Bootstrap : EventHandler {
+	override void WorldTick() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			PlayerInfo p = players[i];
+			if (!p.mo) { return; }
+			if (!p.mo.countinv("UaS_HungerTracker")) {
+				p.mo.giveinventory("UaS_HungerTracker", 1);
+				if(UaS_Debug & Hunger) { console.printf("Hunger: Player "..i.." given tracker."); }
+			}
+		}
+	}
+}

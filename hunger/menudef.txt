@@ -1,0 +1,12 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Hunger", "UaS_Hunger_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Hunger"
+}
+
+OptionMenu "UaS_Hunger_Options" {
+	Title "Hunger Module Settings"
+	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
+}

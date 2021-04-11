@@ -15,4 +15,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_2F_Bootstrap"
 	AddEventHandlers = "UaS_Markers_Spawner"
+	AddEventHandlers = "UaS_Hunger_Bootstrap"
 }

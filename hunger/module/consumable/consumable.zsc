@@ -1,9 +1,6 @@
-#include "modules/hunger/consumable/consumable_base.zsc"
-#include "modules/hunger/consumable/consumable_package.zsc"
-#include "modules/hunger/consumable/consumable_input.zsc"
-#include "modules/hunger/consumable/consumable_display.zsc"
-#include "modules/hunger/consumable/consumable_misc.zsc"
-#include "modules/hunger/consumable/consumable_helptext.zsc"
+const UAS_HDLD_FRATION = "frt";
+const UAS_HDLD_WRATION = "wrt";
+const UAS_HDLD_CONSUMABLE = "csm";
 
 // A base class for all consumable (food) items to inherit from
 class UaS_Consumable : HDWeapon abstract {

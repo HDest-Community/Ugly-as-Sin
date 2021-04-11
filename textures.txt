@@ -3,7 +3,7 @@ Sprite "HSCVA0", 23, 12
 	XScale 2.000
 	YScale 2.000
 	Offset 11, 11
-	Patch "patches/UaS_Ration.png", 0, 0
+	Patch "hunger/patches/UaS_Ration.png", 0, 0
 }
 
 Sprite "UGSIH0", 5, 10
@@ -25,13 +25,13 @@ Sprite "HSCVC0", 23, 11
 	XScale 3.000
 	YScale 3.000
 	Offset 11, 10
-	Patch "patches/UaS_RationDebris.png", 0, 0
+	Patch "hunger/patches/UaS_RationDebris.png", 0, 0
 }
 
 Sprite "HSCVB0", 28, 16
 {
 	Offset 14, 15
-	Patch "patches/UaS_Messkit.png", 0, 0
+	Patch "hunger/patches/UaS_Messkit.png", 0, 0
 }
 
 Sprite "HSCVE0", 15, 20
@@ -111,7 +111,7 @@ Sprite "HSCVR0", 23, 12
 	XScale 2.000
 	YScale 2.000
 	Offset 11, 11
-	Patch "patches/UaS_WaterRation.png", 0, 0
+	Patch "hunger/patches/UaS_WaterRation.png", 0, 0
 }
 
 Sprite "UGSIB0", 72, 16
