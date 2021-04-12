@@ -8,7 +8,6 @@ version "4.5"
 #include "core/module/core_cvarcheck.zsc"
 
 // Constants
-#include "modules/constants.zsc"
 #include "modules/bootstrap/bootstrap.zsc"
 
 // General spawner
@@ -44,11 +43,6 @@ version "4.5"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
-
-// Standalone items
-#include "modules/items/traumakit/handler.zsc"
-#include "modules/items/traumakit/traumakit.zsc"
-#include "modules/items/traumakit/stabilize.zsc"
 
 // Laser-Light
 #include "laserlight/module/laser.zsc"
@@ -113,5 +107,24 @@ version "4.5"
 #include "food/module/food_packages.zsc"
 #include "food/module/food_sides.zsc"
 #include "food/module/food_drinks.zsc"
+
+// Medical
+#include "medical/module/medical_handler.zsc"
+#include "medical/module/medical_spawner.zsc"
+#include "medical/module/medical_stabilize.zsc"
+#include "medical/module/medical_wound.zsc"
+// Trauma Kit
+#include "medical/module/traumakit/traumakit.zsc"
+#include "medical/module/traumakit/traumakit_2f.zsc"
+#include "medical/module/traumakit/traumakit_biofoam.zsc"
+#include "medical/module/traumakit/traumakit_forceps.zsc"
+#include "medical/module/traumakit/traumakit_helptext.zsc"
+#include "medical/module/traumakit/traumakit_pain.zsc"
+#include "medical/module/traumakit/traumakit_painkiller.zsc"
+#include "medical/module/traumakit/traumakit_saline.zsc"
+#include "medical/module/traumakit/traumakit_scalpel.zsc"
+#include "medical/module/traumakit/traumakit_stapler.zsc"
+#include "medical/module/traumakit/traumakit_supplies.zsc"
+#include "medical/module/traumakit/traumakit_sutures.zsc"
 
 #include "modules/yolo/yolo.zsc"

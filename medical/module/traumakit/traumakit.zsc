@@ -1,14 +1,4 @@
-#include "modules/items/traumakit/traumakit_painkiller.zsc"
-#include "modules/items/traumakit/traumakit_forceps.zsc"
-#include "modules/items/traumakit/traumakit_stapler.zsc"
-#include "modules/items/traumakit/traumakit_sutures.zsc"
-#include "modules/items/traumakit/traumakit_scalpel.zsc"
-#include "modules/items/traumakit/traumakit_biofoam.zsc"
-#include "modules/items/traumakit/traumakit_saline.zsc"
-#include "modules/items/traumakit/traumakit_helptext.zsc"
-#include "modules/items/traumakit/traumakit_pain.zsc"
-#include "modules/items/traumakit/traumakit_supplies.zsc"
-#include "modules/items/traumakit/spawner.zsc"
+const UAS_HDLD_TRAUMAKIT = "trk";
 
 class UaS_TraumaKit : HDWeapon {
 	string statusMessage;

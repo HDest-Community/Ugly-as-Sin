@@ -1,0 +1,7 @@
+Sprite "UGSIF0", 17, 18
+{
+	XScale 1.500
+	YScale 1.500
+	Offset 7, 18
+	Patch "patches/UaS_TraumaKit.png", 0, 0
+}

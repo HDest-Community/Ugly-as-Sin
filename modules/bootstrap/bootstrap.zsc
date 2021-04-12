@@ -6,7 +6,6 @@ class UaS_Bootstrap : EventHandler {
 			if (!playeringame[i]) { continue; }
 			if (UaS_AdvancedAIEnabled && UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
 			Looting_Bootstrap(i);
-			Medical_Bootstrap(i);
 		}
 	}
 }
@@ -18,17 +17,6 @@ extend class UaS_BootStrap {
 		if (!p.mo.countinv("UaS_Looting_Handler")) {
 			p.mo.giveinventory("UaS_Looting_Handler", 1);
 			UaS.LogDebug(DBG_Looting, string.format("Looting: Player "..pnum.." given tracker."));
-		}
-	}
-
-	void Medical_Bootstrap(int pnum) {
-		PlayerInfo p = players[pnum];
-		if (!p.mo) { return; }
-		if (!p.mo.countinv("UaS_WoundStabilization")) {
-			p.mo.giveinventory("UaS_WoundStabilization", 1);
-		}
-		if (!p.mo.countinv("UaS_WoundHandler")) {
-			p.mo.giveinventory("UaS_WoundHandler", 1);
 		}
 	}
 

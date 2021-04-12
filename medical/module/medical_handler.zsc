@@ -1,5 +1,3 @@
-#include "modules/items/traumakit/wound.zsc"
-
 class UaS_WoundHandler : Inventory {
 	array<WoundInfo> critwounds;
 	int nextwound;
