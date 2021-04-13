@@ -18,4 +18,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Hunger_Bootstrap"
 	AddEventHandlers = "UaS_Medical_Bootstrap"
 	AddEventHandlers = "UaS_Looting_Bootstrap"
+	AddEventHandlers = "UaS_AimTweaks_Bootstrap"
 }
