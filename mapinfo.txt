@@ -17,4 +17,5 @@ GameInfo {
 	AddEventHandlers = "UaS_Markers_Spawner"
 	AddEventHandlers = "UaS_Hunger_Bootstrap"
 	AddEventHandlers = "UaS_Medical_Bootstrap"
+	AddEventHandlers = "UaS_Looting_Bootstrap"
 }

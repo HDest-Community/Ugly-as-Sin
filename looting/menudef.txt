@@ -1,0 +1,13 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Looting", "UaS_Looting_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Looting"
+}
+
+OptionMenu "UaS_Looting_Options" {
+	Title "Looting Module Settings"
+
+	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
+}

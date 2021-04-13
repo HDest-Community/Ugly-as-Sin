@@ -1,32 +1,10 @@
 version "4.5"
 
-// Core
-#include "core/module/core.zsc"
-#include "core/module/core_spawnstuff.zsc"
-#include "core/module/core_randomchance.zsc"
-#include "core/module/core_debug.zsc"
-#include "core/module/core_cvarcheck.zsc"
-
 // Constants
 #include "modules/bootstrap/bootstrap.zsc"
 
 // General spawner
 #include "modules/spawner/spawner.zsc"
-
-// Scarcity scripts
-#include "scarcity/module/scarcity.zsc"
-#include "scarcity/module/scarcity_drops.zsc"
-#include "scarcity/module/scarcity_helpers.zsc"
-#include "scarcity/module/scarcity_remover.zsc"
-#include "scarcity/module/scarcity_replacer.zsc"
-#include "scarcity/module/scarcity_items.zsc"
-
-// Frag spawning factor
-#include "fragfactor/module/fragfactor.zsc"
-
-// Allied marine spawning
-#include "allies/module/allies.zsc"
-#include "allies/module/allies_spawner.zsc"
 
 // Monster AI
 #include "modules/ai/bootstrap.zsc"
@@ -36,13 +14,36 @@ version "4.5"
 #include "modules/ai/flashlight.zsc"
 #include "modules/ai/stealth.zsc"
 
-// Corpse Looting
-#include "modules/looting/looting.zsc"
-#include "modules/looting/loottables.zsc"
-#include "modules/looting/flavortext.zsc"
+#include "modules/yolo/yolo.zsc"
 
 // Visual Weapons
 #include "modules/visweps/visweps.zsc"
+
+//========================================
+// Standalone modules
+//========================================
+
+// Core
+#include "core/module/core.zsc"
+#include "core/module/core_spawnstuff.zsc"
+#include "core/module/core_randomchance.zsc"
+#include "core/module/core_debug.zsc"
+#include "core/module/core_cvarcheck.zsc"
+
+// Scarcity
+#include "scarcity/module/scarcity.zsc"
+#include "scarcity/module/scarcity_drops.zsc"
+#include "scarcity/module/scarcity_helpers.zsc"
+#include "scarcity/module/scarcity_remover.zsc"
+#include "scarcity/module/scarcity_replacer.zsc"
+#include "scarcity/module/scarcity_items.zsc"
+
+// Allied marine spawning
+#include "allies/module/allies.zsc"
+#include "allies/module/allies_spawner.zsc"
+
+// Frag spawning factor
+#include "fragfactor/module/fragfactor.zsc"
 
 // Laser-Light
 #include "laserlight/module/laser.zsc"
@@ -127,4 +128,8 @@ version "4.5"
 #include "medical/module/traumakit/traumakit_supplies.zsc"
 #include "medical/module/traumakit/traumakit_sutures.zsc"
 
-#include "modules/yolo/yolo.zsc"
+// Corpse Looting
+#include "looting/module/looting.zsc"
+#include "looting/module/looting_bootstrap.zsc"
+#include "looting/module/looting_flavortext.zsc"
+#include "looting/module/looting_tables.zsc"

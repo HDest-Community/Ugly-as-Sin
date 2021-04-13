@@ -14,6 +14,5 @@ OptionMenu "UaS_Scarcity_Options" {
 
 	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
 	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
-	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
 	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
 }
