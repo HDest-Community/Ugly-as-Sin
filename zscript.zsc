@@ -16,9 +16,6 @@ version "4.5"
 
 #include "modules/yolo/yolo.zsc"
 
-// Visual Weapons
-#include "modules/visweps/visweps.zsc"
-
 //========================================
 // Standalone modules
 //========================================
@@ -133,3 +130,6 @@ version "4.5"
 #include "looting/module/looting_bootstrap.zsc"
 #include "looting/module/looting_flavortext.zsc"
 #include "looting/module/looting_tables.zsc"
+
+// Visual Weapons
+#include "visualweapons/module/visweps.zsc"

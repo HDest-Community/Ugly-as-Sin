@@ -1,9 +1,10 @@
 class UaS_VisWeps_Bootstrap : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
-		if(!UaS_VisWepsEnabled) { return; }
-		if(e.Thing is 'HDMarine') {
-			e.Thing.GiveInventory('UaS_VisWeps_Updater', 1);
+		if(!UaS.CVarCheck("UaS_VisWepsEnabled") || UaS_VisWepsEnabled) {
+			if(e.Thing is 'HDMarine') {
+				e.Thing.GiveInventory('UaS_VisWeps_Updater', 1);
+			}
 		}
 	}
 }
