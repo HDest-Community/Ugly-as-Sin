@@ -5,7 +5,10 @@ extend class UaS {
 		cvar tempCheckCVar = null;
 		if (pnum >= 0) { tempCheckCVar = CVar.GetCVar(toCheck, players[pnum]); }
 		else { tempCheckCVar = CVar.GetCVar(toCheck); }
-		if (!tempCheckCVar) { console.printf("UaS Debug Warning: CVar "..toCheck.." not found."); return false; }
+		if (!tempCheckCVar) {
+			//console.printf("UaS Debug Warning: CVar "..toCheck.." not found.");
+			return false;
+		}
 		return true;
 	}
 }
