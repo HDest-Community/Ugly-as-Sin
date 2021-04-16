@@ -1,1 +1,3 @@
 server bool UaS_HungerMetabolism = true;
+server bool UaS_HungerStamina = true;
+server bool UaS_HungerStarvation = false;

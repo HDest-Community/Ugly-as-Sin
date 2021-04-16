@@ -27,8 +27,6 @@ class UaS_HungerTracker : Inventory {
 		string debugtype = "";
 		if (o.beatcount > 0) { return; }
 
-		if (!UaS_HungerEnabled) { return; }
-
 		// base drain, disabled via cvar
 		if (UaS_HungerMetabolism && o.beatcounter % 35 == 0) {
 			energy = max(energy - 1, 0);
@@ -47,12 +45,12 @@ class UaS_HungerTracker : Inventory {
 		if (o.fatigue > 0) {
 			// fatigue recovery and additional drain
 			if (hydro > 0 && o.beatcounter % 4 == 0) {
-				o.fatigue = max(o.fatigue - 1, 0);
+				if(UaS_HungerStamina) { o.fatigue = max(o.fatigue - 1, 0); }
 				hydro = max(hydro - 1, 0);
 				debugtype.appendformat(" \cafatigue\c- ");
 			}
 			else if (energy > 0 && o.beatcounter % 6 == 0) {
-				o.fatigue = max(o.fatigue - 1, 0);
+				if(UaS_HungerStamina) { o.fatigue = max(o.fatigue - 1, 0); }
 				energy = max(energy - 1, 0);
 				debugtype.appendformat(" \cafatigue\c- ");
 			}
@@ -79,10 +77,8 @@ class UaS_HungerTracker : Inventory {
 		}
 		if (mouthclear()) {
 			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
-			if (UaS_HungerEnabled) { // Don't actually add calories if disabled
-				pending_calories += mouth_calories;
-				pending_fluid += mouth_fluid;
-			}
+			pending_calories += mouth_calories;
+			pending_fluid += mouth_fluid;
 			mouth_calories = 0;
 			mouth_fluid = 0;
 			drinking = false;

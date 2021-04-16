@@ -19,8 +19,7 @@ AddOptionMenu "HDOptionsMenu" after "HDControlsMenu" {
 OptionMenu "UaS_Options" {
 	Title "Ugly as Sin Settings"
 
-	Option "Hunger","UaS_HungerEnabled","OnOff"
-	SubMenu "Settings and Info", "UaS_Hunger_Options"
+	SubMenu "Hunger Settings", "UaS_Hunger_Options"
 	StaticText " "
 
 	Option "Scarcity","UaS_ScarcityEnabled","OnOff"
