@@ -54,10 +54,6 @@ extend class UaS_Looting_Handler {
 		HDMarineZM66Loot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
 		HDMarineZM66Loot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
-		if (UaS_HungerEnabled) {
-			HDMarineZM66Loot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
-			HDMarineZM66Loot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
-		}
 		// Hunter
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDShellAmmo", 2, 8, 1.0));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
@@ -79,10 +75,6 @@ extend class UaS_Looting_Handler {
 		HDMarineHunterLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
 		HDMarineHunterLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
-		if (UaS_HungerEnabled) {
-			HDMarineHunterLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
-			HDMarineHunterLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
-		}
 
 		// SMG
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDPistolAmmo", 5, 15, 1.0));
@@ -104,10 +96,6 @@ extend class UaS_Looting_Handler {
 		HDMarineSMGLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
 		HDMarineSMGLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
-		if (UaS_HungerEnabled) {
-			HDMarineSMGLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
-			HDMarineSMGLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
-		}
 
 		//Rocket
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDPistolAmmo", 1, 5, 1.0));
@@ -127,10 +115,5 @@ extend class UaS_Looting_Handler {
 		HDMarineRocketLoot.push(UaS_LootEntry.create("PortableRadsuit", 1, 1, 0.1));
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDBattery", 1, 1, 0.2));
 		HDMarineRocketLoot.push(UaS_LootEntry.create("HDIEDKit", 1, 4, 0.2));
-		if (UaS_HungerEnabled) {
-			HDMarineRocketLoot.push(UaS_LootEntry.create("UaS_FoodRation", 1, 1, 0.25));
-			HDMarineRocketLoot.push(UaS_LootEntry.create("UaS_WaterRation", 1, 1, 0.25));
-		}
-
 	}
 }

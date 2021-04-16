@@ -3,7 +3,7 @@ class UaS_Ally_Spawner : EventHandler {
 	bool doSpawns;
 
 	override void WorldLoaded(WorldEvent e) {
-		if (UaS.CVarCheck("UaS_AlliesEnabled")) { doSpawns = UaS_AlliesEnabled; }
+		if (UaS.CVarCheck("UaS_AlliesEnabled")) { doSpawns = CVar.GetCVar("UaS_AlliesEnabled").GetBool(); }
 		else { doSpawns = true; }
 		spawnChance = UaS_AllySpawnRate;
 		spawnChance /= 100.0;
