@@ -67,9 +67,9 @@ version "4.5"
 
 // Jamming
 #include "jamming/module/jamming.zsc"
-#include "jamming/module/jam_lib.zsc"
-#include "jamming/module/jam_pis.zsc"
-#include "jamming/module/jam_smg.zsc"
+#include "jamming/module/jamming_lib.zsc"
+#include "jamming/module/jamming_pis.zsc"
+#include "jamming/module/jamming_smg.zsc"
 
 // 2F Cartridges
 #include "2fcartridges/module/2f.zsc"
