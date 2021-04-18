@@ -3,14 +3,6 @@ version "4.5"
 // Constants
 #include "modules/bootstrap/bootstrap.zsc"
 
-// Monster AI
-#include "modules/ai/bootstrap.zsc"
-#include "modules/ai/tracker.zsc"
-#include "modules/ai/wounded.zsc"
-#include "modules/ai/searching.zsc"
-#include "modules/ai/flashlight.zsc"
-#include "modules/ai/stealth.zsc"
-
 //========================================
 // Standalone modules
 //========================================
@@ -21,6 +13,14 @@ version "4.5"
 #include "core/module/core_randomchance.zsc"
 #include "core/module/core_debug.zsc"
 #include "core/module/core_cvarcheck.zsc"
+
+// Monster AI
+#include "ai/module/ai.zsc"
+#include "ai/module/ai_bootstrap.zsc"
+#include "ai/module/ai_wounded.zsc"
+#include "ai/module/ai_searching.zsc"
+#include "ai/module/ai_flashlight.zsc"
+#include "ai/module/ai_stealth.zsc"
 
 // Scarcity
 #include "scarcity/module/scarcity.zsc"

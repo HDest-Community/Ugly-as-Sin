@@ -1,0 +1,15 @@
+AddOptionMenu "UaS_Options" {
+	Submenu "Advanced AI", "UaS_AI_Options"
+}
+
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "AI"
+}
+
+OptionMenu "UaS_AI_Options" {
+	Title "Advanced AI Module Settings"
+	Option "Searching","UaS_AI_Searching","OnOff"
+	Option "Wounding","UaS_AI_Wounding","OnOff"
+	Option "Lights","UaS_AI_Flashlights","OnOff"
+	Option "Stealth","UaS_AI_Stealth","OnOff"
+}

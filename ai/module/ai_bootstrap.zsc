@@ -3,7 +3,7 @@ class UaS_AI_Bootstrap : EventHandler {
 
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
-		if(!UaS_AdvancedAIEnabled) { return; }
+		if(UaS.CVarCheck("UaS_AdvancedAIEnabled") && !(CVar.GetCVar("UaS_AdvancedAIEnabled").GetBool())) { return; }
 		if(ExcludedClass(e.thing)) { return; }
 		if(e.Thing is 'HDMobBase' || e.Thing is "HERPBot" || e.Thing is "DERPBot") {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
