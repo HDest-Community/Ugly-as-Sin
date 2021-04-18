@@ -14,8 +14,6 @@ version "4.5"
 #include "modules/ai/flashlight.zsc"
 #include "modules/ai/stealth.zsc"
 
-#include "modules/yolo/yolo.zsc"
-
 //========================================
 // Standalone modules
 //========================================
@@ -133,3 +131,6 @@ version "4.5"
 
 // Visual Weapons
 #include "visualweapons/module/visweps.zsc"
+
+// YOLO
+#include "yolo/module/yolo.zsc"

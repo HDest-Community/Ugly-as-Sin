@@ -1,7 +1,13 @@
 class UaS_YOLO_Handler : EventHandler {
 	override void WorldTick() {
-		if (UaS_YOLO && !AllDown()) { SetYOLO(true); }
-		else { SetYOLO(false); }
+		if (UaS.CVarCheck("UaS_YOLO")) {
+			if (CVar.GetCVar("UaS_YOLO").GetBool() && !AllDown()) { SetYOLO(true); }
+			else { SetYOLO(false); }
+		}
+		else {
+			if (!AllDown()) { SetYOLO(true); }
+			else { SetYOLO(false); }
+		}
 	}
 
 	bool AllDown() {
@@ -20,6 +26,7 @@ class UaS_YOLO_Handler : EventHandler {
 				HDPlayerPawn p = HDPlayerPawn(players[i].mo);
 				//clamp max open wounds
 				p.woundcount = clamp(p.woundcount, 0, 100);
+				p.burncount = clamp(p.burncount, 0, 100);
 			}
 		}
 	}
