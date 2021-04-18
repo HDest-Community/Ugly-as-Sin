@@ -1,8 +1,5 @@
 version "4.5"
 
-// Constants
-#include "modules/bootstrap/bootstrap.zsc"
-
 //========================================
 // Standalone modules
 //========================================
