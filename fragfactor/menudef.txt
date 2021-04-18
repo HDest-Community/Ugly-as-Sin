@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Fragshard Reducer", "UaS_Frag_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Fragshard Reducer"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Fragshard Reducer", "UaS_Frag_Options"
 }
 
 OptionMenu "UaS_Frag_Options" {

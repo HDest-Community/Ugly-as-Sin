@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Scarcity", "UaS_Scarcity_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Scarcity"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Scarcity", "UaS_Scarcity_Options"
 }
 
 OptionMenu "UaS_Scarcity_Options" {

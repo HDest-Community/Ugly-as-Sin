@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Hunger", "UaS_Hunger_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Hunger"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Hunger", "UaS_Hunger_Options"
 }
 
 OptionMenu "UaS_Hunger_Options" {

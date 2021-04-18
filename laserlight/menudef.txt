@@ -1,3 +1,16 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Laser / Flashlight"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Laser / Flashlight", "UaS_AI_Options"
+}
+
+OptionMenu "UaS_AI_Options" {
+	Title "Laser / Flashlight Module Settings"
+	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
+}

@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Advanced AI", "UaS_AI_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "AI"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Advanced AI", "UaS_AI_Options"
 }
 
 OptionMenu "UaS_AI_Options" {

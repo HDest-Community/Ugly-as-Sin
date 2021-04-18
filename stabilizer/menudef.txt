@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Stabilizer", "UaS_Stabilizer_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Stabilizer"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Stabilizer", "UaS_Stabilizer_Options"
 }
 
 OptionMenu "UaS_Stabilizer_Options" {

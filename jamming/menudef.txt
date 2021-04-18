@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Jamming", "UaS_Jamming_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Jamming"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Jamming", "UaS_Jamming_Options"
 }
 
 OptionMenu "UaS_Jamming_Options" {

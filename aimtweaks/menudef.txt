@@ -1,15 +1,15 @@
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Aim Tweaks"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Aim Tweaks", "UaS_AimTweaks_Options"
+}
+
 OptionValue "FocusModes" {
 	0, 	"Focus key"
 	1,	"Zoom key only"
 	2,	"Use key only"
-}
-
-AddOptionMenu "UaS_Options" {
-	Submenu "Aim Tweaks", "UaS_AimTweaks_Options"
-}
-
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Aim Tweaks"
 }
 
 OptionMenu "UaS_AimTweaks_Options" {

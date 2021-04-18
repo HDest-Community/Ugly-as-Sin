@@ -1,9 +1,9 @@
-AddOptionMenu "UaS_Options" {
-	Submenu "Allied Marines", "UaS_Ally_Options"
-}
-
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Allied Marines"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Allied Marines", "UaS_Ally_Options"
 }
 
 OptionMenu "UaS_Ally_Options" {
