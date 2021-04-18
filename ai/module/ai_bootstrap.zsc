@@ -23,4 +23,19 @@ class UaS_AI_Bootstrap : EventHandler {
 			o is "HDBarrel"
 		);
 	}
+
+	override void WorldTick() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			if (UaS_AI_Stealth) { Stealth_PlayerBootstrap(i); }
+		}
+	}
+
+	void Stealth_PlayerBootstrap(int pnum) {
+		PlayerInfo p = players[pnum];
+		if (!p.mo) { return; }
+		if (!p.mo.countinv("UaS_StealthHandler")) {
+			p.mo.Giveinventory("UaS_StealthHandler", 1);
+		}
+	}
 }
