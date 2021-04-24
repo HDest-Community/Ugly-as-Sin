@@ -129,6 +129,7 @@ class UaS_ZerkInjector : Actor {
 
 // Can't actually pick these up, but they respond to the action
 class UaS_FakePickup : HDPickup {
+	default { -HDPickup.FitsInBackpack; }
 	override void actualpickup(actor other) {
 		return;
 	}
