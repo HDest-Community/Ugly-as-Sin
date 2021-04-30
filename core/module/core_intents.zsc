@@ -1,0 +1,37 @@
+// ========================================
+// Intents system to allow class-agnostic
+// communication between modules
+// ========================================
+extend class UaS {
+	array<UaS_Intent> Intents;
+
+	static play void SendIntent(
+		actor Sender, string Intent,
+		int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0,
+		int timeout = 5) {
+
+		UaS_Intent NewIntent = new("UaS_Intent");
+		NewIntent.Sender = Sender;
+		NewIntent.Intent = Intent;
+		NewIntent.arg0 = arg0;
+		NewIntent.arg1 = arg1;
+		NewIntent.arg2 = arg2;
+		NewIntent.arg3 = arg3;
+		NewIntent.arg4 = arg4;
+		NewIntent.timeout = timeout;
+		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
+		Handler.Intents.Push(NewIntent);
+	}
+
+	static play UaS_Intent GetIntent(actor Sender, bool clear) {
+		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
+		Handler.Intents.Push(NewIntent);
+	}
+}
+
+class UaS_Intent {
+	actor Sender;
+	string Intent;
+	int[5] args;
+	int timeout;
+}

@@ -6,6 +6,7 @@ A mod for [Hideous Destructor](https://codeberg.org/mc776/HideousDestructor), ad
 
 Features are typically implemented as toggleable modules with various customizable settings. Modules and features can sometimes be changed mid-game, but typically it's recommended to start a new game or change/restart the map in order to ensure that proper initialization happens.
 
+* [**2F Cartridges**](./2fcartridges/readme.md) - Removable "ammo" for medikit staplers.
 * **Hunger** - Requires the player to eat and drink or suffer fatigue penalties.
 * [**Scarcity**](./scarcity/readme.md) - Reduce the supplies available to the player by despawning and/or breaking up ammo and item spawns.
 * [**Fragshard Reducer**](./manual/fragfactor.md) - Specifies chance for enemy-reviving fragshards to spawn.
@@ -13,11 +14,10 @@ Features are typically implemented as toggleable modules with various customizab
 * **Advanced AI** - Extra monster behaviors, such as searching, wounding, and flashlights/lasers.
 * **Corpse Looting** - Human-type corpses can be searched for useful items.
 * **Visual Weapons** - Changes Marines and Tangos sprites to reflect their current weapon.
-* **Aim Swaying** - Extra inertia for player aiming, especially when fatigued.
-* **Focus Zoom** - Slight zoom-in effect when focused or aiming and not moving or stunned.
+* [**Aim Tweaks**](./aimtweaks/readme.md) - Aim Swaying (Extra inertia for player aiming, especially when fatigued) and Focus Zoom (Slight zoom-in effect when focused or aiming and not moving or stunned).
 * [**Laser/Flashlight**](./laserlight/readme.md) - A PEQ-style combination laser and flashlight module.
 * **Death Fading** - Fades the player's vision to black on death, faster or slower depending on final damage received.
-* [**Weapon Jamming**](./manual/jamming.md) - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
+* [**Weapon Jamming**](./jamming/readme.md) - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
 * [**Ammo Pouch**](./ammopouch/readme.md) - Small backpack-like pouch for storing loose ammunition more efficiently.
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing.
 * **Flares/Glowsticks** - Simple disposable lightsources for marking rooms or wandering in darkness.

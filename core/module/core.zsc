@@ -1,5 +1,5 @@
 // Static functions for general use
-class UaS {
+class UaS : EventHandler{
 	static play void EnableVignette(PlayerInfo p, double i = 120, double f = 0.08) {
 		Shader.SetUniform1f(p, "vignetteshader", "intensity", i);
 		Shader.SetUniform1f(p, "vignetteshader", "falloff", f);
