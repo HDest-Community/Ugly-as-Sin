@@ -179,7 +179,7 @@ class UaS_LaserLightModule : HDPickup {
 			double bliplength = random[llm](8, 32);
 			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1)) {
 				if (d > laserTrace.distance) { break; }
-				double ps = frandom[llm](1, min(256,laserTrace.distance - d));
+				double ps = frandom[llm](min(-f, 0), min(256,laserTrace.distance - d));
 				emitter.A_SpawnParticle(LaserColor, SPF_FULLBRIGHT|SPF_RELANG,
 					1,
 					(frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1)) * sizefactor,
