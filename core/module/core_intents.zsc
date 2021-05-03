@@ -52,20 +52,13 @@ extend class UaS {
 	static play void PrintIntentsList() {
 		let Handler = UaS(EventHandler.Find('UaS'));
 		for (int i = 0; i < Handler.IntentsList.size(); i++) {
-			console.printf(Handler.IntentsList[i].Intent);
+			console.printf("%i %s",i,Handler.IntentsList[i].Intent);
 		}
 	}
 
 	// debug tests
 	// override void WorldTick() {
-		// //if (level.maptime % 70 == 0) { UaS.PrintIntentsList(); }
-		// if (level.maptime == 5) { UaS.SendIntent("TestEvent", self, self); }
-		// if (level.maptime == 10) {
-			// UaS_Intent check = UaS.GetIntent("TestEvent", receiver:self);
-			// if (check) {
-				// console.printf("retrieved "..check.Intent.." successfully!");
-			// }
-		// }
+		// if (level.maptime % 70 == 0) { UaS.PrintIntentsList(); }
 	// }
 }
 

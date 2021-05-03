@@ -1,11 +1,11 @@
 extend class UaS_AI_Handler {
-	UaS_LaserLightModule llm;
 	int	recheck;
 	bool flashing;
 	int prefmode;
 
 	void Flashlight() {
 		if (owner.isFrozen() || level.isFrozen()) { return; }
+		if (!UaS_AI_Flashlights) { UaS.SendIntent("LLM_Off", owner); return; }
 		// Only do light for human-type classes and robots
 		bool BotClass = (
 			owner is "HERPBot" ||
@@ -19,11 +19,8 @@ extend class UaS_AI_Handler {
 		);
 		if (!BotClass && !HumanClass) { return; }
 
-		if (!owner.FindInventory("UaS_LaserLightModule")) {
-			owner.giveinventory("UaS_LaserLightModule", 1);
-			llm = UaS_LaserLightModule(owner.FindInventory("UaS_LaserLightModule"));
-			llm.ModeSwitch(random[aillm](0,2));
-		}
+		string flc = "UaS_LaserLightModule";
+		if (!owner.FindInventory(flc)) { owner.giveinventory(flc, 1); }
 
 		bool isowneraiming = (
 			owner.frame ==  4 || owner.frame ==  5 ||
@@ -33,44 +30,28 @@ extend class UaS_AI_Handler {
 		flashing = (
 			owner.target &&
 			isowneraiming &&
-			!BotClass &&
-			(llm.mode == 0 || llm.mode == 2)
+			!BotClass
 		);
 
-		if (!UaS_AI_Flashlights) { llm.activated = false; return; }
-
 		if (HumanClass && recheck <= 0) {
-			llm.offset = 8;
 			// sample light from ahead of monster
 			FLineTraceData lookSpot;
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
 			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
 			// More likely to activate in darker areas
-			if (random[aillm](0,192) > lightlevel) { llm.activated = true; }
-			else { llm.activated = false; }
+			if (random[aillm](0,192) > lightlevel) { UaS.SendIntent("LLM_On", owner); }
+			else { UaS.SendIntent("LLM_Off", owner); }
 
 			// misc other adjustments
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
 			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
 			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
-			if (flashing) { llm.ModeSwitch(3); }
-			else { llm.ModeSwitch(prefmode); }
-		}
-		else if (BotClass) {
-			if (owner is "HERPBot") {
-				llm.mode = 1;
-				llm.activated = true;
-				llm.offset = 8;
-			}
-
-			if (owner is "DERPBot") {
-				llm.mode = 0;
-				llm.activated = true;
-				llm.offset = 2;
-			}
+			if (flashing) { UaS.SendIntent("LLM_Mode3", owner); }
+			else { UaS.SendIntent(string.format("LLM_Mode"..prefmode), owner); }
 		}
 
+		/*
 		// Handle random light movement
 		if ((level.maptime % 10 == 0) && !BotClass) {
 			if (owner.target && !(owner.target is "UaS_LastKnownMarker")) {
@@ -87,7 +68,7 @@ extend class UaS_AI_Handler {
 		if (isowneraiming && flashing) {
 			llm.angleoffset = 0;
 			llm.pitchoffset = 0;
-		}
+		}*/
 
 		recheck--;
 	}
