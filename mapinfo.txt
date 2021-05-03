@@ -1,4 +1,5 @@
 GameInfo {
+	AddEventHandlers = "UaS"
 	AddEventHandlers = "UaS_SlingSpawner"
 	AddEventHandlers = "UaS_YOLO_Handler"
 	AddEventHandlers = "UaS_AI_Bootstrap"
