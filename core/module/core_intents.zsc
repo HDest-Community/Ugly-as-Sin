@@ -3,35 +3,77 @@
 // communication between modules
 // ========================================
 extend class UaS {
-	array<UaS_Intent> Intents;
+	array<UaS_Intent> IntentsList;
 
 	static play void SendIntent(
-		actor Sender, string Intent,
-		int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0,
-		int timeout = 5) {
-
+		string Intent,
+		object Sender,
+		object Receiver = null,
+		int Timeout = 5)
+	{
 		UaS_Intent NewIntent = new("UaS_Intent");
 		NewIntent.Sender = Sender;
+		NewIntent.Receiver = Receiver;
 		NewIntent.Intent = Intent;
-		NewIntent.arg0 = arg0;
-		NewIntent.arg1 = arg1;
-		NewIntent.arg2 = arg2;
-		NewIntent.arg3 = arg3;
-		NewIntent.arg4 = arg4;
-		NewIntent.timeout = timeout;
+		NewIntent.Timeout = Timeout;
+		NewIntent.Created = level.maptime;
 		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
-		Handler.Intents.Push(NewIntent);
+		Handler.IntentsList.Push(NewIntent);
 	}
 
-	static play UaS_Intent GetIntent(actor Sender, bool clear) {
-		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
-		Handler.Intents.Push(NewIntent);
+	static play UaS_Intent GetIntent(
+		string Intent,
+		object Sender = null,
+		object Receiver = null,
+		bool Clear = false)
+	{
+		let Handler = UaS(EventHandler.Find('UaS'));
+		bool matchSender   = (Sender   != null);
+		bool matchReceiver = (Receiver != null);
+
+		for (int i = 0; i < Handler.IntentsList.size(); i++) {
+			UaS_Intent ci = Handler.IntentsList[i];
+			// Delete any latent flagged intents as we go
+			if (ci.toDestroy || (level.maptime - ci.Created > ci.Timeout)) {
+				Handler.IntentsList.delete(i);
+				ci.Destroy();
+				continue;
+			}
+			if (matchSender && ci.Sender != Sender) { continue; }
+			if (matchReceiver && ci.Receiver != Receiver) { continue; }
+			if (ci.Intent == Intent) {
+				if (Clear) { ci.toDestroy = true; }
+				return ci;
+			}
+		}
+		return null;
 	}
+
+	static play void PrintIntentsList() {
+		let Handler = UaS(EventHandler.Find('UaS'));
+		for (int i = 0; i < Handler.IntentsList.size(); i++) {
+			console.printf(Handler.IntentsList[i].Intent);
+		}
+	}
+
+	// debug tests
+	// override void WorldTick() {
+		// //if (level.maptime % 70 == 0) { UaS.PrintIntentsList(); }
+		// if (level.maptime == 5) { UaS.SendIntent("TestEvent", self, self); }
+		// if (level.maptime == 10) {
+			// UaS_Intent check = UaS.GetIntent("TestEvent", receiver:self);
+			// if (check) {
+				// console.printf("retrieved "..check.Intent.." successfully!");
+			// }
+		// }
+	// }
 }
 
 class UaS_Intent {
-	actor Sender;
 	string Intent;
-	int[5] args;
-	int timeout;
+	object Sender;
+	object Receiver;
+	int Timeout;
+	int Created;
+	bool toDestroy;
 }
