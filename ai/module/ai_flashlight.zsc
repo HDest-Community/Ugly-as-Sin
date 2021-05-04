@@ -5,7 +5,7 @@ extend class UaS_AI_Handler {
 
 	void Flashlight() {
 		if (owner.isFrozen() || level.isFrozen()) { return; }
-		if (!UaS_AI_Flashlights) { UaS.SendIntent("LLM_Off", owner); return; }
+		if (!UaS_AI_Flashlights) { UaS.SendIntent("LLM_Toggle", "Off", owner); return; }
 		// Only do light for human-type classes and robots
 		bool BotClass = (
 			owner is "HERPBot" ||
@@ -40,15 +40,15 @@ extend class UaS_AI_Handler {
 			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
 			// More likely to activate in darker areas
-			if (random[aillm](0,192) > lightlevel) { UaS.SendIntent("LLM_On", owner); }
-			else { UaS.SendIntent("LLM_Off", owner); }
+			if (random[aillm](0,192) > lightlevel) { UaS.SendIntent("LLM_Toggle", "On", owner); }
+			else { UaS.SendIntent("LLM_Toggle", "Off", owner); }
 
 			// misc other adjustments
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
 			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
 			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
-			if (flashing) { UaS.SendIntent("LLM_Mode3", owner); }
-			else { UaS.SendIntent(string.format("LLM_Mode"..prefmode), owner); }
+			if (flashing) { UaS.SendIntent("LLM_ModeSwitch", "3", owner); }
+			else { UaS.SendIntent("LLM_ModeSwitch", string.format("%i",prefmode), owner); }
 		}
 
 		/*

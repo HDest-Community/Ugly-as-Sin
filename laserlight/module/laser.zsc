@@ -98,23 +98,18 @@ class UaS_LaserLightModule : HDPickup {
 
 	void ProcessIntents() {
 		UaS_Intent oi;
-		oi = UaS.GetIntent("LLM_On", owner, clear: true);
-		if (oi) { activated = true; return; }
+		oi = UaS.GetIntent("LLM_Toggle", owner);
+		if (oi) {
+			if (oi.Payload ~== "On") { activated = true; }
+			else if (oi.Payload ~== "Off") { activated = false; }
+			else { ToggleSwitch(); }
+		}
 
-		oi = UaS.GetIntent("LLM_Off", owner, clear: true);
-		if (oi) { activated = false; return; }
-
-		oi = UaS.GetIntent("LLM_Mode0", owner, clear: true);
-		if (oi) { mode = 0; return; }
-
-		oi = UaS.GetIntent("LLM_Mode1", owner, clear: true);
-		if (oi) { mode = 1; return; }
-
-		oi = UaS.GetIntent("LLM_Mode2", owner, clear: true);
-		if (oi) { mode = 2; return; }
-
-		oi = UaS.GetIntent("LLM_Mode3", owner, clear: true);
-		if (oi) { mode = 3; return; }
+		oi = UaS.GetIntent("LLM_ModeSwitch", owner);
+		if (oi) {
+			if (oi.Payload == "") { ModeSwitch(); }
+			else { ModeSwitch(oi.Payload.ToInt(10)); }
+		}
 	}
 
 	void UpdateEmitter() {

@@ -7,14 +7,16 @@ extend class UaS {
 
 	static play void SendIntent(
 		string Intent,
+		string Payload,
 		object Sender,
 		object Receiver = null,
 		int Timeout = 5)
 	{
 		UaS_Intent NewIntent = new("UaS_Intent");
+		NewIntent.Intent = Intent;
+		NewIntent.Payload = Payload;
 		NewIntent.Sender = Sender;
 		NewIntent.Receiver = Receiver;
-		NewIntent.Intent = Intent;
 		NewIntent.Timeout = Timeout;
 		NewIntent.Created = level.maptime;
 		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
@@ -24,16 +26,20 @@ extend class UaS {
 	static play UaS_Intent GetIntent(
 		string Intent,
 		object Sender = null,
-		object Receiver = null,
-		bool Clear = false)
+		object Receiver = null)
 	{
 		let Handler = UaS(EventHandler.Find('UaS'));
 		bool matchSender   = (Sender   != null);
 		bool matchReceiver = (Receiver != null);
-
+		// Iterate over intents list
 		for (int i = 0; i < Handler.IntentsList.size(); i++) {
 			UaS_Intent ci = Handler.IntentsList[i];
-			// Delete any latent flagged intents as we go
+			// Dereference any intents that got destroyed somehow
+			if (!ci) {
+				Handler.IntentsList.delete(i);
+				continue;
+			}
+			// Delete any latent or flagged intents as we go
 			if (ci.toDestroy || (level.maptime - ci.Created > ci.Timeout)) {
 				Handler.IntentsList.delete(i);
 				ci.Destroy();
@@ -42,19 +48,18 @@ extend class UaS {
 			if (matchSender && ci.Sender != Sender) { continue; }
 			if (matchReceiver && ci.Receiver != Receiver) { continue; }
 			if (ci.Intent == Intent) {
-				if (Clear) { ci.toDestroy = true; }
 				return ci;
 			}
 		}
 		return null;
 	}
 
-	static play void PrintIntentsList() {
-		let Handler = UaS(EventHandler.Find('UaS'));
-		for (int i = 0; i < Handler.IntentsList.size(); i++) {
-			console.printf("%i %s",i,Handler.IntentsList[i].Intent);
-		}
-	}
+	// static play void PrintIntentsList() {
+		// let Handler = UaS(EventHandler.Find('UaS'));
+		// for (int i = 0; i < Handler.IntentsList.size(); i++) {
+			// console.printf("%i %s",i,Handler.IntentsList[i].Intent);
+		// }
+	// }
 
 	// debug tests
 	// override void WorldTick() {
@@ -64,9 +69,14 @@ extend class UaS {
 
 class UaS_Intent {
 	string Intent;
+	string Payload;
 	object Sender;
 	object Receiver;
 	int Timeout;
 	int Created;
 	bool toDestroy;
+
+	void Clear() {
+		toDestroy = true;
+	}
 }
