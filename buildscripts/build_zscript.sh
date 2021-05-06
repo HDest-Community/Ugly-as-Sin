@@ -7,8 +7,17 @@ echo >> zscript.zsc
 echo "version \"4.5\"" >> ./zscript.zsc
 echo >> zscript.zsc
 
+# the weirdass sort commands are to make sure the files are included in the correct order
 # Core
-for f in $(find -name "core*.zsc" not -path "*zscript.zsc" | sort -r)
+for f in $(find * -name "core*.zsc" -not -path "*zscript.zsc" | sort -t '/' -k1,1 -k3r )
+do
+	ifile=$(basename $f)
+	ipath=$(dirname $f)
+	echo "#include \"$ipath/$ifile\"" >> ./zscript.zsc
+done
+
+# Everything else
+for f in $(find * -name "*.zsc" -not -path "*zscript.zsc" -not -path "*core*" | sort -t '/' -k1,1 -k3r )
 do
 	ifile=$(basename $f)
 	ipath=$(dirname $f)
