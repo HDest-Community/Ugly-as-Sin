@@ -7,15 +7,10 @@ echo >> zscript.zsc
 echo "version \"4.5\"" >> ./zscript.zsc
 echo >> zscript.zsc
 
-find ./core/module/ \
-	-name "*.zsc" \
-	-not -path "*zscript.zsc" \
-	| sort -r | sed -e 's/^\.\///' \
-	-exec echo "#include \"$i\"" >> ./zscript.zsc
-
-find \
-	-name "*.zsc" \
-	-not -path "*zscript.zsc" \
-	-not -path "./core*" \
-	| sort -r | sed -e 's/^\.\///' \
-	-exec echo "#include \"$i\"" >> ./zscript.zsc
+# Core
+for f in $(find -name "core*.zsc" not -path "*zscript.zsc" | sort -r)
+do
+	ifile=$(basename $f)
+	ipath=$(dirname $f)
+	echo "#include \"$ipath/$ifile\"" >> ./zscript.zsc
+done
