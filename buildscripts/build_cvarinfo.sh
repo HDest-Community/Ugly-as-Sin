@@ -7,5 +7,5 @@ echo >> cvarinfo.txt
 
 find \
 	-name "cvarinfo.txt" \
-	-not -path "./cvarinfo.txt"
+	-not -path "./cvarinfo.txt" \
 	-exec cat {} + >> ./cvarinfo.txt
