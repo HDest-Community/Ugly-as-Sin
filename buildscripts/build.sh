@@ -11,24 +11,11 @@ find \
 	-not -path "./core/menudef.txt" \
 	-exec cat {} + >> ./menudef.txt
 
-# CVARINFO
-rm ./cvarinfo.txt
-find \
-	-name "cvarinfo*" \
-	-exec cat {} + >> ./cvarinfo.txt
-
 # MAPINFO
 rm ./mapinfo.txt
 find \
 	-name "mapinfo*" \
 	-exec cat {} + >> ./mapinfo.txt
-
-# ZSCRIPT
-rm ./zscript.zsc
-echo "version \"4.5\"" >> ./zscript.zsc
-for i in $(find -name "*.zsc" -not -path "*zscript.zsc" | sort -r | sed -e 's/^\.\///'); do echo "#include \"$i\"" >> ./zscript.txt ; done
-cat zscript.txt >> zscript.zsc
-rm zscript.txt
 
 # TEXTUREs
 rm ./textures.txt
