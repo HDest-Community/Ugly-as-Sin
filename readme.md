@@ -9,7 +9,7 @@ Features are typically implemented as toggleable modules with various customizab
 * [**2F Cartridges**](./2fcartridges/readme.md) - Removable "ammo" for medikit staplers.
 * **Hunger** - Requires the player to eat and drink or suffer fatigue penalties.
 * [**Scarcity**](./scarcity/readme.md) - Reduce the supplies available to the player by despawning and/or breaking up ammo and item spawns.
-* [**Fragshard Reducer**](./manual/fragfactor.md) - Specifies chance for enemy-reviving fragshards to spawn.
+* [**Fragshard Reducer**](./fragfactor/readme.md) - Specifies chance for enemy-reviving fragshards to spawn.
 * **Allied Marines** - Friendly marine reinforcements that randomly replace human-type corpses.
 * **Advanced AI** - Extra monster behaviors, such as searching, wounding, and flashlights/lasers.
 * **Corpse Looting** - Human-type corpses can be searched for useful items.
