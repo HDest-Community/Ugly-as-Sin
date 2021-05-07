@@ -1,3 +1,2 @@
 UaS_WoundStabilization,
 UaS_TraumaKit,
-UaS_Consumable
