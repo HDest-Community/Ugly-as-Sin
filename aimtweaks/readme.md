@@ -4,13 +4,6 @@ Adds subtle swaying and focus zooming to the player's crosshair / sights.
 
 ## Settings
 
-* **Setting Name** `uas_cvar` Description
-  * Nice Name `value` = Effect (default)
-  * Nice Name `value` = Effect
-  * Nice Name `value` = Effect
-
-## Settings
-
 * **Focus Zoom Enabled** `UaS_FocusZoomEnabled` [On/Off] - Enables or disables the zoom effect.
 * **Focus Zoom Mode** `UaS_FocusZoomMode` [0|1|2]
   * 0 = Focus Key - Whichever key you have defined in HD for "focusing".
