@@ -20,7 +20,7 @@ Features are typically implemented as toggleable modules with various customizab
 * [**Weapon Jamming**](./jamming/readme.md) - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
 * [**Ammo Pouch**](./ammopouch/readme.md) - Small backpack-like pouch for storing loose ammunition more efficiently.
 * **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing.
-* **Flares/Glowsticks** - Simple disposable lightsources for marking rooms or wandering in darkness.
+* [**Flares/Glowsticks**](./markers/readme.md) - Simple disposable lightsources for marking rooms or wandering in darkness.
 * **Respirator** - Rechargable emergency air tank for extended underwater excursions. Drains faster the more fatigued you are.
 * **Enhanced Medical** - More detailed wound treatment options, including bleeding stabilization to complement bandaging, and the **Trauma Kit** item for treating old wounds manually without using the auto-suture gun.
 * **YOLO mode** - EXPERIMENTAL, multiplayer-only mode where players can still be incapacitated but not killed, until all players are down. Enable with `UaS_YOLO true` in the console when launching a MP session.
