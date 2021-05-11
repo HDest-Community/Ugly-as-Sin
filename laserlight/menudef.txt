@@ -7,10 +7,10 @@ AddOptionMenu "UaS_Controls" {
 }
 
 AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Laser / Flashlight", "UaS_AI_Options"
+	Submenu "Laser / Flashlight", "UaS_LaserLight_Options"
 }
 
-OptionMenu "UaS_AI_Options" {
+OptionMenu "UaS_LaserLight_Options" {
 	Title "Laser / Flashlight Module Settings"
 	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 }
