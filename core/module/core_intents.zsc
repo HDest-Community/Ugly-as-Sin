@@ -4,6 +4,7 @@
 // ========================================
 extend class UaS {
 	array<UaS_Intent> IntentsList;
+	int debug_sent, debug_got, debug_cleaned, debug_arraycycles;
 
 	static play void SendIntent(
 		string Intent,
@@ -21,6 +22,7 @@ extend class UaS {
 		NewIntent.Created = level.maptime;
 		let Handler = UaS(EventHandler.Find('UaS')); // Thanks Ace!
 		Handler.IntentsList.Push(NewIntent);
+		Handler.debug_sent++;
 	}
 
 	static play UaS_Intent GetIntent(
@@ -31,27 +33,53 @@ extend class UaS {
 		let Handler = UaS(EventHandler.Find('UaS'));
 		bool matchSender   = (Sender   != null);
 		bool matchReceiver = (Receiver != null);
-		// Iterate over intents list
 		for (int i = 0; i < Handler.IntentsList.size(); i++) {
+			handler.debug_arraycycles++;
 			UaS_Intent ci = Handler.IntentsList[i];
+			// Skip null, cleared, or expired intents
+			if (!ci || ci.toDestroy || (level.maptime - ci.Created > ci.Timeout)) { continue; }
+			// Skip non-matching sender/receiver if applicable
+			if (matchSender && ci.Sender != Sender) { continue; }
+			if (matchReceiver && ci.Receiver != Receiver) { continue; }
+			// Match main criteria
+			if (ci.Intent == Intent) { Handler.debug_got++; return ci; }
+		}
+		return null; // nothing found
+	}
+
+	void Cleanup_Intents() {
+		// Iterate over intents list
+		for (int i = 0; i < IntentsList.size(); i++) {
+			debug_arraycycles++;
+			UaS_Intent ci = IntentsList[i];
 			// Dereference any intents that got destroyed somehow
 			if (!ci) {
-				Handler.IntentsList.delete(i);
+				IntentsList.delete(i);
+				debug_cleaned++;
 				continue;
 			}
 			// Delete any latent or flagged intents as we go
 			if (ci.toDestroy || (level.maptime - ci.Created > ci.Timeout)) {
-				Handler.IntentsList.delete(i);
+				IntentsList.delete(i);
 				ci.Destroy();
+				debug_cleaned++;
 				continue;
 			}
-			if (matchSender && ci.Sender != Sender) { continue; }
-			if (matchReceiver && ci.Receiver != Receiver) { continue; }
-			if (ci.Intent == Intent) {
-				return ci;
-			}
 		}
-		return null;
+	}
+
+	void IntentTick() {
+		Cleanup_Intents();
+		if (level.maptime % 175 == 0) {
+			UaS.LogDebug(
+				DBG_Intents,
+				string.format("Intents 5 seconds: %i sent, %i retrieved, %i cleaned, %i array cycles, %i pending",
+					debug_sent, debug_got, debug_cleaned, debug_arraycycles, IntentsList.size()));
+			debug_sent = 0;
+			debug_got = 0;
+			debug_cleaned = 0;
+			debug_arraycycles = 0;
+		}
 	}
 
 	// static play void PrintIntentsList() {

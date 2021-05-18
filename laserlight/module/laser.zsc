@@ -103,12 +103,14 @@ class UaS_LaserLightModule : HDPickup {
 			if (oi.Payload ~== "On") { activated = true; }
 			else if (oi.Payload ~== "Off") { activated = false; }
 			else { ToggleSwitch(); }
+			oi.Clear();
 		}
 
 		oi = UaS.GetIntent("LLM_ModeSwitch", owner);
 		if (oi) {
 			if (oi.Payload == "") { ModeSwitch(); }
 			else { ModeSwitch(oi.Payload.ToInt(10)); }
+			oi.Clear();
 		}
 	}
 
