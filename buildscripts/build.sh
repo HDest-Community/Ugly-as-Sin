@@ -115,3 +115,16 @@ find \
 	-name "wtblklst.txt" \
 	-not -path "./wtblklst.txt" \
 	-exec cat {} + >> ./wtblklst.txt
+
+# =========================
+# Manual contents
+# =========================
+cd manual/
+echo "Autogenerating manual contents page..."
+echo "# Manual Contents " > ./contents.md
+echo >> ./contents.md
+for r in $(find ../* -name "readme.md" -not -path "../readme.md")
+do
+	echo "[name]($r)" > contents.md
+done
+cd ..

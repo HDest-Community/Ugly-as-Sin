@@ -2,33 +2,38 @@
 
 A mod for [Hideous Destructor](https://codeberg.org/mc776/HideousDestructor), adding various optional features and mechanics. Originally started as *HD-Scavenger* with a focus on longer-term "survival" features, but rapidly expanded into a general purpose enhancement mutator.
 
-## Features
+## Download
 
-Features are typically implemented as toggleable modules with various customizable settings. Modules and features can sometimes be changed mid-game, but typically it's recommended to start a new game or change/restart the map in order to ensure that proper initialization happens.
+The following download options are available:
 
-* [**2F Cartridges**](./2fcartridges/readme.md) - Removable "ammo" for medikit staplers.
-* **Hunger** - Requires the player to eat and drink or suffer fatigue penalties.
-* [**Scarcity**](./scarcity/readme.md) - Reduce the supplies available to the player by despawning and/or breaking up ammo and item spawns.
-* [**Fragshard Reducer**](./fragfactor/readme.md) - Specifies chance for enemy-reviving fragshards to spawn.
-* **Allied Marines** - Friendly marine reinforcements that randomly replace human-type corpses.
-* **Advanced AI** - Extra monster behaviors, such as searching, wounding, and flashlights/lasers.
-* **Corpse Looting** - Human-type corpses can be searched for useful items.
-* **Visual Weapons** - Changes Marines and Tangos sprites to reflect their current weapon.
-* [**Aim Tweaks**](./aimtweaks/readme.md) - Aim Swaying (Extra inertia for player aiming, especially when fatigued) and Focus Zoom (Slight zoom-in effect when focused or aiming and not moving or stunned).
-* [**Laser/Flashlight**](./laserlight/readme.md) - A PEQ-style combination laser and flashlight module.
-* **Death Fading** - Fades the player's vision to black on death, faster or slower depending on final damage received.
-* [**Weapon Jamming**](./jamming/readme.md) - Adds *very* rare jams to the pistol, SMG, and Liberator (can be cleared by simply pressing the fire button again).
-* [**Ammo Pouch**](./ammopouch/readme.md) - Small backpack-like pouch for storing loose ammunition more efficiently.
-* **Weapon Sling** - Allows the player to "brace" their weapon anywhere, even while standing.
-* [**Flares/Glowsticks**](./markers/readme.md) - Simple disposable lightsources for marking rooms or wandering in darkness.
-* **Respirator** - Rechargable emergency air tank for extended underwater excursions. Drains faster the more fatigued you are.
-* **Enhanced Medical** - More detailed wound treatment options, including bleeding stabilization to complement bandaging, and the **Trauma Kit** item for treating old wounds manually without using the auto-suture gun.
-* **YOLO mode** - EXPERIMENTAL, multiplayer-only mode where players can still be incapacitated but not killed, until all players are down. Enable with `UaS_YOLO true` in the console when launching a MP session.
+* [**Stable**](https://github.com/caligari87/Ugly-as-Sin/releases/latest) - Stable version (usually) that attempts to target the same numbered version of Hideous Destructor and GZDoom. In other words, **Ugly as Sin v4.5.0** targets **Hideous Destructor v4.5.0** which targets **GZDoom 4.5.0**. Will sometimes include a **Stable Legacy** build for LZDoom compatibility when needed and possible.
+* [**Unstable**](https://github.com/caligari87/Ugly-as-Sin/archive/master.zip) - Also sometimes called the `master` build. Constantly-updated version which targets the latest `main` development version of Hideous Destructor. Most up to date but may have bugs, testing features, or be broken.
+* [**Unstable Legacy**](https://github.com/caligari87/Ugly-as-Sin/archive/refs/heads/legacy.zip) - The same as the **Unstable** build but targets LZDoom compatibilty when possible. May be missing features.
 
-More detailed documentation is in progress for all features and will be located in the `manual/` folder.
+## Loading
 
-## Development and Download
+Depending on which version you download, you may receive a file with a `.zip` or `.pk3` extension. Internally, these files are identical. You should *not* unzip the file unless followin the advanced instructions below to customize your modules.
+
+Ugly as Sin requires either the GZDoom or LZDoom, and *must* be loaded *after* Hideous Destructor in all cases. You may do this with a command-line or script file, or a graphical Doom-engine launcher like ZDL. Dragging-and-dropping the files onto GZDoom is *not* recommended as load order will be unpredictale.
+
+**Example command line:**
+```gzdoom -file HideousDestructor-main.zip Ugly-as-Sin-master.zip -skill 4 -warp e1m4```
+
+### Advanced loading customization
+
+Most of the time you will want to load the complete mod with all features enabled. However, some players may wish to customize their experience by only using certain features. This is supported throught the use of standalone code "modules" within the main mod.
+
+**Instructions**
+
+* Unzip the downloaded mod file. If the file has a `.pk3` extension it may be renamed to `.zip`.
+* Delete the following files and folders:
+  * All plain root-level files (`mapinfo.txt`, `zscript.zsc`, etc). These provide required "glue" to load the complete mod and will not be needed for loading individual modules.
+  * The `buildscripts/` folder. This only contains automated scripts and template shims.
+* You should now have a list of folders with names such as `core/`, `2fcartridges/`, `medical/`, etc. These are the modules which can be loaded individually. You may:
+  * Load the desired folders directly into GZDoom.
+  * Compress the contents of the desired folders into `.pk3` or `.zip` files.
+* The **Core Module** (`core/`) *must* be loaded *before* any other modules, or errors will occur!
+
+## Development
 
 *Ugly as Sin* is always under rapid development and typically targets the "bleeding edge" `main` branch of Hideous Destructor. Bugs may be reported here as Github Issues, on the ZDoom forums in the Ugly as Sin thread, or on the Hideous Destructor discord server.
-
-To download, click the **Code** button on Github or use [this link](https://github.com/caligari87/Ugly-as-Sin/archive/master.zip) to obtain the latest version as a `.zip` file. This file may be loaded like a `.wad` or `.pk3` file directly into GZDoom *after* Hideous Destructor.
