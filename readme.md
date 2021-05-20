@@ -10,9 +10,13 @@ The following download options are available:
 * [**Unstable**](https://github.com/caligari87/Ugly-as-Sin/archive/master.zip) - Also sometimes called the `master` build. Constantly-updated version which targets the latest `main` development version of Hideous Destructor. Most up to date but may have bugs, testing features, or be broken.
 * [**Unstable Legacy**](https://github.com/caligari87/Ugly-as-Sin/archive/refs/heads/legacy.zip) - The same as the **Unstable** build but targets LZDoom compatibilty when possible. May be missing features.
 
+## Instructions
+
+[Click here to go to the Manual](./manual/contents.md) (work in progress)
+
 ## Loading
 
-Depending on which version you download, you may receive a file with a `.zip` or `.pk3` extension. Internally, these files are identical. You should *not* unzip the file unless followin the advanced instructions below to customize your modules.
+Depending on which version you download, you may receive a file with a `.zip` or `.pk3` extension. Internally, these files are identical and GZDoom will load either type just fine. You should *not* unzip the file unless followin the advanced instructions below to customize your modules.
 
 Ugly as Sin requires either the GZDoom or LZDoom, and *must* be loaded *after* Hideous Destructor in all cases. You may do this with a command-line or script file, or a graphical Doom-engine launcher like ZDL. Dragging-and-dropping the files onto GZDoom is *not* recommended as load order will be unpredictale.
 
@@ -25,7 +29,7 @@ Most of the time you will want to load the complete mod with all features enable
 
 **Instructions**
 
-* Unzip the downloaded mod file. If the file has a `.pk3` extension it may be renamed to `.zip`.
+* Unzip the downloaded mod file. If the file has a `.pk3` extension it can be renamed to `.zip`.
 * Delete the following files and folders:
   * All plain root-level files (`mapinfo.txt`, `zscript.zsc`, etc). These provide required "glue" to load the complete mod and will not be needed for loading individual modules.
   * The `buildscripts/` folder. This only contains automated scripts and template shims.
