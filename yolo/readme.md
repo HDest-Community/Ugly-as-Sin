@@ -4,7 +4,8 @@ You Only Live Once. Prevents players from dying, requiring other players to tria
 
 ## Settings
 
-* `UaS_YOLO` [true|false] When using the combined UaS package, enables or disables the mechanic. Must be set from the command line when starting a multiplaer game.
+* `UaS_YOLO` - Only used when loading the combined UaS package. Must be set from the command line when starting a multiplayer game.
+  * `true`/`false` - Enables or disables the mechanic, respectively
 
 ## Mechanics
 

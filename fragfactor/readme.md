@@ -8,6 +8,5 @@ This module is triggered whenever a shard spawns, and randomly deletes the spawn
 
 * **Frag Spawn Rate** `UaS_FragSpawnRate` Controls the rate at which frag is allowed to spawn.
   * `0` = Disabled, no frag shards will spawn from any sources.
-  * ...
   * `100` = frag shards will spawn at normal Hideous Destructor rates (default).
 * **Remove Frag** - Removes all frag shards from the level.
