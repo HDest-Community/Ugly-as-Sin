@@ -334,8 +334,8 @@ class UaS_LLM_Emitter : DynamicLight {
 	void IRMode(bool on) {
 		if (on) {
 			args[DynamicLight.LIGHT_RED] = 64;
-			args[DynamicLight.LIGHT_GREEN] = 64;
-			args[DynamicLight.LIGHT_BLUE] = 64;
+			args[DynamicLight.LIGHT_GREEN] = 63;
+			args[DynamicLight.LIGHT_BLUE] = 62;
 		}
 		else {
 			args[DynamicLight.LIGHT_RED] = 255;

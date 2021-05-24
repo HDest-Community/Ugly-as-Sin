@@ -39,6 +39,11 @@ class UaS_StealthHandler : Inventory {
 
 		// Iterate lights
 		while (currentLight = DynamicLight(LightFinder.Next())) {
+			bool IROnlyLight = (
+				currentLight.args[DynamicLight.LIGHT_RED] == 64 &&
+				currentLight.args[DynamicLight.LIGHT_GREEN] == 63 &&
+				currentLight.args[DynamicLight.LIGHT_BLUE] == 62);
+			if (IROnlyLight) { continue; } // Skip UaS IR illuminator
 			if (currentLight is "VisorLight") { continue; } // Skip HD's nightvision visor light
 			if (!currentLight.CheckSight(owner)) { continue; } //Skip if the light isn't in LoS
 
