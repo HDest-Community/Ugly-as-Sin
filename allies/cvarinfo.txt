@@ -1,2 +1,2 @@
-server int UaS_AllySpawnRate = 25;
+server int UaS_AllySpawnRate = 0;
 server int UaS_AllyPreferred = 0;

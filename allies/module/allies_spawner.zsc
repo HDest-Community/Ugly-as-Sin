@@ -1,10 +1,7 @@
 class UaS_Ally_Spawner : EventHandler {
 	double spawnChance;
-	bool doSpawns;
 
 	override void WorldLoaded(WorldEvent e) {
-		if (UaS.CVarCheck("UaS_AlliesEnabled")) { doSpawns = CVar.GetCVar("UaS_AlliesEnabled").GetBool(); }
-		else { doSpawns = true; }
 		spawnChance = UaS_AllySpawnRate;
 		spawnChance /= 100.0;
 		UaS.LogDebug(DBG_Allies, string.format("Ally spawn debugging on. Spawnchance = "..spawnChance));
@@ -15,7 +12,6 @@ class UaS_Ally_Spawner : EventHandler {
 		bool replaced = false;
 
 		// Conditions for skipping spawns
-		if(!doSpawns) { return; }
 		if(!UaS.RandomChance(spawnChance)) { return; }
 		if(level.maptime > 5) { return; }
 		if(!e.Thing) { return; }
