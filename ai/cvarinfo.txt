@@ -1,3 +1,4 @@
+// if bundled: server bool UaS_AdvancedAIEnabled = false;
 server bool UaS_AI_Searching = true;
 server bool UaS_AI_Wounding = true;
 server bool UaS_AI_Flashlights = true;
