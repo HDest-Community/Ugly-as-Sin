@@ -47,11 +47,13 @@ AddOptionMenu "UaS_ConfigureModules" {
 
 OptionMenu "UaS_AI_Options" {
 	Title "Advanced AI Module Settings"
+Option "Enabled","UaS_AdvancedAIEnabled","OnOff"
 	Option "Searching","UaS_AI_Searching","OnOff"
 	Option "Wounding","UaS_AI_Wounding","OnOff"
 	Option "Lights","UaS_AI_Flashlights","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff"
-}AddOptionMenu "UaS_LoadedModules" {
+}
+AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Aim Tweaks"
 }
 
@@ -90,6 +92,16 @@ AddOptionMenu "UaS_LoadedModules" {
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Death Fading"
 }
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Death Fading", "UaS_DeathFade_Options"
+}
+
+OptionMenu "UaS_DeathFade_Options" {
+	Title "Death Fading Module Settings"
+	Option "Enabled", "UaS_DeathFade", "OnOff"
+}
+//*/
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Food"
 }
@@ -206,6 +218,26 @@ OptionMenu "UaS_Stabilizer_Options" {
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Visual Weapons"
 }
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Visual Weapons", "UaS_VisWep_Options"
+}
+
+OptionMenu "UaS_VisWep_Options" {
+	Title "Visual Weapons Module Settings"
+	Option "Enabled", "UaS_VisWepsEnabled", "OnOff"
+}
+//*/
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "YOLO"
 }
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "YOLO", "UaS_YOLO_Options"
+}
+
+OptionMenu "UaS_YOLO_Options" {
+	Title "YOLO Module Settings"
+	Option "Enabled", "UaS_YOLO", "OnOff"
+}
+//*/

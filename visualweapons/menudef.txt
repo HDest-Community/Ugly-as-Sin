@@ -1,3 +1,14 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Visual Weapons"
 }
+
+/* if bundled
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Visual Weapons", "UaS_VisWep_Options"
+}
+
+OptionMenu "UaS_VisWep_Options" {
+	Title "Visual Weapons Module Settings"
+	Option "Enabled", "UaS_VisWepsEnabled", "OnOff"
+}
+//*/

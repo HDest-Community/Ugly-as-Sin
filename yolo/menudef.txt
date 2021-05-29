@@ -1,3 +1,14 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "YOLO"
 }
+
+/* if bundled
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "YOLO", "UaS_YOLO_Options"
+}
+
+OptionMenu "UaS_YOLO_Options" {
+	Title "YOLO Module Settings"
+	Option "Enabled", "UaS_YOLO", "OnOff"
+}
+//*/

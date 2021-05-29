@@ -1,3 +1,14 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Death Fading"
 }
+
+/* if bundled
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Death Fading", "UaS_DeathFade_Options"
+}
+
+OptionMenu "UaS_DeathFade_Options" {
+	Title "Death Fading Module Settings"
+	Option "Enabled", "UaS_DeathFade", "OnOff"
+}
+//*/
