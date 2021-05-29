@@ -35,111 +35,7 @@ OptionMenu "UaS_LoadedModules" {
 	StaticText " "
 	StaticText "Core"
 }AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Food"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Medical"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "YOLO"
-}AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Stabilizer"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Stabilizer", "UaS_Stabilizer_Options"
-}
-
-OptionMenu "UaS_Stabilizer_Options" {
-	Title "Stabilizer Module Settings"
-
-	Option "Spawns Enabled","UaS_SlingSpawns","OnOff"
-	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Ammo Pouch"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Hunger"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Hunger", "UaS_Hunger_Options"
-}
-
-OptionMenu "UaS_Hunger_Options" {
-	Title "Hunger Module Settings"
-	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
-	Option "Stamina Boost","UaS_HungerStamina","OnOff"
-	// Option "Starvation","UaS_HungerStarvation","OnOff"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Visual Weapons"
-}
-AddOptionMenu "UaS_LoadedModules" {
 	StaticText "2F Cartridges"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Jamming"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Jamming", "UaS_Jamming_Options"
-}
-
-OptionMenu "UaS_Jamming_Options" {
-	Title "Jamming Module Settings"
-
-	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Scarcity"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Scarcity", "UaS_Scarcity_Options"
-}
-
-OptionMenu "UaS_Scarcity_Options" {
-	Title "Scarcity Module Settings"
-
-	Option "Enabled","UaS_ScarcityEnabled","OnOff"
-	StaticText " "
-
-	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
-	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
-	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Allied Marines"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Allied Marines", "UaS_Ally_Options"
-}
-
-OptionMenu "UaS_Ally_Options" {
-	Title "Allied Marines Module"
-	ScaleSlider "Ally spawn rate","UaS_AllySpawnRate", 0, 100, 5, "Disabled"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Markers"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Laser / Flashlight"
-}
-
-AddOptionMenu "UaS_Controls" {
-	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Laser / Flashlight", "UaS_LaserLight_Options"
-}
-
-OptionMenu "UaS_LaserLight_Options" {
-	Title "Laser / Flashlight Module Settings"
-	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "AI"
@@ -156,23 +52,6 @@ OptionMenu "UaS_AI_Options" {
 	Option "Lights","UaS_AI_Flashlights","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff"
 }AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Fragshard Reducer"
-}
-
-AddOptionMenu "UaS_ConfigureModules" {
-	Submenu "Fragshard Reducer", "UaS_Frag_Options"
-}
-
-OptionMenu "UaS_Frag_Options" {
-	Title "Fragshard Reducer Module Settings"
-
-	ScaleSlider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, "Frag Disabled"
-	Command "Remove Frag", "netevent UaS_RemoveFrag"
-}
-AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Respirator"
-}
-AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Aim Tweaks"
 }
 
@@ -194,6 +73,84 @@ OptionMenu "UaS_AimTweaks_Options" {
 	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
 }
 AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Allied Marines"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Allied Marines", "UaS_Ally_Options"
+}
+
+OptionMenu "UaS_Ally_Options" {
+	Title "Allied Marines Module"
+	ScaleSlider "Ally spawn rate","UaS_AllySpawnRate", 0, 100, 5, "Disabled"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Ammo Pouch"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Death Fading"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Food"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Fragshard Reducer"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Fragshard Reducer", "UaS_Frag_Options"
+}
+
+OptionMenu "UaS_Frag_Options" {
+	Title "Fragshard Reducer Module Settings"
+
+	ScaleSlider "Frag spawn rate","UaS_FragSpawnRate", 0, 100, 5, "Frag Disabled"
+	Command "Remove Frag", "netevent UaS_RemoveFrag"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Hunger"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Hunger", "UaS_Hunger_Options"
+}
+
+OptionMenu "UaS_Hunger_Options" {
+	Title "Hunger Module Settings"
+	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
+	Option "Stamina Boost","UaS_HungerStamina","OnOff"
+	// Option "Starvation","UaS_HungerStarvation","OnOff"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Jamming"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Jamming", "UaS_Jamming_Options"
+}
+
+OptionMenu "UaS_Jamming_Options" {
+	Title "Jamming Module Settings"
+
+	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Laser / Flashlight"
+}
+
+AddOptionMenu "UaS_Controls" {
+	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Laser / Flashlight", "UaS_LaserLight_Options"
+}
+
+OptionMenu "UaS_LaserLight_Options" {
+	Title "Laser / Flashlight Module Settings"
+	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
+}
+AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Looting"
 }
 
@@ -206,5 +163,49 @@ OptionMenu "UaS_Looting_Options" {
 	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
 }
 AddOptionMenu "UaS_LoadedModules" {
-	StaticText "Death Fading"
+	StaticText "Markers"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Medical"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Respirator"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Scarcity"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Scarcity", "UaS_Scarcity_Options"
+}
+
+OptionMenu "UaS_Scarcity_Options" {
+	Title "Scarcity Module Settings"
+
+	Option "Enabled","UaS_ScarcityEnabled","OnOff"
+	StaticText " "
+
+	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
+	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
+	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Stabilizer"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Stabilizer", "UaS_Stabilizer_Options"
+}
+
+OptionMenu "UaS_Stabilizer_Options" {
+	Title "Stabilizer Module Settings"
+
+	Option "Spawns Enabled","UaS_SlingSpawns","OnOff"
+	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Visual Weapons"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "YOLO"
 }
