@@ -53,6 +53,7 @@ class UaS_LaserLightModule : HDWeapon {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		offset = 12;
+		modeLight = 1;
 	}
 
 	override bool Use(bool pickup) {
