@@ -1,6 +1,8 @@
 SHELL := bash
 .SILENT:
 
+all: zscript cvarinfo menudef mapinfo textures wtblklst manual
+
 # =========================
 # ZSCRIPT
 # =========================
