@@ -1,0 +1,61 @@
+class UaS_SearchedCorpseMarker : Inventory {
+	array<string> Loot;
+	int searchedAmount;
+	bool foundSomething;
+	string lastMessage;
+	bool fullysearched;
+
+	// TODO replace this with actual tables
+	void InitLoot() {
+		Loot.Push("HD4mMag");
+		Loot.Push("");
+		Loot.Push("HD9mMag15");
+		Loot.Push("");
+		Loot.Push("PortableStimpack");
+	}
+
+	void ReturnLoot() {
+		int check = (
+			random[loot](0,100) +
+			random[loot](0,100) +
+			random[loot](0,100)) / 3;
+
+		if (check < searchedAmount) {
+			// On successful search check, see if there's actually loot in this pocket
+			if(Loot[0] == "") {
+				// Spawn some debris for an empty pocket
+				if(UaS_Debug & DBG_Looting) { console.printf("Empty pocket..."); }
+				SpawnLootDebris();
+				SearchedAmount = 0;
+				Loot.Delete(0);
+			}
+			else {
+				// Actually spawn the loot and reset
+				if(UaS_Debug & DBG_Looting) { console.printf("Loot spawn: "..Loot[0]); }
+				UaS.SpawnStuff(Loot[0], 1, owner.pos, true);
+				Loot.Delete(0);
+				SearchedAmount = 0;
+				foundSomething = true;
+			}
+		}
+		else {
+			// Otherwise just increment progress
+			searchedAmount += random[loot](20,50);
+			if(UaS_Debug & DBG_Looting) { console.printf("Check "..check.." -- Progress "..searchedAmount); }
+		}
+		// Mark complete if no more loot entries
+		if (Loot.Size() <= 0) { fullysearched = true; }
+	}
+
+	void SpawnLootDebris() {
+		for (int i = 0; i < 5; i++) {
+			owner.A_SpawnItemEx("TinyWallChunk",
+				zofs: 4,
+				xvel: frandom[loot](4, 7),
+				yvel: frandom[loot](-2, 2),
+				zvel: frandom[loot](-2, 1),
+				flags: SXF_NOCHECKPOSITION,
+				failchance: 64);
+		}
+	}
+}
