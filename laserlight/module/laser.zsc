@@ -54,10 +54,6 @@ class UaS_LaserLightModule : HDWeapon {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		offset = 12;
-		if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", owner.player); }
-		if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", owner.player); }
-		modeLaser = laserpref.GetInt();
-		modeLight = lightpref.GetInt();
 	}
 
 	override bool Use(bool pickup) {
@@ -309,12 +305,15 @@ class UaS_LaserLightModule : HDWeapon {
 		return super.CreateTossable(amt);
 	}
 
-	/*
 	override void actualpickup(actor other) {
 		super.actualpickup(other);
-		UaS_Respirator pu = UaS_Respirator(other.findinventory("UaS_Respirator", false));
-		pu.capacity = capacity;
-	}*/
+		if (other && other is 'HDPlayerPawn') {
+			if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", other.player); }
+			if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", other.player); }
+			modeLaser = laserpref.GetInt();
+			modeLight = lightpref.GetInt();
+		}
+	}
 }
 
 class UaS_LLM_Emitter : DynamicLight {
