@@ -10,6 +10,7 @@ class UaS_LaserLightModule : HDWeapon {
 	color LaserColor;
 	double LaserAlpha;
 	transient cvar beams;
+	transient cvar laserpref, lightpref;
 
 	default {
 		radius 3;
@@ -53,7 +54,10 @@ class UaS_LaserLightModule : HDWeapon {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		offset = 12;
-		modeLight = 1;
+		if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", owner.player); }
+		if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", owner.player); }
+		modeLaser = laserpref.GetInt();
+		modeLight = lightpref.GetInt();
 	}
 
 	override bool Use(bool pickup) {
