@@ -10,6 +10,7 @@ class UaS_LaserLightModule : HDWeapon {
 	color LaserColor;
 	double LaserAlpha;
 	transient cvar beams;
+	transient cvar laserpref, lightpref;
 
 	default {
 		radius 3;
@@ -304,12 +305,15 @@ class UaS_LaserLightModule : HDWeapon {
 		return super.CreateTossable(amt);
 	}
 
-	/*
 	override void actualpickup(actor other) {
 		super.actualpickup(other);
-		UaS_Respirator pu = UaS_Respirator(other.findinventory("UaS_Respirator", false));
-		pu.capacity = capacity;
-	}*/
+		if (other && other is 'HDPlayerPawn') {
+			if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", other.player); }
+			if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", other.player); }
+			modeLaser = laserpref.GetInt();
+			modeLight = lightpref.GetInt();
+		}
+	}
 }
 
 class UaS_LLM_Emitter : DynamicLight {

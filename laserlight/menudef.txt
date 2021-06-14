@@ -10,7 +10,15 @@ AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Laser / Flashlight", "UaS_LaserLight_Options"
 }
 
+OptionValue "Modes" {
+	0, "Off"
+	1, "Visible Only"
+	2, "IR Only"
+}
+
 OptionMenu "UaS_LaserLight_Options" {
 	Title "Laser / Flashlight Module Settings"
+	Option "Preferred Flashlight Mode", "UaS_LLM_LightMode", "Modes"
+	Option "Preferred Laser Mode", "UaS_LLM_LaserMode", "Modes"
 	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 }

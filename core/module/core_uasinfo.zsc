@@ -1,0 +1,27 @@
+// Lump-reader base largly copy-pasted from HD-Injector by Accensus
+// https://gitlab.com/accensi/hd-addons/injector
+extend class UaS {
+	static play void ReadUASINFO() {
+		string RawLumpText;
+		int LumpNum;
+		while ((LumpNum = Wads.FindLump("UASINFO", LumpNum + 1, Wads.GlobalNamespace)) >= 0) {
+			Array<string> LumpLines;
+			RawLumpText = Wads.ReadLump(LumpNum);
+			RawLumpText.Split(LumpLines, ";", TOK_SKIPEMPTY);
+
+			for (int i = 0; i < LumpLines.Size(); ++i) {
+				string Line = LumpLines[i];
+
+				// Remove newline characters
+				int NewLineIndex = Line.RightIndexOf("\n");
+				if (NewLineIndex > -1) { Line.Remove(NewLineIndex, 1); }
+
+				// Remove return characters
+				int ReturnIndex = Line.RightIndexOf("\r");
+				if (ReturnIndex > -1) {	Line.Remove(ReturnIndex, 1); }
+
+				console.printf("Line "..i..": "..Line);
+			}
+		}
+	}
+}

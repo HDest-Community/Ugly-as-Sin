@@ -480,6 +480,414 @@ sprite PLA2L0, 55, 14 {
  	patch "visualweapons/sprites/pistol-marine/PLA2L0", 0, 0
 	offset 31, 9 }
 
+sprite PLA5B4B6, 44, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5B4B6", 0, 0
+	offset 21, 52 }
+
+sprite PLA5E1, 26, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5E1", 0, 0
+	offset 12, 51 }
+
+sprite PLA5U0, 57, 33 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5U0", 0, 0
+	offset 24, 29 }
+
+sprite PLA5A2A8, 38, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5A2A8", 0, 0
+	offset 17, 50 }
+
+sprite PLA5G3G7, 46, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5G3G7", 0, 0
+	offset 21, 52 }
+
+sprite PLA5G4G6, 44, 52 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5G4G6", 0, 0
+	offset 20, 50 }
+
+sprite PLA5E4E6, 38, 52 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5E4E6", 0, 0
+	offset 18, 48 }
+
+sprite PLA5F5, 23, 51 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5F5", 0, 0
+	offset 11, 46 }
+
+sprite PLA5C4C6, 43, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5C4C6", 0, 0
+	offset 22, 51 }
+
+sprite PLA5C2C8, 39, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5C2C8", 0, 0
+	offset 17, 51 }
+
+sprite PLA5D5, 36, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5D5", 0, 0
+	offset 19, 51 }
+
+sprite PLA5T0, 57, 40 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5T0", 0, 0
+	offset 24, 36 }
+
+sprite PL5CO0, 38, 36 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CO0", 0, 0
+	offset 19, 32 }
+
+sprite PL5CC3C7, 62, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC3C7", 0, 0
+	offset 31, 27 }
+
+sprite PL5CA2A8, 47, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA2A8", 0, 0
+	offset 23, 28 }
+
+sprite PL5CD1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CS0, 55, 39 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CS0", 0, 0
+	offset 29, 35 }
+
+sprite PL5CE3E7, 60, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE3E7", 0, 0
+	offset 30, 27 }
+
+sprite PL5CH0, 36, 39 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CH0", 0, 0
+	offset 18, 35 }
+
+sprite PL5CJ0, 33, 25 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CJ0", 0, 0
+	offset 16, 21 }
+
+sprite PL5CD3D7, 62, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD3D7", 0, 0
+	offset 31, 27 }
+
+sprite PL5CB3B7, 62, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB3B7", 0, 0
+	offset 31, 27 }
+
+sprite PL5CG1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CG2G8, 41, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG2G8", 0, 0
+	offset 20, 28 }
+
+sprite PL5CA3A7, 62, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA3A7", 0, 0
+	offset 31, 27 }
+
+sprite PL5CC4C6, 42, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC4C6", 0, 0
+	offset 21, 27 }
+
+sprite PL5CC5, 25, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC5", 0, 0
+	offset 11, 27 }
+
+sprite PL5CI0, 34, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CI0", 0, 0
+	offset 18, 27 }
+
+sprite PL5CF3F7, 67, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF3F7", 0, 0
+	offset 37, 27 }
+
+sprite PL5CD5, 25, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD5", 0, 0
+	offset 11, 28 }
+
+sprite PL5CA5, 25, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA5", 0, 0
+	offset 11, 28 }
+
+sprite PL5CF2F8, 52, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF2F8", 0, 0
+	offset 29, 28 }
+
+sprite PL5CB1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CN0, 47, 16 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CN0", 0, 0
+	offset 23, 12 }
+
+sprite PL5CV0, 57, 23 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CV0", 0, 0
+	offset 30, 19 }
+
+sprite PL5CD4D6, 43, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD4D6", 0, 0
+	offset 21, 27 }
+
+sprite PL5CT0, 57, 33 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CT0", 0, 0
+	offset 30, 29 }
+
+sprite PL5CQ0, 46, 43 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CQ0", 0, 0
+	offset 25, 39 }
+
+sprite PL5CG4G6, 39, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG4G6", 0, 0
+	offset 19, 27 }
+
+sprite PL5CB4B6, 43, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB4B6", 0, 0
+	offset 21, 27 }
+
+sprite PL5CE5, 25, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE5", 0, 0
+	offset 11, 28 }
+
+sprite PL5CB5, 25, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB5", 0, 0
+	offset 11, 28 }
+
+sprite PL5CF5, 25, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF5", 0, 0
+	offset 11, 28 }
+
+sprite PL5CW0, 57, 22 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CW0", 0, 0
+	offset 30, 18 }
+
+sprite PL5CE2E8, 45, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE2E8", 0, 0
+	offset 22, 28 }
+
+sprite PL5CG3G7, 54, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG3G7", 0, 0
+	offset 27, 27 }
+
+sprite PL5CE4E6, 38, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE4E6", 0, 0
+	offset 19, 27 }
+
+sprite PL5CD2D8, 48, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD2D8", 0, 0
+	offset 24, 28 }
+
+sprite PL5CA1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CA4A6, 41, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA4A6", 0, 0
+	offset 20, 27 }
+
+sprite PL5CP0, 42, 40 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CP0", 0, 0
+	offset 22, 34 }
+
+sprite PL5CR0, 52, 40 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CR0", 0, 0
+	offset 28, 36 }
+
+sprite PL5CC2C8, 48, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC2C8", 0, 0
+	offset 24, 28 }
+
+sprite PL5CG5, 24, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG5", 0, 0
+	offset 11, 27 }
+
+sprite PL5CU0, 57, 30 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CU0", 0, 0
+	offset 30, 26 }
+
+sprite PL5CM0, 47, 16 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CM0", 0, 0
+	offset 23, 12 }
+
+sprite PL5CC1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CE1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE1", 0, 0
+	offset 14, 27 }
+
+sprite PL5CF4F6, 44, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF4F6", 0, 0
+	offset 25, 27 }
+
+sprite PL5CB2B8, 48, 32 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB2B8", 0, 0
+	offset 24, 28 }
+
+sprite PL5CK0, 41, 19 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CK0", 0, 0
+	offset 20, 16 }
+
+sprite PL5CL0, 47, 16 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CL0", 0, 0
+	offset 23, 12 }
+
+sprite PL5CF1, 29, 31 {
+ 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF1", 0, 0
+	offset 14, 27 }
+
+sprite PLA5A4A6, 48, 51 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5A4A6", 0, 0
+	offset 21, 49 }
+
+sprite PLA5M0, 51, 14 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5M0", 0, 0
+	offset 27, 9 }
+
+sprite PLA5D1, 40, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5D1", 0, 0
+	offset 16, 52 }
+
+sprite PLA5D2D8, 37, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5D2D8", 0, 0
+	offset 17, 52 }
+
+sprite PLA5H0, 44, 50 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5H0", 0, 0
+	offset 16, 47 }
+
+sprite PLA5Q0, 48, 57 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5Q0", 0, 0
+	offset 21, 54 }
+
+sprite PLA5F4F6, 43, 52 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5F4F6", 0, 0
+	offset 20, 48 }
+
+sprite PLA5P0, 44, 59 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5P0", 0, 0
+	offset 18, 56 }
+
+sprite PLA5C1, 38, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5C1", 0, 0
+	offset 17, 51 }
+
+sprite PLA5R0, 53, 52 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5R0", 0, 0
+	offset 24, 49 }
+
+sprite PLA5B1, 37, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5B1", 0, 0
+	offset 19, 53 }
+
+sprite PLA5G2G8, 36, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5G2G8", 0, 0
+	offset 16, 52 }
+
+sprite PLA5D3D7, 34, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5D3D7", 0, 0
+	offset 21, 52 }
+
+sprite PLA5W0, 57, 22 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5W0", 0, 0
+	offset 24, 18 }
+
+sprite PLA5F3F7, 58, 53 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5F3F7", 0, 0
+	offset 37, 50 }
+
+sprite PLA5V0, 57, 23 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5V0", 0, 0
+	offset 24, 19 }
+
+sprite PLA5C5, 36, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5C5", 0, 0
+	offset 17, 50 }
+
+sprite PLA5A5, 36, 50 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5A5", 0, 0
+	offset 21, 47 }
+
+sprite PLA5I0, 36, 43 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5I0", 0, 0
+	offset 11, 39 }
+
+sprite PLA5B5, 37, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5B5", 0, 0
+	offset 18, 51 }
+
+sprite PLA5B2B8, 37, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5B2B8", 0, 0
+	offset 18, 52 }
+
+sprite PLA5O0, 39, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5O0", 0, 0
+	offset 16, 53 }
+
+sprite PLA5B3B7, 36, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5B3B7", 0, 0
+	offset 18, 52 }
+
+sprite PLA5D4D6, 41, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5D4D6", 0, 0
+	offset 23, 52 }
+
+sprite PLA5A3A7, 42, 53 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5A3A7", 0, 0
+	offset 21, 50 }
+
+sprite PLA5E2E8, 47, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5E2E8", 0, 0
+	offset 33, 51 }
+
+sprite PLA5N0, 51, 14 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5N0", 0, 0
+	offset 27, 9 }
+
+sprite PLA5G1, 39, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5G1", 0, 0
+	offset 20, 52 }
+
+sprite PLA5S0, 55, 47 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5S0", 0, 0
+	offset 23, 43 }
+
+sprite PLA5K0, 41, 38 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5K0", 0, 0
+	offset 17, 34 }
+
+sprite PLA5L0, 51, 14 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5L0", 0, 0
+	offset 27, 9 }
+
+sprite PLA5C3C7, 40, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5C3C7", 0, 0
+	offset 18, 51 }
+
+sprite PLA5A1, 41, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5A1", 0, 0
+	offset 18, 51 }
+
+sprite PLA5J0, 36, 46 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5J0", 0, 0
+	offset 12, 43 }
+
+sprite PLA5G5, 34, 54 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5G5", 0, 0
+	offset 17, 50 }
+
+sprite PLA5F2F8, 49, 55 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5F2F8", 0, 0
+	offset 34, 51 }
+
+sprite PLA5E3E7, 58, 53 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5E3E7", 0, 0
+	offset 36, 50 }
+
+sprite PLA5F1, 27, 56 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5F1", 0, 0
+	offset 12, 51 }
+
+sprite PLA5E5, 26, 51 {
+ 	patch "visualweapons/sprites/rocket-marine/PLA5E5", 0, 0
+	offset 12, 46 }
+
 sprite PLA3C4C6, 41, 55 {
  	patch "visualweapons/sprites/shotgun-marine/PLA3C4C6", 0, 0
 	offset 22, 51 }
@@ -1295,412 +1703,4 @@ sprite PSMGD2D8, 35, 55 {
 sprite PSMGC1, 38, 56 {
  	patch "visualweapons/sprites/smg-marine/PSMGC1", 0, 0
 	offset 17, 51 }
-
-sprite PLA5B4B6, 44, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5B4B6", 0, 0
-	offset 21, 52 }
-
-sprite PLA5E1, 26, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5E1", 0, 0
-	offset 12, 51 }
-
-sprite PLA5U0, 57, 33 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5U0", 0, 0
-	offset 24, 29 }
-
-sprite PLA5A2A8, 38, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5A2A8", 0, 0
-	offset 17, 50 }
-
-sprite PLA5G3G7, 46, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5G3G7", 0, 0
-	offset 21, 52 }
-
-sprite PLA5G4G6, 44, 52 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5G4G6", 0, 0
-	offset 20, 50 }
-
-sprite PLA5E4E6, 38, 52 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5E4E6", 0, 0
-	offset 18, 48 }
-
-sprite PLA5F5, 23, 51 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5F5", 0, 0
-	offset 11, 46 }
-
-sprite PLA5C4C6, 43, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5C4C6", 0, 0
-	offset 22, 51 }
-
-sprite PLA5C2C8, 39, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5C2C8", 0, 0
-	offset 17, 51 }
-
-sprite PLA5D5, 36, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5D5", 0, 0
-	offset 19, 51 }
-
-sprite PLA5T0, 57, 40 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5T0", 0, 0
-	offset 24, 36 }
-
-sprite PL5CO0, 38, 36 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CO0", 0, 0
-	offset 19, 32 }
-
-sprite PL5CC3C7, 62, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC3C7", 0, 0
-	offset 31, 27 }
-
-sprite PL5CA2A8, 47, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA2A8", 0, 0
-	offset 23, 28 }
-
-sprite PL5CD1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CS0, 55, 39 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CS0", 0, 0
-	offset 29, 35 }
-
-sprite PL5CE3E7, 60, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE3E7", 0, 0
-	offset 30, 27 }
-
-sprite PL5CH0, 36, 39 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CH0", 0, 0
-	offset 18, 35 }
-
-sprite PL5CJ0, 33, 25 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CJ0", 0, 0
-	offset 16, 21 }
-
-sprite PL5CD3D7, 62, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD3D7", 0, 0
-	offset 31, 27 }
-
-sprite PL5CB3B7, 62, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB3B7", 0, 0
-	offset 31, 27 }
-
-sprite PL5CG1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CG2G8, 41, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG2G8", 0, 0
-	offset 20, 28 }
-
-sprite PL5CA3A7, 62, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA3A7", 0, 0
-	offset 31, 27 }
-
-sprite PL5CC4C6, 42, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC4C6", 0, 0
-	offset 21, 27 }
-
-sprite PL5CC5, 25, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC5", 0, 0
-	offset 11, 27 }
-
-sprite PL5CI0, 34, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CI0", 0, 0
-	offset 18, 27 }
-
-sprite PL5CF3F7, 67, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF3F7", 0, 0
-	offset 37, 27 }
-
-sprite PL5CD5, 25, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD5", 0, 0
-	offset 11, 28 }
-
-sprite PL5CA5, 25, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA5", 0, 0
-	offset 11, 28 }
-
-sprite PL5CF2F8, 52, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF2F8", 0, 0
-	offset 29, 28 }
-
-sprite PL5CB1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CN0, 47, 16 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CN0", 0, 0
-	offset 23, 12 }
-
-sprite PL5CV0, 57, 23 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CV0", 0, 0
-	offset 30, 19 }
-
-sprite PL5CD4D6, 43, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD4D6", 0, 0
-	offset 21, 27 }
-
-sprite PL5CT0, 57, 33 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CT0", 0, 0
-	offset 30, 29 }
-
-sprite PL5CQ0, 46, 43 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CQ0", 0, 0
-	offset 25, 39 }
-
-sprite PL5CG4G6, 39, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG4G6", 0, 0
-	offset 19, 27 }
-
-sprite PL5CB4B6, 43, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB4B6", 0, 0
-	offset 21, 27 }
-
-sprite PL5CE5, 25, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE5", 0, 0
-	offset 11, 28 }
-
-sprite PL5CB5, 25, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB5", 0, 0
-	offset 11, 28 }
-
-sprite PL5CF5, 25, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF5", 0, 0
-	offset 11, 28 }
-
-sprite PL5CW0, 57, 22 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CW0", 0, 0
-	offset 30, 18 }
-
-sprite PL5CE2E8, 45, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE2E8", 0, 0
-	offset 22, 28 }
-
-sprite PL5CG3G7, 54, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG3G7", 0, 0
-	offset 27, 27 }
-
-sprite PL5CE4E6, 38, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE4E6", 0, 0
-	offset 19, 27 }
-
-sprite PL5CD2D8, 48, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CD2D8", 0, 0
-	offset 24, 28 }
-
-sprite PL5CA1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CA4A6, 41, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CA4A6", 0, 0
-	offset 20, 27 }
-
-sprite PL5CP0, 42, 40 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CP0", 0, 0
-	offset 22, 34 }
-
-sprite PL5CR0, 52, 40 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CR0", 0, 0
-	offset 28, 36 }
-
-sprite PL5CC2C8, 48, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC2C8", 0, 0
-	offset 24, 28 }
-
-sprite PL5CG5, 24, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CG5", 0, 0
-	offset 11, 27 }
-
-sprite PL5CU0, 57, 30 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CU0", 0, 0
-	offset 30, 26 }
-
-sprite PL5CM0, 47, 16 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CM0", 0, 0
-	offset 23, 12 }
-
-sprite PL5CC1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CC1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CE1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CE1", 0, 0
-	offset 14, 27 }
-
-sprite PL5CF4F6, 44, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF4F6", 0, 0
-	offset 25, 27 }
-
-sprite PL5CB2B8, 48, 32 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CB2B8", 0, 0
-	offset 24, 28 }
-
-sprite PL5CK0, 41, 19 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CK0", 0, 0
-	offset 20, 16 }
-
-sprite PL5CL0, 47, 16 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CL0", 0, 0
-	offset 23, 12 }
-
-sprite PL5CF1, 29, 31 {
- 	patch "visualweapons/sprites/rocket-marine/crouch/PL5CF1", 0, 0
-	offset 14, 27 }
-
-sprite PLA5A4A6, 48, 51 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5A4A6", 0, 0
-	offset 21, 49 }
-
-sprite PLA5M0, 51, 14 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5M0", 0, 0
-	offset 27, 9 }
-
-sprite PLA5D1, 40, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5D1", 0, 0
-	offset 16, 52 }
-
-sprite PLA5D2D8, 37, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5D2D8", 0, 0
-	offset 17, 52 }
-
-sprite PLA5H0, 44, 50 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5H0", 0, 0
-	offset 16, 47 }
-
-sprite PLA5Q0, 48, 57 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5Q0", 0, 0
-	offset 21, 54 }
-
-sprite PLA5F4F6, 43, 52 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5F4F6", 0, 0
-	offset 20, 48 }
-
-sprite PLA5P0, 44, 59 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5P0", 0, 0
-	offset 18, 56 }
-
-sprite PLA5C1, 38, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5C1", 0, 0
-	offset 17, 51 }
-
-sprite PLA5R0, 53, 52 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5R0", 0, 0
-	offset 24, 49 }
-
-sprite PLA5B1, 37, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5B1", 0, 0
-	offset 19, 53 }
-
-sprite PLA5G2G8, 36, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5G2G8", 0, 0
-	offset 16, 52 }
-
-sprite PLA5D3D7, 34, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5D3D7", 0, 0
-	offset 21, 52 }
-
-sprite PLA5W0, 57, 22 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5W0", 0, 0
-	offset 24, 18 }
-
-sprite PLA5F3F7, 58, 53 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5F3F7", 0, 0
-	offset 37, 50 }
-
-sprite PLA5V0, 57, 23 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5V0", 0, 0
-	offset 24, 19 }
-
-sprite PLA5C5, 36, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5C5", 0, 0
-	offset 17, 50 }
-
-sprite PLA5A5, 36, 50 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5A5", 0, 0
-	offset 21, 47 }
-
-sprite PLA5I0, 36, 43 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5I0", 0, 0
-	offset 11, 39 }
-
-sprite PLA5B5, 37, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5B5", 0, 0
-	offset 18, 51 }
-
-sprite PLA5B2B8, 37, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5B2B8", 0, 0
-	offset 18, 52 }
-
-sprite PLA5O0, 39, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5O0", 0, 0
-	offset 16, 53 }
-
-sprite PLA5B3B7, 36, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5B3B7", 0, 0
-	offset 18, 52 }
-
-sprite PLA5D4D6, 41, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5D4D6", 0, 0
-	offset 23, 52 }
-
-sprite PLA5A3A7, 42, 53 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5A3A7", 0, 0
-	offset 21, 50 }
-
-sprite PLA5E2E8, 47, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5E2E8", 0, 0
-	offset 33, 51 }
-
-sprite PLA5N0, 51, 14 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5N0", 0, 0
-	offset 27, 9 }
-
-sprite PLA5G1, 39, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5G1", 0, 0
-	offset 20, 52 }
-
-sprite PLA5S0, 55, 47 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5S0", 0, 0
-	offset 23, 43 }
-
-sprite PLA5K0, 41, 38 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5K0", 0, 0
-	offset 17, 34 }
-
-sprite PLA5L0, 51, 14 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5L0", 0, 0
-	offset 27, 9 }
-
-sprite PLA5C3C7, 40, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5C3C7", 0, 0
-	offset 18, 51 }
-
-sprite PLA5A1, 41, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5A1", 0, 0
-	offset 18, 51 }
-
-sprite PLA5J0, 36, 46 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5J0", 0, 0
-	offset 12, 43 }
-
-sprite PLA5G5, 34, 54 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5G5", 0, 0
-	offset 17, 50 }
-
-sprite PLA5F2F8, 49, 55 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5F2F8", 0, 0
-	offset 34, 51 }
-
-sprite PLA5E3E7, 58, 53 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5E3E7", 0, 0
-	offset 36, 50 }
-
-sprite PLA5F1, 27, 56 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5F1", 0, 0
-	offset 12, 51 }
-
-sprite PLA5E5, 26, 51 {
- 	patch "visualweapons/sprites/rocket-marine/PLA5E5", 0, 0
-	offset 12, 46 }
 
