@@ -8,7 +8,7 @@ AddOptionMenu "UaS_ConfigureModules" {
 
 OptionMenu "UaS_AI_Options" {
 	Title "Advanced AI Module Settings"
-// if bundled: Option "Enabled","UaS_AdvancedAIEnabled","OnOff"
+// if bundled: 	Option "Enabled","UaS_AdvancedAIEnabled","OnOff"
 	Option "Searching","UaS_AI_Searching","OnOff"
 	Option "Wounding","UaS_AI_Wounding","OnOff"
 	Option "Lights","UaS_AI_Flashlights","OnOff"
