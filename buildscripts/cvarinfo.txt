@@ -1,4 +1,0 @@
-server bool UaS_AdvancedAIEnabled = false;
-server bool UaS_VisWepsEnabled = false;
-server noarchive bool UaS_YOLO = false;
-user bool UaS_DeathFade = true;
