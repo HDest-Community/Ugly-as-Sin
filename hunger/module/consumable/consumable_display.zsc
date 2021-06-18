@@ -44,8 +44,26 @@ extend class UaS_Consumable {
 		}
 		else if (calories > 0 || fluid > 0) {
 			r.appendformat("\cw%.0f%% Remaining\n", ((weaponbulk()/bulk)*100) + max(diffbulk, 0));
+			r.appendformat(spoilstatus());
 		}
 		if (!tracker.mouthclear() && level.time % 10 != 0) { r.appendformat("Consuming..."); }
 		return r;
+	}
+
+	string spoilstatus() {
+		int s = weaponstatus[UGCS_SPOILAGE];
+		if (s >= 40) { return statuscolor(s).."clearly spoiled\n"; }
+		if (s >= 30) { return statuscolor(s).."not worth eating\n"; }
+		if (s >= 20) { return statuscolor(s).."somewhat stale\n"; }
+		if (s >= 10) { return statuscolor(s).."not quite fresh\n"; }
+		return statuscolor(s).."basically fresh\n";
+	}
+
+	string statuscolor(int amount) {
+		if (amount >= 40) { 	 return "\cm"; } // black
+		else if (amount >= 30) { return "\cu"; } // dark grey
+		else if (amount >= 20) { return "\cs"; } // dark brown
+		else if (amount >= 10) { return "\cq"; } // dark green
+		return "\cd"; // green
 	}
 }

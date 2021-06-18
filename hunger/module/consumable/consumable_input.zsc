@@ -13,6 +13,7 @@ extend class UaS_Consumable {
 		int bitesize = int(calories / (bulk));
 		int sipsize = int(fluid / (bulk));
 		int mouthful = random[uas_hunger](4,6);
+		int addsick;
 		weaponstatus[UGCS_CONSUMED]++;
 		diffbulk = 100/bulk;
 		if (bDRINKABLE) {
@@ -20,7 +21,8 @@ extend class UaS_Consumable {
 			owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
 			mouthful = int(mouthful / 2);
 		}
-		tracker.EatOrDrink(bitesize, sipsize, mouthful);
+		if (random(10,100) <= weaponstatus[UGCS_SPOILAGE]) { addsick = 1; }
+		tracker.EatOrDrink(bitesize, sipsize, mouthful, addsick);
 	}
 
 	void OpenPackage() {

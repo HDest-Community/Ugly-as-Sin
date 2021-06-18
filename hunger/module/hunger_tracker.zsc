@@ -1,6 +1,7 @@
 class UaS_HungerTracker : Inventory {
 	int energy;
 	int hydro;
+	int sick;
 	int mouthtime;
 	int mouth_calories;
 	int mouth_fluid;
@@ -23,7 +24,7 @@ class UaS_HungerTracker : Inventory {
 	void ProcessEnergy() {
 		HDPlayerPawn o = HDPlayerPawn(owner);
 		if (!o) { return; }
-		string debugmsg = "Fatigue %i, energy %i < %i, hydro %i < %i %s";
+		string debugmsg = string.format("Fatigue %i, energy %i < %i, hydro %i < %i ",o.fatigue, energy, pending_calories, hydro, pending_fluid);
 		string debugtype = "";
 		if (o.beatcount > 0) { return; }
 
@@ -56,11 +57,15 @@ class UaS_HungerTracker : Inventory {
 			}
 		}
 
+		if (sick > 0) {
+			debugtype.appendformat(" \cesick %i\c- ", sick);
+		}
+
 		// Process consumed food into energy
 		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
-		if (o.beatcounter % 35 == 0 || debugtype != "") { UaS.LogDebug(DBG_Hunger, string.format(debugmsg, o.fatigue, energy, pending_calories, hydro, pending_fluid, debugtype), o); }
+		if (o.beatcounter % 35 == 0 || debugtype != "") { UaS.LogDebug(DBG_Hunger, string.format(debugmsg..debugtype), o); }
 	}
 
 	void Consume() {
@@ -87,10 +92,11 @@ class UaS_HungerTracker : Inventory {
 		}
 	}
 
-	void EatOrDrink(int addcalories = 0, int addfluid = 0, int addtime = 5) {
+	void EatOrDrink(int addcalories = 0, int addfluid = 0, int addtime = 5, int addsick = 0) {
 		mouth_calories += addcalories;
 		mouth_fluid += addfluid;
 		mouthtime = addtime;
+		sick += addsick;
 	}
 
 	bool mouthclear() {

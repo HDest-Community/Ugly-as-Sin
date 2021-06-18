@@ -38,6 +38,26 @@ extend class UaS_Consumable {
 		bfitsinbackpack = true;
 		if (diffbulk > 0) { diffbulk *= 0.9; } // makes % remaining count-down nicely
 		CheckAutoDestroy();
+		DoSpoilage();
+	}
+
+	void DoSpoilage() {
+		// spoilage over time, chances every minute
+		// 10% major contamination	+5
+		// 10% minor contamination	+2
+		// 20% basic spoilage		+1
+		// 60% nothing
+		if (weaponstatus[UGCS_LASTSPOILTIME] < level.totaltime) {
+			// Spoilage from external contamination if open
+			if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+				weaponstatus[UGCS_SPOILAGE] += randompick(
+					0,0,0,0,0,
+					0,1,1,2,5);
+			}
+			// additional point possible if already spoiling, even if closed.
+			if (random(0,100) <= weaponstatus[UGCS_SPOILAGE]) { weaponstatus[UGCS_SPOILAGE]++; }
+			weaponstatus[UGCS_LASTSPOILTIME] += (35*60);
+		}
 	}
 
 	bool UsedUp() {	return ((int(weaponbulk() + diffbulk) <= 0) || ((calories <= 0 && fluid <= 0) && (weaponstatus[UGCS_GAVECONTENTS] == true))); }
@@ -77,8 +97,14 @@ extend class UaS_Consumable {
 		Contents();
 		weaponstatus[UGCS_CONSUMED] = 0;
 		weaponstatus[UGCS_GAVECONTENTS] = false;
-		if (bPACKAGED) { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
+		// Set up packaging state. Packaged items have a 10% chance of being already open.
+		if (bPACKAGED && random(0,10) != 0) { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
 		else { weaponstatus[UGCS_OPEN] = UGCSF_OPENED; }
+		// Set up some initial spoilage amounts for unsealed items.
+		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
+			weaponstatus[UGCS_SPOILAGE] = random(0,100) * (frandom(0,1) * frandom(0,1));
+			weaponstatus[UGCS_LASTSPOILTIME] = level.totaltime;
+		}
 	}
 
 	override void PostBeginPlay() {
@@ -108,6 +134,8 @@ enum ConsumableSlots {
 	UGCS_CONSUMED,
 	UGCS_OPEN,
 	UGCS_GAVECONTENTS,
+	UGCS_SPOILAGE,
+	UGCS_LASTSPOILTIME,
 }
 
 enum ConsumableStatusFlags {
