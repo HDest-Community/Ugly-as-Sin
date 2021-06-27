@@ -79,7 +79,7 @@ textures:
 	for file in $$(find ../* -name "textures.txt" -not -path "../textures.txt") ; do \
 		while IFS='/' read -r line ; do \
 			d=$$(dirname $$file) ; \
-			d="$${d:2}/patches" ; \
+			d="$${d:3}/patches" ; \
 			echo "$${line/patches/$$d}" >> ../textures.txt ; \
 		done < $$file ; \
 	done
