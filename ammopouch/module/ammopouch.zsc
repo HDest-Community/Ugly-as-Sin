@@ -10,6 +10,7 @@ class UaS_AmmoPouch : HDBackpack {
 		Inventory.Icon "UGSPA0";
 		Inventory.PickupMessage "Picked up an ammo pouch!";
 		scale 0.6;
+		hdweapon.wornlayer 0;
 		hdweapon.refid UAS_HDLD_AMMOPOUCH;
 	}
 
