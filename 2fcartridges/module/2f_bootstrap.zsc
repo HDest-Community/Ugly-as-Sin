@@ -1,20 +1,13 @@
 //Give controller to player
 class UaS_2F_Bootstrap : EventHandler {
-	override void PlayerSpawned(PlayerEvent e) {
-		if (e.IsReturn) { return; }
-		GiveHandler(e.PlayerNumber);
-	}
-
-	override void PlayerRespawned(PlayerEvent e) {
-		if (e.IsReturn) { return; }
-		GiveHandler(e.PlayerNumber);
-	}
-
-	void GiveHandler(int pnum) {
-		PlayerInfo p = players[pnum];
-		if (!p.mo) { return; }
-		if (!p.mo.countinv("UaS_2F_Handler")) {
-			p.mo.giveinventory("UaS_2F_Handler", 1);
+	override void WorldTick() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			PlayerInfo p = players[i];
+			if (!p.mo) { return; }
+			if (!p.mo.countinv("uas_2f_handler")) {
+				p.mo.giveinventory("uas_2f_handler", 1);
+			}
 		}
 	}
 }
