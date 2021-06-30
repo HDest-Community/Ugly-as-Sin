@@ -5,7 +5,10 @@ extend class UaS_Scarcity_Handler {
 		Actor nextThing;
 		let thingCounter = ThinkerIterator.Create(CheckClass, Thinker.STAT_DEFAULT);
 		while(nextThing = Actor(thingCounter.Next(true))) {
-			if(nextThing.GetClassName() == CheckClass) { thingArray.Push(nextThing); }
+			if(
+				nextThing.GetClassName() == CheckClass
+				&& nextThing.special == 0
+			) { thingArray.Push(nextThing); }
 		}
 
 		int originalcount = thingArray.Size();
