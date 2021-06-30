@@ -98,8 +98,8 @@ extend class UaS_Consumable {
 		weaponstatus[UGCS_CONSUMED] = 0;
 		weaponstatus[UGCS_GAVECONTENTS] = false;
 		// Set up packaging state. Packaged items have a 10% chance of being already open.
-		if (bPACKAGED && random(0,10) != 0) { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
-		else { weaponstatus[UGCS_OPEN] = UGCSF_OPENED; }
+		if (!owner && bPACKAGED && FoodList.size() == 0 && random(1,10) == 1) { weaponstatus[UGCS_OPEN] = UGCSF_OPENED; }
+		else { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
 		// Set up some initial spoilage amounts for unsealed items.
 		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
 			weaponstatus[UGCS_SPOILAGE] = random(0,100) * (frandom(0,1) * frandom(0,1));

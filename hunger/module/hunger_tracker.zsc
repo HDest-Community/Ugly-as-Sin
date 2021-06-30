@@ -28,10 +28,13 @@ class UaS_HungerTracker : Inventory {
 		string debugtype = "";
 		if (o.beatcount > 0) { return; }
 
+		bool burnedsomething = false;
+
 		// base drain, disabled via cvar
 		if (UaS_HungerMetabolism && o.beatcounter % 35 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
+			burnedsomething = true;
 			debugtype.appendformat(" \cdbase\c- ");
 		}
 
@@ -39,6 +42,7 @@ class UaS_HungerTracker : Inventory {
 		if (o.runwalksprint >= 0 && o.beatcounter % 5 == 0) {
 			energy = max(energy - 1, 0);
 			hydro = max(hydro - 1, 0);
+			burnedsomething = random[uas_hunger](false,true);
 			debugtype.appendformat(" \ciexertion\c- ");
 		}
 
@@ -48,16 +52,27 @@ class UaS_HungerTracker : Inventory {
 			if (hydro > 0 && o.beatcounter % 4 == 0) {
 				if(UaS_HungerStamina) { o.fatigue = max(o.fatigue - 1, 0); }
 				hydro = max(hydro - 1, 0);
+				burnedsomething = random[uas_hunger](false,true);
 				debugtype.appendformat(" \cafatigue\c- ");
 			}
 			else if (energy > 0 && o.beatcounter % 6 == 0) {
 				if(UaS_HungerStamina) { o.fatigue = max(o.fatigue - 1, 0); }
 				energy = max(energy - 1, 0);
+				burnedsomething = random[uas_hunger](false,true);
 				debugtype.appendformat(" \cafatigue\c- ");
 			}
 		}
 
-		if (sick > 0) {
+		// Do sickness
+		if (burnedsomething && random[uas_hunger](0,o.fatigue) < sick) {
+			sick--;
+			pending_calories *= 0.8;
+			pending_fluid *= 0.6;
+			o.fatigue = 50;
+			owner.A_StartSound("UaS/Gurgle",
+				CHAN_BODY, CHANF_OVERLAP,
+				frandom[uas_hunger](0.25, 0.4), ATTN_STATIC,
+				frandom[uas_hunger](0.8, 1.25));
 			debugtype.appendformat(" \cesick %i\c- ", sick);
 		}
 

@@ -12,6 +12,7 @@ UaS/Swish	dspbtl
 UaS/Swallow	dsgulp
 UaS/FoodOpen	dsclaw
 UaS/FoodClose	dspocket
+UaS/Gurgle		"hunger/sounds/gurgle.wav"
 
 $pitchset UaS/FoodOpen 0.9
 $pitchset UaS/FoodClose 1.15
