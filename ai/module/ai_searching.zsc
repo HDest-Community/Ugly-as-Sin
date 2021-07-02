@@ -95,14 +95,14 @@ extend class UaS_AI_Handler {
 		if (which.FindState("idle")) { which.SetStateLabel("idle"); }
 		else { which.SetStateLabel("spawn"); }
 
-		// Clear HD mob AI goal-setter
-		ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
-		Actor currentMobster;
-		while (currentMobster = Actor(mobit.Next())) {
-			if (currentMobster.master == which) {
-				currentMobster.target = null;
-			}
-		}
+		// // Clear HD mob AI goal-setter
+		// ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
+		// Actor currentMobster;
+		// while (currentMobster = Actor(mobit.Next())) {
+			// if (currentMobster.master == which) {
+				// currentMobster.target = null;
+			// }
+		// }
 	}
 }
 
