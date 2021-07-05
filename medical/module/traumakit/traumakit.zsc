@@ -103,7 +103,7 @@ class UaS_TraumaKit : HDWeapon {
 			imperative = "Take off your ";
 			//handle autostrip
 			if(autostrip.GetBool()) {
-				HDPlayerPawn.CheckStrip(owner, self);
+				HDPlayerPawn.CheckStrip(owner, owner);
 				return false;
 			}
 		}
