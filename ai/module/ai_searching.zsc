@@ -92,8 +92,9 @@ extend class UaS_AI_Handler {
 		}
 
 		// Reset to idle/spawn for HD monsters
-		if (which.FindState("idle")) { which.SetStateLabel("idle"); }
-		else { which.SetStateLabel("spawn"); }
+		// which.SetIdle(true);
+		//if (which.FindState("idle")) { which.SetStateLabel("idle"); }
+		//else { which.SetStateLabel("spawn"); }
 
 		// // Clear HD mob AI goal-setter
 		// ThinkerIterator mobit = ThinkerIterator.Create("HDMobster");
