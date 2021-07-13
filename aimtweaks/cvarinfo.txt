@@ -1,3 +1,5 @@
 server bool UaS_FocusZoomEnabled = false;
 server int UaS_FocusZoomMode = 0;
+user int UaS_FocusZoomDelay = 25;
+user float UaS_FocusZoomSpeed = 0.1;
 server bool UaS_AimSwayEnabled = false;

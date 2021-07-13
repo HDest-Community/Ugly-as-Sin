@@ -71,9 +71,14 @@ OptionValue "FocusModes" {
 OptionMenu "UaS_AimTweaks_Options" {
 	Title "Aim Tweak Settings"
 
-	Option "Focus Zoom","UaS_FocusZoomEnabled","OnOff"
-	Option "Focus Zoom Mode","UaS_FocusZoomMode","FocusModes"
-	Option "Aim Sway","UaS_AimSwayEnabled","OnOff"
+	StaticText "Focus Zoom"
+	Option "Enabled","UaS_FocusZoomEnabled","OnOff"
+	Option "Mode","UaS_FocusZoomMode","FocusModes"
+	Slider "Delay (tics)","UaS_FocusZoomDelay", 5, 175, 5
+	Slider "Speed","UaS_FocusZoomSpeed", 0.05, 1.0, 0.05, 2
+	StaticText " "
+	StaticText "Aim Sway"
+	Option "Enabled","UaS_AimSwayEnabled","OnOff"
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Allied Marines"

@@ -13,8 +13,8 @@ class UaS_AimTweaks_Bootstrap : EventHandler {
 		aimthinker.zoomdefault = 1.0;
 		aimthinker.zoomtarget = 0.75;
 		aimthinker.zoomcurrent = 1.0;
-		aimthinker.zoomdelay = 35;
-		aimthinker.zoomspring = 0.1;
+		aimthinker.zoomdelay = 35; //overwritten by cvar now
+		aimthinker.zoomspring = 0.1; //overwritten by cvar now
 	}
 }
 
@@ -40,6 +40,8 @@ extend class UaS_Aim_Thinker {
 	int zoomdelay;
 	transient cvar focusmode;
 	transient cvar playerfov;
+	transient cvar playerdelay;
+	transient cvar playerspeed;
 
 	// focus-zooming internal variables
 	double zoomspeed;
@@ -49,10 +51,12 @@ extend class UaS_Aim_Thinker {
 		// Cache cvar struct
 		if (!focusmode) { focusmode=CVar.GetCVar("UaS_FocusZoomMode", plr.player); }
 		if (!playerfov) { playerfov=CVar.GetCVar("fov", plr.player); }
+		if (!playerdelay) { playerdelay=CVar.GetCVar("UaS_FocusZoomDelay", plr.player); }
+		if (!playerspeed) { playerspeed=CVar.GetCVar("UaS_FocusZoomSpeed", plr.player); }
 
-		// Ensure a brief delay before focus zoom takes effect
-		if(plr.vel.length() <= 1) { zoomcountdown = max(zoomcountdown - 1, 1); }
-		else { zoomcountdown = zoomdelay; }
+		// Get settable cvars
+		zoomdelay = playerdelay.GetInt();
+		zoomspring = playerspeed.GetFloat();
 
 		// Determine focus mode
 		bool DoZoom = false;
@@ -68,25 +72,22 @@ extend class UaS_Aim_Thinker {
 				break;
 		}
 
-		// Focus if mode true and delay runout
-		if((DoZoom) && zoomcountdown < zoomdelay) {
-			zoomspeed += dampedspring(
-				zoomcurrent,
-				zoomtarget,
-				zoomspeed,
-				zoomspring / (zoomcountdown),
-				1.0);
-			zoomcurrent += zoomspeed;
-		}
-		else {
-			zoomspeed += dampedspring(
-				zoomcurrent,
-				zoomdefault,
-				zoomspeed,
-				zoomspring,
-				1.0);
-			zoomcurrent += zoomspeed;
-		}
+		// Adjust delay countdown if zooming or not
+		if(DoZoom) { zoomcountdown = max(zoomcountdown - 1, 0); }
+		else { zoomcountdown = min(zoomcountdown + 1, zoomdelay); }
+
+		// scale maximum zoom a bit by speed
+		double zoommax = (zoomdefault - zoomtarget) / max(plr.vel.length(), 1);
+		if (zoomcountdown > 0) { zoommax = 0; }
+
+		// Set zoomspring force
+		zoomspeed += dampedspring(
+			zoomcurrent,
+			zoomdefault - zoommax,
+			zoomspeed,
+			zoomspring,
+			1.0);
+		zoomcurrent += zoomspeed;
 
 		// Hopefully this respects players FOV setting appropriately
 		// Thanks Josh for figuring out that we should use the player's FOV CVar
