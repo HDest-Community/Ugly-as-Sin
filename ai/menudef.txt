@@ -9,8 +9,8 @@ AddOptionMenu "UaS_ConfigureModules" {
 OptionMenu "UaS_AI_Options" {
 	Title "Advanced AI Module Settings"
 // if bundled: 	Option "Enabled","UaS_AdvancedAIEnabled","OnOff"
-	Option "Searching","UaS_AI_Searching","OnOff"
+	Option "Searching","UaS_AI_Searching","OnOff", "UaS_AI_Debug_Override"
 	Option "Wounding","UaS_AI_Wounding","OnOff"
 	Option "Lights","UaS_AI_Flashlights","OnOff"
-	Option "Stealth","UaS_AI_Stealth","OnOff"
+	Option "Stealth","UaS_AI_Stealth","OnOff", "UaS_AI_Debug_Override"
 }

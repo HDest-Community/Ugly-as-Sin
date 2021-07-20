@@ -1,5 +1,6 @@
 // if bundled: server bool UaS_AdvancedAIEnabled = false;
-server bool UaS_AI_Searching = true;
+server noarchive bool UaS_AI_Searching = false;
 server bool UaS_AI_Wounding = true;
 server bool UaS_AI_Flashlights = true;
-server bool UaS_AI_Stealth = true;
+server noarchive bool UaS_AI_Stealth = false;
+server noarchive bool UaS_AI_Debug_Override = false;
