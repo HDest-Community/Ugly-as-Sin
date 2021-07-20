@@ -15,8 +15,10 @@ class UaS_AI_Handler : Inventory {
 	}
 
 	override void DoEffect() {
-		if(!owner) { destroy(); return; }
-		if(owner.health <= 0) { return; }
+		let o = HDMobBase(owner);
+		if(!o) { destroy(); return; }
+		if(o.health <= 0) { return; }
+		o.seefov = 90;
 		WoundDebuff(); // this one is low-cost enough
 
 		// Periodically (random delay) recheck to turn on higher-cost AI

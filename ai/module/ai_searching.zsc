@@ -9,6 +9,13 @@ extend class UaS_AI_Handler {
 		if(!UaS_AI_Searching) { return; }
 		if(owner.health <= 0) { return; }
 
+		let o = hdmobbase(owner);
+		//console.printf("distance to lasttargetpos "..levellocals.Vec3Diff(o.pos, o.lasttargetpos).length());
+		// o.lastenemy = null;
+		// o.target = null;
+		return;
+		//if (levellocals.Vec3Diff(o.pos, o.lasttargetpos)
+
 		// Normal following behavior plus visibility checks
 		if (owner.target && owner.target is "HDPlayerPawn") {
 			if (lastknown) { lastKnown.destroy(); }
