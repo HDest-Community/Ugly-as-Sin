@@ -1,5 +1,5 @@
 class UaS_AimTweaks_Bootstrap : EventHandler {
-	override void PlayerEntered(PlayerEvent e) {
+	override void PlayerSpawned(PlayerEvent e) {
 		if (e.IsReturn) { return; }
 		UaS_Aim_Thinker aimthinker = new("UaS_Aim_Thinker");
 		aimthinker.plr = HDPlayerPawn(players[e.PlayerNumber].mo);
