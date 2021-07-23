@@ -12,13 +12,15 @@ class UaS_AI_Handler : Inventory {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		WoundDebuffInit();
+		let o = HDMobBase(owner);
+		if(!o) { destroy(); return; }
+		o.seefov = 90;
 	}
 
 	override void DoEffect() {
 		let o = HDMobBase(owner);
 		if(!o) { destroy(); return; }
 		if(o.health <= 0) { return; }
-		o.seefov = 90;
 		WoundDebuff(); // this one is low-cost enough
 
 		// Periodically (random delay) recheck to turn on higher-cost AI
