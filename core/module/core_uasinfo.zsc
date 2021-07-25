@@ -1,7 +1,22 @@
 // Lump-reader base largly copy-pasted from HD-Injector by Accensus
 // https://gitlab.com/accensi/hd-addons/injector
 extend class UaS {
-	static play void ReadUASINFO() {
+	array<string> UASINFOLump;
+
+	override void OnRegister() {
+		ReadUASINFO();
+		DebugOutputRawLump();
+	}
+
+	void DebugOutputRawLump() {
+		console.printf("ran DebugOutputRawLump()");
+		for (int i = 0; i < UASINFOLump.Size(); i++) {
+			console.printf(UASINFOLump[i]);
+		}
+	}
+
+	void ReadUASINFO() {
+		console.printf("ran ReadUASINFO()");
 		string RawLumpText;
 		int LumpNum;
 		while ((LumpNum = Wads.FindLump("UASINFO", LumpNum + 1, Wads.GlobalNamespace)) >= 0) {
@@ -20,8 +35,38 @@ extend class UaS {
 				int ReturnIndex = Line.RightIndexOf("\r");
 				if (ReturnIndex > -1) {	Line.Remove(ReturnIndex, 1); }
 
-				console.printf("Line "..i..": "..Line);
+				// Remove spaces
+				Line.Replace(" ", "");
+
+				// Set back to lump
+				LumpLines[i] = Line;
+
+				// Remove blank lines
+				if (LumpLines[i].Length() <= 0) { LumpLines.Delete(i); }
 			}
+			UASINFOLump.Append(LumpLines);
 		}
 	}
+
+	static play string GetUASINFO
 }
+
+struct
+
+// class UAS_Info : Thinker {
+	// array<string> Lump;
+//
+	// static UAS_Info get() {
+		// UAS_Info uil = null;
+		// thinkeriterator it = thinkeriterator.create("UAS_Info");
+		// while(uil = UAS_Info(it.next())){
+			// if(uil)break;
+		// }
+		// if(!uil){
+			// ltl=new("UaS_LootList");
+			// ltl.InitLootTables();
+		// }
+		// return ltl;
+	// }
+//
+// }

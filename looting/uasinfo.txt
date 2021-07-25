@@ -1,0 +1,4 @@
+ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack;
+ZombieAutoStormtrooper: HD4mMag;
+ZombieSemiStormtrooper: HD4mMag;
+ZombieSMGStormtrooper: HD9mMag30;
