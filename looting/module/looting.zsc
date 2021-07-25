@@ -69,7 +69,7 @@ class UaS_Looting_Handler : Inventory {
 			owner.A_StartSound("weapons/pocket", volume: frandom(0.5, 0.75));
 			anglevel += frandom[loot](-1, 1);
 			pitchvel += frandom[loot](-1, 1);
-			cooldown = random[loot](10,25);
+			cooldown = random[loot](10,20);
 			searchMarker.ReturnLoot();
 		}
 	}

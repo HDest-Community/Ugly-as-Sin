@@ -1,0 +1,39 @@
+class UaS_LootEntry {
+	string LootableClassName;
+	array<string> LootClasses;
+}
+
+class UaS_LootList : Thinker {
+	array<UaS_LootEntry> LootList;
+
+	void InitLootTables() {
+		UaS_LootEntry lt = new("UaS_LootEntry");
+		lt.LootableClassName = "ZombieStormTrooper";
+		lt.LootClasses.push("HD4mMag");
+		LootList.push(lt);
+	}
+
+	string GetLootItem(string checkclass) {
+		for (int i=0; i<LootList.size(); i++) {
+			if (LootList[i].LootableClassName = checkclass) {
+				array<string> TempLootClasses;
+				TempLootClasses.copy(LootList[i].LootClasses);
+				return TempLootClasses[random(0,TempLootClasses.size()-1)];
+			}
+		}
+		return "";
+	}
+
+	static UaS_LootList get() {
+		UaS_LootList ltl = null;
+		thinkeriterator it = thinkeriterator.create("UaS_LootList");
+		while(ltl = UaS_LootList(it.next())){
+			if(ltl)break;
+		}
+		if(!ltl){
+			ltl=new("UaS_LootList");
+			ltl.InitLootTables();
+		}
+		return ltl;
+	}
+}

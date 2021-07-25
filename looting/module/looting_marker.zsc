@@ -8,10 +8,10 @@ class UaS_SearchedCorpseMarker : Inventory {
 	// TODO replace this with actual tables
 	// Right now it just generates random HDAmmo items
 	void InitLoot() {
-		HDAmBoxList ammolist=HDAmBoxList.get();
+		UaS_LootList ll = UaS_LootList.get();
 		for (int i = 0; i < 10; i++) {
 			if (UaS.RandomChance(UaS_LootingFactor)) {
-				let item=(ammolist.invclasses[random(0,ammolist.invclasses.size()-1)]);
+				string item = ll.GetLootItem(owner.GetClassName());
 				Loot.Push(item);
 			}
 			else { Loot.Push(""); }
@@ -44,7 +44,7 @@ class UaS_SearchedCorpseMarker : Inventory {
 		}
 		else {
 			// Otherwise just increment progress
-			searchedAmount += random[loot](20,50);
+			searchedAmount += random[loot](30,70);
 			if(UaS_Debug & DBG_Looting) { console.printf("Check "..check.." -- Progress "..searchedAmount); }
 		}
 		// Mark complete if no more loot entries
