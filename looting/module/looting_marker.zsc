@@ -5,13 +5,13 @@ class UaS_SearchedCorpseMarker : Inventory {
 	string lastMessage;
 	bool fullysearched;
 
-	// TODO replace this with actual tables
-	// Right now it just generates random HDAmmo items
 	void InitLoot() {
 		UaS_LootList ll = UaS_LootList.get();
-		for (int i = 0; i < 10; i++) {
-			if (UaS.RandomChance(UaS_LootingFactor)) {
-				string item = ll.GetLootItem(owner.GetClassName());
+		int lootslots = random(5,10);
+		double chance = UaS_LootingFactor;
+		for (int i = 0; i < lootslots; i++) {
+			if (UaS.RandomChance(chance)) {
+				string item = ll.GetLootItem(owner);
 				Loot.Push(item);
 			}
 			else { Loot.Push(""); }

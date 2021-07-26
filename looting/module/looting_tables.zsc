@@ -7,20 +7,46 @@ class UaS_LootList : Thinker {
 	array<UaS_LootEntry> LootList;
 
 	void InitLootTables() {
-		UaS_LootEntry lt = new("UaS_LootEntry");
-		lt.LootableClassName = "ZombieStormTrooper";
-		lt.LootClasses.push("HD4mMag");
-		LootList.push(lt);
-	}
-
-	string GetLootItem(string checkclass) {
-		for (int i=0; i<LootList.size(); i++) {
-			if (LootList[i].LootableClassName = checkclass) {
-				array<string> TempLootClasses;
-				TempLootClasses.copy(LootList[i].LootClasses);
-				return TempLootClasses[random(0,TempLootClasses.size()-1)];
+		// Get lump string array and make a copy
+		UaS u = UaS(EventHandler.Find("UaS"));
+		array<string> TempUASINFO;
+		TempUASINFO.Copy(u.UASINFOLump);
+		// find relevant lines and extract data
+		for (int i = 0; i < TempUASINFO.size(); i++) {
+			string tl = TempUASINFO[i].MakeLower(); // templine
+			if (tl.IndexOf("looting") != -1) {
+				tl.replace("looting:", "");
+				int sepindex = tl.IndexOf(":");
+				string cname = tl.Left(sepindex);
+				string loots = tl.Mid(sepindex+1);
+				array<string> templootlist;
+				loots.Split(templootlist, ",", TOK_SKIPEMPTY);
+				UaS_LootEntry lt = new("UaS_LootEntry");
+				lt.LootableClassName = cname;
+				for (int j = 0; j < templootlist.Size(); j++) {
+					lt.LootClasses.push(templootlist[j]);
+				}
+				LootList.push(lt);
 			}
 		}
+		for (int i=0; i<LootList.size(); i++) {
+			let lt = UaS_LootEntry(LootList[i]);
+			console.printf(lt.LootableClassName);
+			for (int j=0; j<lt.LootClasses.Size(); j++) {
+				console.printf(lt.LootClasses[j]);
+			}
+		}
+	}
+
+	string GetLootItem(actor checkclass) {
+		array<string> PossibleItems;
+		string checkname = checkclass.GetClassName();
+		for (int i=0; i<LootList.size(); i++) {
+			if (checkname ~== LootList[i].LootableClassName || checkclass is LootList[i].LootableClassName) {
+				PossibleItems.append(LootList[i].LootClasses);
+			}
+		}
+		if (PossibleItems.size() > 0) { return PossibleItems[random(0,PossibleItems.size()-1)]; }
 		return "";
 	}
 

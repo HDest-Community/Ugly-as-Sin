@@ -27,13 +27,14 @@ extend class UaS {
 			for (int i = 0; i < LumpLines.Size(); ++i) {
 				string Line = LumpLines[i];
 
-				// Remove newline characters
-				int NewLineIndex = Line.RightIndexOf("\n");
-				if (NewLineIndex > -1) { Line.Remove(NewLineIndex, 1); }
+				// Remove comments
+				int CommentIndex = line.IndexOf("//");
+				if (CommentIndex == 0) { Line = ""; }
+				else if (CommentIndex > 0) { Line = Line.Left(CommentIndex); }
 
-				// Remove return characters
-				int ReturnIndex = Line.RightIndexOf("\r");
-				if (ReturnIndex > -1) {	Line.Remove(ReturnIndex, 1); }
+				// Remove newline and return characters
+				Line.Replace("\n", "");
+				Line.Replace("\f", "");
 
 				// Remove spaces
 				Line.Replace(" ", "");
@@ -48,25 +49,7 @@ extend class UaS {
 		}
 	}
 
-	static play string GetUASINFO
-}
-
-struct
-
-// class UAS_Info : Thinker {
-	// array<string> Lump;
-//
-	// static UAS_Info get() {
-		// UAS_Info uil = null;
-		// thinkeriterator it = thinkeriterator.create("UAS_Info");
-		// while(uil = UAS_Info(it.next())){
-			// if(uil)break;
-		// }
-		// if(!uil){
-			// ltl=new("UaS_LootList");
-			// ltl.InitLootTables();
-		// }
-		// return ltl;
+	// static play string GetUASINFO(string prefix) {
+		// let this = UaS(EventHandler.Find("UaS");
 	// }
-//
-// }
+}

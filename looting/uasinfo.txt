@@ -1,4 +1,3 @@
-ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack;
-ZombieAutoStormtrooper: HD4mMag;
-ZombieSemiStormtrooper: HD4mMag;
-ZombieSMGStormtrooper: HD9mMag30;
+Looting:ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack, HD4mMag, HD4mMag, HD9mMag30, HDFragGrenadeAmmo;
+Looting:HideousShotgunGuy: HDHandgunRandomDrop, PortableStimpack, ShellPickup, ShellPickup, ShellPickup, HD4mMag, HDFragGrenadeAmmo;
+Looting:Serpentipede: HDHandgunRandomDrop;
