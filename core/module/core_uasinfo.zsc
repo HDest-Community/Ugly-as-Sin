@@ -22,21 +22,24 @@ extend class UaS {
 		while ((LumpNum = Wads.FindLump("UASINFO", LumpNum + 1, Wads.GlobalNamespace)) >= 0) {
 			Array<string> LumpLines;
 			RawLumpText = Wads.ReadLump(LumpNum);
-			RawLumpText.Split(LumpLines, ";", TOK_SKIPEMPTY);
+			RawLumpText.Split(LumpLines, "\n", TOK_KEEPEMPTY);
 
 			for (int i = 0; i < LumpLines.Size(); ++i) {
+				console.printf(LumpLines[i]);
 				string Line = LumpLines[i];
 
-				// Remove comments
-				int CommentIndex = line.IndexOf("//");
-				if (CommentIndex == 0) { Line = ""; }
-				else if (CommentIndex > 0) { Line = Line.Left(CommentIndex); }
+				// // Remove comments
+				// int CommentIndex = line.IndexOf("//");
+				// if (CommentIndex == 0) { Line = ""; }
+				// else if (CommentIndex > 0) { Line = Line.Left(CommentIndex); }
 
 				// Remove newline and return characters
+				Line.Replace("\r", "");
 				Line.Replace("\n", "");
-				Line.Replace("\f", "");
+				Line.Replace("\f", ""); // Is this correct or even needed?
 
 				// Remove spaces
+				Line.Replace(";", ""); //testing
 				Line.Replace(" ", "");
 
 				// Set back to lump
