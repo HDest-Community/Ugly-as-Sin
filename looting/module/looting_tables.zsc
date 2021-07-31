@@ -29,11 +29,14 @@ class UaS_LootList : Thinker {
 				LootList.push(lt);
 			}
 		}
-		for (int i=0; i<LootList.size(); i++) {
-			let lt = UaS_LootEntry(LootList[i]);
-			console.printf(lt.LootableClassName);
-			for (int j=0; j<lt.LootClasses.Size(); j++) {
-				console.printf(lt.LootClasses[j]);
+		if(UaS_Debug & DBG_Looting) {
+			console.printf("---===Init all loot tables===---");
+			for (int i=0; i<LootList.size(); i++) {
+				let lt = UaS_LootEntry(LootList[i]);
+				console.printf("==="..lt.LootableClassName.."===");
+				for (int j=0; j<lt.LootClasses.Size(); j++) {
+					console.printf(lt.LootClasses[j]);
+				}
 			}
 		}
 	}

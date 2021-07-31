@@ -16,6 +16,12 @@ class UaS_SearchedCorpseMarker : Inventory {
 			}
 			else { Loot.Push(""); }
 		}
+		if(UaS_Debug & DBG_Looting) {
+			console.printf("Init loot for "..owner.getclassname());
+			for(int i=0; i<Loot.Size(); i++) {
+				console.printf("—"..Loot[i]);
+			}
+		}
 	}
 
 	void ReturnLoot() {
@@ -44,7 +50,7 @@ class UaS_SearchedCorpseMarker : Inventory {
 		}
 		else {
 			// Otherwise just increment progress
-			searchedAmount += random[loot](30,70);
+			searchedAmount += random[loot](10,75);
 			if(UaS_Debug & DBG_Looting) { console.printf("Check "..check.." -- Progress "..searchedAmount); }
 		}
 		// Mark complete if no more loot entries

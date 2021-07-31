@@ -5,7 +5,7 @@ extend class UaS {
 
 	override void OnRegister() {
 		ReadUASINFO();
-		DebugOutputRawLump();
+		//DebugOutputRawLump();
 	}
 
 	void DebugOutputRawLump() {
@@ -16,11 +16,12 @@ extend class UaS {
 	}
 
 	void ReadUASINFO() {
-		console.printf("ran ReadUASINFO()");
+		//console.printf("ran ReadUASINFO()");
 		string RawLumpText;
 		int LumpNum;
 		while ((LumpNum = Wads.FindLump("UASINFO", LumpNum + 1, Wads.GlobalNamespace)) >= 0) {
 			Array<string> LumpLines;
+			LumpLines.Clear();
 			RawLumpText = Wads.ReadLump(LumpNum);
 			RawLumpText.Split(LumpLines, "\n", TOK_KEEPEMPTY);
 
