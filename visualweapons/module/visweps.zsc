@@ -2,7 +2,7 @@ class UaS_VisWeps_Bootstrap : EventHandler {
 	override void WorldThingSpawned(WorldEvent e) {
 		if(!e.Thing) { return; }
 		if(!UaS.CVarCheck("UaS_VisWepsEnabled") || CVar.GetCVar("UaS_VisWepsEnabled").GetBool()) {
-			if(e.Thing is 'HDMarine') {
+			if(e.Thing is 'HDOperator') {
 				e.Thing.GiveInventory('UaS_VisWeps_Updater', 1);
 			}
 		}
@@ -19,8 +19,8 @@ class UaS_VisWeps_Updater : Inventory {
 
 	override void DoEffect() {
 		super.DoEffect();
-		let ownr = HDMarine(Owner);
-		if(ownr is 'HDMarine' && ownr.health > 0) {
+		let ownr = HDOperator(Owner);
+		if(ownr is 'HDOperator' && ownr.health > 0) {
 
 			// Check if the marine is using their pistol
 			if(ownr.CurState == ownr.ResolveState("shootpistol")) {

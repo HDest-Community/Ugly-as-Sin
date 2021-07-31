@@ -155,7 +155,7 @@ class UaS_LaserLightModule : HDWeapon {
 				owner is "ZombieStormtrooper" ||
 				owner is "HideousShotgunGuy" ||
 				owner is "VulcanetteGuy" ||
-				owner is "HDMarine"
+				owner is "HDOperator"
 			);
 			if (HumanClass) { offset = 8; }
 			else if (BotClass) {

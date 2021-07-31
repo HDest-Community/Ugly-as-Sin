@@ -15,7 +15,7 @@ extend class UaS_AI_Handler {
 			owner is "ZombieStormtrooper" ||
 			owner is "HideousShotgunGuy" ||
 			owner is "VulcanetteGuy" ||
-			owner is "HDMarine"
+			owner is "HDOperator"
 		);
 		if (!BotClass && !HumanClass) { return; }
 

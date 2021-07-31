@@ -38,7 +38,7 @@ class UaS_Ally_Spawner : EventHandler {
 	}
 
 	bool SpawnAlly(vector3 pos) {
-		HDMarine ally = HDMarine(actor.spawn('HDMarine', pos));
+		HDOperator ally = HDOperator(actor.spawn('HDOperator', pos));
 		if (!ally) { return false; }
 		if (!ally.CheckPosition(pos.xy)) {
 			ally.Destroy();
