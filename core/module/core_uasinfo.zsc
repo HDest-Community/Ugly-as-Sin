@@ -11,7 +11,7 @@ extend class UaS {
 	void DebugOutputRawLump() {
 		console.printf("ran DebugOutputRawLump()");
 		for (int i = 0; i < UASINFOLump.Size(); i++) {
-			console.printf(UASINFOLump[i]);
+			console.printf(i.." "..UASINFOLump[i].." EOL");
 		}
 	}
 
@@ -25,8 +25,7 @@ extend class UaS {
 			RawLumpText = Wads.ReadLump(LumpNum);
 			RawLumpText.Split(LumpLines, "\n", TOK_KEEPEMPTY);
 
-			for (int i = 0; i < LumpLines.Size(); ++i) {
-				console.printf(LumpLines[i]);
+			for (int i = 0; i < LumpLines.Size(); i++) {
 				string Line = LumpLines[i];
 
 				// // Remove comments
@@ -47,7 +46,8 @@ extend class UaS {
 				LumpLines[i] = Line;
 
 				// Remove blank lines
-				if (LumpLines[i].Length() <= 0) { LumpLines.Delete(i); }
+				// if (LumpLines[i].Length() <= 0) { LumpLines.Delete(i); }
+				// WHAT THE FUCK WHY DOES THIS AFFECT IT
 			}
 			UASINFOLump.Append(LumpLines);
 		}
