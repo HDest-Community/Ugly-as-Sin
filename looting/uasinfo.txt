@@ -1,11 +1,14 @@
-Looting:ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack;
-Looting:ZombieAutoStormtrooper: HD4mMag,HD4mMag,HD4mMag;
-Looting:ZombieSemiStormtrooper: HD4mMag,HD4mMag,HD4mMag;
-Looting:ZombieSMGStormtrooper: HD9mMag30,HD9mMag30,HD9mMag30,HDFragGrenadeAmmo;
+Looting:ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack
+Looting:ZombieAutoStormtrooper: HD4mMag,HD4mMag,HD4mMag
+Looting:ZombieSemiStormtrooper: HD4mMag,HD4mMag,HD4mMag
+Looting:ZombieSMGStormtrooper: HD9mMag30,HD9mMag30,HD9mMag30,HDFragGrenadeAmmo
+Looting:UndeadHomeboy: HD9mMag15,HD9mMag15,HD9mMag15
 
-Looting:HideousShotgunGuy: HDHandgunRandomDrop, PortableStimpack;
-Looting:UndeadJackbootman: HD4mMag,HD4mMag,HD4mMag;
-Looting:JackAndJillboot: ShellPickup, ShellPickup, ShellPickup;
-Looting:Jackboot: ShellPickup, ShellPickup, ShellPickup;
+Looting:HideousShotgunGuy: HDHandgunRandomDrop, PortableStimpack
+Looting:UndeadJackbootman: HD4mMag,HD4mMag,HD4mMag
+Looting:JackAndJillboot: ShellPickup,ShellPickup,ShellPickup
+Looting:Jackboot: ShellPickup,ShellPickup,ShellPickup
 
-Looting:Serpentipede: HDHandgunRandomDrop;
+Looting:VulcanetteGuy: HD4mMag,HD4mMag,HD4mMag,HD4mMag,PortableBerserkPack
+
+Looting:Serpentipede: HDHandgunRandomDrop
