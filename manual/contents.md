@@ -5,6 +5,7 @@
 * [Aim Tweaks](../aimtweaks/readme.md)
 * [Ammo Pouch](../ammopouch/readme.md)
 * [Fragshard Reducer](../fragfactor/readme.md)
+* [Hunger](../hunger/readme.md)
 * [Weapon Jamming](../jamming/readme.md)
 * [Laser / Flashlight](../laserlight/readme.md)
 * [Markers](../markers/readme.md)
