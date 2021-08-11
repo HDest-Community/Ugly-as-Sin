@@ -40,7 +40,7 @@ When your fatigue counter is above zero, and you have either food energy or hydr
 
 This has a net effect of both helping you get rested quicker, and allowing you to push yourself a little farther. Experiment on the shooting range to see the difference!
 
-## Sickness
+### Sickness
 
 Over time, opened consumables may go bad or collect contamination from the surrounding environment. This is referred to as "spoilage". While most items you bring with you will be perfectly fine, items you find in the field may already be unfit for consumption.
 
