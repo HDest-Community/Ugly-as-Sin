@@ -65,10 +65,10 @@ class UaS_HungerTracker : Inventory {
 
 		// Do sickness
 		if (burnedsomething && random[uas_hunger](0,o.fatigue) < sick) {
-			sick--;
 			pending_calories *= 0.8;
 			pending_fluid *= 0.6;
-			o.fatigue = 50;
+			o.fatigue = min(o.fatigue + (sick * 15), 75);
+			sick--;
 			owner.A_StartSound("UaS/Gurgle",
 				CHAN_BODY, CHANF_OVERLAP,
 				frandom[uas_hunger](0.25, 0.4), ATTN_STATIC,
