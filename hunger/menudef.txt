@@ -10,5 +10,6 @@ OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module Settings"
 	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
 	Option "Stamina Boost","UaS_HungerStamina","OnOff"
-	// Option "Starvation","UaS_HungerStarvation","OnOff"
+	Option "Starvation","UaS_HungerStarvation","OnOff"
+	Option "Sickness Effects","UaS_HungerSickness","OnOff"
 }

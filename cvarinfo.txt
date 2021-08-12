@@ -18,6 +18,7 @@ user float UaS_FocusZoomSpeed = 0.1;
 server bool UaS_FragReducerEnabled = false;
 server int UaS_FragSpawnRate = 100;
 server bool UaS_HungerMetabolism = true;
+server bool UaS_HungerSickness = true;
 server bool UaS_HungerStamina = true;
 server bool UaS_HungerStarvation = false;
 server bool UaS_JammingEnabled = false;
