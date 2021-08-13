@@ -56,8 +56,7 @@ extend class UaS_TraumaKit {
 					owner.A_StartSound("misc/smallslop", CHAN_WEAPON);
 					currentWound.dirty = max(currentWound.dirty - random[uas_tk](1,2), 0);
 					if(random[uas_tk](0, 35) == 0) {
-						let rw = HDWeapon(patient.player.ReadyWeapon);
-						rw.A_PlaySkinSound(SKINSOUND_GRUNT, "*grunt");
+						patient.A_StartSound(patient.gruntsound, CHAN_VOICE);
 					}
 				}
 

@@ -1,7 +1,6 @@
 extend class UaS_Traumakit {
 	void PainJolt() {
-		let rw = HDWeapon(patient.player.ReadyWeapon);
-		rw.A_PlaySkinSound(SKINSOUND_MEDS, "*usemeds");
+		patient.A_StartSound(patient.medsound, CHAN_VOICE);
 		if (random[uas_tk](0,1) == 0) { patient.A_Log("\cg"..PainMessage(), true); }
 		patient.A_MuzzleClimb(
 			(frandom[uas_tk](-5,5),frandom[uas_tk](-5,5)),
