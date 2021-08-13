@@ -14,10 +14,14 @@ UaS/FoodOpen	dsclaw
 UaS/FoodClose	dspocket
 UaS/Gurgle		"hunger/sounds/gurgle.wav"
 
-$pitchset UaS/FoodOpen 0.9
-$pitchset UaS/FoodClose 1.15
 $volume UaS/FoodOpen 0.25
 $volume UaS/FoodClose 0.75
+$volume UaS/Gurgle 0.35
+$volume UaS/Chew 0.7
+$volume UaS/Swallow 0.5
+
+$pitchset UaS/FoodOpen 0.9
+$pitchset UaS/FoodClose 1.15
 
 UaS/Glowstick	dsrifclk
 UaS/Flare		"markers/sounds/tr_flare.wav"

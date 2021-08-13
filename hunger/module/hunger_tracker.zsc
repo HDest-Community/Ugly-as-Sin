@@ -78,8 +78,8 @@ class UaS_HungerTracker : Inventory {
 			sick--;
 			owner.A_StartSound("UaS/Gurgle",
 				CHAN_BODY, CHANF_OVERLAP,
-				frandom[uas_hunger](0.25, 0.4), ATTN_STATIC,
-				frandom[uas_hunger](0.8, 1.25));
+				frandom[uas_hunger](0.9, 1.1), ATTN_STATIC,
+				frandom[uas_hunger](0.9, 1.1));
 			debugtype.appendformat(" \cesick %i\c- ", sick);
 		}
 
@@ -104,12 +104,15 @@ class UaS_HungerTracker : Inventory {
 			else if (random[uas_hunger](false, true)) { snd = "UaS/Sip"; }
 			owner.A_StartSound(snd,
 				CHAN_BODY, CHANF_OVERLAP,
-				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
+				frandom[uas_hunger](0.9, 1.1), ATTN_STATIC,
 				frandom[uas_hunger](0.9, 1.1));
 			mouthtime--;
 		}
 		if (mouthclear()) {
-			owner.A_StartSound("UaS/Swallow", CHAN_VOICE, volume: 0.5);
+			owner.A_StartSound("UaS/Swallow",
+				CHAN_VOICE, 0,
+				frandom[uas_hunger](0.9, 1.1), ATTN_STATIC,
+			 	frandom[uas_hunger](0.9, 1.1));
 			pending_calories += mouth_calories;
 			pending_fluid += mouth_fluid;
 			mouth_calories = 0;
