@@ -13,8 +13,8 @@ extend class UaS_AI_Handler {
 		);
 		bool HumanClass = (
 			owner is "ZombieStormtrooper" ||
-			owner is "HideousShotgunGuy" ||
-			owner is "VulcanetteGuy" ||
+			owner is "ZombieShotgunner" ||
+			owner is "VulcanetteZombie" ||
 			owner is "HDOperator"
 		);
 		if (!BotClass && !HumanClass) { return; }

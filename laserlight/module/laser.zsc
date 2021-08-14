@@ -153,8 +153,8 @@ class UaS_LaserLightModule : HDWeapon {
 			);
 			bool HumanClass = (
 				owner is "ZombieStormtrooper" ||
-				owner is "HideousShotgunGuy" ||
-				owner is "VulcanetteGuy" ||
+				owner is "ZombieShotgunner" ||
+				owner is "VulcanetteZombie" ||
 				owner is "HDOperator"
 			);
 			if (HumanClass) { offset = 8; }
