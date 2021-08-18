@@ -8,6 +8,7 @@ class UaS_Consumable : HDWeapon abstract {
 		UaS_Consumable.Calories 0; // Calories / kCals provided by this consumable
 		UaS_Consumable.Fluid 0; // Milliliteres of hydration provided by this consumable
 		UaS_Consumable.Bulk 0; // Bulk Units, also influences number of "swallows" when consumed
+		UaS_Consumable.SpoilRate 1.0; // 2.0 == twice as fast, 0.5 == half as fast
 		UaS_Consumable.Description ""; // Description shown to player
 		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
 		//+UaS_Consumable.RESEALABLE;

@@ -3,6 +3,7 @@ extend class UaS_Consumable {
 	int calories;
 	int fluid;
 	double bulk, diffbulk;
+	double spoilrate;
 	string description;
 	string opensound;
 	array<string> OpenText;
@@ -12,6 +13,7 @@ extend class UaS_Consumable {
 	property Calories: calories;
 	property Fluid: fluid;
 	property Bulk: bulk;
+	property SpoilRate: spoilrate;
 	flagdef RESEALABLE: ConsumableFlags, 0;
 	flagdef DRINKABLE: ConsumableFlags, 1;
 	flagdef PACKAGED: ConsumableFlags, 2;

@@ -83,6 +83,7 @@ class UaS_HungerTracker : Inventory {
 			debugtype.appendformat(" \cesick %i\c- ", sick);
 		}
 
+		// Do starvation effects
 		int starving = int((hydro + energy) / 10);
 		if (starving < 0 && UaS_HungerStarvation) {
 			o.fatigue = max(o.fatigue, abs(starving));

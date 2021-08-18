@@ -42,7 +42,7 @@ extend class UaS_Consumable {
 	}
 
 	void DoSpoilage() {
-		// spoilage over time, chances every minute
+		// spoilage over time, chances every proc
 		// 10% major contamination	+5
 		// 10% minor contamination	+2
 		// 20% basic spoilage		+1
@@ -56,7 +56,7 @@ extend class UaS_Consumable {
 			}
 			// additional point possible if already spoiling, even if closed.
 			if (random(0,100) <= weaponstatus[UGCS_SPOILAGE]) { weaponstatus[UGCS_SPOILAGE]++; }
-			weaponstatus[UGCS_LASTSPOILTIME] += (35*60);
+			weaponstatus[UGCS_LASTSPOILTIME] += (35*60) / spoilrate;
 		}
 	}
 
