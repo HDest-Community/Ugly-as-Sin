@@ -93,10 +93,13 @@ class UaS_TraumaKit : HDWeapon {
 	bool HandleStrip() {
 		if (!autostrip) { autostrip = CVar.GetCVar("hd_autostrip", owner.player); }
 		string itemname, imperative;
-		// check for worn items, otherwise exit early
+		// check for intervening items, otherwise exit early
+		bool intervening = !HDPlayerPawn.CheckStrip(patient, patient, false);
+		if(!intervening) return true;
+
 		if(patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
 		else if(patient.countinv("HDArmourWorn")) { itemname = "armour "; }
-		else { return true; }
+		else { itemname = "worn layers "; }
 
 		// check owner or other
 		if(patient == owner) {
