@@ -31,6 +31,9 @@ extend class UaS_Consumable {
 			CHAN_WEAPON, CHANF_OVERLAP,
 			attenuation: ATTN_STATIC);
 		weaponstatus[UGCS_OPEN] = UGCSF_OPENED;
+		if (weaponstatus[UGCS_LASTSPOILTIME] == -1) {
+			weaponstatus[UGCS_LASTSPOILTIME] = level.totaltime;
+		}
 		owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
 		GiveContents();
 	}

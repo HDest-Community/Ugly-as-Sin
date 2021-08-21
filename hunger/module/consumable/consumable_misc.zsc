@@ -47,6 +47,7 @@ extend class UaS_Consumable {
 		// 10% minor contamination	+2
 		// 20% basic spoilage		+1
 		// 60% nothing
+		if (weaponstatus[UGCS_LASTSPOILTIME] == -1) { return; }
 		if (weaponstatus[UGCS_LASTSPOILTIME] < level.totaltime) {
 			// Spoilage from external contamination if open
 			if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
@@ -105,6 +106,7 @@ extend class UaS_Consumable {
 			weaponstatus[UGCS_SPOILAGE] = random(0,100) * (frandom(0,1) * frandom(0,1));
 			weaponstatus[UGCS_LASTSPOILTIME] = level.totaltime;
 		}
+		else { weaponstatus[UGCS_LASTSPOILTIME] = -1; }
 	}
 
 	override void PostBeginPlay() {
