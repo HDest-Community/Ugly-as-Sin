@@ -1,6 +1,6 @@
 enum UAS_LIB_CONSTANTS {
 	// Status slots
-	UAS_LIBS_FIRED = 8,
+	UAS_LIBS_FIRED = 20,
 
 	// Convenience
 	UAS_LIB_CHAMBER_LIVE = 2,

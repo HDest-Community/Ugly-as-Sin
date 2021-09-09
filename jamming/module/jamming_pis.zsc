@@ -1,6 +1,6 @@
 enum UAS_PIS_CONSTANTS {
 	// Status slots
-	UAS_PIS_FIRED = 3,
+	UAS_PIS_FIRED = 20,
 
 	// Convenience
 	UAS_PIS_CHAMBER_LIVE = 2,

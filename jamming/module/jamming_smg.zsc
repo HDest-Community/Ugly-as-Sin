@@ -1,6 +1,6 @@
 enum UAS_SMG_CONSTANTS {
 	// Status slots
-	UAS_SMG_FIRED = 6,
+	UAS_SMG_FIRED = 20,
 
 	// Convenience
 	UAS_SMG_CHAMBER_LIVE = 2,
