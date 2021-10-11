@@ -126,9 +126,9 @@ extend class UaS_Consumable {
 		Spawn:
 			TNT1 A -1 { invoker.UpdateSprite(); }
 			Stop;
-		Ready:
-			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
-			Loop;
+		// Ready:
+			// TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			// Loop;
 	}
 }
 
