@@ -12,6 +12,10 @@ class UaS_LaserLightModule : HDWeapon {
 	transient cvar beams;
 	transient cvar laserpref, lightpref;
 
+	double lastangle, lastpitch;
+	vector3 lastpos, lastvel;
+	int ageoffset;
+
 	default {
 		radius 3;
 		height 3;
@@ -275,27 +279,67 @@ class UaS_LaserLightModule : HDWeapon {
 		// Draw laser particle beam
 		FLineTraceData laserTrace;
 		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
-		for (double f = 0; f < laserTrace.distance; f = f + random[llm](32, 256)) {
-			double bliplength = random[llm](8, 32);
-			for (double d = f; d < f + bliplength; d = d + frandom[llm](0.1, 1)) {
-				if (d > laserTrace.distance) { break; }
-				double ps = frandom[llm](min(-f, 0), min(256,laserTrace.distance - d));
-				emitter.A_SpawnParticle(LaserColor, SPF_FULLBRIGHT|SPF_RELANG,
-					1,
-					(frandom[llm](0.75, 1.0) * clamp(d/4096, 0.75, 1)) * sizefactor,
-					0,
-					cos(emitter.pitch) * cos(emitter.angle) * (d),
-					cos(emitter.pitch) * sin(emitter.angle) * (d),
-					sin(-emitter.pitch) * (d),
-					owner.vel.x + (ps * cos(emitter.angle) * cos(-emitter.pitch)),
-					owner.vel.y + (ps * sin(emitter.angle) * cos(-emitter.pitch)),
-					owner.vel.z + (ps * sin(-emitter.pitch)),
-					0, 0, 0,
-					(frandom[llm](0.5, 0.9) * clamp(d/32, 0.0, 1)) * LaserAlpha,
-					-1, 0);
-			}
-			f += bliplength;
+
+		// precalculate position and velocity vectors only once
+		// hopefully moving these out of the loop improves performance
+
+		// Old angular vector of particle spawn
+		vector3 oldpvec = (
+			cos(lastpitch) * cos(lastangle),
+			cos(lastpitch) * sin(lastangle),
+			sin(-lastpitch));
+
+		// New angular vector of particle spawn
+		vector3 newpvec = (
+			cos(emitter.pitch) * cos(emitter.angle),
+			cos(emitter.pitch) * sin(emitter.angle),
+			sin(-emitter.pitch));
+
+		// Vector offset between old and new positions
+		vector3 pold = level.vec3diff(emitter.pos, lastpos);
+
+		// Velocity offset between old and new angular vectors
+		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
+
+		// int pspawns = 0;
+		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + frandom(.1,3)) {
+			// Calculate simulated atmospheric density (pseudo-perlin?)
+			// https://www.desmos.com/calculator/ihnnq7pdjt
+			int t = getage() + ageoffset;
+			double dens = (
+				sin(f*1 + t*8)+
+				sin(f*2 - t*4)+
+				sin(f*4 + t*2)+
+				sin(f*8 - t*1)) * 0.25;
+
+			// ensure visible beams at both ends
+			if (f<90) { dens += sin(f*2); }
+			if (f>laserTrace.distance-90) { dens += cos((laserTrace.distance-f)); }
+
+			// skip if below threshold
+			if (dens <= .2) { continue; }
+
+			// actually spawn particle
+			// pspawns++;
+			vector3 ppos = (oldpvec * f) + pold;
+			vector3 pvel = (pvoff   * f) - pold;
+			emitter.A_SpawnParticle("Red",
+				flags: SPF_FULLBRIGHT,
+				lifetime: 1,
+				size: frandom(0.75,1.25),
+				xoff: ppos.x,
+				yoff: ppos.y,
+				zoff: ppos.z - 2,
+				velx: pvel.x,
+				vely: pvel.y,
+				velz: pvel.z,
+				startalphaf: dens);
 		}
+		lastangle = emitter.angle;
+		lastpitch = emitter.pitch;
+		lastpos = emitter.pos;
+		lastvel = emitter.vel;
+		// console.printf("particles "..pspawns);
 	}
 
 	//override int getsbarnum(int flags){ return mode; }
