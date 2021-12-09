@@ -116,7 +116,7 @@ class UaS_WeaponSling : HDPickup {
 		}
 
 		// Stunning makes you lose sling
-		if (ownr.stunned > 0) {
+		if (ownr.stunned > 10) {
 			slingActive = 0;
 			slingBraced = false;
 			slingPrep = 0;
