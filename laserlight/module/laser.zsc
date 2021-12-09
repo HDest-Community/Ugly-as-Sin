@@ -323,7 +323,7 @@ class UaS_LaserLightModule : HDWeapon {
 			// pspawns++;
 			vector3 ppos = (oldpvec * f) + pold;
 			vector3 pvel = (pvoff   * f) - pold;
-			emitter.A_SpawnParticle("Red",
+			emitter.A_SpawnParticle(LaserColor,
 				flags: SPF_FULLBRIGHT,
 				lifetime: 1,
 				size: frandom(0.75,1.25),
@@ -333,7 +333,7 @@ class UaS_LaserLightModule : HDWeapon {
 				velx: pvel.x,
 				vely: pvel.y,
 				velz: pvel.z,
-				startalphaf: dens);
+				startalphaf: dens * LaserAlpha);
 		}
 		lastangle = emitter.angle;
 		lastpitch = emitter.pitch;
