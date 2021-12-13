@@ -15,6 +15,7 @@ GameInfo {
 	AddEventHandlers = "UaS_Food_Spawner"
 	AddEventHandlers = "UaS_FoodList"
 	AddEventHandlers = "UaS_DeathFade_Bootstrap"
+	AddEventHandlers = "UaS_AssaultPackSpawner"
 	AddEventHandlers = "UaS_AmmoPouchSpawner"
 	AddEventHandlers = "UaS_Ally_Spawner"
 	AddEventHandlers = "UaS_AimTweaks_Bootstrap"

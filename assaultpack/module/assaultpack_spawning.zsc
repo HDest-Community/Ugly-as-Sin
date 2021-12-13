@@ -1,0 +1,31 @@
+//============================================
+// Spawning
+//============================================
+class UaS_WildAssaultPack : IdleDummy {
+	override void postbeginplay() {
+		super.postbeginplay();
+		let Spawned=UaS_AssaultPack(spawn("UaS_AssaultPack",pos,ALLOW_REPLACE));
+		Spawned.vel = vel;
+		Spawned.RandomContents();
+		self.destroy();
+	}
+}
+
+class UaS_AssaultPackSpawner : EventHandler {
+	override void WorldThingSpawned(WorldEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Thing) { return; }
+		if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		bool spawnable = (e.Thing.GetClassName() == "HDBackpack");
+
+		if(spawnable) {
+			if (random(0, 100) <= 25) {
+				let Spawned = Actor.Spawn('UaS_WildAssaultPack', (e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z + 5));
+				Spawned.vel.x += frandom[spawnstuff](-2,2);
+				Spawned.vel.y += frandom[spawnstuff](-2,2);
+				Spawned.vel.z += frandom[spawnstuff](1,2);
+			}
+		}
+	}
+}

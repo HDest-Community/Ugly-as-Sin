@@ -4,6 +4,7 @@
 * [Advanced AI](../ai/readme.md)
 * [Aim Tweaks](../aimtweaks/readme.md)
 * [Ammo Pouch](../ammopouch/readme.md)
+* [Assault Pack](../assaultpack/readme.md)
 * [Fragshard Reducer](../fragfactor/readme.md)
 * [Hunger](../hunger/readme.md)
 * [Weapon Jamming](../jamming/readme.md)

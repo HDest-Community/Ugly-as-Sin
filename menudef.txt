@@ -96,6 +96,9 @@ AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Ammo Pouch"
 }
 AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Assault Pack"
+}
+AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Death Fading"
 }
 

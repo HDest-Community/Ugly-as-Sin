@@ -1,0 +1,40 @@
+const UAS_HDLD_ASSAULTPACK = "apo";
+
+//==================================================
+// Base Definition
+//==================================================
+class UaS_AssaultPack : HDBackpack {
+	default {
+		tag "Assault Pack";
+		HDBackpack.MaxCapacity 500;
+		Inventory.Icon "UGSQA0";
+		Inventory.PickupMessage "Picked up an ammo pouch!";
+		scale 0.75;
+		hdweapon.wornlayer 0;
+		hdweapon.refid UAS_HDLD_ASSAULTPACK;
+	}
+
+	override double WeaponBulk() {
+		return max((Storage ? Storage.TotalBulk * 0.80 : 0), 50);
+	}
+
+	override string, double GetPickupSprite() { return "UGSQA0", 1.0; }
+
+	States {
+		Spawn:
+			UGSQ ABC -1 NoDelay
+			{
+				if (invoker.Storage.TotalBulk ~== 0)
+				{
+					frame = 1;
+				}
+				else if (target)
+				{
+					translation = target.translation;
+					frame = 2;
+				}
+				invoker.bNO_AUTO_SWITCH = false;
+			}
+			Stop;
+	}
+}

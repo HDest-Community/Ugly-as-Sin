@@ -28,6 +28,29 @@ Sprite "UGSPC0", 22, 27
 	Patch "ammopouch/patches/UaS_AmmoPouch.png", 0, 0
 	Patch "STASQGR", 15, 12
 }
+Sprite "UGSQA0", 18, 21
+{
+	Offset 9, 19
+	Patch "assaultpack/patches/UaS_AssaultPack.png", 0, 0
+}
+
+Sprite "UGSQB0", 21, 18
+{
+	Offset 10, 15
+	xscale 0.87
+	yscale 1.2
+	Patch "assaultpack/patches/UaS_AssaultPack.png", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "UGSQC0", 18, 21
+{
+	Offset 9, 19
+	Patch "assaultpack/patches/UaS_AssaultPack.png", 0, 0
+	Patch "STASQGR", 13, 12
+}
 Sprite "HSCVA0", 23, 12
 {
 	XScale 2.000
