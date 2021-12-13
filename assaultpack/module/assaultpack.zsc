@@ -8,7 +8,7 @@ class UaS_AssaultPack : HDBackpack {
 		tag "Assault Pack";
 		HDBackpack.MaxCapacity 500;
 		Inventory.Icon "UGSQA0";
-		Inventory.PickupMessage "Picked up an ammo pouch!";
+		Inventory.PickupMessage "Picked up an assault pack!";
 		scale 0.75;
 		hdweapon.wornlayer 0;
 		hdweapon.refid UAS_HDLD_ASSAULTPACK;
