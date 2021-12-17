@@ -1,0 +1,114 @@
+const UAS_HDLD_STABILZER = "stb";
+const UAS_STB_SLOT = 25;
+
+class UaS_GyroStabilizer : HDPickup {
+	array<string> weaponList;
+	array<int> AttachList;
+	string statusText;
+	int counter;
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a gyro stabilizer.";
+		Inventory.Icon "HSCVI0";
+		HDPickup.Bulk 10;
+		Scale 0.75;
+		tag "Gyroscopic Stabilizer";
+		hdpickup.refid UAS_HDLD_STABILZER;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		DoStabilize();
+	}
+
+	void DoStabilize() {
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr) { return; }
+		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
+		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
+		if (CheckAttached(wep) >= 0) {
+			if (counter < 0) {
+				counter++;
+				statusText = "\crCALIBRATING \cu("..random(0,99)..","..random(0,99)..")";
+				for (int i=-35; i<=counter; i=i+5) {
+					statusText=statusText..".";
+				}
+				statusText=statusText..random(0,99);
+				if (level.maptime % 4 == 0) { statusText = ""; }
+
+			}
+			else if (!ownr.gunbraced) {
+				counter = 0;
+				statusText = "\cqSTABILIZING \cu("..random(0,99)..","..random(0,99)..")";
+				if (level.maptime % 4 == 0) { statusText = ""; }
+				ownr.gunbraced = true;
+			}
+			else {
+				counter = min(counter+1, 5);
+				if (counter == 5) { statusText = "\cdSTABILIZED"; }
+			}
+		}
+	}
+
+	override void DrawHudStuff(hdstatusbar sb, hdplayerpawn hpl, int hdflags, int gzflags) {
+		sb.drawstring(sb.pnewsmallfont,
+			statusText,
+			(50,-50),
+			flags:sb.DI_TEXT_ALIGN_LEFT|sb.DI_SCREEN_HCENTER|sb.DI_SCREEN_BOTTOM,
+			translation:Font.CR_GRAY,scale:(0.5,0.5)
+		);
+	}
+
+	override bool Use(bool pickup) {
+		if(!owner.player.ReadyWeapon) { return false; } // Skip if no ready weapon
+		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
+		AttachOrDetatch(wep);
+		return false;
+	}
+
+	void AttachOrDetatch(HDWeapon atdt) {
+		int index = CheckAttached(atdt);
+		if (index == -1) { AttachToWeapon(atdt); }
+		else { DetachFromWeapon(atdt, index); }
+	}
+
+	// -1 means not in attach list
+	int CheckAttached(HDWeapon cw) {
+		int ret = -1;
+		for (int i = 0; i < AttachList.size(); i++) {
+			if (cw.weaponstatus[UAS_STB_SLOT] == AttachList[i]) {
+				ret = i;
+				break;
+			}
+		}
+		return ret;
+	}
+
+	void DetachFromWeapon(HDWeapon dt, int index = -1) {
+		if (index >= 0) {
+			dt.weaponstatus[UAS_STB_SLOT] = 0;
+			AttachList.delete(index);
+			console.printf("Detatched index "..index);
+			A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
+			statusText = "";
+		}
+	}
+
+	void AttachToWeapon(HDWeapon at) {
+		int UID = random(int.max/4, int.max);
+		at.weaponstatus[UAS_STB_SLOT] = UID;
+		AttachList.push(UID);
+		console.printf("Attached with UID "..UID);
+		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
+		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
+		counter = -35;
+	}
+
+	States {
+		Spawn:
+			HSCV I -1;
+			stop;
+	}
+}
