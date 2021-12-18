@@ -5,7 +5,7 @@ class UaS_GyroStabilizer : HDPickup {
 	array<string> weaponList;
 	array<int> AttachList;
 	string statusText;
-	int counter;
+	double stabilize;
 
 	Default {
 		Inventory.Amount 1;
@@ -29,26 +29,35 @@ class UaS_GyroStabilizer : HDPickup {
 		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
 		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
 		if (!(wep is "HDFist") && CheckAttached(wep) >= 0) {
-			if(level.maptime % 3 == 0) { counter++; }
-			if(level.maptime % 2 == 0) { counter -= min(int(ownr.vel.length()), 1); }
-			counter -= ownr.muzzleclimb1.length();
-			counter  = clamp(counter, 0, 100);
-			if (counter < 10) {
-				statusText = "\crCALIBRATING \cu("..random(0,99)..","..random(0,99)..")";
-				if (level.maptime % 4 == 0) { statusText = ""; }
+			stabilize += GetCorrections();
+			stabilize += ownr.vel.length();
+			stabilize *= 0.9;
+			double maxfactor = max(stabilize/(stabilize+20),0.25);
+			console.printf(""..maxfactor);
+			MultiplyRecoil(maxfactor);
+			if (maxfactor >= 0.75) { statusText = "\crCALIBRATING \cu"..stabilize; }
+			else if (maxfactor >= 0.5) { statusText = "\cqSTABILIZING \cu"..stabilize; }
+			else { statusText = "\cdSTABILIZED \cu"..stabilize; }
+		}
+	}
 
-			}
-			else {
-				double maxfactor = max(100 - counter, 25) / 100.0;
-				MultiplyRecoil(maxfactor);
-				if (counter <= 50) { statusText = "\cqSTABILIZING \cu("..random(counter,100-counter)..","..random(counter,100-counter)..")"; }
-				else { statusText = "\cdSTABILIZED \cu"..counter; }
-			}
-		}
-		else {
-			statusText = "";
-			counter = 0;
-		}
+	bool Periodic(int p) { return (level.maptime % p == 0); }
+
+	int GetCorrections() {
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr) { return 0; }
+		int cvalue = (
+			ownr.muzzleclimb1.length()  +
+			ownr.muzzleclimb2.length()  +
+			ownr.muzzleclimb3.length()  +
+			ownr.muzzleclimb4.length()  +
+			ownr.hudbobrecoil1.length() +
+			ownr.hudbobrecoil2.length() +
+			ownr.hudbobrecoil3.length() +
+			ownr.hudbobrecoil4.length() +
+			ownr.muzzledrift.length());
+		return cvalue;
+		// return ceil(cvalue / max(cvalue-1,1));
 	}
 
 	void MultiplyRecoil(double factor) {
@@ -120,7 +129,6 @@ class UaS_GyroStabilizer : HDPickup {
 		console.printf("Attached with UID "..UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
-		counter = 0;
 	}
 
 	States {
