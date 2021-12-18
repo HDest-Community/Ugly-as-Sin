@@ -28,27 +28,44 @@ class UaS_GyroStabilizer : HDPickup {
 		if(!ownr) { return; }
 		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
 		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
-		if (CheckAttached(wep) >= 0) {
-			if (counter < 0) {
-				counter++;
+		if (!(wep is "HDFist") && CheckAttached(wep) >= 0) {
+			if(level.maptime % 3 == 0) { counter++; }
+			if(level.maptime % 2 == 0) { counter -= min(int(ownr.vel.length()), 1); }
+			counter -= ownr.muzzleclimb1.length();
+			counter  = clamp(counter, 0, 100);
+			if (counter < 10) {
 				statusText = "\crCALIBRATING \cu("..random(0,99)..","..random(0,99)..")";
-				for (int i=-35; i<=counter; i=i+5) {
-					statusText=statusText..".";
-				}
-				statusText=statusText..random(0,99);
 				if (level.maptime % 4 == 0) { statusText = ""; }
 
 			}
-			else if (!ownr.gunbraced) {
-				counter = 0;
-				statusText = "\cqSTABILIZING \cu("..random(0,99)..","..random(0,99)..")";
-				if (level.maptime % 4 == 0) { statusText = ""; }
-				ownr.gunbraced = true;
-			}
 			else {
-				counter = min(counter+1, 5);
-				if (counter == 5) { statusText = "\cdSTABILIZED"; }
+				double maxfactor = max(100 - counter, 25) / 100.0;
+				MultiplyRecoil(maxfactor);
+				if (counter <= 50) { statusText = "\cqSTABILIZING \cu("..random(counter,100-counter)..","..random(counter,100-counter)..")"; }
+				else { statusText = "\cdSTABILIZED \cu"..counter; }
 			}
+		}
+		else {
+			statusText = "";
+			counter = 0;
+		}
+	}
+
+	void MultiplyRecoil(double factor) {
+		let ownr = HDPlayerPawn(owner);
+		if(!ownr) { return; }
+		ownr.muzzleclimb1  *= factor;
+		ownr.muzzleclimb2  *= factor;
+		ownr.muzzleclimb3  *= factor;
+		ownr.muzzleclimb4  *= factor;
+		ownr.hudbobrecoil1 *= factor;
+		ownr.hudbobrecoil2 *= factor;
+		ownr.hudbobrecoil3 *= factor;
+		ownr.hudbobrecoil4 *= factor;
+		ownr.muzzledrift   *= factor;
+		if (ownr.scopecamera) {
+			ownr.scopecamera.angle *= factor;
+			ownr.scopecamera.pitch *= factor;
 		}
 	}
 
@@ -103,7 +120,7 @@ class UaS_GyroStabilizer : HDPickup {
 		console.printf("Attached with UID "..UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
-		counter = -35;
+		counter = 0;
 	}
 
 	States {
