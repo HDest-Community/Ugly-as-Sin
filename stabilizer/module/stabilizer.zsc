@@ -11,7 +11,7 @@ class UaS_GyroStabilizer : HDPickup {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "Picked up a gyro stabilizer.";
-		Inventory.Icon "HSCVI0";
+		Inventory.Icon "UGSIR0";
 		HDPickup.Bulk 10;
 		Scale 0.75;
 		tag "Gyroscopic Stabilizer";
@@ -23,21 +23,42 @@ class UaS_GyroStabilizer : HDPickup {
 		DoStabilize();
 	}
 
+	override void BeginPlay() {
+		weaponList.push("hdpistol");
+		weaponList.push("hdrevolver");
+		weaponList.push("hdsmg");
+		weaponList.push("hunter");
+		weaponList.push("slayer");
+		weaponList.push("zm66assaultrifle");
+		weaponList.push("zm66semi");
+		weaponList.push("zm66regular");
+		weaponList.push("vulcanette");
+		weaponList.push("liberatorrifle");
+		weaponList.push("liberatornogl");
+		weaponList.push("bossrifle");
+		super.BeginPlay();
+	}
+
 	void DoStabilize() {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return; }
 		if(!ownr.player.ReadyWeapon) { return; } // Skip if no ready weapon
 		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
-		if (!(wep is "HDFist") && CheckAttached(wep) >= 0) {
+		if (CheckAttached(wep) >= 0) {
+			double minfactor = 0.15;
+			if(ownr.beatmax<10||
+				ownr.fatigue>20||
+				ownr.bloodpressure>20||
+				ownr.health<33){ minfactor = 0.50; }
 			stabilize += GetCorrections();
-			stabilize += ownr.vel.length();
 			stabilize *= 0.9;
-			double maxfactor = max(stabilize/(stabilize+20),0.25);
-			console.printf(""..maxfactor);
+			double maxfactor = max(stabilize/(stabilize+20),minfactor);
 			MultiplyRecoil(maxfactor);
-			if (maxfactor >= 0.75) { statusText = "\crCALIBRATING \cu"..stabilize; }
-			else if (maxfactor >= 0.5) { statusText = "\cqSTABILIZING \cu"..stabilize; }
-			else { statusText = "\cdSTABILIZED \cu"..stabilize; }
+			console.printf(""..maxfactor);
+			if (maxfactor >= 0.75) { statusText = "\crCALIBRATING "; }
+			else if (maxfactor >= 0.5) { statusText = "\cqSTABILIZING "; }
+			else { statusText = "\cdSTABILIZED "; }
+			statusText = statusText.."\cu"..frandom(maxfactor,maxfactor*1.1);
 		}
 	}
 
@@ -55,7 +76,8 @@ class UaS_GyroStabilizer : HDPickup {
 			ownr.hudbobrecoil2.length() +
 			ownr.hudbobrecoil3.length() +
 			ownr.hudbobrecoil4.length() +
-			ownr.muzzledrift.length());
+			ownr.muzzledrift.length() +
+			ownr.vel.length());
 		return cvalue;
 		// return ceil(cvalue / max(cvalue-1,1));
 	}
@@ -72,10 +94,10 @@ class UaS_GyroStabilizer : HDPickup {
 		ownr.hudbobrecoil3 *= factor;
 		ownr.hudbobrecoil4 *= factor;
 		ownr.muzzledrift   *= factor;
-		if (ownr.scopecamera) {
-			ownr.scopecamera.angle *= factor;
-			ownr.scopecamera.pitch *= factor;
-		}
+		// if (ownr.scopecamera) {
+			// ownr.scopecamera.angle *= factor;
+			// ownr.scopecamera.pitch *= factor;
+		// }
 	}
 
 	override void DrawHudStuff(hdstatusbar sb, hdplayerpawn hpl, int hdflags, int gzflags) {
@@ -123,17 +145,22 @@ class UaS_GyroStabilizer : HDPickup {
 	}
 
 	void AttachToWeapon(HDWeapon at) {
+		bool validWeapon = false;
+		string weapname = at.GetClassname();
+		for(int i = 0; i < weaponList.size(); i++) {
+			if(weapName == weaponList[i]) { validWeapon = true; }
+		}
+		if(!(validWeapon || at.weaponspecial == 1337)) { return; }
 		int UID = random(int.max/4, int.max);
 		at.weaponstatus[UAS_STB_SLOT] = UID;
 		AttachList.push(UID);
-		console.printf("Attached with UID "..UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
 	}
 
 	States {
 		Spawn:
-			HSCV I -1;
+			UGSI R -1;
 			stop;
 	}
 }

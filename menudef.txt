@@ -229,8 +229,7 @@ AddOptionMenu "UaS_ConfigureModules" {
 OptionMenu "UaS_Stabilizer_Options" {
 	Title "Stabilizer Module Settings"
 
-	Option "Spawns Enabled","UaS_SlingSpawns","OnOff"
-	Slider "Activation Delay","UaS_SlingDelay", 0, 70, 5, 0
+	Option "Stabilizer Spawns Enabled","UaS_StabilizerSpawns","OnOff"
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Visual Weapons"

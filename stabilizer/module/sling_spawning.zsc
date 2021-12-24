@@ -1,6 +1,6 @@
 class UaS_SlingSpawner : EventHandler {
 	override void WorldLoaded(WorldEvent e) {
-		if(!UaS_SlingSpawns) { self.Destroy(); return;  }
+		if(!UaS_StabilizerSpawns) { self.Destroy(); return;  }
 	}
 
 	override void WorldThingSpawned(WorldEvent e) {
@@ -21,6 +21,9 @@ class UaS_SlingSpawner : EventHandler {
 			e.Thing.GetClassName() == "bossrifle"
 		);
 
-		if (spawnable && UaS.RandomChance(0.2)) { UaS.SpawnStuff("UaS_WeaponSling", 1, e.Thing.pos); }
+		string toSpawn = "UaS_GyroStabilizer";
+		if (UaS_OldSling && UaS.RandomChance(0.5)) { toSpawn = "UaS_WeaponSling"; }
+
+		if (spawnable && UaS.RandomChance(0.05)) { UaS.SpawnStuff(toSpawn, 1, e.Thing.pos); }
 	}
 }

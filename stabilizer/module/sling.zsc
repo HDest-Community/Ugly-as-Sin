@@ -22,6 +22,8 @@ class UaS_WeaponSling : HDPickup {
 	}
 
 	override void BeginPlay() {
+		weaponList.push("hdpistol");
+		weaponList.push("hdrevolver");
 		weaponList.push("hdsmg");
 		weaponList.push("hunter");
 		weaponList.push("slayer");
