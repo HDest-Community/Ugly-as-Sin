@@ -17,9 +17,20 @@ class UaS_AI_Handler : Inventory {
 		o.seefov = 90;
 	}
 
+	override void Tick() {
+		super.tick();
+		if (!owner) { RemoveSelf(); }
+	}
+
+	void RemoveSelf() {
+		UaS.LogDebug(DBG_AI, string.format("Removed AI handler "..score.." for missing owner"));
+		destroy();
+		return;
+	}
+
 	override void DoEffect() {
-		let o = HDMobBase(owner);
-		if(!o) { destroy(); return; }
+		let o = owner;
+		if(!o) { RemoveSelf(); }
 		if(o.health <= 0) { return; }
 		WoundDebuff(); // this one is low-cost enough
 

@@ -7,14 +7,15 @@ class UaS_AI_Bootstrap : EventHandler {
 		if(ExcludedClass(e.thing)) { return; }
 		if(e.Thing is 'HDMobBase' || e.Thing is "HERPBot" || e.Thing is "DERPBot") {
 			e.thing.GiveInventory("UaS_AI_Handler", 1);
-			UaS_AI_Handler givenHandler = UaS_AI_Handler(e.thing.FindInventory("UaS_AI_Handler"));
-			givenHandler.score = givenAIHandlers;
-			givenHandler.ProcessAI = false;
-			givenHandler.RecheckAI = random[ai_proc](35, 350);
-			givenAIHandlers++;
 			if(e.Thing.CountInv("UaS_AI_Handler") == 1) {
+				UaS_AI_Handler givenHandler = UaS_AI_Handler(e.thing.FindInventory("UaS_AI_Handler"));
+				givenHandler.score = givenAIHandlers;
+				givenHandler.ProcessAI = false;
+				givenHandler.RecheckAI = random[ai_proc](35, 350);
+				givenAIHandlers++;
 				UaS.LogDebug(DBG_AI, string.format("Gave AI tracker "..givenHandler.score.." to "..e.Thing.GetClassName()));
 			}
+			else { UaS.LogDebug(DBG_AI, string.format("Failed AI tracker for "..e.Thing.GetClassName())); }
 		}
 	}
 
