@@ -135,7 +135,7 @@ class UaS_TraumaKit : HDWeapon {
 				if (i < 0 || i > wh.critWounds.Size() - 1) continue;
 
 				string textColor;
-				if (GetAverageStatus(wh.critWounds[i]) >= 15) {
+				if (wh.critWounds[i].avgstat >= 15) {
 					textColor = (i == idx)? "\ca" : "\cr"; // Red / Dark Red
 				} else {
 					textColor = (i == idx)? "\cd" : "\cq"; // Green / Dark Green
@@ -282,17 +282,6 @@ class UaS_TraumaKit : HDWeapon {
 
 			toolInfoOffset += textHeight;
 		}
-	}
-
-	ui int GetAverageStatus(WoundInfo wi) {
-		int retvalue, counted;
-		if (wi.dirty >= 0) { retvalue += wi.dirty; counted++; }
-		if (wi.obstructed >= 0) { retvalue += wi.obstructed; counted++;}
-		if (wi.cavity >= 0) { retvalue += wi.cavity; counted++;}
-		if (wi.open >= 0) { retvalue += wi.open; counted++;}
-		//retvalue += infection;
-		retvalue /= counted;
-		return retvalue;
 	}
 
 	ui string GetStatusColor(int amount) {

@@ -9,6 +9,7 @@ class WoundInfo : thinker {
 	int size;
 	int infection;
 	int pain;
+	int avgstat;
 	bool clear;
 
 	override void PostBeginPlay() {
@@ -17,6 +18,7 @@ class WoundInfo : thinker {
 	}
 
 	void TickWound() {
+		UpdateAverageStatus();
 		timer = max(timer - 1, 0);
 		pain = max(pain - 1, 0);
 		pain = max(pain - painkiller / 20, 0);
@@ -31,7 +33,7 @@ class WoundInfo : thinker {
 				random[uas_wi](0, 15)) / 3;
 
 			// Wound heals some points
-			if (toHeal >= AverageStatus()) {
+			if (toHeal >= avgstat) {
 				if (open > 0) { open--; }
 				if (cavity > 0) { cavity--; }
 				if (dirty > 0) { dirty--; }
@@ -40,11 +42,11 @@ class WoundInfo : thinker {
 			}
 
 			// Infection increases
-			if (toHeal <= (AverageStatus() + infection)) {
+			if (toHeal <= (avgstat + infection)) {
 				infection = min(infection + 1, 100);
 			}
 
-			if (AverageStatus() == 0) {
+			if (avgstat == 0) {
 				clear = true;
 			}
 			timer = random[uas_wi](2,5) * (35 + open);
@@ -59,15 +61,14 @@ class WoundInfo : thinker {
 
 // Status methods
 extend class WoundInfo {
-	int AverageStatus() {
+	void UpdateAverageStatus() {
 		int retvalue, counted;
 		if (dirty >= 0) { retvalue += dirty; counted++; }
 		if (obstructed >= 0) { retvalue += obstructed; counted++;}
 		if (cavity >= 0) { retvalue += cavity; counted++;}
 		if (open >= 0) { retvalue += open; counted++;}
 		//retvalue += infection;
-		retvalue /= counted;
-		return retvalue;
+		avgstat = retvalue / counted;
 	}
 
 	string WoundStatus () {
