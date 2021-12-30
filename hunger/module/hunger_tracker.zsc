@@ -24,8 +24,10 @@ class UaS_HungerTracker : Inventory {
 	override void BeginPlay() {
 		super.BeginPlay();
 		// Start with a hearty meal!
-		energy = 1000;
-		hydro = 1000;
+		energy = 500;
+		hydro = 500;
+		pending_calories = 500;
+		pending_fluid = 500;
 	}
 
 	void ProcessEnergy() {
@@ -79,7 +81,7 @@ class UaS_HungerTracker : Inventory {
 			owner.A_StartSound("UaS/Gurgle",
 				CHAN_BODY, CHANF_OVERLAP,
 				frandom[uas_hunger](0.9, 1.1), ATTN_STATIC,
-				frandom[uas_hunger](0.9, 1.1));
+				frandom[uas_hunger](0.8, 1.0));
 			debugtype.appendformat(" \cesick %i\c- ", sick);
 		}
 
@@ -91,9 +93,19 @@ class UaS_HungerTracker : Inventory {
 		}
 
 		// Process consumed food into energy
-		if (pending_calories > 0 && o.beatcounter % 2 == 0) { energy++; pending_calories--; }
+		if (pending_calories > 0 && o.beatcounter % 3 == 0) { energy++; pending_calories--; }
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
+		// Grumble if haven't eaten recently
+		int pend = (pending_calories + pending_calories);
+		if (pend <= 0 && o.beatcounter % 60 == 0 && UaS.RandomChance(0.5)) {
+			owner.A_StartSound("UaS/Gurgle",
+				CHAN_BODY, CHANF_OVERLAP,
+				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
+				frandom[uas_hunger](1.5, 2.0));
+		}
+
+		// Debuggging output
 		if (o.beatcounter % 35 == 0 || debugtype != "") { UaS.LogDebug(DBG_Hunger, string.format(debugmsg..debugtype), o); }
 	}
 

@@ -116,6 +116,7 @@ extend class UaS_Consumable {
 
 	override void BeginPlay() {
 		bfitsinbackpack = true;
+		if(consumesound == "" && bDRINKABLE) { consumesound = "UaS/Swish"; }
 		UpdateSprite();
 		//Process user's custom messages
 		Messages();

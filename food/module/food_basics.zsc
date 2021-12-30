@@ -11,8 +11,8 @@ class UaS_FoodRation : UaS_Consumable {
 	}
 	override void Messages() {
 		AddOpenText("Doesn't look very appealing...");
-		AddOpenText("It's nutritious at least...");
-		AddOpenText("They should add some flavor next time.");
+		AddConsumeText("It's nutritious at least.");
+		AddConsumeText("They should add some flavor next time.");
 	}
 }
 
@@ -29,8 +29,9 @@ class UaS_WaterRation : UaS_Consumable {
 		Inventory.Icon "HSCVR0";
 	}
 	override void Messages() {
-		AddOpenText("Refreshing and plastic-flavored.");
-		AddOpenText("Water is water.");
-		AddOpenText("Sometimes simpler is better.");
+		AddOpenText("Hope it's fresh...");
+		AddConsumeText("Refreshing and plastic-flavored.");
+		AddConsumeText("Water is water.");
+		AddConsumeText("Sometimes simpler is better.");
 	}
 }

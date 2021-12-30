@@ -5,7 +5,7 @@ extend class UaS_Consumable {
 	double bulk, diffbulk;
 	double spoilrate;
 	string description;
-	string opensound;
+	string opensound,closesound,consumesound;
 	array<string> OpenText;
 	array<string> ConsumeText;
 	array<string> FoodList;
@@ -17,8 +17,11 @@ extend class UaS_Consumable {
 	flagdef RESEALABLE: ConsumableFlags, 0;
 	flagdef DRINKABLE: ConsumableFlags, 1;
 	flagdef PACKAGED: ConsumableFlags, 2;
+	flagdef NOSPAWN: ConsumableFlags, 3;
 	property Description: description;
 	property OpenSound: opensound;
+	property CloseSound: closesound;
+	property ConsumeSound: consumesound;
 	UaS_HungerTracker tracker;
 
 	default {

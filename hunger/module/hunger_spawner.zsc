@@ -12,6 +12,8 @@ class UaS_FoodList : EventHandler {
 				(allactorclasses[i].GetClassName() != "UaS_Consumable")
 			);
 			if (valid) {
+				bool nospawn = UaS_Consumable(getdefaultbytype(allactorclasses[i])).bNOSPAWN;
+				if (nospawn) { continue; }
 				bool isDrink = UaS_Consumable(getdefaultbytype(allactorclasses[i])).bDRINKABLE;
 				ConsumableSpawnList.push(allactorclasses[i].GetClassName());
 				if (isDrink) {
