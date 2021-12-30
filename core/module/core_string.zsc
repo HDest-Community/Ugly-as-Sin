@@ -1,0 +1,17 @@
+extend class UaS {
+	static play string WrapFunction(string towrap) {
+		string r;
+		string templine;
+		array<string> wrapwords;
+		towrap.Split(wrapwords, " ", false);
+		for (int i=0; i<wrapwords.size(); i++) {
+			templine = templine..wrapwords[i].." ";
+			if (templine.length()>30) {
+				r = r..templine.."\n";
+				templine = "";
+			}
+		}
+		r = r..templine.."\n";
+		return r;
+	}
+}

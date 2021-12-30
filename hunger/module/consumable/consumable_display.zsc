@@ -8,26 +8,10 @@ extend class UaS_Consumable {
 		A_WeaponMessage(statusMessage);
 	}
 
-	string WrapFunction(string towrap) {
-		string r;
-		string templine;
-		array<string> wrapwords;
-		towrap.Split(wrapwords, " ", false);
-		for (int i=0; i<wrapwords.size(); i++) {
-			templine = templine..wrapwords[i].." ";
-			if (templine.length()>30) {
-				r = r..templine.."\n";
-				templine = "";
-			}
-		}
-		r = r..templine.."\n";
-		return r;
-	}
-
 	string DisplayDescription() {
 		string r;
 		r.appendformat("--- \cc%s\c- ---\n", gettag());
-		r.appendformat("%s\n", WrapFunction(description));
+		r.appendformat("%s\n", UaS.WrapFunction(description));
 		return r;
 	}
 
