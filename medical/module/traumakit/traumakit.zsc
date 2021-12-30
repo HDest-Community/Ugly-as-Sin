@@ -202,8 +202,7 @@ class UaS_TraumaKit : HDWeapon {
 				woundInfoOffsetY -= halfStep;
 
 				// Dirty
-				if (currentWound.dirty >= 0)
-				{
+				if (currentWound.dirty >= 0) {
 					tmpStr = "completely clean";
 					if (currentWound.dirty >= 65) { tmpStr = "filthy"; }
 					else if (currentWound.dirty >= 55) { tmpStr = "very dirty"; }
@@ -217,8 +216,7 @@ class UaS_TraumaKit : HDWeapon {
 				}
 
 				// Obstructions
-				if (currentWound.obstructed >= 0)
-				{
+				if (currentWound.obstructed >= 0) {
 					tmpStr = "no apparent obstructions";
 					if (currentWound.obstructed >= 55) { tmpStr = "many obstructions"; }
 					else if (currentWound.obstructed >= 45) { tmpStr = "several obstructions"; }
@@ -231,8 +229,7 @@ class UaS_TraumaKit : HDWeapon {
 				}
 
 				// Cavity
-				if (currentWound.cavity >= 0)
-				{
+				if (currentWound.cavity >= 0) {
 					tmpStr = "no treatable tissue damage";
 					if (currentWound.cavity >= 85) { tmpStr = "severe tissue damage"; }
 					else if (currentWound.cavity >= 65) { tmpStr = "significant tissue damage"; }
@@ -245,8 +242,7 @@ class UaS_TraumaKit : HDWeapon {
 				}
 			}
 
-			for (int i = 0; i < status.Size(); i++)
-			{
+			for (int i = 0; i < status.Size(); i++) {
 				sb.DrawString(
 					sb.pSmallFont,
 					status[i],
