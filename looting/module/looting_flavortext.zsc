@@ -18,7 +18,7 @@ extend class UaS_Looting_Handler {
 		returnMessage = returnMessage..JoinerWords[random(0, JoinerWords.Size() - 1)];
 		returnMessage = returnMessage..BuildItemString();
 		//for (int i=0; i<100; i++) { console.printf(BuildItemString()); } // print 100 debugging variations
-		return returnMessage;
+		return UaS.WrapFunction(returnMessage);
 	}
 
 	string BuildItemString() {

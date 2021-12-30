@@ -11,8 +11,7 @@ extend class UaS_Consumable {
 	string DisplayDescription() {
 		string r;
 		r.appendformat("--- \cc%s\c- ---\n", gettag());
-		r.appendformat("%s\n", description);
-		for (int i=1; i<=int(description.length()/40)+1; i++) { r.appendformat("\n"); }
+		r.appendformat("%s\n", UaS.WrapFunction(description));
 		return r;
 	}
 

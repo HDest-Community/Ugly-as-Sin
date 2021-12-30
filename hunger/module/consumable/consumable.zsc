@@ -10,10 +10,13 @@ class UaS_Consumable : HDWeapon abstract {
 		UaS_Consumable.Bulk 0; // Bulk Units, also influences number of "swallows" when consumed
 		UaS_Consumable.SpoilRate 1.0; // 2.0 == twice as fast, 0.5 == half as fast
 		UaS_Consumable.Description ""; // Description shown to player
-		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening packaged food item
+		UaS_Consumable.OpenSound "UaS/FoodOpen"; // Sound played when opening
+		UaS_Consumable.CloseSound "UaS/FoodClose"; // Sound played when closing
+		UaS_Consumable.ConsumeSound ""; // Sound played when eating / drinking
 		//+UaS_Consumable.RESEALABLE;
 		//+UaS_Consumable.DRINKABLE;
 		//+UaS_Consumable.PACKAGED;
+		//+UaS_Consumable.NOSPAWN; // Exclude from random spawns
 
 		Inventory.PickupMessage "";
 		Inventory.Icon "HSCVA0";
@@ -32,4 +35,9 @@ class UaS_Consumable : HDWeapon abstract {
 		// AddOpenText("Doesn't look very appealing...");
 		// AddConsumeText("mmmm yummy");
 	}
+
+	// Override these for custom actions
+	virtual void OnOpen() { }
+	virtual void OnClose() { }
+	virtual void OnConsume() { }
 }

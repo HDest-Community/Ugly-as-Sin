@@ -16,13 +16,15 @@ extend class UaS_Consumable {
 		int addsick;
 		weaponstatus[UGCS_CONSUMED]++;
 		diffbulk = 100/bulk;
+		owner.A_StartSound(consumesound, CHAN_WEAPON);
 		if (bDRINKABLE) {
 			tracker.drinking = true;
-			owner.A_StartSound("UaS/Swish", CHAN_WEAPON);
 			mouthful = int(mouthful / 2);
 		}
 		if (random(10,100) <= weaponstatus[UGCS_SPOILAGE]) { addsick = 1; }
 		tracker.EatOrDrink(bitesize, sipsize, mouthful, addsick);
+		owner.A_Log(RandomConsumeMessage(), true);
+		OnConsume();
 	}
 
 	void OpenPackage() {
@@ -36,6 +38,7 @@ extend class UaS_Consumable {
 		}
 		owner.A_Log(string.format("Opened %s. %s", gettag(), RandomOpenMessage()), true);
 		GiveContents();
+		OnOpen();
 	}
 
 	void GiveContents() {
@@ -55,10 +58,11 @@ extend class UaS_Consumable {
 
 	void ResealPackage() {
 		if (!bRESEALABLE) { return; }
-		owner.A_StartSound("UaS/FoodClose",
+		owner.A_StartSound(closesound,
 			CHAN_WEAPON, CHANF_OVERLAP,
 			attenuation: ATTN_STATIC);
 		weaponstatus[UGCS_OPEN] = UGCSF_SEALED;
+		OnClose();
 	}
 
 	// Generalized button checker
