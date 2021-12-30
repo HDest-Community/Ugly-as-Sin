@@ -130,13 +130,14 @@ class UaS_TraumaKit : HDWeapon {
 				if (i < 0 || i > wh.critWounds.Size() - 1) continue;
 
 				string textColor;
+				bool selected = (currentWound && i == idx);
 				if (wh.critWounds[i].avgstat >= 15) {
-					textColor = (i == idx)? "\ca" : "\cr"; // Red / Dark Red
+					textColor = (selected)? "\ca" : "\cr"; // Red / Dark Red
 				} else {
-					textColor = (i == idx)? "\cd" : "\cq"; // Green / Dark Green
+					textColor = (selected)? "\cd" : "\cq"; // Green / Dark Green
 				}
 
-				string pointer = (i == idx)? " <" : "";
+				string pointer = (selected)? " <" : "";
 				wounds.push(textColor..wh.critWounds[i].description..pointer);
 				woundListOffsetY -= halfStep;
 			}
@@ -178,9 +179,9 @@ class UaS_TraumaKit : HDWeapon {
 		}
 
 		// Wound info
+		int woundInfoOffsetX = 12;
+		float woundInfoOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
 		if (currentWound) {
-			int woundInfoOffsetX = 12;
-			float woundInfoOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
 			Array<string> status;
 
 			if (currentWound.open <= 0) {
@@ -256,6 +257,14 @@ class UaS_TraumaKit : HDWeapon {
 
 				woundInfoOffsetY += padStep;
 			}
+		} else {
+			sb.DrawString(
+				sb.pSmallFont,
+				"-No wounds selected-",
+				(woundInfoOffsetX, woundInfoOffsetY),
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+				Font.CR_DARKGRAY
+			);
 		}
 
 		// Tool info
