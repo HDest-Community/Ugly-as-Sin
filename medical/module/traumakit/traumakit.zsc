@@ -116,7 +116,7 @@ class UaS_TraumaKit : HDWeapon {
 				sb.pSmallFont,
 				"No treatable wounds",
 				(0, woundListOffsetY),
-				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
 				Font.CR_GRAY
 			);
 		} else {
