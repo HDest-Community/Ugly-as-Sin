@@ -1,0 +1,213 @@
+extend class UaS_TraumaKit {
+	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl) {
+		if (!patient) return;
+		// Floats for precision (also required for centering)
+		float textHeight = sb.pSmallFont.mFont.GetHeight();
+		float padding = 2;
+		float padStep = textHeight + padding;
+		float halfStep = padStep / 2;
+		float baseOffset = (-7 * textHeight) + (-3 * padding); // Start calculating from center of screen?
+
+		// Header
+		sb.DrawString(
+			sb.pSmallFont,
+			"--- \cyTrauma Kit\c- ---",
+			(0, baseOffset),
+			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+			Font.CR_GRAY
+		);
+		sb.DrawString(
+			sb.pSmallFont,
+			"Treating \cg" .. patient.player.GetUsername(),
+			(0, baseOffset + textHeight),
+			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+			Font.CR_GRAY
+		);
+
+		// Wound List
+		int woundListOffsetX = -12;
+		float woundListOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
+
+		if (wh.critWounds.Size() == 0) {
+			sb.DrawString(
+				sb.pSmallFont,
+				"No treatable wounds",
+				(0, woundListOffsetY),
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
+				Font.CR_GRAY
+			);
+		} else {
+			Array<string> wounds;
+			int idx = (currentWound)? wh.critWounds.Find(currentWound) : 0;
+			int loopMin = Min(idx - 2, wh.critWounds.Size() - 5);
+			int loopMax = Max(idx + 2, 4);
+
+			// Compile list
+			for (int i = loopMin; i <= loopMax; i++) {
+				if (i < 0 || i > wh.critWounds.Size() - 1) continue;
+
+				string textColor;
+				bool selected = (currentWound && i == idx);
+				if (wh.critWounds[i].avgstat >= 15) {
+					textColor = (selected)? "\ca" : "\cr"; // Red / Dark Red
+				} else {
+					textColor = (selected)? "\cd" : "\cq"; // Green / Dark Green
+				}
+
+				string pointer = (selected)? " <" : "";
+				wounds.push(textColor..wh.critWounds[i].description..pointer);
+				woundListOffsetY -= halfStep;
+			}
+			woundListOffsetY += halfStep; // accommodation
+
+			// Top overflow dot
+			if (loopMin > 0) {
+				sb.DrawString(
+					sb.pSmallFont,
+					". . .",
+					(woundListOffsetX, woundListOffsetY - padStep),
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
+					Font.CR_GRAY
+				);
+			}
+
+			// The actual list
+			for (int i = 0; i < wounds.Size(); i++) {
+				sb.DrawString(
+					sb.pSmallFont,
+					wounds[i],
+					(woundListOffsetX, woundListOffsetY),
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT
+				);
+
+				woundListOffsetY += padStep;
+			}
+
+			// Bottom overflow dot
+			if (loopMax < wh.critWounds.Size() - 1) {
+				sb.DrawString(
+					sb.pSmallFont,
+					". . .",
+					(woundListOffsetX, woundListOffsetY),
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
+					Font.CR_GRAY
+				);
+			}
+		}
+
+		// Wound info
+		int woundInfoOffsetX = 12;
+		float woundInfoOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
+		if (currentWound) {
+			Array<string> status;
+
+			if (currentWound.open <= 0) {
+				status.Push("-The wound is "..GetStatusColor(currentWound.open).."closed\c-.");
+			}
+			else {
+				status.Push("-The wound is "..GetStatusColor(currentWound.open).."open");
+
+				string tmpStr;
+
+				// Painkillers
+				tmpStr = "not numbed.";
+				if (currentWound.painkiller >= 75) tmpStr = "numbed";
+				else if (currentWound.painkiller >= 50) tmpStr = "mostly numbed";
+				else if (currentWound.painkiller >= 25) tmpStr = "somewhat numbed";
+
+				status.Push("-It is "..GetStatusColor(100 - currentWound.painkiller)..tmpStr);
+				woundInfoOffsetY -= halfStep;
+
+				// Dirty
+				if (currentWound.dirty >= 0) {
+					tmpStr = "completely clean";
+					if (currentWound.dirty >= 65) { tmpStr = "filthy"; }
+					else if (currentWound.dirty >= 55) { tmpStr = "very dirty"; }
+					else if (currentWound.dirty >= 45) { tmpStr = "somewhat dirty"; }
+					else if (currentWound.dirty >= 35) { tmpStr = "a bit dirty"; }
+					else if (currentWound.dirty >= 25) { tmpStr = "almost clean"; }
+					else if (currentWound.dirty >= 15) { tmpStr = "acceptably clean"; }
+
+					status.Push("-It is "..GetStatusColor(currentWound.dirty)..tmpStr);
+					woundInfoOffsetY -= halfStep;
+				}
+
+				// Obstructions
+				if (currentWound.obstructed >= 0) {
+					tmpStr = "no apparent obstructions";
+					if (currentWound.obstructed >= 55) { tmpStr = "many obstructions"; }
+					else if (currentWound.obstructed >= 45) { tmpStr = "several obstructions"; }
+					else if (currentWound.obstructed >= 35) { tmpStr = "a few obstructions"; }
+					else if (currentWound.obstructed >= 25) { tmpStr = "some obstructions"; }
+					else if (currentWound.obstructed >= 15) { tmpStr = "very little obstructions"; }
+
+					status.Push("-There are "..GetStatusColor(currentWound.obstructed)..tmpStr);
+					woundInfoOffsetY -= halfStep;
+				}
+
+				// Cavity
+				if (currentWound.cavity >= 0) {
+					tmpStr = "no treatable tissue damage";
+					if (currentWound.cavity >= 85) { tmpStr = "severe tissue damage"; }
+					else if (currentWound.cavity >= 65) { tmpStr = "significant tissue damage"; }
+					else if (currentWound.cavity >= 45) { tmpStr = "moderate tissue damage"; }
+					else if (currentWound.cavity >= 25) { tmpStr = "some tissue damage"; }
+					else if (currentWound.cavity >= 15) { tmpStr = "little tissue damage"; }
+
+					status.Push("-There is "..GetStatusColor(currentWound.cavity)..tmpStr);
+					woundInfoOffsetY -= halfStep;
+				}
+			}
+
+			for (int i = 0; i < status.Size(); i++) {
+				sb.DrawString(
+					sb.pSmallFont,
+					status[i],
+					(woundInfoOffsetX, woundInfoOffsetY),
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+					Font.CR_GRAY
+				);
+
+				woundInfoOffsetY += padStep;
+			}
+		} else {
+			sb.DrawString(
+				sb.pSmallFont,
+				"-No wounds selected-",
+				(woundInfoOffsetX, woundInfoOffsetY),
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+				Font.CR_DARKGRAY
+			);
+		}
+
+		// Tool info
+		float toolInfoOffset = baseOffset + (4 * textHeight) + (7 * padStep);
+		Array<string> trueStatusMessage;
+		statusMessage.Split(trueStatusMessage, "\n"); // it just works
+
+		for (int i = 0; i < trueStatusMessage.Size(); i++) {
+			sb.DrawString(
+				sb.pSmallFont,
+				trueStatusMessage[i],
+				(0, toolInfoOffset),
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER
+			);
+
+			toolInfoOffset += textHeight;
+		}
+	}
+
+	ui string GetStatusColor(int amount) {
+		if (amount >= 90) { return "\cm"; } // Black
+		if (amount >= 80) { return "\cr"; } // Dark Red
+		if (amount >= 70) { return "\ca"; } // Brick
+		if (amount >= 60) { return "\cx"; } // Fire
+		if (amount >= 50) { return "\ci"; } // Orange
+		if (amount >= 40) { return "\ck"; } // Yellow
+		if (amount >= 30) { return "\cs"; } // Dark Brown
+		if (amount >= 20) { return "\cq"; } // Dark Green
+		if (amount >= 10) { return "\cd"; } // Green
+		if (amount >= 0) { return "\cd"; } // Grey (wait, isn't this green?)
+		return "\cj"; // White
+	}
+}
