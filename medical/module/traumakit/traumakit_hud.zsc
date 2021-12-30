@@ -33,7 +33,7 @@ extend class UaS_TraumaKit {
 				sb.pSmallFont,
 				"No treatable wounds",
 				(0, woundListOffsetY),
-				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
 				Font.CR_GRAY
 			);
 		} else {
@@ -170,7 +170,7 @@ extend class UaS_TraumaKit {
 
 				woundInfoOffsetY += padStep;
 			}
-		} else {
+		} else if (wh.critWounds.Size() > 0) {
 			sb.DrawString(
 				sb.pSmallFont,
 				"-No wounds selected-",
