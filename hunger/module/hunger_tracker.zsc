@@ -8,6 +8,7 @@ class UaS_HungerTracker : Inventory {
 	int pending_calories;
 	int pending_fluid;
 	bool drinking;
+	transient cvar grumbles;
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -97,11 +98,13 @@ class UaS_HungerTracker : Inventory {
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
 		// Grumble if haven't eaten recently
-		int pend = (pending_calories + pending_calories);
+		if (!grumbles) { grumbles = CVar.GetCVar("UaS_HungerGrumbles", players[consoleplayer]); }
+		int grumblevol = (grumbles.GetBool() || UaS_HungerStarvation);
+		int pend = (pending_calories + pending_fluid);
 		if (pend <= 0 && o.beatcounter % 60 == 0 && UaS.RandomChance(0.5)) {
 			owner.A_StartSound("UaS/Gurgle",
 				CHAN_BODY, CHANF_OVERLAP,
-				frandom[uas_hunger](0.6, 0.8), ATTN_STATIC,
+				frandom[uas_hunger](0.6, 0.8) * grumblevol, ATTN_STATIC,
 				frandom[uas_hunger](1.5, 2.0));
 		}
 

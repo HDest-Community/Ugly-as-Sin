@@ -6,10 +6,17 @@ AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Hunger", "UaS_Hunger_Options"
 }
 
+OptionValue "UaS_GrumbleOptions" {
+	0, "Starving Only"
+	1, "Always"
+}
+
 OptionMenu "UaS_Hunger_Options" {
 	Title "Hunger Module Settings"
 	Option "Base Metabolism","UaS_HungerMetabolism","OnOff"
 	Option "Stamina Boost","UaS_HungerStamina","OnOff"
 	Option "Starvation","UaS_HungerStarvation","OnOff"
 	Option "Sickness Effects","UaS_HungerSickness","OnOff"
+	StaticText ""
+	Option "Hunger Grumbles","UaS_HungerGrumbles","UaS_GrumbleOptions"
 }
