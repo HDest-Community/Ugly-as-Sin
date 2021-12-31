@@ -1,0 +1,1 @@
+nosave float UaS_TraumaKit_HUDScale = 1.00;

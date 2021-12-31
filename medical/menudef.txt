@@ -1,3 +1,13 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Medical"
 }
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Medical", "UaS_Medical_Options"
+}
+
+OptionMenu "UaS_Medical_Options" {
+	Title "Medical Module Settings"
+
+	Slider "TraumaKit UI Scale","UaS_TraumaKit_HUDScale", 0, 1, 0.05, 2
+}

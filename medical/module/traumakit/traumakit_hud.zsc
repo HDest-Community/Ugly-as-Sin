@@ -2,8 +2,9 @@ extend class UaS_TraumaKit {
 	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl) {
 		if (!patient) return;
 		// Floats for precision (also required for centering)
-		float textHeight = sb.pSmallFont.mFont.GetHeight();
-		float padding = 2;
+		Vector2 hudScale = (UaS_TraumaKit_HUDScale, UaS_TraumaKit_HUDScale);
+		float textHeight = sb.pSmallFont.mFont.GetHeight() * hudscale.y;
+		float padding = 2 * hudscale.y;
 		float padStep = textHeight + padding;
 		float halfStep = padStep / 2;
 		float baseOffset = (-7 * textHeight) + (-3 * padding); // Start calculating from center of screen?
@@ -14,14 +15,16 @@ extend class UaS_TraumaKit {
 			"--- \cyTrauma Kit\c- ---",
 			(0, baseOffset),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
-			Font.CR_GRAY
+			Font.CR_GRAY,
+			scale: hudscale
 		);
 		sb.DrawString(
 			sb.pSmallFont,
 			"Treating \cg" .. patient.player.GetUsername(),
 			(0, baseOffset + textHeight),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
-			Font.CR_GRAY
+			Font.CR_GRAY,
+			scale: hudscale
 		);
 
 		// Wound List
@@ -34,7 +37,8 @@ extend class UaS_TraumaKit {
 				"No treatable wounds",
 				(0, woundListOffsetY),
 				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
-				Font.CR_GRAY
+				Font.CR_GRAY,
+				scale: hudscale
 			);
 		} else {
 			Array<string> wounds;
@@ -67,7 +71,8 @@ extend class UaS_TraumaKit {
 					". . .",
 					(woundListOffsetX, woundListOffsetY - padStep),
 					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
-					Font.CR_GRAY
+					Font.CR_GRAY,
+					scale: hudscale
 				);
 			}
 
@@ -77,7 +82,8 @@ extend class UaS_TraumaKit {
 					sb.pSmallFont,
 					wounds[i],
 					(woundListOffsetX, woundListOffsetY),
-					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
+					scale: hudscale
 				);
 
 				woundListOffsetY += padStep;
@@ -90,7 +96,8 @@ extend class UaS_TraumaKit {
 					". . .",
 					(woundListOffsetX, woundListOffsetY),
 					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
-					Font.CR_GRAY
+					Font.CR_GRAY,
+					scale: hudscale
 				);
 			}
 		}
@@ -165,7 +172,8 @@ extend class UaS_TraumaKit {
 					status[i],
 					(woundInfoOffsetX, woundInfoOffsetY),
 					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
-					Font.CR_GRAY
+					Font.CR_GRAY,
+					scale: hudscale
 				);
 
 				woundInfoOffsetY += padStep;
@@ -176,7 +184,8 @@ extend class UaS_TraumaKit {
 				"-No wounds selected-",
 				(woundInfoOffsetX, woundInfoOffsetY),
 				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
-				Font.CR_DARKGRAY
+				Font.CR_DARKGRAY,
+				scale: hudscale
 			);
 		}
 
@@ -190,7 +199,8 @@ extend class UaS_TraumaKit {
 				sb.pSmallFont,
 				trueStatusMessage[i],
 				(0, toolInfoOffset),
-				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+				scale: hudscale
 			);
 
 			toolInfoOffset += textHeight;
