@@ -5,6 +5,7 @@ class UaS_GyroStabilizer : HDPickup {
 	array<string> weaponList;
 	array<int> AttachList;
 	string statusText;
+	int statusTimeout;
 	double stabilize;
 
 	Default {
@@ -20,6 +21,7 @@ class UaS_GyroStabilizer : HDPickup {
 
 	override void DoEffect() {
 		super.DoEffect();
+		statusTimeout = max(statusTimeout-1, 0);
 		DoStabilize();
 	}
 
@@ -39,6 +41,12 @@ class UaS_GyroStabilizer : HDPickup {
 		super.BeginPlay();
 	}
 
+	void SetStatusText(string text, int timeout = 35, bool force = false) {
+		if (!force && statusTimeout > 0) { return; }
+		statusText = text;
+		statusTimeout = timeout;
+	}
+
 	void DoStabilize() {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return; }
@@ -54,11 +62,10 @@ class UaS_GyroStabilizer : HDPickup {
 			stabilize *= 0.9;
 			double maxfactor = max(stabilize/(stabilize+20),minfactor);
 			MultiplyRecoil(maxfactor);
-			console.printf(""..maxfactor);
-			if (maxfactor >= 0.75) { statusText = "\crCALIBRATING "; }
-			else if (maxfactor >= 0.5) { statusText = "\cqSTABILIZING "; }
-			else { statusText = "\cdSTABILIZED "; }
-			statusText = statusText.."\cu"..frandom(maxfactor,maxfactor*1.1);
+			// console.printf(""..maxfactor);
+			if (maxfactor >= 0.75) { SetStatusText("\crCALIBRATING ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
+			else if (maxfactor >= 0.5) { SetStatusText("\cqSTABILIZING ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
+			else { SetStatusText("\cdSTABILIZED ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
 		}
 	}
 
@@ -101,6 +108,7 @@ class UaS_GyroStabilizer : HDPickup {
 	}
 
 	override void DrawHudStuff(hdstatusbar sb, hdplayerpawn hpl, int hdflags, int gzflags) {
+		if (statusTimeout <= 0) { return; }
 		sb.drawstring(sb.pnewsmallfont,
 			statusText,
 			(50,-50),
@@ -136,11 +144,12 @@ class UaS_GyroStabilizer : HDPickup {
 
 	void DetachFromWeapon(HDWeapon dt, int index = -1) {
 		if (index >= 0) {
+			int UID = dt.weaponstatus[UAS_STB_SLOT];
 			dt.weaponstatus[UAS_STB_SLOT] = 0;
 			AttachList.delete(index);
-			console.printf("Detatched index "..index);
+			// console.printf("Detatched index "..index);
 			A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
-			statusText = "";
+			SetStatusText("Detached UID "..UID, 35, true);
 		}
 	}
 
@@ -156,6 +165,7 @@ class UaS_GyroStabilizer : HDPickup {
 		AttachList.push(UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
+		SetStatusText("Attached UID "..UID, 35, true);
 	}
 
 	States {
