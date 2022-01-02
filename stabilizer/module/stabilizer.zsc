@@ -149,11 +149,15 @@ class UaS_GyroStabilizer : HDPickup {
 			AttachList.delete(index);
 			// console.printf("Detatched index "..index);
 			A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
-			SetStatusText("Detached UID "..UID, 35, true);
+			SetStatusText("\czDetached \ccUID "..UID, 35, true);
 		}
 	}
 
 	void AttachToWeapon(HDWeapon at) {
+		if (AttachList.Size() >= 3) {
+			SetStatusText("\cgMax pairings exceeded", 35, true);
+			return;
+		}
 		bool validWeapon = false;
 		string weapname = at.GetClassname();
 		for(int i = 0; i < weaponList.size(); i++) {
@@ -165,7 +169,7 @@ class UaS_GyroStabilizer : HDPickup {
 		AttachList.push(UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
-		SetStatusText("Attached UID "..UID, 35, true);
+		SetStatusText(string.format("\czAttached %i/3 \ccUID %i", AttachList.size(), UID), 70, true);
 	}
 
 	States {
