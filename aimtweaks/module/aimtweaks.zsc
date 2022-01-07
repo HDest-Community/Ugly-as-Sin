@@ -20,11 +20,14 @@ class UaS_AimTweaks_Bootstrap : EventHandler {
 
 class UaS_Aim_Thinker : Thinker {
 	HDPlayerPawn plr;
+	transient cvar fz, as;
 
 	override void Tick() {
 		if(!plr) { return; }
-		if (UaS_FocusZoomEnabled) { FocusZoom(); }
-		if (UaS_AimSwayEnabled) { AimSway(); }
+		if (!fz) { fz = CVar.GetCVar("UaS_FocusZoomEnabled", plr.player); }
+		if (!as) { as = CVar.GetCVar("UaS_AimSwayEnabled", plr.player); }
+		if (fz.GetBool()) { FocusZoom(); }
+		if (as.GetBool()) { AimSway(); }
 	}
 
 	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
