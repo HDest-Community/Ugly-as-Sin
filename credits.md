@@ -13,6 +13,8 @@
   * Respirator sprite.
 * kodi
   * Laser/Light sprite
+* vitriolicv/valerie_v:
+  * Flare sprite.
 
 # Code
 * Zhs2: Spawning code suggestion.

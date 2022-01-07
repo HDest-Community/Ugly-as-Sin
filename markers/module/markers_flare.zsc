@@ -11,7 +11,7 @@ class UaS_Flare : HDPickup {
 
 	Default {
 		Inventory.PickupMessage "Picked up a flare.";
-		Inventory.Icon "UGSIH0";
+		Inventory.Icon "UGSFA0";
 		HDPickup.Bulk 2;
 		tag "Flare";
 		HDPickup.refid UAS_HDLD_FLARE;
@@ -29,89 +29,89 @@ class UaS_Flare : HDPickup {
 			vel.z += 5;
 			Thrown = false;
 		}
-		switch(Activated) {
-			case true:
-				if (owner) {
-					owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
-					owner.A_SoundVolume(818764, double(brightness - age) / 384.0);
-				}
-				else {
-					A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
-					A_SoundVolume(818764, double(brightness - age) / 384.0);
-				}
-				frame = 6;
-				if (level.maptime % 1 == 0) { brightness = min(brightness + 2, 192); }
-				if (level.maptime % 40 == 0) { age++; }
+		bool burned = (brightness - age) < 0;
 
-				// bright light
-				if (!FlareLight) {
-					FlareLight = DynamicLight(Actor.Spawn("UaS_FlareLight"));
-					FlareLight.args[DynamicLight.LIGHT_RED] = 256;
-					FlareLight.args[DynamicLight.LIGHT_GREEN] = 160;
-					FlareLight.args[DynamicLight.LIGHT_BLUE] = 192;
-				}
-				FlareLight.args[DynamicLight.LIGHT_INTENSITY] = int(0.25 * (brightness - age) + random[flare](-4, 4));
-				if (owner) { FlareLight.target = owner; }
-				else { FlareLight.target = self; }
+		if (Activated && !burned) {
+			if (owner) {
+				owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+				owner.A_SoundVolume(818764, double(brightness - age) / 384.0);
+			}
+			else {
+				A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+				A_SoundVolume(818764, double(brightness - age) / 384.0);
+			}
+			if (level.maptime % 2 == 0) { frame = 1; } else { frame = 2; }
+			brightness = min(brightness + 2, 192);
+			if (level.maptime % 40 == 0) { age++; }
 
-				// spill light
-				if (!FlareLight2) {
-					FlareLight2 = DynamicLight(Actor.Spawn("UaS_FlareLight"));
-					FlareLight2.args[DynamicLight.LIGHT_RED] = 224;
-					FlareLight2.args[DynamicLight.LIGHT_GREEN] = 96;
-					FlareLight2.args[DynamicLight.LIGHT_BLUE] = 128;
-				}
-				FlareLight2.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age) + random[flare](-16, 16);
-				if (owner) { FlareLight2.target = owner; }
-				else { FlareLight2.target = self; }
+			// bright light
+			if (!FlareLight) {
+				FlareLight = DynamicLight(Actor.Spawn("UaS_FlareLight"));
+				FlareLight.args[DynamicLight.LIGHT_RED] = 256;
+				FlareLight.args[DynamicLight.LIGHT_GREEN] = 160;
+				FlareLight.args[DynamicLight.LIGHT_BLUE] = 192;
+			}
+			FlareLight.args[DynamicLight.LIGHT_INTENSITY] = int(0.25 * (brightness - age) + random[flare](-4, 4));
+			if (owner) { FlareLight.target = owner; }
+			else { FlareLight.target = self; }
 
-				actor pspawn = self;
-				if (owner) { pspawn = owner; }
-				for (int i = 0; i < 4; i++ ) {
-					double pvel = frandom[flare](2,4) * (double(brightness - age) / 192.0);
-					pspawn.A_SpawnParticle(
-						"red",
-						flags: SPF_FULLBRIGHT,
-						size: random[flare](1,2),
-						zoff: pspawn.height/2,
-						velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
-						vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
-						velz: pvel * sin(frandom[flare](-0,8)),
-						startalphaf: 0.75,
-						sizestep: -0.1
-					);
-					pspawn.A_SpawnParticle(
-						"yellow",
-						flags: SPF_FULLBRIGHT,
-						size: random[flare](1,2),
-						zoff: pspawn.height/2,
-						velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
-						vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
-						velz: pvel * sin(frandom[flare](-0,8)),
-						startalphaf: 0.75,
-						sizestep: -0.1
-					);
-				}
-				break;
-			case false:
-				frame = 7;
-				if (FlareLight) { FlareLight.Destroy(); }
-				if (FlareLight2) { FlareLight2.Destroy(); }
-				brightness = 0;
-				age = 0;
-				break;
+			// spill light
+			if (!FlareLight2) {
+				FlareLight2 = DynamicLight(Actor.Spawn("UaS_FlareLight"));
+				FlareLight2.args[DynamicLight.LIGHT_RED] = 224;
+				FlareLight2.args[DynamicLight.LIGHT_GREEN] = 96;
+				FlareLight2.args[DynamicLight.LIGHT_BLUE] = 128;
+			}
+			FlareLight2.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age) + random[flare](-16, 16);
+			if (owner) { FlareLight2.target = owner; }
+			else { FlareLight2.target = self; }
+
+			actor pspawn = self;
+			if (owner) { pspawn = owner; }
+			for (int i = 0; i < 4; i++ ) {
+				double pvel = frandom[flare](2,4) * (double(brightness - age) / 192.0);
+				pspawn.A_SpawnParticle(
+					"red",
+					flags: SPF_FULLBRIGHT,
+					size: random[flare](1,2),
+					zoff: pspawn.height/2,
+					velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
+					vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
+					velz: pvel * sin(frandom[flare](-0,8)),
+					startalphaf: 0.75,
+					sizestep: -0.1
+				);
+				pspawn.A_SpawnParticle(
+					"yellow",
+					flags: SPF_FULLBRIGHT,
+					size: random[flare](1,2),
+					zoff: pspawn.height/2,
+					velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
+					vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
+					velz: pvel * sin(frandom[flare](-0,8)),
+					startalphaf: 0.75,
+					sizestep: -0.1
+				);
+			}
 		}
-
+		else if (!Activated && !burned) {
+			frame = 0;
+			if (FlareLight) { FlareLight.Destroy(); }
+			if (FlareLight2) { FlareLight2.Destroy(); }
+			brightness = 0;
+			age = 0;
+		}
 		// Use up when dead?
-		if (Activated && (brightness - age) < 0) {
+		else if (Activated && burned) {
 			Activated = false;
+			frame = 3;
 			if (FlareLight) { FlareLight.Destroy(); }
 			if (FlareLight2) { FlareLight2.Destroy(); }
 			if (owner) {
 				Amount--;
 				owner.A_StopSound(818764);
 			}
-			else { destroy(); }
+			//else { destroy(); }
 		}
 
 		A_SetAngle(angle + vel.length() * 3 * spindir);
@@ -163,7 +163,7 @@ class UaS_Flare : HDPickup {
 
 	states {
 		Spawn:
-			UGSI G -1;
+			UGSF A -1;
 			stop;
 	}
 }

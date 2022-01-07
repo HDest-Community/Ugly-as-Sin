@@ -103,18 +103,36 @@ Sprite "UGSIC0", 72, 16
 	Patch "markers/patches/UaS_GlowstickLit.png", 0, 0
 }
 
-Sprite "UGSIH0", 5, 10
+Sprite "UGSFA0", 20, 80
 {
-	XScale 1.500
-	Offset 3, -2
-	Sprite "CANDA0", -6, -3
+	XScale 8.000
+	YScale 8.000
+	Offset 10, -2
+	Patch "markers/patches/UaS_Flare_Pickup.png", 0, 0
 }
 
-Sprite "UGSIG0", 5, 13
+Sprite "UGSFB0", 27, 102
 {
-	XScale 1.500
-	Offset 3, 1
-	Patch "CANDA0", -6, 0
+	XScale 8.000
+	YScale 8.000
+	Offset 13, 20
+	Patch "markers/patches/UaS_Flare_Lit1.png", 0, 0
+}
+
+Sprite "UGSFC0", 27, 102
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 13, 20
+	Patch "markers/patches/UaS_Flare_Lit2.png", 0, 0
+}
+
+Sprite "UGSFD0", 20, 70
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 10, -12
+	Patch "markers/patches/UaS_Flare_Burned.png", 0, 0
 }
 Sprite "UGSIF0", 17, 18
 {
