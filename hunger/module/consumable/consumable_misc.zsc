@@ -47,6 +47,7 @@ extend class UaS_Consumable {
 		// 10% minor contamination	+2
 		// 20% basic spoilage		+1
 		// 60% nothing
+		if (spoilrate <= 0) { return; } //hahaha totally didn't forget this, no
 		if (weaponstatus[UGCS_LASTSPOILTIME] == -1) { return; }
 		if (weaponstatus[UGCS_LASTSPOILTIME] < level.totaltime) {
 			// Spoilage from external contamination if open
