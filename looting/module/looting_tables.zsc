@@ -24,7 +24,14 @@ class UaS_LootList : Thinker {
 				UaS_LootEntry lt = new("UaS_LootEntry");
 				lt.LootableClassName = cname;
 				for (int j = 0; j < templootlist.Size(); j++) {
-					lt.LootClasses.push(templootlist[j]);
+					int x = templootlist[j].IndexOf("*");
+					if (x != -1) {
+						string tli = templootlist[j].Left(x);
+						string tlm = templootlist[j].Mid(x+1);
+						int mul = tlm.ToInt(10);
+						for (int k = 0; k < mul; k++) { lt.LootClasses.push(tli); }
+					}
+					else { lt.LootClasses.push(templootlist[j]); }
 				}
 				LootList.push(lt);
 			}

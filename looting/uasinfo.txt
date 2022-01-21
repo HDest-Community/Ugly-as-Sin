@@ -1,14 +1,14 @@
 Looting:ZombieStormTrooper: HDHandgunRandomDrop, PortableStimpack
-Looting:ZombieAutoStormtrooper: HD4mMag,HD4mMag,HD4mMag
-Looting:ZombieSemiStormtrooper: HD4mMag,HD4mMag,HD4mMag
-Looting:ZombieSMGStormtrooper: HD9mMag30,HD9mMag30,HD9mMag30,HDFragGrenadeAmmo
-Looting:UndeadHomeboy: HD9mMag15,HD9mMag15,HD9mMag15
+Looting:ZombieAutoStormtrooper: HD4mMag*3
+Looting:ZombieSemiStormtrooper: HD4mMag*3
+Looting:ZombieSMGStormtrooper: HD9mMag30*3,HDFragGrenadeAmmo
+Looting:UndeadHomeboy: HD9mMag15*3
 
 Looting:ZombieShotgunner: HDHandgunRandomDrop, PortableStimpack
-Looting:UndeadJackbootman: HD4mMag,HD4mMag,HD4mMag
-Looting:JackAndJillboot: ShellPickup,ShellPickup,ShellPickup
-Looting:Jackboot: ShellPickup,ShellPickup,ShellPickup
+Looting:UndeadJackbootman: HD4mMag*3
+Looting:JackAndJillboot: ShellPickup*3
+Looting:Jackboot: ShellPickup*3
 
-Looting:VulcanetteZombie: HD4mMag,HD4mMag,HD4mMag,HD4mMag,PortableBerserkPack
+Looting:VulcanetteZombie: HD4mMag*4,PortableBerserkPack
 
 Looting:Serpentipede: HDHandgunRandomDrop
