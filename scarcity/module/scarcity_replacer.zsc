@@ -5,8 +5,10 @@ extend class UaS_Scarcity_Handler {
 			HDMagAmmo m = HDMagAmmo(targetActor);
 			name magname = m.GetClassName();
 			name roundtype = "";
+			int mpu = m.maxperunit;
+			if (m is "HD7mMag") { mpu = 30; }
 			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
-			MagReplacer(magname, roundtype, m.maxperunit, targetActor);
+			MagReplacer(magname, roundtype, mpu, targetActor);
 		}
 		// Replacer routines for HDUPK and ammo items
 		switch(targetActor.GetClassName()) {
