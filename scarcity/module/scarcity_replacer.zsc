@@ -7,6 +7,7 @@ extend class UaS_Scarcity_Handler {
 			name roundtype = "";
 			int mpu = m.maxperunit;
 			if (m is "HD7mMag") { mpu = 30; }
+			if (m is "HD7mClip") { mpu = 10; }
 			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
 			MagReplacer(magname, roundtype, mpu, targetActor);
 		}
