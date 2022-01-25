@@ -13,6 +13,7 @@ enum UAS_LIB_CONSTANTS {
 extend class UaS_WeaponJammer {
 	void LiberatorJamming() {
 		wep = HDWeapon(owner.player.ReadyWeapon);
+		FlagSlot = LIBS_FLAGS;
 		ChamberSlot = LIBS_CHAMBER;
 		MagSlot = LIBS_MAG;
 		HeatSlot = LIBS_HEAT;
@@ -21,6 +22,10 @@ extend class UaS_WeaponJammer {
 		WJ_SHELL = UAS_LIB_CHAMBER_SHELL;
 		WJ_EMPTY = UAS_LIB_CHAMBER_EMPTY;
 		JamThresh = UAS_LIB_JAMTHRESH;
+		DirtAmount = 1;
+
+		// Recast was in chamber
+		if (OldFlags&LIBF_RECAST) { DirtAmount = 2; }
 
 		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
 		JustFed = (

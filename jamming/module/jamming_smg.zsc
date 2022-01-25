@@ -13,6 +13,7 @@ enum UAS_SMG_CONSTANTS {
 extend class UaS_WeaponJammer {
 	void SMGJamming() {
 		wep = HDWeapon(owner.player.ReadyWeapon);
+		FlagSlot = SMGS_FLAGS;
 		ChamberSlot = SMGS_CHAMBER;
 		MagSlot = SMGS_MAG;
 		//HeatSlot = LIBS_HEAT;
@@ -21,6 +22,7 @@ extend class UaS_WeaponJammer {
 		WJ_SHELL = UAS_SMG_CHAMBER_SHELL;
 		WJ_EMPTY = UAS_SMG_CHAMBER_EMPTY;
 		JamThresh = UAS_SMG_JAMTHRESH;
+		DirtAmount = 1;
 
 		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
 		JustFed = (

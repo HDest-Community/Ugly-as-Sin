@@ -13,6 +13,7 @@ enum UAS_PIS_CONSTANTS {
 extend class UaS_WeaponJammer {
 	void PistolJamming() {
 		wep = HDWeapon(owner.player.ReadyWeapon);
+		FlagSlot = PISS_FLAGS;
 		ChamberSlot = PISS_CHAMBER;
 		MagSlot = PISS_MAG;
 		//HeatSlot = LIBS_HEAT;
@@ -21,6 +22,7 @@ extend class UaS_WeaponJammer {
 		WJ_SHELL = UAS_PIS_CHAMBER_SHELL;
 		WJ_EMPTY = UAS_PIS_CHAMBER_EMPTY;
 		JamThresh = UAS_PIS_JAMTHRESH;
+		DirtAmount = 1;
 
 		JustFired = ((wep.weaponstatus[MagSlot] == OldMag - 1));
 		JustFed = (

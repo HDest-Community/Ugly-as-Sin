@@ -13,10 +13,11 @@ class UaS_Jamming_Bootstrap : EventHandler {
 }
 
 class UaS_WeaponJammer : Inventory {
-	int ChamberSlot, MagSlot, HeatSlot, JamSlot;
-	int OldChamber, OldMag;
+	int ChamberSlot, MagSlot, HeatSlot, JamSlot, FlagSlot;
+	int OldChamber, OldMag, OldFlags;
 	int JamCheck;
 	int JamThresh;
+	int DirtAmount;
 	int WJ_LIVE, WJ_SHELL, WJ_EMPTY;
 	bool JustFired, JustFed, JustEjected;
 	HDWeapon wep;
@@ -33,7 +34,7 @@ class UaS_WeaponJammer : Inventory {
 		// Reroll the jam chance every shot and track shots fired
 		JamCheck = weightedroll(JamThresh);
 		if (JustFired) {
-			wep.weaponstatus[JamSlot]++;
+			wep.weaponstatus[JamSlot] += DirtAmount;
 			UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck));
 		}
 
@@ -55,6 +56,7 @@ class UaS_WeaponJammer : Inventory {
 		// Set old variables
 		OldChamber = wep.weaponstatus[ChamberSlot];
 		OldMag = wep.weaponstatus[MagSlot];
+		OldFlags = wep.weaponstatus[FlagSlot];
 	}
 
 	int weightedroll(int thresh) {
