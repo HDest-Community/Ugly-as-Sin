@@ -18,6 +18,7 @@ class UaS_WeaponJammer : Inventory {
 	int JamCheck;
 	int JamThresh;
 	int DirtAmount;
+	int CleanCycle;
 	int WJ_LIVE, WJ_SHELL, WJ_EMPTY;
 	bool JustFired, JustFed, JustEjected;
 	HDWeapon wep;
@@ -31,6 +32,9 @@ class UaS_WeaponJammer : Inventory {
 		if (owner.player.ReadyWeapon is 'HDSMG') { SMGJamming(); }
 		if (!wep) { return; }
 
+		// Dirtify weapons by default
+		if (wep.weaponstatus[JamSlot] == 0) { wep.weaponstatus[JamSlot] = weightedroll(JamThresh/2); }
+
 		// Reroll the jam chance every shot and track shots fired
 		JamCheck = weightedroll(JamThresh);
 		if (JustFired) {
@@ -43,20 +47,59 @@ class UaS_WeaponJammer : Inventory {
 			UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck.." -- Failure to feed"));
 			wep.weaponstatus[ChamberSlot] = WJ_EMPTY;
 			wep.weaponstatus[MagSlot]++;
-			wep.weaponstatus[JamSlot] /= 4;
 			return;
 		}
 		else if (JustFed && JamCheck == JamThresh) {
 			UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." check "..JamCheck.." -- Next round bad"));
 			wep.weaponstatus[ChamberSlot] = WJ_SHELL;
-			wep.weaponstatus[JamSlot] /= 4;
 			return;
 		}
+
+		CheckCleaning();
 
 		// Set old variables
 		OldChamber = wep.weaponstatus[ChamberSlot];
 		OldMag = wep.weaponstatus[MagSlot];
 		OldFlags = wep.weaponstatus[FlagSlot];
+	}
+
+	void CheckCleaning() {
+		bool IsEmpty = (
+			wep.weaponstatus[ChamberSlot] == WJ_EMPTY &&
+			wep.weaponstatus[MagSlot] < 0);
+		bool PressedUnload = (
+			owner.player.cmd.buttons&BT_UNLOAD &&
+			!(owner.player.oldbuttons&BT_UNLOAD));
+		bool HoldingUnload = (
+			owner.player.cmd.buttons&BT_UNLOAD);
+
+		if (!HoldingUnload) { CleanCycle = 0; }
+		if (CleanCycle > 4) { return; }
+
+		if (IsEmpty) {
+			// Start cleaning
+			if (PressedUnload) {
+				owner.A_StartSound("weapons/pocket", CHAN_AUTO);
+				owner.A_Log("Checking for grime...");
+			}
+			// Keep Cleaning
+			else if (HoldingUnload && level.maptime%20 == 0) {
+				// Success
+				if (weightedroll(JamThresh*0.5) < wep.weaponstatus[JamSlot]) {
+					owner.A_Log("Cleaned out the chamber a bit.");
+					owner.A_StartSound("weapons/pocket", CHAN_AUTO);
+					wep.weaponstatus[JamSlot] *= 0.75;
+					UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." after cleaning"));
+					CleanCycle = 10;
+				}
+				// Fail
+				else {
+					owner.A_StartSound("weapons/pocket", CHAN_AUTO, volume:0.75, pitch:0.75);
+					CleanCycle++;
+					if (CleanCycle > 4) { owner.A_Log("Couldn't clean much."); }
+				}
+			}
+		}
 	}
 
 	int weightedroll(int thresh) {

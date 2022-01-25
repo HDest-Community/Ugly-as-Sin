@@ -7,7 +7,7 @@ enum UAS_SMG_CONSTANTS {
 	UAS_SMG_CHAMBER_SHELL = 1,
 	UAS_SMG_CHAMBER_EMPTY = 0,
 
-	UAS_SMG_JAMTHRESH = 5000,
+	UAS_SMG_JAMTHRESH = 7500,
 };
 
 extend class UaS_WeaponJammer {
@@ -22,7 +22,7 @@ extend class UaS_WeaponJammer {
 		WJ_SHELL = UAS_SMG_CHAMBER_SHELL;
 		WJ_EMPTY = UAS_SMG_CHAMBER_EMPTY;
 		JamThresh = UAS_SMG_JAMTHRESH;
-		DirtAmount = 1;
+		DirtAmount = 2;
 
 		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
 		JustFed = (

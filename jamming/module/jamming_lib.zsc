@@ -7,7 +7,7 @@ enum UAS_LIB_CONSTANTS {
 	UAS_LIB_CHAMBER_SHELL = 1,
 	UAS_LIB_CHAMBER_EMPTY = 0,
 
-	UAS_LIB_JAMTHRESH = 5000,
+	UAS_LIB_JAMTHRESH = 10000
 };
 
 extend class UaS_WeaponJammer {
@@ -25,7 +25,7 @@ extend class UaS_WeaponJammer {
 		DirtAmount = 1;
 
 		// Recast was in chamber
-		if (OldFlags&LIBF_RECAST) { DirtAmount = 2; }
+		if (OldFlags&LIBF_RECAST) { DirtAmount = 3; }
 
 		JustFired = ((wep.weaponstatus[ChamberSlot] == WJ_SHELL && OldChamber == WJ_LIVE));
 		JustFed = (
