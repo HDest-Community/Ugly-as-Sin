@@ -1,1 +1,2 @@
 server bool UaS_JammingEnabled = false;
+server float UaS_JammingStartDirty = 0.33;

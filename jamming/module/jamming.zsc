@@ -23,6 +23,24 @@ class UaS_WeaponJammer : Inventory {
 	bool JustFired, JustFed, JustEjected;
 	HDWeapon wep;
 
+	void DirtifyWeapons() {
+		// Dirtify weapons by default
+		if (wep.weaponstatus[JamSlot] != 0) { return; }
+
+		if (UaS.RandomChance(UaS_JammingStartDirty)) {
+			wep.weaponstatus[JamSlot] = weightedroll(JamThresh*UaS_JammingStartDirty);
+			UaS.LogDebug(DBG_Jamming, string.format("Dirtified "
+				..wep.GetClassName().." "
+				..wep.weaponstatus[JamSlot].."/"
+				..JamThresh));
+		}
+		else {
+			wep.weaponstatus[JamSlot] = 1;
+			UaS.LogDebug(DBG_Jamming, string.format("Start clean "
+				..wep.GetClassName()));
+		}
+	}
+
 	override void DoEffect() {
 		if (!owner.player.ReadyWeapon) { return; }
 		if (level.maptime < 35) { return; }
@@ -32,8 +50,7 @@ class UaS_WeaponJammer : Inventory {
 		if (owner.player.ReadyWeapon is 'HDSMG') { SMGJamming(); }
 		if (!wep) { return; }
 
-		// Dirtify weapons by default
-		if (wep.weaponstatus[JamSlot] == 0) { wep.weaponstatus[JamSlot] = weightedroll(JamThresh/2); }
+		DirtifyWeapons();
 
 		// Reroll the jam chance every shot and track shots fired
 		JamCheck = weightedroll(JamThresh);

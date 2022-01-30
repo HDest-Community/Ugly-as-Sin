@@ -157,10 +157,18 @@ AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Jamming", "UaS_Jamming_Options"
 }
 
+OptionValue "JammingDirtValues" {
+	0.00, "None / Clean"
+	0.33, "Some / Slightly Used"
+	0.66, "Most / Very Dirty"
+	1.00, "All / Filthy"
+}
+
 OptionMenu "UaS_Jamming_Options" {
 	Title "Jamming Module Settings"
 
 	Option "Weapon Jamming", "UaS_JammingEnabled", "OnOff"
+	Option "Weapons start dirty", "UaS_JammingStartDirty", "JammingDirtValues"
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Laser / Flashlight"
