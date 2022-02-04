@@ -97,13 +97,13 @@ class UaS_WeaponJammer : Inventory {
 			// Start cleaning
 			if (PressedUnload) {
 				owner.A_StartSound("weapons/pocket", CHAN_AUTO);
-				owner.A_Log("Checking for grime...");
+				owner.A_Log("Checking for grime...", true);
 			}
 			// Keep Cleaning
 			else if (HoldingUnload && level.maptime%20 == 0) {
 				// Success
 				if (weightedroll(JamThresh*0.5) < wep.weaponstatus[JamSlot]) {
-					owner.A_Log("Cleaned out the chamber a bit.");
+					owner.A_Log("Cleaned out the chamber a bit.", true);
 					owner.A_StartSound("weapons/pocket", CHAN_AUTO);
 					wep.weaponstatus[JamSlot] *= 0.75;
 					UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." after cleaning"));
@@ -113,7 +113,7 @@ class UaS_WeaponJammer : Inventory {
 				else {
 					owner.A_StartSound("weapons/pocket", CHAN_AUTO, volume:0.75, pitch:0.75);
 					CleanCycle++;
-					if (CleanCycle > 4) { owner.A_Log("Couldn't clean much."); }
+					if (CleanCycle > 4) { owner.A_Log("Couldn't clean much.", true); }
 				}
 			}
 		}
