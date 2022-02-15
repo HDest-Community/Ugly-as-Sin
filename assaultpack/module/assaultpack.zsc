@@ -1,4 +1,5 @@
 const UAS_HDLD_ASSAULTPACK = "apk";
+const UAS_STRIP_ASSAULTPACK = STRIP_BACKPACK;
 
 //==================================================
 // Base Definition
@@ -10,13 +11,32 @@ class UaS_AssaultPack : HDBackpack {
 		Inventory.Icon "UGSQA0";
 		Inventory.PickupMessage "Picked up an assault pack!";
 		scale 0.75;
-		hdweapon.wornlayer 0;
+		hdweapon.wornlayer UAS_STRIP_ASSAULTPACK;
 		hdweapon.refid UAS_HDLD_ASSAULTPACK;
+	}
+
+	override void BeginPlay(){
+		Super.BeginPlay();
+		if(Storage) Storage.destroy();
+		Storage = new('UaS_AssaultPackStorage');
+		UpdateCapacity();
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		UpdateCapacity();
 	}
 
 	override double WeaponBulk() {
 		return max((Storage ? Storage.TotalBulk * 0.80 : 0), 50);
 	}
+
+	override void UpdateCapacity() {
+		MaxCapacity = default.MaxCapacity;
+		Storage.MaxBulk = min(Storage.TotalBulk + 75, MaxCapacity);
+	}
+
+	override bool IsBeingWorn() { return true; }
 
 	override string, double GetPickupSprite() { return "UGSQA0", 1.0; }
 
@@ -36,5 +56,14 @@ class UaS_AssaultPack : HDBackpack {
 				invoker.bNO_AUTO_SWITCH = false;
 			}
 			Stop;
+	}
+}
+
+class UaS_AssaultPackStorage : ItemStorage {
+	override string GetFailMessage() {
+		if (MaxBulk < 500) {
+			return "That item is too large!";
+		}
+		return "Your backpack is too full.";
 	}
 }
