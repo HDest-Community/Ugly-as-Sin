@@ -118,6 +118,8 @@ AddOptionMenu "UaS_Controls" {
 	Control "Use Radsuit", "use PortableRadsuit"
 	Control "Place Ladder", "use PortableLadder"
 	StaticText " "
+	Control "Cycle 'Backpacks'", "netevent UaS_CycleInventory"
+	StaticText " "
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Death Fading"

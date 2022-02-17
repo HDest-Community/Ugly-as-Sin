@@ -1,0 +1,23 @@
+class UaS_BindsHandler : EventHandler {
+	array<string> BPClasses;
+
+	override void OnRegister() {
+		for (int i=0; i<allactorclasses.size(); i++) {
+			if (allactorclasses[i] is "HDBackPack") {
+				BPClasses.push(allactorclasses[i].getclassname());
+			}
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e) {
+		if(e.Name == "UaS_CycleInventory") {
+			let p=players[e.Player].mo;
+			for (int i=0; i<BPClasses.size(); i++) {
+				let b = p.FindInventory(BPClasses[i], true);
+				if(p.player.ReadyWeapon && !(p.player.ReadyWeapon == b)) {
+					if (b) { p.UseInventory(b); }
+				}
+			}
+		}
+	}
+}
