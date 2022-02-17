@@ -4,6 +4,7 @@ AddOptionMenu "UaS_LoadedModules" {
 
 AddOptionMenu "UaS_Controls" {
 	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+	StaticText " "
 }
 
 AddOptionMenu "UaS_ConfigureModules" {

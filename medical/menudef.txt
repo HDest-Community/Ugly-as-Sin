@@ -6,6 +6,12 @@ AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Medical", "UaS_Medical_Options"
 }
 
+AddOptionMenu "UaS_Controls" {
+	Control "Use Traumakit", "use UaS_TraumaKit"
+	Control "Stabilize bandaged wounds", "use UaS_WoundStabilization"
+	StaticText " "
+}
+
 OptionMenu "UaS_Medical_Options" {
 	Title "Medical Module Settings"
 

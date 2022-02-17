@@ -1,3 +1,8 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Respirator"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Use Respirator", "use UaS_Respirator"
+	StaticText " "
+}

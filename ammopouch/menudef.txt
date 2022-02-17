@@ -1,3 +1,8 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Ammo Pouch"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Open Ammopouch", "use UaS_AmmoPouch"
+	StaticText " "
+}

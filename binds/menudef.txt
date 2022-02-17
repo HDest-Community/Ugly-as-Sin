@@ -1,0 +1,16 @@
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Extended Binds"
+}
+
+AddOptionMenu "UaS_Controls" {
+	Control "Place DERP on wall", "derp 555"
+	Control "Activate DERP on wall", "derp 556"
+	StaticText " "
+	Control "Place Doorbuster", "use doorbuster"
+	Control "Detonate all Doorbusters", "db 999"
+	StaticText " "
+	Control "Use NVG", "use PortableLiteAmp"
+	Control "Use Radsuit", "use PortableRadsuit"
+	Control "Place Ladder", "use PortableLadder"
+	StaticText " "
+}

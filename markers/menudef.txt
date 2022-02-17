@@ -1,3 +1,9 @@
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Markers"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Use Flare", "use UaS_Flare"
+	Control "Use Glowstick", "use UaS_Glowstick"
+	StaticText " "
+}

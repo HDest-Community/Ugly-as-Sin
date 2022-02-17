@@ -95,8 +95,29 @@ OptionMenu "UaS_Ally_Options" {
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Ammo Pouch"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Open Ammopouch", "use UaS_AmmoPouch"
+	StaticText " "
+}
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Assault Pack"
+}
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Extended Binds"
+}
+
+AddOptionMenu "UaS_Controls" {
+	Control "Place DERP on wall", "derp 555"
+	Control "Activate DERP on wall", "derp 556"
+	StaticText " "
+	Control "Place Doorbuster", "use doorbuster"
+	Control "Detonate all Doorbusters", "db 999"
+	StaticText " "
+	Control "Use NVG", "use PortableLiteAmp"
+	Control "Use Radsuit", "use PortableRadsuit"
+	Control "Place Ladder", "use PortableLadder"
+	StaticText " "
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Death Fading"
@@ -176,6 +197,7 @@ AddOptionMenu "UaS_LoadedModules" {
 
 AddOptionMenu "UaS_Controls" {
 	Control "Toggle Laser/Flashlight Module", "use UaS_LaserLightModule"
+	StaticText " "
 }
 
 AddOptionMenu "UaS_ConfigureModules" {
@@ -209,12 +231,24 @@ OptionMenu "UaS_Looting_Options" {
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Markers"
 }
+
+AddOptionMenu "UaS_Controls" {
+	Control "Use Flare", "use UaS_Flare"
+	Control "Use Glowstick", "use UaS_Glowstick"
+	StaticText " "
+}
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Medical"
 }
 
 AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Medical", "UaS_Medical_Options"
+}
+
+AddOptionMenu "UaS_Controls" {
+	Control "Use Traumakit", "use UaS_TraumaKit"
+	Control "Stabilize bandaged wounds", "use UaS_WoundStabilization"
+	StaticText " "
 }
 
 OptionMenu "UaS_Medical_Options" {
@@ -224,6 +258,11 @@ OptionMenu "UaS_Medical_Options" {
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Respirator"
+}
+
+AddOptionMenu "UaS_Controls" {
+	Control "Use Respirator", "use UaS_Respirator"
+	StaticText " "
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Scarcity"
