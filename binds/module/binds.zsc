@@ -1,7 +1,12 @@
 class UaS_BindsHandler : EventHandler {
 	array<string> BPClasses;
+	int LastIndex[MAXPLAYERS];
 
 	override void OnRegister() {
+		super.OnRegister();
+		// Initialize the array of indexes just to be safe
+		for (int i=0; i<MAXPLAYERS; i++) { LastIndex[i] = 0; }
+		// Initialize (sub)class list to check
 		for (int i=0; i<allactorclasses.size(); i++) {
 			if (allactorclasses[i] is "HDBackPack") {
 				BPClasses.push(allactorclasses[i].getclassname());
@@ -11,13 +16,23 @@ class UaS_BindsHandler : EventHandler {
 
 	override void NetworkProcess(ConsoleEvent e) {
 		if(e.Name == "UaS_CycleInventory") {
-			let p=players[e.Player].mo;
-			for (int i=0; i<BPClasses.size(); i++) {
-				let b = p.FindInventory(BPClasses[i], true);
-				if(p.player.ReadyWeapon && !(p.player.ReadyWeapon == b)) {
-					if (b) { p.UseInventory(b); }
+			int Checks; // How many loops we've done
+			int Iter = LastIndex[e.Player]; // Start from the last used item
+			let p=players[e.Player].mo; // Pointer to player
+
+			while (Checks < BPClasses.size()) {
+				if (Iter >= BPClasses.size()) { Iter = 0; } // loop back to start
+				let b = p.FindInventory(BPClasses[Iter]); // Look for the next classtype in player's inventory
+				if (b && (p.player.ReadyWeapon && !(p.player.ReadyWeapon == b))) { // Check it's not already held
+					p.UseInventory(b); // Select it
+					LastIndex[e.Player] = Iter; // Mark this class as the last one selected
+					break; // Leave the loop
 				}
+				// Increment counters if we didn't successfully pick an object
+				Iter++;
+				Checks++;
 			}
 		}
 	}
 }
+
