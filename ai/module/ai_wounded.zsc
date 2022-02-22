@@ -15,15 +15,18 @@ extend class UaS_AI_Handler {
 		if(!owner || owner.health <= 0 ) { return; }
 		if(owner.health < baseHealth) {
 			// Calculate health factor
-			healthFactor = owner.health / double(baseHealth);
+			bool incapacitated = owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"));
+			healthFactor = incapacitated ? 0.1 : owner.health / double(baseHealth);
 			healthFactor = clamp(healthFactor, 0.1, 1.0);
 
 			// Reduce speed
 			owner.speed = baseSpeed * healthFactor;
 
 			// Jitter angle / pitch
-			owner.A_SetAngle(owner.angle + (random[ai](-15, 15) * (1.0 - healthFactor)), SPF_INTERPOLATE);
-			owner.A_SetPitch(owner.pitch + (random[ai](-10, 10) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
+			if(!incapacitated) { // Don't jitter while incapacitated
+				owner.A_SetAngle(owner.angle + (random[ai](-15, 15) * (1.0 - healthFactor)), SPF_INTERPOLATE);
+				owner.A_SetPitch(owner.pitch + (random[ai](-10, 10) * (1.0 - healthFactor)), SPF_INTERPOLATE|SPF_FORCECLAMP);
+			}
 
 			// Occasionally cry out in pain and select a random fear state
 			// (more likely to be frightened the lower heathFactor is)

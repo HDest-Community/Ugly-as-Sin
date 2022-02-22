@@ -20,7 +20,11 @@ extend class UaS_AI_Handler {
 		if (!BotClass && !HumanClass) { return; }
 
 		string flc = "UaS_LaserLightModule";
-		if (!owner.FindInventory(flc)) { owner.giveinventory(flc, 1); }
+		UaS_LaserLightModule LLM = UaS_LaserLightModule(owner.FindInventory(flc));
+		if (!LLM) {
+			owner.giveinventory(flc, 1);
+			LLM = UaS_LaserLightModule(owner.FindInventory(flc));
+		}
 
 		bool isowneraiming = (
 			owner.frame ==  4 || owner.frame ==  5 ||
@@ -39,9 +43,15 @@ extend class UaS_AI_Handler {
 			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
 			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
-			// More likely to activate in darker areas
-			if (random[aillm](0,192) > lightlevel) { UaS.SendIntent("LLM_Toggle", "On", owner); }
-			else { UaS.SendIntent("LLM_Toggle", "Off", owner); }
+			if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) { // don't run the normal check logic if we're incapacitated
+				if (LLM.activated && UaS.RandomChance(UaS_AI_PlayDead)) {
+					UaS.SendIntent("LLM_Toggle", "Off", owner);
+				}
+			} else {
+				// More likely to activate in darker areas
+				if (random[aillm](0,192) > lightlevel) { UaS.SendIntent("LLM_Toggle", "On", owner); }
+				else { UaS.SendIntent("LLM_Toggle", "Off", owner); }
+			}
 
 			// misc other adjustments
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas

@@ -13,4 +13,5 @@ OptionMenu "UaS_AI_Options" {
 	Option "Wounding","UaS_AI_Wounding","OnOff"
 	Option "Lights","UaS_AI_Flashlights","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff", "UaS_AI_Debug_Override"
+	Slider "'Play Dead' chance","UaS_AI_PlayDead", 0, 1, 0.05, 2
 }

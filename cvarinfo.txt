@@ -2,6 +2,7 @@
 server bool UaS_AdvancedAIEnabled = false;
 server bool UaS_AI_Flashlights = true;
 server bool UaS_AI_Wounding = true;
+server float UaS_AI_PlayDead = 0.5;
 server noarchive bool UaS_AI_Debug_Override = false;
 server noarchive bool UaS_AI_Searching = false;
 server noarchive bool UaS_AI_Stealth = false;
