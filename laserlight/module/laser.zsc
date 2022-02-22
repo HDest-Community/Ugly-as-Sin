@@ -195,6 +195,11 @@ class UaS_LaserLightModule : HDWeapon {
 					//if (!isowneraiming) { llm.pitchoffset += 20; }
 				}
 			}
+			// no random light movement while incapacitated
+			if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) {
+				angleoffset = 0;
+				pitchoffset = 0;
+			}
 			// if (isowneraiming && mode == 3) {
 				// angleoffset = 0;
 				// pitchoffset = 0;
