@@ -47,6 +47,7 @@ class UaS_WoundHandler : Inventory {
 				continue;
 			}
 			critwounds[i].TickWound();
+			critwounds[i].painkiller = max(critwounds[i].painkiller, plr.stimcount * (50/HDStim.HDSTIM_DOSE));
 		}
 
 		// tabulate new wound array total points
