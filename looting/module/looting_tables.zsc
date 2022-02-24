@@ -28,10 +28,14 @@ class UaS_LootList : Thinker {
 					if (x != -1) {
 						string tli = templootlist[j].Left(x);
 						string tlm = templootlist[j].Mid(x+1);
+						if (!CheckValidClass(tli)) { continue; }
 						int mul = tlm.ToInt(10);
 						for (int k = 0; k < mul; k++) { lt.LootClasses.push(tli); }
 					}
-					else { lt.LootClasses.push(templootlist[j]); }
+					else {
+						if (!CheckValidClass(templootlist[j])) { continue; }
+						lt.LootClasses.push(templootlist[j]);
+					}
 				}
 				LootList.push(lt);
 			}
@@ -46,6 +50,15 @@ class UaS_LootList : Thinker {
 				}
 			}
 		}
+	}
+
+	bool CheckValidClass(string tocheck) {
+		for (int i = 0; i < allclasses.size(); i++) {
+			string existing = allclasses[i].GetClassName();
+			if (tocheck ~== existing) return true;
+		}
+		UaS.LogDebug(DBG_Looting, string.format("Invalid loot class "..tocheck));
+		return false;
 	}
 
 	string GetLootItem(actor checkclass) {
