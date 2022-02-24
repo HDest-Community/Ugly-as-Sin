@@ -5,6 +5,7 @@ class UaS_LootEntry {
 
 class UaS_LootList : Thinker {
 	array<UaS_LootEntry> LootList;
+	array<string> InvalidClasses;
 
 	void InitLootTables() {
 		// Get lump string array and make a copy
@@ -49,6 +50,12 @@ class UaS_LootList : Thinker {
 					console.printf(lt.LootClasses[j]);
 				}
 			}
+			if (InvalidClasses.size() > 0) {
+				console.printf("---===Invalid loot classes===---");
+				for (int i=0; i<InvalidClasses.size(); i++) {
+					console.printf(InvalidClasses[i]);
+				}
+			}
 		}
 	}
 
@@ -57,7 +64,7 @@ class UaS_LootList : Thinker {
 			string existing = allclasses[i].GetClassName();
 			if (tocheck ~== existing) return true;
 		}
-		UaS.LogDebug(DBG_Looting, string.format("Invalid loot class "..tocheck));
+		InvalidClasses.push(tocheck);
 		return false;
 	}
 
