@@ -22,6 +22,7 @@ extend class UaS_TraumaKit {
 				random[uas_tk](25,75) +
 				random[uas_tk](25,75)) / 3;
 			currentWound.painkiller = min(currentWound.painkiller + inject, 100);
+			patient.stimcount += (HDStim.HDSTIM_MAX - HDStim.HDSTIM_DOSE)/20;
 			currentmessage.text = "Anesthetic injected.";
 			currentmessage.timeout = 2*35;
 			patient.A_MuzzleClimb(
