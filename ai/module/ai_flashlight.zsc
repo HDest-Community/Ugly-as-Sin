@@ -20,11 +20,7 @@ extend class UaS_AI_Handler {
 		if (!BotClass && !HumanClass) { return; }
 
 		string flc = "UaS_LaserLightModule";
-		UaS_LaserLightModule LLM = UaS_LaserLightModule(owner.FindInventory(flc));
-		if (!LLM) {
-			owner.giveinventory(flc, 1);
-			LLM = UaS_LaserLightModule(owner.FindInventory(flc));
-		}
+		if (!owner.FindInventory(flc)) { owner.giveinventory(flc, 1); }
 
 		bool isowneraiming = (
 			owner.frame ==  4 || owner.frame ==  5 ||
@@ -44,7 +40,7 @@ extend class UaS_AI_Handler {
 			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
 			if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) { // don't run the normal check logic if we're incapacitated
-				if (LLM.activated && UaS.RandomChance(UaS_AI_PlayDead)) {
+				if (UaS.RandomChance(UaS_AI_PlayDead)) {
 					UaS.SendIntent("LLM_Toggle", "Off", owner);
 				}
 			} else {
