@@ -7,6 +7,7 @@ class UaS_HungerTracker : Inventory {
 	int mouth_fluid;
 	int pending_calories;
 	int pending_fluid;
+	int jogged;
 	bool drinking;
 	transient cvar grumbles;
 
@@ -36,6 +37,7 @@ class UaS_HungerTracker : Inventory {
 		if (!o) { return; }
 		string debugmsg = string.format("Fatigue %i, energy %i < %i, hydro %i < %i ",o.fatigue, energy, pending_calories, hydro, pending_fluid);
 		string debugtype = "";
+		if (o.runwalksprint >= 0) { jogged++; }
 		if (o.beatcount > 0) { return; }
 
 		bool burnedsomething = false;
@@ -49,11 +51,19 @@ class UaS_HungerTracker : Inventory {
 		}
 
 		// Drain from jogging
-		if (o.runwalksprint >= 0 && o.beatcounter % 5 == 0) {
-			energy = max(energy - 1, -100);
-			hydro = max(hydro - 1, -100);
-			burnedsomething = random[uas_hunger](false,true);
-			debugtype.appendformat(" \ciexertion\c- ");
+		if (jogged >= 175) {
+			if (o.beatcounter % 5 == 0) {
+				hydro = max(hydro - 1, -100);
+				jogged -= 175;
+				burnedsomething = random[uas_hunger](false,true);
+				debugtype.appendformat(" \ciexertion\c- ");
+			}
+			if (o.beatcounter % 7 == 0) {
+				energy = max(energy - 1, -100);
+				jogged -= 175;
+				burnedsomething = random[uas_hunger](false,true);
+				debugtype.appendformat(" \ciexertion\c- ");
+			}
 		}
 
 		// drain from fatigue
