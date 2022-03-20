@@ -1,4 +1,30 @@
-extend class UaS_Respirator {
+extend class UaS_Respirator
+{
+
+
+	override void tick()
+	{
+		super.tick();
+		if(isfrozen())return;
+		
+		// Check for whether or not this specific respirator is active.
+		// checks for owner since otherwise we'd be indexing 0. 
+		if(owner)
+		{
+			// This check activates when the player first toggles the rsp.
+			if(activated && !owner.findinventory("uas_respirator_worn"))
+			{
+				owner.A_GiveInventory("uas_respirator_worn", 1);
+			}
+			// This toggles whenever they turn the rsp off. 
+			else if (!activated)
+			{
+				owner.A_TakeInventory("uas_respirator_worn", 1);
+			}
+		}
+	}
+
+
 	override void DoEffect() {
 		//console.printf("breath "..owner.player.air_finished - Level.maptime);
 		//console.printf(""..airunits);
@@ -68,7 +94,12 @@ extend class UaS_Respirator {
 	}
 
 	override void DetachFromOwner() {
-		if (activated) { ToggleRespirator(); }
+		if (activated)
+		{
+			ToggleRespirator();
+			// Removes the worn token if active. 
+			owner.A_TakeInventory("uas_respirator_worn", 1);
+		}
 		super.DetachFromOwner();
 	}
 
@@ -76,5 +107,15 @@ extend class UaS_Respirator {
 		spawn:
 			UGSI D 0 -1;
 			stop;
+	}
+}
+
+
+// an inventory token for players. 
+class uas_respirator_worn : inventory
+{
+	default
+	{
+		inventory.maxamount 1;
 	}
 }

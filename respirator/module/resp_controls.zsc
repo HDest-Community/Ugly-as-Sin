@@ -16,7 +16,8 @@ extend class UaS_Respirator {
 		return false;
 	}
 
-	void ToggleRespirator() {
+	void ToggleRespirator()
+	{
 		owner.A_StopSound(CHAN_BREATH);
 		owner.A_StartSound("UaS/respirator/click",
 			CHAN_AUTO, 0, 1, ATTN_STATIC);
