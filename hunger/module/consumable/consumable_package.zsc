@@ -3,7 +3,7 @@ extend class UaS_Consumable {
 	void AddItem(string FoodItem, int quantity = 1) {
 		bPACKAGED = true;
 		class<actor> newItem = (class<actor>)(FoodItem);
-		bool valid = (newItem && (newItem is (class<actor>)('UaS_Consumable')));
+		bool valid = (newItem);
 		if (!valid) {
 			A_Log(string.format("\ci%s: Invalid class '%s'! Ignoring...", GetClassName(), FoodItem));
 			return;

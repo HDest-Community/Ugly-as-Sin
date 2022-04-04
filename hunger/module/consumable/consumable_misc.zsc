@@ -17,7 +17,19 @@ extend class UaS_Consumable {
 		double itemsbulk = 0;
 		if (weaponstatus[UGCS_GAVECONTENTS] == false) {
 			for (int i=0; i < FoodList.size(); i++) {
-				itemsbulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodList[i]))).bulk) * 0.7;
+				class<actor> bulkItem = (class<actor>)(FoodList[i]);
+				bool isConsumable = (bulkItem && (bulkItem is (class<actor>)('UaS_Consumable')));
+				bool isWeapon = (bulkItem && (bulkItem is (class<actor>)('HDWeapon')));
+				bool isPickup = (bulkItem && (bulkItem is (class<actor>)('HDPickup')));
+				if (isWeapon) {
+					itemsbulk += (HDWeapon(getdefaultbytype((class<actor>)(FoodList[i]))).weaponbulk()) * 0.7;
+				}
+				else if (isPickup) {
+					itemsbulk += (HDPickup(getdefaultbytype((class<actor>)(FoodList[i]))).bulk) * 0.7;
+				}
+				// else if (isConsumable) { // Don't think this is needed if weaponbulk() works...
+					// itemsbulk += (UaS_Consumable(getdefaultbytype((class<actor>)(FoodList[i]))).bulk) * 0.7;
+				// }
 			}
 		}
 		return (bulk - (weaponstatus[UGCS_CONSUMED])) + itemsbulk;

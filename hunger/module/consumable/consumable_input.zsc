@@ -44,14 +44,21 @@ extend class UaS_Consumable {
 	void GiveContents() {
 		if (weaponstatus[UGCS_GAVECONTENTS] == true) { return; }
 		for (int i=0; i<FoodList.size(); i++) {
-			owner.A_GiveInventory("HDWeaponGiver");
-			HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
-			wg.weapontogive = FoodList[i];
-			wg.postbeginplay();
-			wg.tick();
-			wg.tick();
-			wg.tick();
-			wg.destroy();
+			class<actor> newItem = (class<actor>)(FoodList[i]);
+			bool isWep = (newItem && (newItem is (class<actor>)('HDWeapon')));
+			if (isWep) {
+				owner.A_GiveInventory("HDWeaponGiver");
+				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
+				wg.weapontogive = FoodList[i];
+				wg.postbeginplay();
+				wg.tick();
+				wg.tick();
+				wg.tick();
+				wg.destroy();
+			}
+			else {
+				owner.A_GiveInventory(FoodList[i]);
+			}
 		}
 		weaponstatus[UGCS_GAVECONTENTS] = true;
 	}
