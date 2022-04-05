@@ -1,0 +1,30 @@
+class UaS_RespiratorStatus : Service {
+	// Returns -1 on any invalid condition
+	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let r = UaS_Respirator(p.FindInventory("UaS_Respirator")); if (!r) return -1;
+
+		// Process the request
+		if (request ~== "IsWorn") { return int(r.activated); }
+		if (request ~== "AirRemaining") { return int(r.mags[0]); }
+		return -1;
+	}
+}
+
+// Example implementation that returns the respirator status
+// for whichever player uses the test item from inventory.
+/*
+class MyTestObject {
+	bool IsPlayerUsingRespirator(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_RespiratorStatus");
+		service RespStatus;
+		while (RespStatus = i.Next()) {
+			int RespActive = int(RespStatus.GetInt("IsWorn", objectArg:players[pnum].mo));
+			console.printf("player "..pnum.." Resp "..RespActive);
+			return RespActive;
+		}
+		return false;
+	}
+}
+*/
