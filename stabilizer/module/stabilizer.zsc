@@ -118,9 +118,15 @@ class UaS_GyroStabilizer : HDPickup {
 	}
 
 	override bool Use(bool pickup) {
-		if(!owner.player.ReadyWeapon) { return false; } // Skip if no ready weapon
-		HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
-		AttachOrDetatch(wep);
+		if (owner.player.cmd.buttons&BT_USE) {
+			SetStatusText("\czUnpaired all UIDS", 35, true);
+			AttachList.clear();
+		}
+		else {
+			if(!owner.player.ReadyWeapon) { return false; } // Skip if no ready weapon
+			HDWeapon wep = HDWeapon(owner.player.ReadyWeapon); // Cast the readyweapon
+			AttachOrDetatch(wep);
+		}
 		return false;
 	}
 

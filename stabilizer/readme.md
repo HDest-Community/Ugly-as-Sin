@@ -15,8 +15,8 @@ A modern upgrade to the traditional rifleman's tension sling, the gyroscopic sta
 
 ## Controls
 
-* **Toggle/Activate**: Pairs a stabilizer mount to the current weapon, if compatible.
-* **Use** + **Toggle/Activate**: Un-pairs a stabilizer mount from current weapon.
+* **Toggle/Activate**: Pairs or unpairs a stabilizer mount to the current weapon, if compatible.
+* **Use** + **Toggle/Activate**: Un-pairs all previously-paired weapon UIDs.
 
 ## Mechanics
 
