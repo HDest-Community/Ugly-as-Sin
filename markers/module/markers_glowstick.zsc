@@ -22,6 +22,8 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override void Tick() {
+		super.Tick();
+		if (isfrozen()) { return; }
 		if (Thrown) {
 			vel *= 5;
 			vel.z += 5;
@@ -41,12 +43,14 @@ class UaS_Glowstick : HDPickup {
 				GlowLight.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age);
 				if (owner) { GlowLight.target = owner; }
 				else { GlowLight.target = self; }
+				bFitsInBackpack = false;
 				break;
 			case false:
 				frame = 1;
 				if (GlowLight) { glowLight.Destroy(); }
 				brightness = 0;
 				age = 0;
+				bFitsInBackpack = true;
 				break;
 		}
 
@@ -59,7 +63,6 @@ class UaS_Glowstick : HDPickup {
 		}
 
 		A_SetAngle(angle + vel.length() * 3 * spindir);
-		super.Tick();
 	}
 
 	override bool Use(bool pickup) {

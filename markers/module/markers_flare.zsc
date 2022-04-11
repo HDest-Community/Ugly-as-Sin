@@ -24,6 +24,8 @@ class UaS_Flare : HDPickup {
 	}
 
 	override void Tick() {
+		super.Tick();
+		if (isfrozen()) { return; }
 		if (Thrown) {
 			vel *= 5;
 			vel.z += 5;
@@ -68,31 +70,29 @@ class UaS_Flare : HDPickup {
 
 			actor pspawn = self;
 			if (owner) { pspawn = owner; }
-			for (int i = 0; i < 4; i++ ) {
-				double pvel = frandom[flare](2,4) * (double(brightness - age) / 192.0);
+			for (int i = 0; i < 4; i++) {
+				double pvel = frandom[flare](1,2) * (double(brightness - age) / 192.0);
+				double offz = 0;
+				color c = "red";
+				if (random[flare](0,1) == 0) { c = "yellow"; }
+				if (pspawn != self) { offz = pspawn.height * 0.6; }
 				pspawn.A_SpawnParticle(
-					"red",
+					c,
 					flags: SPF_FULLBRIGHT,
-					size: random[flare](1,2),
-					zoff: pspawn.height/2,
-					velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
-					vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
-					velz: pvel * sin(frandom[flare](-0,8)),
-					startalphaf: 0.75,
-					sizestep: -0.1
-				);
-				pspawn.A_SpawnParticle(
-					"yellow",
-					flags: SPF_FULLBRIGHT,
-					size: random[flare](1,2),
-					zoff: pspawn.height/2,
-					velx: pvel * cos(pspawn.angle + frandom[flare](-15,15)),
-					vely: pvel * sin(pspawn.angle + frandom[flare](-15,15)),
-					velz: pvel * sin(frandom[flare](-0,8)),
-					startalphaf: 0.75,
-					sizestep: -0.1
+					size: frandom[flare](1,2),
+					xoff: frandom(-1,1),
+					yoff: frandom(-1,1),
+					zoff: frandom(-1,1) + offz,
+					velx: pvel * cos(pspawn.angle + frandom[flare](-45,45)),
+					vely: pvel * sin(pspawn.angle + frandom[flare](-45,45)),
+					velz: pvel * sin(frandom[flare](max(-offz, -45),45)),
+					accelz: -0.1,
+					startalphaf: 0.5,
+					fadestepf: frandom[flare](0.001,0.01),
+					sizestep: -0.001
 				);
 			}
+			bFitsInBackpack = false;
 		}
 		else if (!Activated && !burned) {
 			frame = 0;
@@ -100,6 +100,7 @@ class UaS_Flare : HDPickup {
 			if (FlareLight2) { FlareLight2.Destroy(); }
 			brightness = 0;
 			age = 0;
+			bFitsInBackpack = true;
 		}
 		// Use up when dead?
 		else if (Activated && burned) {
@@ -115,7 +116,6 @@ class UaS_Flare : HDPickup {
 		}
 
 		A_SetAngle(angle + vel.length() * 3 * spindir);
-		super.Tick();
 	}
 
 	override bool Use(bool pickup) {
