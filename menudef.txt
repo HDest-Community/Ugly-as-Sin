@@ -207,16 +207,32 @@ AddOptionMenu "UaS_ConfigureModules" {
 	Submenu "Laser / Flashlight", "UaS_LaserLight_Options"
 }
 
-OptionValue "Modes" {
+OptionValue "UaS_LLM_Modes" {
 	0, "Off"
 	1, "Visible Only"
 	2, "IR Only"
 }
 
+OptionString "UaS_LLM_Colors" {
+	"FF 00 00", "Red (650 nm, 670 nm)"
+	"FF 1B 00", "Red (638 nm)"
+	"FF CC 00", "Yellow-Orange (593 nm)"
+	"FF DC 00", "Yellow (589 nm)"
+	"50 FF 00", "Green (532 nm)"
+	"24 FF 00", "Green (520 nm)"
+	"12 FF 00", "Green (515 nm)"
+	"00 F5 FF", "Blue (488 nm)"
+	"00 A8 FF", "Blue (473 nm)"
+	"00 33 FF", "Blue (450 nm)"
+	"54 00 D9", "Violet (405 nm)"
+}
+
 OptionMenu "UaS_LaserLight_Options" {
 	Title "Laser / Flashlight Module Settings"
-	Option "Preferred Flashlight Mode", "UaS_LLM_LightMode", "Modes"
-	Option "Preferred Laser Mode", "UaS_LLM_LaserMode", "Modes"
+	Option "Preferred Flashlight Mode", "UaS_LLM_LightMode", "UaS_LLM_Modes"
+	//Option "Preferred Flashlight Mode", "UaS_LLM_LightColor", "UaS_LLM_Colors"
+	Option "Preferred Laser Mode", "UaS_LLM_LaserMode", "UaS_LLM_Modes"
+	Option "Preferred Laser Color", "UaS_LLM_LaserColor", "UaS_LLM_COlors"
 	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
 }
 AddOptionMenu "UaS_LoadedModules" {

@@ -1,3 +1,4 @@
 user bool UaS_FlashlightParticles = true;
 user int UaS_LLM_LightMode = 1;
 user int UaS_LLM_LaserMode = 2;
+user color UaS_LLM_LaserColor = "12 FF 00";

@@ -10,7 +10,7 @@ class UaS_LaserLightModule : HDWeapon {
 	color LaserColor;
 	double LaserAlpha;
 	transient cvar beams;
-	transient cvar laserpref, lightpref;
+	transient cvar laserpref, lasercolorpref, lightpref;
 
 	double lastangle, lastpitch;
 	vector3 lastpos, lastvel;
@@ -73,6 +73,7 @@ class UaS_LaserLightModule : HDWeapon {
 		if (owner is 'PlayerPawn') { Configuring(); }
 		UpdateEmitter();
 		ProcessIntents();
+		GetDefaults(owner, 1);
 		if(activated && owner.health > 0) {
 			Light(modeLight);
 			Laser(modeLaser);
@@ -90,21 +91,34 @@ class UaS_LaserLightModule : HDWeapon {
 		bool pressingAltAttack = ((owner.player.cmd.buttons & BT_ALTATTACK) && !(owner.player.oldbuttons & BT_ALTATTACK));
 		if (pressingAttack) { modeLight = (modeLight + 1) % 3; ToggleSound(); }
 		if (pressingAltAttack) { modeLaser = (modeLaser + 1) % 3; ToggleSound(); }
-		string modeLightName, modeLaserName;
+		string modeLightName, modeLaserName, modeLaserColor;
 		switch (modeLaser) {
-			case 0: modeLaserName = "Off"; break;
-			case 1: modeLaserName = "Visible"; break;
-			case 2: modeLaserName = "IR only"; break;
+			case 0: modeLaserName = "\cmOff"; break;
+			case 1: modeLaserName = "\ccVisible"; break;
+			case 2: modeLaserName = "\cuIR only"; break;
 		}
 		switch (modeLight) {
-			case 0: modeLightName = "Off"; break;
-			case 1: modeLightName = "Visible"; break;
-			case 2: modeLightName = "IR only"; break;
+			case 0: modeLightName = "\cmOff"; break;
+			case 1: modeLightName = "\ccVisible"; break;
+			case 2: modeLightName = "\cuIR only"; break;
 			case 3: modeLightName = "Flashing"; break;
 		}
-		string statusMessage = "--- Laser / Flashlight ---\n"
-			.."Light Mode: "..modeLightName.."\n"
-			.."Laser Mode: "..modeLaserName.."\n\n";
+		if (LaserColor == "FF 00 00") { modeLaserColor = "Red (650 nm, 670 nm)"; }
+		else if (LaserColor == "FF 1B 00") { modeLaserColor = "\cgRed (638 nm)"; }
+		else if (LaserColor == "FF CC 00") { modeLaserColor = "\ckYellow-Orange (593 nm)"; }
+		else if (LaserColor == "FF DC 00") { modeLaserColor = "\ckYellow (589 nm)"; }
+		else if (LaserColor == "50 FF 00") { modeLaserColor = "\cdGreen (532 nm)"; }
+		else if (LaserColor == "24 FF 00") { modeLaserColor = "\cdGreen (520 nm)"; }
+		else if (LaserColor == "12 FF 00") { modeLaserColor = "\cdGreen (515 nm)"; }
+		else if (LaserColor == "00 F5 FF") { modeLaserColor = "\chBlue (488 nm)"; }
+		else if (LaserColor == "00 A8 FF") { modeLaserColor = "\chBlue (473 nm)"; }
+		else if (LaserColor == "00 33 FF") { modeLaserColor = "\chBlue (450 nm)"; }
+		else if (LaserColor == "54 00 D9") { modeLaserColor = "\ctViolet (405 nm)"; }
+		else { modeLaserColor = "Custom"; }
+		string statusMessage = "--- \coLaser / Flashlight\c- ---\n"
+			.."\cjLight Mode: "..modeLightName.."\n"
+			.."\cjLaser Mode: "..modeLaserName.."\n"
+			.."\cjLaser Color: "..modeLaserColor.."\n\n";
 		if (activated) { statusMessage=statusMessage.."\cj=On="; }
 		else { statusMessage=statusMessage.."\cu=Off="; }
 		A_WeaponMessage(statusMessage);
@@ -267,8 +281,11 @@ class UaS_LaserLightModule : HDWeapon {
 		}
 
 		// Enemies use red lasers
-		if (owner.bISMONSTER && !owner.bFRIENDLY) { LaserColor = "RED"; }
-		else { LaserColor = "GREEN"; }
+		// Friends use green lasers
+		if (owner.bISMONSTER) {
+			if (!owner.bFRIENDLY) { LaserColor = "FF 00 00"; }
+			else { LaserColor = "50 FF 00"; }
+		}
 
 		// Make laser particles larger for players wearing NVGs, and IR lasers visible
 		double sizefactor = 1;
@@ -356,11 +373,23 @@ class UaS_LaserLightModule : HDWeapon {
 
 	override void actualpickup(actor other) {
 		super.actualpickup(other);
-		if (other && other is 'HDPlayerPawn') {
-			if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", other.player); }
-			if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", other.player); }
-			modeLaser = laserpref.GetInt();
-			modeLight = lightpref.GetInt();
+		GetDefaults(other, 0);
+	}
+
+	void GetDefaults(actor p, int t = 0) {
+		if (!p && !(p is 'HDPlayerPawn')) { return; }
+		if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", p.player); }
+		if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", p.player); }
+		if (!lasercolorpref) { lasercolorpref = CVar.GetCVar("UaS_LLM_LaserColor", p.player); }
+		switch (t) {
+			case 0: // All
+				modeLaser = laserpref.GetInt();
+				modeLight = lightpref.GetInt();
+				LaserColor = lasercolorpref.GetString();
+				break;
+			case 1: // Laser Only
+				LaserColor = lasercolorpref.GetString();
+				break;
 		}
 	}
 }
