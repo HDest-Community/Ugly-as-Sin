@@ -377,7 +377,8 @@ class UaS_LaserLightModule : HDWeapon {
 	}
 
 	void GetDefaults(actor p, int t = 0) {
-		if (!p && !(p is 'HDPlayerPawn')) { return; }
+		if (!p) { return; }
+		if (!(p is 'HDPlayerPawn')) { return; }
 		if (!laserpref) { laserpref = CVar.GetCVar("UaS_LLM_LaserMode", p.player); }
 		if (!lightpref) { lightpref = CVar.GetCVar("UaS_LLM_LightMode", p.player); }
 		if (!lasercolorpref) { lasercolorpref = CVar.GetCVar("UaS_LLM_LaserColor", p.player); }
