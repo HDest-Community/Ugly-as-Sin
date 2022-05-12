@@ -8,6 +8,7 @@ Tweaks monster behavior mechanics for a more nuanced and immersive gameplay expe
 * **Wounding** `UaS_AI_Wounding` Monsters will cry out in pain and lose combat ability the more injured they are.
 * **Lights** `UaS_AI_Flashlights` In dark areas, human-typemonsters will sometimes use flashlights and laser sights.
 * **Stealth** `UaS_AI_Stealth` Allows the player to hide in very dark areas (shown with a blue fade at the bottom of the screen).
+* **Lights when incapped** `UaS_AI_Playdead` Chance for monsters to disable their light/laser when knocked down.
 
 ## Mechanics
 

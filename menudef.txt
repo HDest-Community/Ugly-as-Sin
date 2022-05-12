@@ -53,7 +53,7 @@ OptionMenu "UaS_AI_Options" {
 	Option "Wounding","UaS_AI_Wounding","OnOff"
 	Option "Lights","UaS_AI_Flashlights","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff", "UaS_AI_Debug_Override"
-	Slider "'Play Dead' chance","UaS_AI_PlayDead", 0, 1, 0.05, 2
+	Slider "Lights when incapped","UaS_AI_PlayDead", 0, 1, 0.05, 2
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Aim Tweaks"
@@ -230,7 +230,6 @@ OptionString "UaS_LLM_Colors" {
 OptionMenu "UaS_LaserLight_Options" {
 	Title "Laser / Flashlight Module Settings"
 	Option "Preferred Flashlight Mode", "UaS_LLM_LightMode", "UaS_LLM_Modes"
-	//Option "Preferred Flashlight Mode", "UaS_LLM_LightColor", "UaS_LLM_Colors"
 	Option "Preferred Laser Mode", "UaS_LLM_LaserMode", "UaS_LLM_Modes"
 	Option "Preferred Laser Color", "UaS_LLM_LaserColor", "UaS_LLM_COlors"
 	Option "Flashlight Beams", "UaS_FlashlightParticles", "OnOff"
