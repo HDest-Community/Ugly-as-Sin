@@ -3,16 +3,9 @@ class UaS_FragRemovalHandler : EventHandler {
 		if(!e.Thing) { return; }
 		if(UaS_FragSpawnRate == 100 || UaS_FragReducerEnabled == false) { return; }
 		double removeChance = 1.0 - (double(UaS_FragSpawnRate) * 0.01);
-		switch(e.Thing.GetClassName()) {
-			//case 'FragShard':
-			case 'BFGNecroShard':
-			//case 'NecroShard':
-			case 'NecroGhostShard':
-				if(UaS.RandomChance(removeChance)) {
-					UaS.LogDebug(DBG_Frag, string.format("%s despawned %f", e.Thing.GetClassName(), removeChance));
-					e.Thing.Destroy();
-				}
-				break;
+		if (e.thing is "BFGNecroShard" && UaS.RandomChance(removeChance)) {
+			UaS.LogDebug(DBG_Frag, string.format("%s despawned %f", e.Thing.GetClassName(), removeChance));
+			e.Thing.Destroy();
 		}
 	}
 
@@ -31,8 +24,8 @@ class UaS_FragRemovalHandler : EventHandler {
 		for (Thinker mo; (mo = iterator2.Next());) { mo.Destroy(); count++;}
 		//let iterator3 = ThinkerIterator.Create("NecroShard");
 		//for (Thinker mo; (mo = iterator3.Next());) { mo.Destroy(); count++;}
-		let iterator4 = ThinkerIterator.Create("NecroGhostShard");
-		for (Thinker mo; (mo = iterator4.Next());) { mo.Destroy(); count++;}
+		//let iterator4 = ThinkerIterator.Create("NecroGhostShard");
+		//for (Thinker mo; (mo = iterator4.Next());) { mo.Destroy(); count++;}
 		return count;
 	}
 }
