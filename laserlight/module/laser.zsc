@@ -154,13 +154,15 @@ class UaS_LaserLightModule : HDWeapon {
 			HDPlayerPawn p = HDPlayerPawn(owner);
 			actor sc = p.scopecamera;
 			if (!p || !sc) { return; }
+			vector3 gunpos = HDMath.GetGunPos(owner);
 			newpos = owner.vec3Angle(
 				offset * cos(-sc.pitch) + 4 * sin(-sc.pitch),
 				sc.angle,
 				offset * sin(-sc.pitch) + ((owner.player.viewz - owner.pos.z) - 4));
 			newpos.z = min(
 				newpos.z,
-				owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
+				owner.pos.z + gunpos.z);
+				// owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
 			newangle = sc.angle;
 			newpitch = sc.pitch;
 		}
