@@ -21,7 +21,7 @@ zscript:
 		ipath=$$(dirname $${f:3}) ; \
 		echo "#include \"$$ipath/$$ifile\"" >> ../zscript.zsc ; \
 	done
-	for f in $$(find ../* -name "*.zsc" -not -path "*zscript.zsc" -not -path "*core*" | sort -t '/' -k2,2 -k4r ) ; do \
+	for f in $$(find ../* -path "*/module/*" -name "*.zsc" -not -path "*zscript.zsc" -not -path "*core*" | sort -t '/' -k2,2 -k4r ) ; do \
 		ifile=$$(basename $$f) ; \
 		ipath=$$(dirname $${f:3}) ; \
 		echo "#include \"$$ipath/$$ifile\"" >> ../zscript.zsc ; \
