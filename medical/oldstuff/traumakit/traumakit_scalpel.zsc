@@ -31,7 +31,7 @@ extend class UaS_TraumaKit {
 			if (!currentWound) {
 				owner.A_StartSound("bandage/rip",CHAN_WEAPON);
 				patient.damagemobj(owner,owner,5,"staples");
-				patient.woundcount += 1;
+				hdbleedingwound.inflict(patient, 1, source = owner);
 				return;
 			}
 

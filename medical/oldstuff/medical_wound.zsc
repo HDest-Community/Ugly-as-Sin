@@ -1,23 +1,23 @@
-class WoundInfo : thinker {
+class UaS_WoundInfo : thinker {
+	HDBleedingWound hdbw;
 	string description;
 	int painkiller;
 	int dirty;
 	int obstructed;
-	int open;
-	int cavity;
 	int timer;
-	int size;
 	int infection;
 	int pain;
 	int avgstat;
-	bool clear;
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		ChangeStatNum(STAT_STATIC);
 	}
 
-	void TickWound() {
+	override void Tick() {
+		if (!hdbw) { self.Destroy(); return; }
+		if (hdbw.bleeder.IsFrozen()) { return; }
+
 		UpdateAverageStatus();
 		timer = max(timer - 1, 0);
 		pain = max(pain - 1, 0);
@@ -26,11 +26,9 @@ class WoundInfo : thinker {
 			// Metabolize some painkiller
 			painkiller = max(painkiller - 1, 0);
 
-			// Random normal distribution for heal probability
-			int toHeal = (
-				random[uas_wi](0, 15) +
-				random[uas_wi](0, 15) +
-				random[uas_wi](0, 15)) / 3;
+			// For now prevent wounds from regenerating naturally
+			// Later this will be influenced by our additional status trackers
+			hdbw.regenrate = 0;
 
 			// Wound heals some points
 			if (toHeal >= avgstat) {
@@ -46,9 +44,6 @@ class WoundInfo : thinker {
 				infection = min(infection + 1, 100);
 			}
 
-			if (avgstat == 0) {
-				clear = true;
-			}
 			timer = random[uas_wi](2,5) * (35 + open);
 		}
 	}

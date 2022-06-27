@@ -5,7 +5,7 @@ GameInfo {
 	AddEventHandlers = "UaS_VisWeps_Bootstrap"
 	AddEventHandlers = "UaS_SlingSpawner"
 	AddEventHandlers = "UaS_Scarcity_Handler"
-	AddEventHandlers = "UaS_Medical_Bootstrap"
+	//AddEventHandlers = "UaS_Medical_Bootstrap"
 	AddEventHandlers = "UaS_Markers_Spawner"
 	AddEventHandlers = "UaS_Looting_Bootstrap"
 	AddEventHandlers = "UaS_LLMSpawner"
