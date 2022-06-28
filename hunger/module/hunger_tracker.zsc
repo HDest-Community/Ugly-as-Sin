@@ -109,15 +109,17 @@ class UaS_HungerTracker : Inventory {
 
 		// Grumble if haven't eaten recently
 		if (!grumbles) { grumbles = CVar.GetCVar("UaS_HungerGrumbles", players[consoleplayer]); }
-		int grumblevol = (grumbles.GetBool() || UaS_HungerStarvation);
+		int grumblesetting = grumbles.GetInt();
 		int pend = (pending_calories + pending_fluid);
 		int grumblerate = 30;
 		if (energy + hydro < 0) { grumblerate = 15; }
 		if (pend <= 200 && o.beatcounter % grumblerate == 0 && UaS.RandomChance(0.5)) {
-			owner.A_StartSound("UaS/Gurgle",
-				CHAN_AUTO, CHANF_OVERLAP,
-				frandom[uas_hunger](0.6, 1.0) * grumblevol, ATTN_STATIC,
-				frandom[uas_hunger](1.5, 2.0));
+			if ((grumblesetting == 1) || (grumblesetting == 0 && UaS_HungerStarvation)) {
+				owner.A_StartSound("UaS/Gurgle",
+					CHAN_AUTO, CHANF_OVERLAP,
+					frandom[uas_hunger](0.6, 1.0), ATTN_STATIC,
+					frandom[uas_hunger](1.5, 2.0));
+			}
 		}
 
 		// Debuggging output

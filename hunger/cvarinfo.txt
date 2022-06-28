@@ -2,4 +2,4 @@ server bool UaS_HungerMetabolism = true;
 server bool UaS_HungerStamina = true;
 server bool UaS_HungerStarvation = false;
 server bool UaS_HungerSickness = true;
-user bool UaS_HungerGrumbles = true;
+user int UaS_HungerGrumbles = 1;
