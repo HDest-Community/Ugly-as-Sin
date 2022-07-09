@@ -126,7 +126,7 @@ extend class UaS_Aim_Thinker {
 		if (plr.gunbraced) { aimoffset *= 0.90; }
 
 		// apply to player
-		plr.hudbob += aimoffset;
+		plr.wepbob += aimoffset;
 	}
 
 	vector2 RandomSway() {

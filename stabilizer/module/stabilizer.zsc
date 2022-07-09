@@ -79,10 +79,10 @@ class UaS_GyroStabilizer : HDPickup {
 			ownr.muzzleclimb2.length()  +
 			ownr.muzzleclimb3.length()  +
 			ownr.muzzleclimb4.length()  +
-			ownr.hudbobrecoil1.length() +
-			ownr.hudbobrecoil2.length() +
-			ownr.hudbobrecoil3.length() +
-			ownr.hudbobrecoil4.length() +
+			ownr.wepbobrecoil1.length() +
+			ownr.wepbobrecoil2.length() +
+			ownr.wepbobrecoil3.length() +
+			ownr.wepbobrecoil4.length() +
 			ownr.muzzledrift.length() +
 			ownr.vel.length());
 		return cvalue;
@@ -96,10 +96,10 @@ class UaS_GyroStabilizer : HDPickup {
 		ownr.muzzleclimb2  *= factor;
 		ownr.muzzleclimb3  *= factor;
 		ownr.muzzleclimb4  *= factor;
-		ownr.hudbobrecoil1 *= factor;
-		ownr.hudbobrecoil2 *= factor;
-		ownr.hudbobrecoil3 *= factor;
-		ownr.hudbobrecoil4 *= factor;
+		ownr.wepbobrecoil1 *= factor;
+		ownr.wepbobrecoil2 *= factor;
+		ownr.wepbobrecoil3 *= factor;
+		ownr.wepbobrecoil4 *= factor;
 		ownr.muzzledrift   *= factor;
 		// if (ownr.scopecamera) {
 			// ownr.scopecamera.angle *= factor;
