@@ -160,6 +160,7 @@ AddOptionMenu "UaS_ConfigureModules" {
 }
 
 OptionValue "UaS_GrumbleOptions" {
+	-1,"Never"
 	0, "Starving Only"
 	1, "Always"
 }
