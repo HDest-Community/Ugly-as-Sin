@@ -1,0 +1,31 @@
+class UaS_WoundHandler : Inventory {
+	array<UaS_BleedingWound> WoundList;
+	transient ThinkerIterator WoundIter;
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		ManageWounds();
+	}
+
+	void ManageWounds() {
+		if (!WoundIter) { WoundIter = ThinkerIterator.create("HDBleedingWound"); }
+		HDBleedingWound bw = HDBleedingWound(WoundIter.Next(true));
+		if (!bw) {
+			WoundIter.ReInit();
+			return;
+		}
+		else if (bw.bleeder == owner) {
+			console.printf("Found player wound "..bw.." for "..owner.." width "..bw.width.." depth "..bw.depth);
+			UaS_BleedingWound uw = UaS_BleedingWound.Create(bw);
+			bw.Destroy();
+			WoundList.push(uw);
+		}
+	}
+}
