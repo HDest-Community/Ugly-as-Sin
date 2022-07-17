@@ -1,2 +1,1 @@
-server bool UaS_FragReducerEnabled = false;
 server int UaS_FragSpawnRate = 100;
