@@ -108,7 +108,7 @@ class UaS_HungerTracker : Inventory {
 		if (pending_fluid > 0 && o.beatcounter % 2 == 0) { hydro++; pending_fluid--; }
 
 		// Grumble if haven't eaten recently
-		if (!grumbles) { grumbles = CVar.GetCVar("UaS_HungerGrumbles", players[consoleplayer]); }
+		if (!grumbles) { grumbles = CVar.GetCVar("UaS_HungerGrumbles", owner.player); }
 		int grumblesetting = grumbles.GetInt();
 		int pend = (pending_calories + pending_fluid);
 		int grumblerate = 30;
