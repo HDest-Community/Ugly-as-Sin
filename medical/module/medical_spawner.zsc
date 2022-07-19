@@ -1,0 +1,12 @@
+class UaS_Medical_Bootstrap : EventHandler {
+	override void WorldTick() {
+		for (int i = 0; i < MAXPLAYERS; i++) {
+			if (!playeringame[i]) { continue; }
+			PlayerInfo p = players[i];
+			if (!p.mo) { return; }
+			if (!p.mo.countinv("UaS_WoundHandler")) {
+				p.mo.giveinventory("UaS_WoundHandler", 1);
+			}
+		}
+	}
+}
