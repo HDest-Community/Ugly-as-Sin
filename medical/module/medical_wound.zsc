@@ -1,5 +1,7 @@
 class UaS_BleedingWound : HDBleedingWound {
 	string Description;
+	int Type;
+	int Location;
 	vector3 Offset;
 
 	override void Tick() {
@@ -26,15 +28,15 @@ class UaS_BleedingWound : HDBleedingWound {
 			zoff: off.z,
 			accelz: -bleeder.gravity,
 			fadestepf: 0);
-		if (random[ubw](0,5)!=0) { return; }
-		bleeder.A_SpawnParticle(
-			"DarkRed",
-			lifetime: random[ubw](10,35),
-			size: frandom[ubw](2,6),
-			xoff: off.x + frandom[ubw](-3,3),
-			yoff: off.y + frandom[ubw](-3,3),
-			zoff: bleeder.getzat(off.x, off.y) + 0.1,
-			fadestepf: 0);
+		// if (random[ubw](0,5)!=0) { return; }
+		// bleeder.A_SpawnParticle(
+			// "DarkRed",
+			// lifetime: random[ubw](10,35),
+			// size: frandom[ubw](2,6),
+			// xoff: off.x + frandom[ubw](-3,3),
+			// yoff: off.y + frandom[ubw](-3,3),
+			// zoff: bleeder.getzat(off.x, off.y) + 0.1,
+			// fadestepf: 0);
 	}
 
 	// static string WoundDescription(int newsize) {

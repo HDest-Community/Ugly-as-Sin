@@ -1,3 +1,3 @@
 GameInfo {
-	//AddEventHandlers = "UaS_Medical_Bootstrap"
+	AddEventHandlers = "UaS_Medical_Bootstrap"
 }
