@@ -21,6 +21,7 @@ OptionMenu "UaS_Options" {
 OptionMenu "UaS_ConfigureModules" {
 	Title "Configure Modules"
 	StaticText " "
+	Submenu "Core", "UaS_CoreOptions"
 }
 
 OptionMenu "UaS_Controls" {
@@ -32,4 +33,22 @@ OptionMenu "UaS_LoadedModules" {
 	Title "All Loaded Modules"
 	StaticText " "
 	StaticText "Core"
+}
+
+OptionMenu "UaS_CoreOptions" {
+	Title "Core Module Settings"
+	StaticText "Debugging Flags"
+	FlagOption "Hunger","UaS_Debug","OnOff",0
+	FlagOption "Scarcity","UaS_Debug","OnOff",1
+	FlagOption "Debris","UaS_Debug","OnOff",2
+	FlagOption "Sling","UaS_Debug","OnOff",3
+	FlagOption "Frag","UaS_Debug","OnOff",4
+	FlagOption "Medical","UaS_Debug","OnOff",5
+	FlagOption "Allies","UaS_Debug","OnOff",6
+	FlagOption "AI","UaS_Debug","OnOff",7
+	FlagOption "Jamming","UaS_Debug","OnOff",8
+	FlagOption "Looting","UaS_Debug","OnOff",9
+	FlagOption "Stealth","UaS_Debug","OnOff",10
+	FlagOption "Searching","UaS_Debug","OnOff",11
+	FlagOption "Intents","UaS_Debug","OnOff",12
 }
