@@ -14,10 +14,9 @@ class UaS_BleedingWound : HDBleedingWound {
 	void BleedWound() {
 		if (depth <= 0 || random[ubw](0,10) > width) { return; }
 		vector3 off = (
-			Offset.x + (frandom[ubw](-width,width) * 0.25),
-			Offset.y + (frandom[ubw](-width,width) * 0.25),
-			Offset.z + (frandom[ubw](-width,width) * 0.25));
-		off.z *= bleeder.player.crouchfactor;
+			(bleeder.radius * Offset.x) + (frandom[ubw](-width,width) * 0.15),
+			(bleeder.radius * Offset.y) + (frandom[ubw](-width,width) * 0.15),
+			(bleeder.height * Offset.z) + (frandom[ubw](-width,width) * 0.15));
 		bleeder.A_SpawnParticle(
 			"DarkRed",
 			//flags: SPF_RELATIVE,
@@ -63,12 +62,10 @@ class UaS_BleedingWound : HDBleedingWound {
 		uw.regenrate = bw.regenrate;
 		uw.damagetype = bw.damagetype;
 		// Add expanded details
-		uw.Offset = (
-			frandom[ubw](-uw.bleeder.radius, uw.bleeder.radius),
-			frandom[ubw](-uw.bleeder.radius, uw.bleeder.radius),
-			frandom[ubw](
-				uw.bleeder.height * 0.25,
-				uw.bleeder.height * 0.9));
+		uw.Offset = ( // This is expressed relative to radius and height
+			frandom[ubw](-0.75, 0.75),
+			frandom[ubw](-0.75, 0.75),
+			frandom[ubw](0.25, 0.85));
 		return uw;
 	}
 
