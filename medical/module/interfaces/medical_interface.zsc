@@ -1,0 +1,75 @@
+class UaS_Med_Interface : HDWeapon abstract {
+	string statusMessage;
+	StatusInfo currentMessage;
+	HDPlayerPawn patient;
+
+	struct StatusInfo {
+		string text;
+		int timeout;
+	}
+
+	Default {
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "";
+		-INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		+HDWEAPON.DONTDISARM;
+		-HDWEAPON.FITSINBACKPACK;
+		+NOINTERACTION;
+		weapon.slotpriority 0.6;
+		weapon.slotnumber 9;
+		tag "";
+	}
+	override double weaponbulk(){ return 0; }
+
+	override void DoEffect() {
+		SetHelpText();
+		StatusText();
+		TickMessages();
+		A_WeaponMessage(statusMessage);
+	}
+
+	void SetPatient() {
+		HDPlayerPawn other;
+		FLineTraceData trc;
+		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: trc);
+		if (trc.hitactor && trc.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(trc.hitactor); }
+
+		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
+		if (!patient || !other) { patient = HDPlayerPawn(owner); }
+	}
+
+	// ToDo: Move this into raw string stuff like trauma kit
+	virtual void StatusText() {
+		statusMessage = "--- \cd"..GetTag().."\c- ---\n";
+		if (patient) { statusMessage = statusmessage.."Treating \cg"..patient.player.getusername().."\n\n"; }
+		else { statusMessage = statusmessage.."\n\n"; }
+	}
+
+	void TickMessages() {
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
+		}
+	}
+
+	override string gethelptext(){
+		string r;
+		r.AppendFormat(WEPHELP_FIRE.."  Hold to apply pressure\n");
+		r.AppendFormat(WEPHELP_RELOAD.."  Hold to apply hemostatics\n");
+		r.AppendFormat(WEPHELP_ZOOM.."  Treat another player\n");
+		return r;
+	}
+
+	void SetHelpText(){ //non-action version
+		let hdp=hdplayerpawn(owner);if(hdp){
+			string ttt=self.gethelptext();
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
+		}
+	}
+}

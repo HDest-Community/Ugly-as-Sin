@@ -1,0 +1,9 @@
+class Uas_BleedingControl : UaS_Med_Interface {
+	default {
+		tag "Bleeding Control";
+	}
+	override void DoEffect() {
+		if (!(owner.player.readyweapon is "UaS_BleedingControl")) { return; }
+		super.DoEffect();
+	}
+}

@@ -72,14 +72,14 @@ class UaS_BleedingWound : HDBleedingWound {
 		return uw;
 	}
 
-	static const string[] severity = {
+	static const string[] w_severity = {
 		"minor","small","shallow",
 		"superficial","moderate","medium",
 		"large","deep","serious","critical" };
-	static const string[] type = {
+	static const string[] w_type = {
 		"incision","laceration","puncture",
 		"avulsion","penetration" };
-	static const string[] bodypart = {
+	static const string[] w_bodypart = {
 		"chest","abdomen","pelvis",
 		"upper back","lower back",
 		"left shoulder","right shoulder",
