@@ -1,3 +1,5 @@
+HDPath = ~/Programs/Doom/Mods/Gameplay/Hideous\ Destructor/
+HDCommand = ./hd-launcher.sh -e -u --update
 SHELL := bash
 .SILENT:
 
@@ -6,6 +8,10 @@ define PreprocessFiles =
 endef
 
 all: zscript cvarinfo menudef mapinfo textures wtblklst manual uasinfo
+
+run: all
+	cd $(HDPath) ; \
+	$(HDCommand)
 
 # =========================
 # ZSCRIPT
