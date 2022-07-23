@@ -1,0 +1,24 @@
+// ----------------------------------------
+// the default pointer is "self" for use in a custom player class.
+// For an inventory item it would be owner, etc.
+// if (KeyCheck(BT_ATTACK, KPT_JUSTPRESSED)) { console.printf("just pressed Attack!"); }
+// ----------------------------------------
+extend class UaS {
+	static play bool KeyCheck(PlayerPawn pointer, int toCheck, int checkType = KPT_PRESSING) {
+		int b = pointer.player.cmd.buttons; int ob = pointer.player.oldbuttons;
+		switch (checkType) {
+			case KPT_PRESSING: return (b&toCheck);break;
+			case KPT_JUSTPRESSED: return ((b&toCheck) && !(ob&toCheck));break;
+			case KPT_JUSTRELEASED: return (!(b&toCheck) && (ob&toCheck));break;
+			case KPT_HELD: return ((b&toCheck) && (ob&toCheck));break;
+		}
+		return false;
+	}
+}
+
+enum KeyPressTypes {
+	KPT_PRESSING,
+	KPT_JUSTPRESSED,
+	KPT_JUSTRELEASED,
+	KPT_HELD,
+}
