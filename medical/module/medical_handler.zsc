@@ -22,7 +22,7 @@ class UaS_WoundHandler : Inventory {
 			return;
 		}
 		else if (bw.bleeder == owner) {
-			console.printf("Found player wound "..bw.." for "..owner.." width "..bw.width.." depth "..bw.depth);
+			//console.printf("Found player wound "..bw.." for "..owner.." width "..bw.width.." depth "..bw.depth);
 			UaS_BleedingWound uw = UaS_BleedingWound.Create(bw);
 			bw.Destroy();
 			WoundList.push(uw);

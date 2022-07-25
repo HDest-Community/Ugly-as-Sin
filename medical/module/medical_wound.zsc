@@ -1,8 +1,6 @@
 class UaS_BleedingWound : HDBleedingWound {
 	string Description;
 	int Type;
-	int Location;
-	vector3 Offset;
 
 	override void Tick() {
 		BleedWound();
@@ -12,19 +10,35 @@ class UaS_BleedingWound : HDBleedingWound {
 	}
 
 	void BleedWound() {
-		if (depth <= 0 || random[ubw](0,10) > width) { return; }
+		// Calculate offset
 		vector3 off = (
-			(bleeder.radius * Offset.x) + (frandom[ubw](-width,width) * 0.15),
-			(bleeder.radius * Offset.y) + (frandom[ubw](-width,width) * 0.15),
-			(bleeder.height * Offset.z) + (frandom[ubw](-width,width) * 0.15));
+			cos(location.x+bleeder.angle) * bleeder.radius * 0.7,
+			sin(location.x+bleeder.angle) * bleeder.radius * 0.7,
+			location.y * bleeder.height);
+		// Spawn a wound particle;
 		bleeder.A_SpawnParticle(
 			"DarkRed",
 			//flags: SPF_RELATIVE,
-			lifetime: random[ubw](10,35),
-			size: frandom[ubw](1,3),
+			lifetime: 1,
+			size: (width*0.5)+(depth*0.5)*0.5,
 			xoff: off.x,
 			yoff: off.y,
 			zoff: off.z,
+			velx: bleeder.vel.x,
+			vely: bleeder.vel.y,
+			velz: bleeder.vel.z,
+			startalphaf: 0.5,
+			fadestepf: 0);
+		// Maybe spawn a blood drop depending on depth
+		if (random[ubw](1,10) > depth) { return; }
+		bleeder.A_SpawnParticle(
+			"DarkRed",
+			//flags: SPF_RELATIVE,
+			lifetime: random[ubw](10,20),
+			size: frandom[ubw](1,3),
+			xoff: off.x + frandom[ubw](-width, width) * 0.1,
+			yoff: off.y + frandom[ubw](-width, width) * 0.1,
+			zoff: off.z + frandom[ubw](-width, width) * 0.1,
 			accelz: -bleeder.gravity,
 			fadestepf: 0);
 		// if (random[ubw](0,5)!=0) { return; }
@@ -61,11 +75,10 @@ class UaS_BleedingWound : HDBleedingWound {
 		uw.sealed = bw.sealed;
 		uw.regenrate = bw.regenrate;
 		uw.damagetype = bw.damagetype;
+		uw.location = bw.location;
 		// Add expanded details
-		uw.Offset = ( // This is expressed relative to radius and height
-			frandom[ubw](-0.75, 0.75),
-			frandom[ubw](-0.75, 0.75),
-			frandom[ubw](0.25, 0.85));
+		//console.printf("location "..bw.location);
+		if (bw.location.y >= 0.85) { uw.type = UWL_HEAD; console.printf("headwound!"); }
 		return uw;
 	}
 
@@ -87,4 +100,13 @@ class UaS_BleedingWound : HDBleedingWound {
 		"left calf","right calf",
 		"left shin","right shin"
 	};
+}
+enum UaS_BodyParts {
+	UWL_L_ARM,
+	UWL_R_ARM,
+	UWL_L_LEG,
+	UWL_R_LEG,
+	UWL_TORSO,
+	UWL_JUNCTIONAL,
+	UWL_HEAD
 }
