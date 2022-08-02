@@ -1,0 +1,198 @@
+const UAS_HDLD_IFAK = "ifk";
+const UAS_HDLD_MFAK = "mfk";
+const UAS_HDLD_AFAK = "afk";
+
+class UaS_FAK_Base : HDBackpack abstract {}
+
+class FAK_ItemStorage : ItemStorage {
+	array<class> AllowedItems;
+	override int CheckConditions(Inventory item, class<Inventory> cls) {
+		bool valid=false;
+		for (int i=0; i<AllowedItems.size(); i++) {
+			//console.printf(AllowedItems[i].GetClassName());
+			valid = (
+				(item && (item is AllowedItems[i]))|
+				(cls  && (cls  is AllowedItems[i]))
+			);
+			if (valid) { break; }
+		}
+		if (!valid) { return IType_Invalid; }
+		return super.CheckConditions(item,cls);
+	}
+
+	override int GetOperationSpeed(class<Inventory> item, int operation) {
+		switch (clamp(operation, 0, 2)) {
+			case SIIAct_Extract: return 5; break;	//extract
+			case SIIAct_Pocket: return 5; break;	//pocket
+			case SIIAct_Insert: return 35; break;	//insert
+		}
+		return 10;
+	}
+}
+
+class UaS_IFAK : UaS_FAK_Base {
+	Default {
+		HDBackpack.MaxCapacity 27;
+		Inventory.PickupMessage "Picked up an IFAK.";
+		tag "IFAK";
+		Inventory.Icon "UGSME0";
+	}
+	override void AddAllowedItems() {
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
+	}
+}
+
+class UaS_MFAK : UaS_IFAK {
+	Default {
+		HDBackpack.MaxCapacity 40;
+		Inventory.PickupMessage "Picked up an MFAK.";
+		tag "MFAK";
+		Inventory.Icon "UGSMF0";
+	}
+	override void AddAllowedItems() {
+		super.AddAllowedItems();
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
+	}
+}
+
+class UaS_AFAK : UaS_MFAK {
+	Default {
+		HDBackpack.MaxCapacity 80;
+		Inventory.PickupMessage "Picked up an AFAK.";
+		tag "AFAK";
+		Inventory.Icon "UGSMG0";
+	}
+	override void AddAllowedItems() {
+		super.AddAllowedItems();
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
+	}
+}
+
+//===========================
+// All the messy shit
+//===========================
+extend class UaS_FAK_Base {
+	FAK_ItemStorage ModifiedStorage;
+
+	default {
+		radius 4;
+		height 4;
+		tag "Trauma Kit";
+		//HDBackpack.MaxCapacity 20;
+		Inventory.Icon "UGSIF0";
+		Inventory.PickupMessage "Picked up a personal trauma kit. You should never see this message.";
+		scale 0.5;
+		//hdweapon.refid UAS_HDLD_IFAK;
+	}
+
+	override double WeaponBulk() {
+		return max((Storage ? Storage.TotalBulk * 0.30 : 0), 5);
+	}
+
+	override string, double GetPickupSprite() { return "UGSIF0", 1.0; }
+
+	override void BeginPlay() {
+		super.BeginPlay();
+		Storage = new('FAK_ItemStorage');
+		ModifiedStorage = FAK_ItemStorage(Storage);
+		AddAllowedItems();
+		UpdateCapacity();
+		UpdateSprite();
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		for (int i=0; i<ModifiedStorage.AllowedItems.size(); i++) {
+			ModifiedStorage.AddAmount((class<Inventory>)(ModifiedStorage.AllowedItems[i]), 1, flags: BF_IGNORECAP);
+		}
+	}
+
+	abstract void AddAllowedItems();
+
+	override bool IsBeingWorn() { return false; }
+
+	States {
+		Spawn:
+			UGSM A -1 { invoker.UpdateSprite(); }
+			// gotta cache the sprite name for this to work
+			// all these items will use the same sprite, diff frames
+			Stop;
+		User3:
+			#### # 0 A_MagManager("");
+			goto Ready;
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl)
+	{
+		int BaseOffset = -80;
+
+		sb.DrawString(sb.pSmallFont, "\c[DarkBrown][] [] [] \c[Tan]"..gettag().."\c[DarkBrown] [] [] []", (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
+		string BulkString = "Total Bulk: \cf"..int(Storage.TotalBulk).."\c-";
+		sb.DrawString(sb.pSmallFont, BulkString, (0, BaseOffset + 10), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
+
+		int ItemCount = Storage.Items.Size();
+
+		if (ItemCount == 0)
+		{
+			sb.DrawString(sb.pSmallFont, "No items found.", (0, BaseOffset + 30), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_DARKGRAY);
+			return;
+		}
+
+		StorageItem SelItem = Storage.GetSelectedItem();
+		if (!SelItem)
+		{
+			return;
+		}
+
+		for (int i = 0; i < (ItemCount > 1 ? 5 : 1); ++i)
+		{
+			int RealIndex = (Storage.SelItemIndex + (i - 2)) % ItemCount;
+			if (RealIndex < 0)
+			{
+				RealIndex = ItemCount - abs(RealIndex);
+			}
+
+			vector2 Offset = ItemCount > 1 ? (-100, 8) : (0, 0);
+			switch (i)
+			{
+				case 1: Offset = (-50, 4);  break;
+				case 2: Offset = (0, 0); break;
+				case 3: Offset = (50, 4); break;
+				case 4: Offset = (100, 8); break;
+			}
+
+			StorageItem CurItem = Storage.Items[RealIndex];
+			bool CenterItem = Offset ~== (0, 0);
+			sb.DrawImage(CurItem.Icons[0], (Offset.x, BaseOffset + 40 + Offset.y), sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, CenterItem && !CurItem.HaveNone() ? 1.0 : 0.6, CenterItem ? (50, 30) : (30, 20), CenterItem ? (4.0, 4.0) : (3.0, 3.0));
+		}
+
+		sb.DrawString(sb.pSmallFont, SelItem.NiceName, (0, BaseOffset + 60), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_FIRE);
+
+		int AmountInBackpack = SelItem.ItemClass is 'HDMagAmmo' ? SelItem.Amounts.Size() : (SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0);
+		sb.DrawString(sb.pSmallFont, "In pouch:  "..sb.FormatNumber(AmountInBackpack, 1, 6), (0, BaseOffset + 70), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountInBackpack > 0 ? Font.CR_BROWN : Font.CR_DARKBROWN);
+
+		int AmountOnPerson = GetAmountOnPerson(hpl.FindInventory(SelItem.ItemClass));
+		sb.DrawString(sb.pSmallFont, "On person:  "..sb.FormatNumber(AmountOnPerson, 1, 6), (0, BaseOffset + 78), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountOnPerson > 0 ?  Font.CR_WHITE : Font.CR_DARKGRAY);
+
+	}
+}

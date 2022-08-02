@@ -141,6 +141,56 @@ Sprite "UGSIF0", 17, 18
 	Offset 7, 18
 	Patch "medical/patches/UaS_TraumaKit.png", 0, 0
 }
+
+Sprite "UGSMA0", 36, 103
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 18, 52
+	Patch "medical/patches/UaS_Tourniquet.png", 0, 0
+}
+
+Sprite "UGSMB0", 32, 45
+{
+	XScale 5.000
+	YScale 5.000
+	Offset 16, 22
+	Patch "medical/patches/UaS_Gauze.png", 0, 0
+}
+
+Sprite "UGSMC0", 64, 84
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 32, 42
+	Patch "medical/patches/UaS_PressureBandage.png", 0, 0
+}
+
+Sprite "UGSMD0", 64, 64
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 32, 32
+	Patch "medical/patches/UaS_HemoGauze.png", 0, 0
+}
+
+Sprite "UGSME0", 17, 18
+{
+	Offset 7, 18
+	Patch "medical/patches/UaS_IFAK.png", 0, 0
+}
+
+Sprite "UGSMF0", 22, 27
+{
+	Offset 11, 14
+	Patch "medical/patches/UaS_MFAK.png", 0, 0
+}
+
+Sprite "UGSMG0", 22, 29
+{
+	Offset 11, 15
+	Patch "medical/patches/UaS_AFAK.png", 0, 0
+}
 Sprite "UGSID0", 48, 48
 {
 	XScale 2.500

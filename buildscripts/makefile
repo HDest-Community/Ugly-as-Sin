@@ -9,7 +9,9 @@ endef
 
 all: zscript cvarinfo menudef mapinfo textures wtblklst manual uasinfo
 
-run: all
+makerun: all run
+
+run:
 	cd $(HDPath) ; \
 	$(HDCommand)
 

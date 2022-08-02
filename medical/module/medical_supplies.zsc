@@ -1,0 +1,66 @@
+class UaS_MedSupplyItem : HDPickup abstract {
+	Default {
+		+HDPickup.FitsInBackpack;
+		Inventory.Icon "UGSMA0";
+//		+FLATSPRITE;
+//		+FORCEXYBILLBOARD;
+		+INVENTORY.IGNORESKILL;
+	}
+
+	void UpdateSprite() {
+		string ic = TexMan.GetName(icon);
+		string sp = ic.Left(4);
+		string fr = ic.Mid(4, 1);
+		sprite = GetSpriteIndex(sp);
+		frame = (fr.ByteAt(0)-65);
+	}
+
+	override void BeginPlay() {
+		super.BeginPlay();
+		UpdateSprite();
+	}
+
+	States {
+		Spawn:
+			UGSM A -1 { invoker.UpdateSprite(); }
+			// gotta cache the sprite name for this to work
+			// all these items will use the same sprite, diff frames
+			Stop;
+	}
+}
+
+class UaS_Tourniquet : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a combat tourniqet.";
+		Inventory.Icon "UGSMA0";
+		HDPickup.Bulk 5;
+		tag "Combat Tourniquet";
+	}
+}
+
+class UaS_PackingGauze : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up some wound packing gauze.";
+		Inventory.Icon "UGSMB0";
+		HDPickup.Bulk 4;
+		tag "Packing Gauze";
+	}
+}
+
+class UaS_HemoGauze : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up some hemostatic wound packing gauze.";
+		Inventory.Icon "UGSMD0";
+		HDPickup.Bulk 4;
+		tag "Hemostatic Combat Gauze";
+	}
+}
+
+class UaS_PressureBandage : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a pressure bandage.";
+		Inventory.Icon "UGSMC0";
+		HDPickup.Bulk 6;
+		tag "Pressure Bandage";
+	}
+}
