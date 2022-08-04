@@ -38,20 +38,68 @@ Sprite "UGSMD0", 64, 64
 	Patch "patches/UaS_HemoGauze.png", 0, 0
 }
 
-Sprite "UGSME0", 17, 18
+Sprite "UGSME0", 18, 12
 {
-	Offset 7, 18
+	Offset 9, 12
 	Patch "patches/UaS_IFAK.png", 0, 0
 }
 
-Sprite "UGSMF0", 22, 27
+Sprite "UGSMF0", 22, 17
 {
-	Offset 11, 14
+	Offset 11, 17
 	Patch "patches/UaS_MFAK.png", 0, 0
 }
 
-Sprite "UGSMG0", 22, 29
+Sprite "UGSMG0", 20, 20
 {
-	Offset 11, 15
+	Offset 10, 20
 	Patch "patches/UaS_AFAK.png", 0, 0
+}
+
+Sprite "UGSMH0", 15, 60
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 8, 60
+	Patch "patches/UaS_Saline.png", 0, 0
+}
+
+Sprite "UGSMI0", 28, 11
+{
+	XScale 6.000
+	YScale 6.000
+	Offset 14, 11
+	Patch "patches/UaS_Forceps.png", 0, 0
+}
+
+Sprite "UGSMJ0", 46, 23
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 23, 23
+	Patch "patches/UaS_Biofoam.png", 0, 0
+}
+
+Sprite "UGSMK0", 36, 21
+{
+	XScale 5.000
+	YScale 5.000
+	Offset 18, 21
+	Patch "patches/UaS_Stapler.png", 0, 0
+}
+
+Sprite "UGSML0", 55, 8
+{
+	XScale 8.000
+	YScale 8.000
+	Offset 27, 8
+	Patch "patches/UaS_Scalpel.png", 0, 0
+}
+
+Sprite "UGSMM0", 30, 18
+{
+	XScale 4.000
+	YScale 4.000
+	Offset 15, 18
+	Patch "patches/UaS_Occlusive.png", 0, 0
 }

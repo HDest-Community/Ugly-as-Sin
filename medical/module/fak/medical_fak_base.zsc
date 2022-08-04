@@ -1,9 +1,3 @@
-const UAS_HDLD_IFAK = "ifk";
-const UAS_HDLD_MFAK = "mfk";
-const UAS_HDLD_AFAK = "afk";
-
-class UaS_FAK_Base : HDBackpack abstract {}
-
 class FAK_ItemStorage : ItemStorage {
 	array<class> AllowedItems;
 	override int CheckConditions(Inventory item, class<Inventory> cls) {
@@ -30,60 +24,10 @@ class FAK_ItemStorage : ItemStorage {
 	}
 }
 
-class UaS_IFAK : UaS_FAK_Base {
-	Default {
-		HDBackpack.MaxCapacity 27;
-		Inventory.PickupMessage "Picked up an IFAK.";
-		tag "IFAK";
-		Inventory.Icon "UGSME0";
-	}
-	override void AddAllowedItems() {
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
-	}
-}
-
-class UaS_MFAK : UaS_IFAK {
-	Default {
-		HDBackpack.MaxCapacity 40;
-		Inventory.PickupMessage "Picked up an MFAK.";
-		tag "MFAK";
-		Inventory.Icon "UGSMF0";
-	}
-	override void AddAllowedItems() {
-		super.AddAllowedItems();
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
-	}
-}
-
-class UaS_AFAK : UaS_MFAK {
-	Default {
-		HDBackpack.MaxCapacity 80;
-		Inventory.PickupMessage "Picked up an AFAK.";
-		tag "AFAK";
-		Inventory.Icon "UGSMG0";
-	}
-	override void AddAllowedItems() {
-		super.AddAllowedItems();
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
-	}
-}
-
 //===========================
 // All the messy shit
 //===========================
-extend class UaS_FAK_Base {
+class UaS_FAK_Base : HDBackpack abstract {
 	FAK_ItemStorage ModifiedStorage;
 
 	default {
@@ -95,6 +39,7 @@ extend class UaS_FAK_Base {
 		Inventory.PickupMessage "Picked up a personal trauma kit. You should never see this message.";
 		scale 0.5;
 		//hdweapon.refid UAS_HDLD_IFAK;
+		+WEAPON.NO_AUTO_SWITCH;
 	}
 
 	override double WeaponBulk() {

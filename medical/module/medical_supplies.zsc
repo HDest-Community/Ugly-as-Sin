@@ -64,3 +64,57 @@ class UaS_PressureBandage : UaS_MedSupplyItem {
 		tag "Pressure Bandage";
 	}
 }
+
+class UaS_Saline : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a bottle of saline rinse.";
+		Inventory.Icon "UGSMH0";
+		HDPickup.Bulk 8;
+		tag "Saline Rinse";
+	}
+}
+
+class UaS_Forceps : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a set of forceps.";
+		Inventory.Icon "UGSMI0";
+		HDPickup.Bulk 2;
+		tag "Forceps";
+	}
+}
+
+class UaS_Biofoam : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up an injector of synthetic biofoam.";
+		Inventory.Icon "UGSMJ0";
+		HDPickup.Bulk 10;
+		tag "Biofoam";
+	}
+}
+
+class UaS_Stapler : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a medical stapler.";
+		Inventory.Icon "UGSMK0";
+		HDPickup.Bulk 10;
+		tag "Medical Stapler";
+	}
+}
+
+class UaS_Scalpel : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up a surgical scalpel.";
+		Inventory.Icon "UGSML0";
+		HDPickup.Bulk 10;
+		tag "Scalpel";
+	}
+}
+
+class UaS_Occlusive : UaS_MedSupplyItem {
+	Default {
+		Inventory.PickupMessage "Picked up an occlusive dressing (\"chest seal\").";
+		Inventory.Icon "UGSMM0";
+		HDPickup.Bulk 5;
+		tag "Occlusive Dressing ";
+	}
+}

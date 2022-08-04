@@ -1,0 +1,62 @@
+const UAS_HDLD_IFAK = "ifk";
+const UAS_HDLD_MFAK = "mfk";
+const UAS_HDLD_AFAK = "afk";
+
+class UaS_IFAK : UaS_FAK_Base {
+	Default {
+		HDBackpack.MaxCapacity 32;
+		Inventory.PickupMessage "Picked up an IFAK.";
+		tag "IFAK";
+		Inventory.Icon "UGSME0";
+	}
+	override void AddAllowedItems() {
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Tourniquet"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PackingGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Occlusive"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Occlusive"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableStimpack"));
+	}
+}
+
+class UaS_MFAK : UaS_IFAK {
+	Default {
+		HDBackpack.MaxCapacity 140;
+		Inventory.PickupMessage "Picked up an MFAK.";
+		tag "MFAK";
+		Inventory.Icon "UGSMF0";
+	}
+	override void AddAllowedItems() {
+		super.AddAllowedItems();
+		super.AddAllowedItems();
+		super.AddAllowedItems(); // 3x IFAK contents, plus...
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_HemoGauze"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_PressureBandage"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("SecondBlood"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("SecondBlood"));
+	}
+}
+
+class UaS_AFAK : UaS_MFAK {
+	Default {
+		HDBackpack.MaxCapacity 260;
+		Inventory.PickupMessage "Picked up an AFAK.";
+		tag "AFAK";
+		Inventory.Icon "UGSMG0";
+	}
+	override void AddAllowedItems() {
+		super.AddAllowedItems(); // 1x MFAK, plus...
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Saline"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Saline"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Saline"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Biofoam"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Biofoam"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Forceps"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Stapler"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Scalpel"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableMedikit"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableBerserkPack"));
+	}
+}
