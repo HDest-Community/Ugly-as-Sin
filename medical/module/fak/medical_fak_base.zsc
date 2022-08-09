@@ -2,16 +2,24 @@ class FAK_ItemStorage : ItemStorage {
 	array<class> AllowedItems;
 	override int CheckConditions(Inventory item, class<Inventory> cls) {
 		bool valid=false;
+		int retval=-1;
+		// special case for medikitter
+		if (
+			(item && (item is "HDMedikitter"))||
+			(cls  && (cls  is "HDMedikitter"))
+		) { retval = IType_Weapon; }
+		// Check against list for allowed
 		for (int i=0; i<AllowedItems.size(); i++) {
-			//console.printf(AllowedItems[i].GetClassName());
 			valid = (
-				(item && (item is AllowedItems[i]))|
+				(item && (item is AllowedItems[i]))||
 				(cls  && (cls  is AllowedItems[i]))
 			);
 			if (valid) { break; }
 		}
+		// return results
 		if (!valid) { return IType_Invalid; }
-		return super.CheckConditions(item,cls);
+		if (retval == -1) { retval = super.CheckConditions(item,cls); }
+		return retval;
 	}
 
 	override int GetOperationSpeed(class<Inventory> item, int operation) {

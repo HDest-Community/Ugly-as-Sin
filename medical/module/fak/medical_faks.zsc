@@ -56,7 +56,8 @@ class UaS_AFAK : UaS_MFAK {
 		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Forceps"));
 		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Stapler"));
 		ModifiedStorage.AllowedItems.push((class<Inventory>)("UaS_Scalpel"));
-		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableMedikit"));
+		// ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableMedikit"));
+		ModifiedStorage.AllowedItems.push((class<Inventory>)("HDMedikitter"));
 		ModifiedStorage.AllowedItems.push((class<Inventory>)("PortableBerserkPack"));
 	}
 }
