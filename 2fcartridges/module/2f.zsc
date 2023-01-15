@@ -16,7 +16,7 @@ class UaS_2FCartridge : HDPickup {
 	}
 
 	action void HelpMessage() {
-		if(getcvar("hd_helptext")) { console.printf("With your medikit open, press secondary reload to insert the cartridge, and unload to remove the cartridge."); }
+		if(getcvar("hd_helptext")) { invoker.owner.A_Log("With your medikit open, press secondary reload to insert the cartridge, and unload to remove the cartridge.", true); }
 	}
 
 	States {
