@@ -1,46 +1,121 @@
+class UaS_BloodParticle {
+	double size, maxsize, maxz;
+	vector3 pos, oldpos, vel, oldvel;
+}
+
 class UaS_BleedingWound : HDBleedingWound {
 	string Description;
 	int Type;
+	array<UaS_BloodParticle> drops;
 
 	override void Tick() {
-		BleedWound();
+		BloodDrops();
 		if (checkdestroy()) { destroy(); return; }
 		if (checkskip()) { return; }
 		super.Tick();
 	}
 
-	void BleedWound() {
+	void BloodDrops() {
 		// Calculate offset
 		vector3 off = (
 			cos(location.x+bleeder.angle) * bleeder.radius * 0.7,
 			sin(location.x+bleeder.angle) * bleeder.radius * 0.7,
 			location.y * bleeder.height);
+		double avgsize = (width + depth) / 2.0;
+
 		// Spawn a wound particle;
 		bleeder.A_SpawnParticle(
 			"DarkRed",
 			//flags: SPF_RELATIVE,
 			lifetime: 1,
-			size: (width*0.5)+(depth*0.5)*0.5,
+			size: avgsize*0.5,
 			xoff: off.x,
 			yoff: off.y,
 			zoff: off.z,
 			velx: bleeder.vel.x,
 			vely: bleeder.vel.y,
 			velz: bleeder.vel.z,
-			startalphaf: 0.5,
+			startalphaf: 0.4,
 			fadestepf: 0);
-		// Maybe spawn a blood drop depending on depth
-		if (random[ubw](1,10) > depth) { return; }
 		bleeder.A_SpawnParticle(
 			"DarkRed",
 			//flags: SPF_RELATIVE,
-			lifetime: random[ubw](10,20),
-			size: frandom[ubw](1,3),
-			xoff: off.x + frandom[ubw](-width, width) * 0.1,
-			yoff: off.y + frandom[ubw](-width, width) * 0.1,
-			zoff: off.z + frandom[ubw](-width, width) * 0.1,
-			accelz: -bleeder.gravity,
+			lifetime: 1,
+			size: avgsize*0.25,
+			xoff: off.x,
+			yoff: off.y,
+			zoff: off.z,
+			velx: bleeder.vel.x,
+			vely: bleeder.vel.y,
+			velz: bleeder.vel.z,
+			startalphaf: 0.4,
 			fadestepf: 0);
+
+		// Maybe spawn a droplet at the wound
+		if (depth > 0 && random[ubw](0,10) <= depth) {
+			let newdrop = UaS_BloodParticle(new("UaS_BloodParticle"));
+			newdrop.pos.x = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.pos.y = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.pos.z = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.size = 0;
+			newdrop.maxsize = frandom[ubw](1,2);
+			newdrop.maxz = frandom[ubw](-8, -3);
+			drops.push(newdrop);
+		}
+
+		// Do appearing and drops running down body
+		for (int i=0; i<drops.size(); i++) {
+			let d = drops[i];
+			bleeder.A_SpawnParticle(
+				"DarkRed",
+				//flags: SPF_RELATIVE,
+				lifetime: 1,
+				size: drops[i].size,
+				xoff: off.x + d.pos.x,
+				yoff: off.y + d.pos.y,
+				zoff: off.z + d.pos.z,
+				velx: bleeder.vel.x + d.vel.x,
+				vely: bleeder.vel.y + d.vel.y,
+				velz: bleeder.vel.z + d.vel.z,
+				startalphaf: d.size / (d.maxsize + 1),
+				fadestepf: 0);
+			if (d.size >= d.maxsize) {
+				d.vel.z += frandom[ubw](-0.03, -0.02);
+			}
+			d.pos += d.vel;
+			d.size = min(d.size + 0.1, d.maxsize);
+
+			// Drop free after a bit
+			if (d.pos.z < d.maxz && random[ubw](1,5) == 1) {
+				bleeder.A_SpawnParticle(
+					"DarkRed",
+					//flags: SPF_RELATIVE,
+					lifetime: random[ubw](10,20),
+					size: d.size,
+					xoff: off.x + d.pos.x,
+					yoff: off.y + d.pos.y,
+					zoff: off.z + d.pos.z,
+					velx: bleeder.vel.x + d.vel.x,
+					vely: bleeder.vel.y + d.vel.y,
+					velz: bleeder.vel.z + d.vel.z,
+					accelz: -bleeder.gravity,
+					fadestepf: 0);
+				d.destroy();
+				drops.delete(i);
+			}
+		}
+		// Maybe spawn a blood drop depending on depth
+		// if (random[ubw](1,10) >= depth) { return; }
+		// bleeder.A_SpawnParticle(
+			// "DarkRed",
+			// //flags: SPF_RELATIVE,
+			// lifetime: random[ubw](10,20),
+			// size: frandom[ubw](1,3),
+			// xoff: off.x + frandom[ubw](-width, width) * 0.1,
+			// yoff: off.y + frandom[ubw](-width, width) * 0.1,
+			// zoff: off.z + frandom[ubw](-width, width) * 0.1,
+			// accelz: -bleeder.gravity,
+			// fadestepf: 0);
 		// if (random[ubw](0,5)!=0) { return; }
 		// bleeder.A_SpawnParticle(
 			// "DarkRed",
@@ -77,8 +152,9 @@ class UaS_BleedingWound : HDBleedingWound {
 		uw.damagetype = bw.damagetype;
 		uw.location = bw.location;
 		// Add expanded details
-		//console.printf("location "..bw.location);
-		if (bw.location.y >= 0.85) { uw.type = UWL_HEAD; console.printf("headwound!"); }
+		if (bw.location == (-999, -999)) { uw.location = (frandom[ubw](0,360), frandom[ubw](0.1, 0.90)); /*console.printf("randomized location");*/ }
+		if (bw.location.y >= 0.85) { uw.type = UWL_HEAD; /*console.printf("headwound!");*/ }
+		//console.printf("location "..uw.location);
 		return uw;
 	}
 
