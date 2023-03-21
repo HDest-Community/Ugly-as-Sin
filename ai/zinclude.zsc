@@ -1,0 +1,6 @@
+#include "./module/ai.zsc"
+#include "./module/ai_bootstrap.zsc"
+#include "./module/ai_wounded.zsc"
+#include "./module/ai_searching.zsc"
+#include "./module/ai_flashlight.zsc"
+#include "./module/ai_stealth.zsc"

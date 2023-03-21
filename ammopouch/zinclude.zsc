@@ -1,0 +1,5 @@
+#include "./module/ammopouch.zsc"
+#include "./module/ammopouch_bulk.zsc"
+#include "./module/ammopouch_hud.zsc"
+#include "./module/ammopouch_itemstorage.zsc"
+#include "./module/ammopouch_spawning.zsc"

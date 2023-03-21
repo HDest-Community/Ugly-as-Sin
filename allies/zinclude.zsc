@@ -1,0 +1,2 @@
+#include "./module/allies.zsc"
+#include "./module/allies_spawner.zsc"
