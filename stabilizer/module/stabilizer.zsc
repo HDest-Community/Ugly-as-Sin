@@ -74,7 +74,7 @@ class UaS_GyroStabilizer : HDPickup {
 	int GetCorrections() {
 		let ownr = HDPlayerPawn(owner);
 		if(!ownr) { return 0; }
-		int cvalue = (
+		int cvalue = int(
 			ownr.muzzleclimb1.length()  +
 			ownr.muzzleclimb2.length()  +
 			ownr.muzzleclimb3.length()  +

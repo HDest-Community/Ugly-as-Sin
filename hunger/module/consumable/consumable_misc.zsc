@@ -70,7 +70,7 @@ extend class UaS_Consumable {
 			}
 			// additional point possible if already spoiling, even if closed.
 			if (random(0,100) <= weaponstatus[UGCS_SPOILAGE]) { weaponstatus[UGCS_SPOILAGE]++; }
-			weaponstatus[UGCS_LASTSPOILTIME] += (35*60) / spoilrate;
+			weaponstatus[UGCS_LASTSPOILTIME] += int((35*60) / spoilrate);
 		}
 	}
 
@@ -116,7 +116,7 @@ extend class UaS_Consumable {
 		else { weaponstatus[UGCS_OPEN] = UGCSF_SEALED; }
 		// Set up some initial spoilage amounts for unsealed items.
 		if (weaponstatus[UGCS_OPEN] == UGCSF_OPENED) {
-			weaponstatus[UGCS_SPOILAGE] = random(0,100) * (frandom(0,1) * frandom(0,1));
+			weaponstatus[UGCS_SPOILAGE] = int(random(0,100) * (frandom(0,1) * frandom(0,1)));
 			weaponstatus[UGCS_LASTSPOILTIME] = level.totaltime;
 		}
 		else { weaponstatus[UGCS_LASTSPOILTIME] = -1; }

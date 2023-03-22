@@ -28,7 +28,7 @@ class UaS_WeaponJammer : Inventory {
 		if (wep.weaponstatus[JamSlot] != 0) { return; }
 
 		if (UaS.RandomChance(UaS_JammingStartDirty)) {
-			wep.weaponstatus[JamSlot] = weightedroll(JamThresh*UaS_JammingStartDirty);
+			wep.weaponstatus[JamSlot] = weightedroll(int(JamThresh*UaS_JammingStartDirty));
 			UaS.LogDebug(DBG_Jamming, string.format("Dirtified "
 				..wep.GetClassName().." "
 				..wep.weaponstatus[JamSlot].."/"
@@ -102,10 +102,10 @@ class UaS_WeaponJammer : Inventory {
 			// Keep Cleaning
 			else if (HoldingUnload && level.maptime%20 == 0) {
 				// Success
-				if (weightedroll(JamThresh*0.5) < wep.weaponstatus[JamSlot]) {
+				if (weightedroll(int(JamThresh*0.5)) < wep.weaponstatus[JamSlot]) {
 					owner.A_Log("Cleaned out the chamber a bit.", true);
 					owner.A_StartSound("weapons/pocket", CHAN_AUTO);
-					wep.weaponstatus[JamSlot] *= 0.75;
+					wep.weaponstatus[JamSlot] = int(wep.weaponstatus[JamSlot] * 0.75);
 					UaS.LogDebug(DBG_Jamming, string.format("Jam threshold "..wep.weaponstatus[JamSlot].."/"..JamThresh.." after cleaning"));
 					CleanCycle = 10;
 				}
