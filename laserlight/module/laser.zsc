@@ -5,7 +5,7 @@ class UaS_LaserLightModule : HDWeapon {
 	bool activated;
 	UaS_LLM_Emitter emitter;
 	vector3 oldsc;
-	double offset;
+	double offset,heightfactor;
 	double angleoffset,pitchoffset;
 	color LaserColor;
 	double LaserAlpha;
@@ -177,20 +177,36 @@ class UaS_LaserLightModule : HDWeapon {
 				owner is "VulcanetteZombie" ||
 				owner is "HDOperator"
 			);
-			if (HumanClass) { offset = 8; }
+			bool OtherClass = (
+				owner is "SatanRobo" ||
+				owner is "Technorantula" ||
+				owner is "TechnoSpider"
+			);
+			if (HumanClass) { offset = 8; heightfactor = 0.8; }
 			else if (BotClass) {
 				if (owner is "HERPBot") {
 					modeLaser = 1;
 					modeLight = 0;
 					activated = true;
 					offset = 8;
+					heightfactor = 1.0;
 				}
 				if (owner is "DERPBot") {
 					modeLaser = 0;
 					modeLight = 1;
 					activated = true;
 					offset = 2;
+					heightfactor = 1.0;
 				}
+			}
+			else if (OtherClass) {
+				modeLaser = 1;
+				modeLight = 0;
+				activated = true;
+				offset = 16;
+				if (owner is "SatanRobo") { heightfactor = 0.95; }
+				else { heightfactor = 0.5; }
+				//console.printf("setting on for otherclass");
 			}
 
 			bool isowneraiming = (
@@ -199,18 +215,20 @@ class UaS_LaserLightModule : HDWeapon {
 			);
 
 			// Handle random light movement
-			if ((level.maptime % 10 == 0) && !BotClass) {
-				if (owner.target) {
-					angleoffset = frandom(-35, 35);
-					pitchoffset = frandom(-25, 25);
-					//if (!isowneraiming) { llm.pitchoffset += 10; }
-				}
-				else if (random(0, 1) == 0) {
-					angleoffset = frandom(-20, 20);
-					pitchoffset = frandom(-10, 10);
-					//if (!isowneraiming) { llm.pitchoffset += 20; }
-				}
-			}
+			// Disabling this as it ruins feedback to the player at distances
+			// where seeing the laser would actually matter
+			// if ((level.maptime % 10 == 0) && !(BotClass||OtherClass)) {
+				// if (owner.target) {
+					// angleoffset = frandom(-35, 35);
+					// pitchoffset = frandom(-25, 25);
+					// //if (!isowneraiming) { llm.pitchoffset += 10; }
+				// }
+				// else if (random(0, 1) == 0) {
+					// angleoffset = frandom(-20, 20);
+					// pitchoffset = frandom(-10, 10);
+					// //if (!isowneraiming) { llm.pitchoffset += 20; }
+				// }
+			// }
 			// no random light movement while incapacitated
 			if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) {
 				angleoffset = 0;
@@ -224,9 +242,9 @@ class UaS_LaserLightModule : HDWeapon {
 			newpos = owner.vec3Angle(
 				offset * cos(-owner.pitch),
 				owner.angle,
-				offset * sin(-owner.pitch) + (owner.height * 0.7));
-			newangle = emitter.angle + (0.15 * deltaangle(emitter.angle, owner.angle + angleoffset));
-			newpitch = emitter.pitch + (0.15 * deltaangle(emitter.pitch, owner.pitch + pitchoffset));
+				offset * sin(-owner.pitch) + (owner.height * heightfactor));
+			newangle = emitter.angle + (0.5 * deltaangle(emitter.angle, owner.angle + angleoffset));
+			newpitch = emitter.pitch + (0.5 * deltaangle(emitter.pitch, owner.pitch + pitchoffset));
 		}
 		emitter.setOrigin(newpos, true);
 		emitter.A_SetAngle(newangle, true);
@@ -350,7 +368,7 @@ class UaS_LaserLightModule : HDWeapon {
 			emitter.A_SpawnParticle(LaserColor,
 				flags: SPF_FULLBRIGHT,
 				lifetime: 1,
-				size: frandom(0.75,1.25),
+				size: frandom(1,2) * sizefactor,
 				xoff: ppos.x,
 				yoff: ppos.y,
 				zoff: ppos.z - 2,

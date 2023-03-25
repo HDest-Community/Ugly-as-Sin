@@ -11,7 +11,8 @@ OptionMenu "UaS_AI_Options" {
 // if bundled: 	Option "Enabled","UaS_AdvancedAIEnabled","OnOff"
 	Option "Searching","UaS_AI_Searching","OnOff", "UaS_AI_Debug_Override"
 	Option "Wounding","UaS_AI_Wounding","OnOff"
-	Option "Lights","UaS_AI_Flashlights","OnOff"
+	Option "Lights / Lasers","UaS_AI_Flashlights","OnOff"
+	Option "Lasers Always On","UaS_AI_AlwaysLasers","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff", "UaS_AI_Debug_Override"
-	Slider "Lights when incapped","UaS_AI_PlayDead", 0, 1, 0.05, 2
+	Slider "Flashlights when incapped","UaS_AI_PlayDead", 0, 1, 0.05, 2
 }

@@ -6,7 +6,7 @@ extend class UaS_AI_Handler {
 	void Flashlight() {
 		if (owner.isFrozen() || level.isFrozen()) { return; }
 		if (!UaS_AI_Flashlights) { UaS.SendIntent("LLM_Toggle", "Off", owner); return; }
-		// Only do light for human-type classes and robots
+		// Do light for any "hitscan" type enemies
 		bool BotClass = (
 			owner is "HERPBot" ||
 			owner is "DERPBot"
@@ -17,10 +17,18 @@ extend class UaS_AI_Handler {
 			owner is "VulcanetteZombie" ||
 			owner is "HDOperator"
 		);
-		if (!BotClass && !HumanClass) { return; }
+		bool OtherClass = (
+			owner is "SatanRobo" ||
+			owner is "Technorantula" ||
+			owner is "TechnoSpider"
+		);
+		if (!(BotClass || HumanClass || OtherClass)) { return; }
 
 		string flc = "UaS_LaserLightModule";
-		if (!owner.FindInventory(flc)) { owner.giveinventory(flc, 1); }
+		if (!owner.FindInventory(flc)) {
+			owner.giveinventory(flc, 1);
+			UaS.LogDebug(DBG_AI, "Gave LLM to"..owner.GetClassName());
+		}
 
 		bool isowneraiming = (
 			owner.frame ==  4 || owner.frame ==  5 ||
@@ -53,7 +61,11 @@ extend class UaS_AI_Handler {
 			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
 			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
 			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
-			if (flashing) { UaS.SendIntent("LLM_ModeSwitch", "3", owner); }
+			if (UaS_AI_AlwaysLasers) {
+				prefmode = clamp(prefmode,1,2);
+				UaS.SendIntent("LLM_Toggle", "On", owner);
+			}
+			//if (flashing) { UaS.SendIntent("LLM_ModeSwitch", "3", owner); }
 			else { UaS.SendIntent("LLM_ModeSwitch", string.format("%i",prefmode), owner); }
 		}
 
