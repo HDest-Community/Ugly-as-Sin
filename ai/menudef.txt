@@ -14,5 +14,5 @@ OptionMenu "UaS_AI_Options" {
 	Option "Lights / Lasers","UaS_AI_Flashlights","OnOff"
 	Option "Lasers Always On","UaS_AI_AlwaysLasers","OnOff"
 	Option "Stealth","UaS_AI_Stealth","OnOff", "UaS_AI_Debug_Override"
-	Slider "Flashlights when incapped","UaS_AI_PlayDead", 0, 1, 0.05, 2
+	Slider "Enemy lights when incapped","UaS_AI_PlayDead", 0, 1, 0.05, 2
 }
