@@ -9,6 +9,7 @@ class UaS_LaserLightModule : HDWeapon {
 	double angleoffset,pitchoffset;
 	color LaserColor;
 	double LaserAlpha;
+	FSpawnParticleParams LP, FP;
 	transient cvar beams;
 	transient cvar laserpref, lasercolorpref, lightpref;
 
@@ -83,6 +84,10 @@ class UaS_LaserLightModule : HDWeapon {
 			Laser(0);
 		}
 		super.doEffect();
+		lastangle = emitter.angle;
+		lastpitch = emitter.pitch;
+		lastpos = emitter.pos;
+		lastvel = emitter.vel;
 	}
 
 	void Configuring() {
@@ -195,7 +200,7 @@ class UaS_LaserLightModule : HDWeapon {
 					modeLaser = 0;
 					modeLight = 1;
 					activated = true;
-					offset = 2;
+					offset = 0;
 					heightfactor = 1.0;
 				}
 			}
@@ -281,19 +286,47 @@ class UaS_LaserLightModule : HDWeapon {
 		int start = 1; //particle beam starts at emitter
 		if(owner.CheckLocalView()) { start = 12; } // unless local player
 		if(owner is "DERPBot") { start = 4; } // Reduce beams on DERPs
+
+		// Old angular vector of particle spawn
+		vector3 oldpvec = (
+			cos(lastpitch) * cos(lastangle),
+			cos(lastpitch) * sin(lastangle),
+			sin(-lastpitch));
+		// New angular vector of particle spawn
+		vector3 newpvec = (
+			cos(emitter.pitch) * cos(emitter.angle),
+			cos(emitter.pitch) * sin(emitter.angle),
+			sin(-emitter.pitch));
+		// Vector offset between old and new positions
+		vector3 pold = level.vec3diff(emitter.pos, lastpos);
+		// Velocity offset between old and new angular vectors
+		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
+
+		FP.Style = Style_Add;
+		FP.Color1 = "White";
+		FP.Flags = SPF_FULLBRIGHT;
+		FP.Lifetime = 1;
+		FP.SizeStep = 0;
+		FP.FadeStep = -1;
+		FP.Texture = TexMan.CheckForTexture ("glstuff/glpart.png");
 		for (double d = start; d < flTrace.distance; d = d + (d / 2)) {
-			emitter.A_SpawnParticle("White", SPF_FULLBRIGHT|SPF_RELANG,
-				1, (sin(20) * d * 8), 0,
-				cos(emitter.pitch) * cos(emitter.angle) * (d),
-				cos(emitter.pitch) * sin(emitter.angle) * (d),
-				sin(-emitter.pitch) * (d),
-				owner.vel.x, owner.vel.y, owner.vel.z,
-				0, 0, 0,
-				(0.75) / (d ** 1.1), 0, 0);
+			FP.Size = (sin(20) * d * 8);
+			FP.Pos = emitter.pos + (oldpvec * d) + pold;
+			FP.Vel = (pvoff * d) - pold;
+			FP.StartAlpha = (0.75) / (d ** 1.1);
+			Level.SpawnParticle(FP);
 		}
 	}
 
 	void Laser(int mode) {
+		LP.Style = STYLE_Add;
+		LP.Color1 = LaserColor;
+		LP.Lifetime = 1;
+		LP.SizeStep = 0;
+		LP.FadeStep = -1;
+		LP.Flags = SPF_FULLBRIGHT|SPF_REPLACE;
+		LP.Texture = TexMan.CheckForTexture ("glstuff/glpart.png");
+
 		switch (mode) {
 			case 0: return; break;
 			case 1: LaserAlpha = 1.0; break;
@@ -303,8 +336,8 @@ class UaS_LaserLightModule : HDWeapon {
 		// Enemies use red lasers
 		// Friends use green lasers
 		if (owner.bISMONSTER) {
-			if (!owner.bFRIENDLY) { LaserColor = "FF 00 00"; }
-			else { LaserColor = "50 FF 00"; }
+			if (!owner.bFRIENDLY) { LP.Color1 = "FF0000"; }
+			else { LP.Color1 = "50FF00"; }
 		}
 
 		// Make laser particles larger for players wearing NVGs, and IR lasers visible
@@ -318,28 +351,24 @@ class UaS_LaserLightModule : HDWeapon {
 			}
 		}
 
-		// Draw laser particle beam
+		// Trace path data for laser particle beam
 		FLineTraceData laserTrace;
 		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
 
 		// precalculate position and velocity vectors only once
 		// hopefully moving these out of the loop improves performance
-
 		// Old angular vector of particle spawn
 		vector3 oldpvec = (
 			cos(lastpitch) * cos(lastangle),
 			cos(lastpitch) * sin(lastangle),
 			sin(-lastpitch));
-
 		// New angular vector of particle spawn
 		vector3 newpvec = (
 			cos(emitter.pitch) * cos(emitter.angle),
 			cos(emitter.pitch) * sin(emitter.angle),
 			sin(-emitter.pitch));
-
 		// Vector offset between old and new positions
 		vector3 pold = level.vec3diff(emitter.pos, lastpos);
-
 		// Velocity offset between old and new angular vectors
 		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
 
@@ -363,24 +392,12 @@ class UaS_LaserLightModule : HDWeapon {
 
 			// actually spawn particle
 			// pspawns++;
-			vector3 ppos = (oldpvec * f) + pold;
-			vector3 pvel = (pvoff   * f) - pold;
-			emitter.A_SpawnParticle(LaserColor,
-				flags: SPF_FULLBRIGHT,
-				lifetime: 1,
-				size: frandom(1,2) * sizefactor,
-				xoff: ppos.x,
-				yoff: ppos.y,
-				zoff: ppos.z - 2,
-				velx: pvel.x,
-				vely: pvel.y,
-				velz: pvel.z,
-				startalphaf: dens * LaserAlpha);
+			LP.Pos = emitter.pos + (oldpvec * f) + pold;
+			LP.Vel = (pvoff * f) - pold;
+			LP.Size = frandom(1,2) * sizefactor;
+			LP.StartAlpha = dens * LaserAlpha;
+			Level.SpawnParticle(LP);
 		}
-		lastangle = emitter.angle;
-		lastpitch = emitter.pitch;
-		lastpos = emitter.pos;
-		lastvel = emitter.vel;
 		// console.printf("particles "..pspawns);
 	}
 
