@@ -393,6 +393,7 @@ class UaS_LaserLightModule : HDWeapon {
 			// actually spawn particle
 			// pspawns++;
 			LP.Pos = emitter.pos + (oldpvec * f) + pold;
+			LP.Pos.Z -= 2;
 			LP.Vel = (pvoff * f) - pold;
 			LP.Size = frandom(1,2) * sizefactor;
 			LP.StartAlpha = dens * LaserAlpha;
