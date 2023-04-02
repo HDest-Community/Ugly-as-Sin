@@ -1,12 +1,15 @@
 class UaS_BloodParticle {
 	double size, maxsize, maxz;
 	vector3 pos, oldpos, vel, oldvel;
+	int startlife;
 }
 
 class UaS_BleedingWound : HDBleedingWound {
 	string Description;
 	int Type;
 	array<UaS_BloodParticle> drops;
+	FSpawnParticleParams BP;
+	vector3 oldpos;
 
 	override void Tick() {
 		BloodDrops();
@@ -17,114 +20,70 @@ class UaS_BleedingWound : HDBleedingWound {
 
 	void BloodDrops() {
 		// Calculate offset
-		vector3 off = (
+		vector3 off = bleeder.pos + (
 			cos(location.x+bleeder.angle) * bleeder.radius * 0.7,
 			sin(location.x+bleeder.angle) * bleeder.radius * 0.7,
 			location.y * bleeder.height);
+		vector3 interpvel = level.Vec3Diff(oldpos, off);
 		double avgsize = (width + depth) / 2.0;
 
 		// Spawn a wound particle;
-		bleeder.A_SpawnParticle(
-			"DarkRed",
-			//flags: SPF_RELATIVE,
-			lifetime: 1,
-			size: avgsize*0.5,
-			xoff: off.x,
-			yoff: off.y,
-			zoff: off.z,
-			velx: bleeder.vel.x,
-			vely: bleeder.vel.y,
-			velz: bleeder.vel.z,
-			startalphaf: 0.4,
-			fadestepf: 0);
-		bleeder.A_SpawnParticle(
-			"DarkRed",
-			//flags: SPF_RELATIVE,
-			lifetime: 1,
-			size: avgsize*0.25,
-			xoff: off.x,
-			yoff: off.y,
-			zoff: off.z,
-			velx: bleeder.vel.x,
-			vely: bleeder.vel.y,
-			velz: bleeder.vel.z,
-			startalphaf: 0.4,
-			fadestepf: 0);
-
-		// Maybe spawn a droplet at the wound
-		if (depth > 0 && random[ubw](0,10) <= depth) {
-			let newdrop = UaS_BloodParticle(new("UaS_BloodParticle"));
-			newdrop.pos.x = frandom[ubw](-avgsize, avgsize) * 0.05;
-			newdrop.pos.y = frandom[ubw](-avgsize, avgsize) * 0.05;
-			newdrop.pos.z = frandom[ubw](-avgsize, avgsize) * 0.05;
-			newdrop.size = 0;
-			newdrop.maxsize = frandom[ubw](1,2);
-			newdrop.maxz = frandom[ubw](-8, -3);
-			drops.push(newdrop);
-		}
+		if (depth >= 8) { BP.Texture = TexMan.CheckForTexture ("BLUDC0"); }
+		else if (depth >= 4) { BP.Texture = TexMan.CheckForTexture ("BLUDB0"); }
+		else if (depth >= 1) { BP.Texture = TexMan.CheckForTexture ("BLUDA0"); }
+		else { BP.Texture = TexMan.CheckForTexture (""); }
+		BP.Color1 = "DarkRed";
+		BP.Pos = oldpos;
+		BP.Lifetime = 1;
+		BP.Vel = interpvel;
+		BP.Size = (depth+1)/2;
+		BP.Flags = SPF_REPLACE;
+		BP.FadeStep = 0;
+		BP.Style = STYLE_Normal;
+		BP.StartAlpha = max((depth/width), 0.3);
+		level.SpawnParticle(BP);
 
 		// Do appearing and drops running down body
-		for (int i=0; i<drops.size(); i++) {
+		for (int i=drops.size()-1; i>0; i--) {
 			let d = drops[i];
-			bleeder.A_SpawnParticle(
-				"DarkRed",
-				//flags: SPF_RELATIVE,
-				lifetime: 1,
-				size: drops[i].size,
-				xoff: off.x + d.pos.x,
-				yoff: off.y + d.pos.y,
-				zoff: off.z + d.pos.z,
-				velx: bleeder.vel.x + d.vel.x,
-				vely: bleeder.vel.y + d.vel.y,
-				velz: bleeder.vel.z + d.vel.z,
-				startalphaf: d.size / (d.maxsize + 1),
-				fadestepf: 0);
+			if (d.startlife < 0) { d.startlife++; continue; }
+			BP.Pos = oldpos + d.pos;
+			BP.Pos.z -= d.vel.z;
+			BP.Size = d.size / 2;
+			BP.Texture = TexMan.CheckForTexture ("");
+			BP.StartAlpha = d.size / (d.maxsize + 1);
+			BP.Lifetime = 1;
+			BP.Accel.Z = 0;
+			BP.Vel = interpvel;
+			BP.Vel.Z += d.vel.z;
+
 			if (d.size >= d.maxsize) {
-				d.vel.z += frandom[ubw](-0.03, -0.02);
+				d.vel.z = clamp(
+					d.vel.z + frandom[ubw](-0.01, 0.01),
+					-0.25, 0);
 			}
 			d.pos += d.vel;
-			d.size = min(d.size + 0.1, d.maxsize);
+			d.size = min(d.size + frandom[ubw](0.01, 0.1), d.maxsize);
+
+			// allow flinging off
+			if (interpvel.length() > 5) {
+				BP.Lifetime = random[ubw](10,20);
+				BP.Size = d.size / 3;
+			}
 
 			// Drop free after a bit
 			if (d.pos.z < d.maxz && random[ubw](1,5) == 1) {
-				bleeder.A_SpawnParticle(
-					"DarkRed",
-					//flags: SPF_RELATIVE,
-					lifetime: random[ubw](10,20),
-					size: d.size,
-					xoff: off.x + d.pos.x,
-					yoff: off.y + d.pos.y,
-					zoff: off.z + d.pos.z,
-					velx: bleeder.vel.x + d.vel.x,
-					vely: bleeder.vel.y + d.vel.y,
-					velz: bleeder.vel.z + d.vel.z,
-					accelz: -bleeder.gravity,
-					fadestepf: 0);
+				BP.Accel.Z = -bleeder.gravity * 0.5;
+				BP.Lifetime = random[ubw](10,20);
+				BP.Vel.Z += d.vel.z;
 				d.destroy();
 				drops.delete(i);
 			}
+
+			level.SpawnParticle(BP);
 		}
-		// Maybe spawn a blood drop depending on depth
-		// if (random[ubw](1,10) >= depth) { return; }
-		// bleeder.A_SpawnParticle(
-			// "DarkRed",
-			// //flags: SPF_RELATIVE,
-			// lifetime: random[ubw](10,20),
-			// size: frandom[ubw](1,3),
-			// xoff: off.x + frandom[ubw](-width, width) * 0.1,
-			// yoff: off.y + frandom[ubw](-width, width) * 0.1,
-			// zoff: off.z + frandom[ubw](-width, width) * 0.1,
-			// accelz: -bleeder.gravity,
-			// fadestepf: 0);
-		// if (random[ubw](0,5)!=0) { return; }
-		// bleeder.A_SpawnParticle(
-			// "DarkRed",
-			// lifetime: random[ubw](10,35),
-			// size: frandom[ubw](2,6),
-			// xoff: off.x + frandom[ubw](-3,3),
-			// yoff: off.y + frandom[ubw](-3,3),
-			// zoff: bleeder.getzat(off.x, off.y) + 0.1,
-			// fadestepf: 0);
+		drops.shrinktofit();
+		oldpos = off;
 	}
 
 	// static string WoundDescription(int newsize) {
@@ -155,8 +114,53 @@ class UaS_BleedingWound : HDBleedingWound {
 		if (bw.location == (-999, -999)) { uw.location = (frandom[ubw](0,360), frandom[ubw](0.1, 0.90)); /*console.printf("randomized location");*/ }
 		if (bw.location.y >= 0.85) { uw.type = UWL_HEAD; /*console.printf("headwound!");*/ }
 		//console.printf("location "..uw.location);
+		console.printf("new wound width %d depth %d", bw.width, bw.depth);
 		return uw;
 	}
+
+	override void bleedout() {
+		//blood supply is lost from wound
+		let hdp=hdplayerpawn(bleeder);
+		int bleedrate=int(width);
+		if(bleedrate<1){
+			double www=width-int(width);
+			if(frandom(0,1)<www)bleedrate=1;
+		}
+		int bleeds=(bleedrate>>3)+random(-1,1);
+
+		if(hdp){
+			int dm=(random(10,int(bleedrate))-random(0,hdp.bloodpressure))*4/10;
+			if(dm>0){
+				hdp.damagemobj(
+					hdp,source,dm,"bleedout",
+					DMG_THRUSTLESS
+					|(hdp.bloodloss>HDCONST_MAXBLOODLOSS?DMG_FORCED:0)
+				);
+				// Maybe spawn a droplet at the wound
+				for (int i=0; i<=dm<<2; i++) {
+					double avgsize = (width + depth) / 2.0;
+					let newdrop = UaS_BloodParticle(new("UaS_BloodParticle"));
+					newdrop.pos.x = frandom[ubw](-avgsize, avgsize) * 0.05;
+					newdrop.pos.y = frandom[ubw](-avgsize, avgsize) * 0.05;
+					newdrop.pos.z = frandom[ubw](-avgsize, avgsize) * 0.05;
+					newdrop.size = 0;
+					newdrop.maxsize = frandom[ubw](1,2);
+					newdrop.maxz = frandom[ubw](-8, -5);
+					newdrop.startlife = 0-i;
+					drops.push(newdrop);
+				}
+				console.printf("bled "..dm<<2);
+			}else bleeds=0;
+		}else{
+			int bled=bleeder.damagemobj(bleeder,source,bleedrate,"bleedout",DMG_NO_PAIN|DMG_THRUSTLESS);
+			if(bleeder&&bleeder.health<1&&width<frandom(10,60))bleeder.deathsound="";
+		}
+		while(bleeds>0){
+			bleeds--;
+			spawnblood();
+		}
+	}
+
 
 	static const string[] w_severity = {
 		"minor","small","shallow",
