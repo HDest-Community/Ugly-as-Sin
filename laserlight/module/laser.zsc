@@ -336,8 +336,8 @@ class UaS_LaserLightModule : HDWeapon {
 		// Enemies use red lasers
 		// Friends use green lasers
 		if (owner.bISMONSTER) {
-			if (!owner.bFRIENDLY) { LP.Color1 = "FF0000"; }
-			else { LP.Color1 = "50FF00"; }
+			if (!owner.bFRIENDLY) { LP.Color1 = "FF 00 00"; }
+			else { LP.Color1 = "50 FF 00"; }
 		}
 
 		// Make laser particles larger for players wearing NVGs, and IR lasers visible

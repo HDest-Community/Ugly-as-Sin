@@ -18,17 +18,17 @@ OptionValue "UaS_LLM_Modes" {
 }
 
 OptionString "UaS_LLM_Colors" {
-	"FF0000", "Red (650 nm, 670 nm)"
-	"FF1B00", "Red (638 nm)"
-	"FFCC00", "Yellow-Orange (593 nm)"
-	"FFDC00", "Yellow (589 nm)"
-	"50FF00", "Green (532 nm)"
-	"24FF00", "Green (520 nm)"
-	"12FF00", "Green (515 nm)"
-	"00F5FF", "Blue (488 nm)"
-	"00A8FF", "Blue (473 nm)"
-	"0033FF", "Blue (450 nm)"
-	"5400D9", "Violet (405 nm)"
+	"FF 00 00", "Red (650 nm, 670 nm)"
+	"FF 1B 00", "Red (638 nm)"
+	"FF CC 00", "Yellow-Orange (593 nm)"
+	"FF DC 00", "Yellow (589 nm)"
+	"50 FF 00", "Green (532 nm)"
+	"24 FF 00", "Green (520 nm)"
+	"12 FF 00", "Green (515 nm)"
+	"00 F5 FF", "Blue (488 nm)"
+	"00 A8 FF", "Blue (473 nm)"
+	"00 33 FF", "Blue (450 nm)"
+	"54 00 D9", "Violet (405 nm)"
 }
 
 OptionMenu "UaS_LaserLight_Options" {
