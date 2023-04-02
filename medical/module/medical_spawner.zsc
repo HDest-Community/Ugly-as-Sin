@@ -9,4 +9,14 @@ class UaS_Medical_Bootstrap : EventHandler {
 			}
 		}
 	}
+
+	//
+	override void CheckReplacement(ReplaceEvent e) {
+		if(level.maptime > 1) { return; }
+		if(!e.Replacee) { return; }
+		// if(e.Thing is "Inventory" && Inventory(e.Thing).Owner) { return; }
+
+		if (e.Replacee is 'PortableStimpack') { e.Replacement = 'UaS_IFAK'; }
+		else if (e.Replacee is 'PortableMedikit') { e.Replacement = 'UaS_MFAK'; }
+	}
 }
