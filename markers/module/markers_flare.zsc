@@ -1,7 +1,7 @@
 const UAS_HDLD_FLARE = "flr";
 
 class UaS_Flare : HDPickup {
-	bool Activated, Thrown;
+	bool Activated, Thrown, Burned;
 	DynamicLight FlareLight;
 	DynamicLight FlareLight2;
 	UaS_Flare DroppedFlare;
@@ -31,7 +31,7 @@ class UaS_Flare : HDPickup {
 			vel.z += 5;
 			Thrown = false;
 		}
-		bool burned = (brightness - age) < 0;
+		burned = (brightness - age) < 0;
 
 		if (Activated && !burned) {
 			if (owner) {
@@ -157,7 +157,7 @@ class UaS_Flare : HDPickup {
 	}
 
 	override void actualpickup(actor other){
-		if(Activated)return;
+		if(Activated||burned)return;
 		super.actualpickup(other);
 	}
 
