@@ -15,7 +15,6 @@ class UaS_LaserLightModule : HDWeapon {
 
 	double lastangle, lastpitch;
 	vector3 lastpos, lastvel;
-	int ageoffset;
 
 	default {
 		radius 3;
@@ -166,7 +165,7 @@ class UaS_LaserLightModule : HDWeapon {
 				offset * sin(-sc.pitch) + ((owner.player.viewz - owner.pos.z) - 4));
 			newpos.z = min(
 				newpos.z,
-				owner.pos.z + gunpos.z);
+				owner.pos.z + gunpos.z - 2);
 				// owner.pos.z + HDWeapon(HDPlayerPawn(owner).player.readyweapon).GetShootOffset(owner));
 			newangle = sc.angle;
 			newpitch = sc.pitch;
@@ -342,18 +341,19 @@ class UaS_LaserLightModule : HDWeapon {
 
 		// Make laser particles larger for players wearing NVGs, and IR lasers visible
 		double sizefactor = 1;
+		if (owner is 'HDPlayerPawn') { sizefactor = 0.5; }
 		if (players[consoleplayer].mo.checklocalview()) {
 			PlayerPawn plr = players[consoleplayer].mo;
 			PortableLiteAmp nvg = PortableLiteAmp(plr.FindInventory("PortableLiteAmp"));
 			if (nvg && nvg.worn) {
-				sizefactor *= clamp(nvg.amplitude * 0.1, 1, 3);
+				//sizefactor *= clamp(nvg.amplitude * 0.1, 1, 3);
 				if (nvg.amplitude > 0) { LaserAlpha = 1.0; }
 			}
 		}
 
 		// Trace path data for laser particle beam
 		FLineTraceData laserTrace;
-		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, TRF_THRUACTORS, data: laserTrace);
+		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, offsetforward:8, data: laserTrace);
 
 		// precalculate position and velocity vectors only once
 		// hopefully moving these out of the loop improves performance
@@ -373,32 +373,35 @@ class UaS_LaserLightModule : HDWeapon {
 		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
 
 		// int pspawns = 0;
-		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + frandom(.1,3)) {
+		double incr=0.1;
+		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + incr) {
+			LP.Pos = emitter.pos + (oldpvec * f) + pold;
+			LP.Vel = (pvoff * f) - pold;
+			LP.Size = sizefactor * frandom[llm](0.75,1.25);
+
+			// Increase density at ends
+			incr = sin((f/laserTrace.distance)*180)*(laserTrace.distance*0.0075);
+			incr = clamp(incr, 0.1, 1000);
+			incr *= frandom[llm](0.1,2);
+
 			// Calculate simulated atmospheric density (pseudo-perlin?)
 			// https://www.desmos.com/calculator/ihnnq7pdjt
-			int t = getage() + ageoffset;
-			double dens = (
-				sin(f*1 + t*8)+
-				sin(f*2 - t*4)+
-				sin(f*4 + t*2)+
-				sin(f*8 - t*1)) * 0.25;
-
-			// ensure visible beams at both ends
-			if (f<90) { dens += sin(f*2); }
-			if (f>laserTrace.distance-90) { dens += cos((laserTrace.distance-f)); }
-
-			// skip if below threshold
-			if (dens <= .2) { continue; }
+			double alph = (
+				(sin(LP.Pos.X) + sin(LP.Pos.Y) + sin(LP.Pos.Z)) +
+				(sin(LP.Pos.X*10) + sin(LP.Pos.Y*10) + sin(LP.Pos.Z*10)) +
+				(sin(LP.Pos.X*.5) + sin(LP.Pos.Y*.1) + sin(LP.Pos.Z*.5)) +
+				sin(f+getage()));
+			alph += max(1-incr,0);
+			alph = clamp(alph, 0, 1);
 
 			// actually spawn particle
-			// pspawns++;
-			LP.Pos = emitter.pos + (oldpvec * f) + pold;
-			LP.Pos.Z -= 2;
-			LP.Vel = (pvoff * f) - pold;
-			LP.Size = frandom(1,2) * sizefactor;
-			LP.StartAlpha = dens * LaserAlpha;
+			LP.StartAlpha = alph * LaserAlpha;
 			Level.SpawnParticle(LP);
+			// pspawns++;
 		}
+		LP.Size = 1; LP.StartAlpha = 1*LaserAlpha; Level.SpawnParticle(LP);
+		LP.Size *= 4; LP.StartAlpha = 0.25*LaserAlpha; Level.SpawnParticle(LP);
+		LP.Size *= 4; LP.StartAlpha = 0.125*LaserAlpha; Level.SpawnParticle(LP);
 		// console.printf("particles "..pspawns);
 	}
 
