@@ -7,6 +7,7 @@ class UaS_Scarcity_Handler : EventHandler {
 	}
 
 	override void WorldTick() {
+		if(level.MapName ~== "RANGE") { return; }
 		if(level.maptime != 1) { return; }
 		if(UaS_ScarcityEnabled == false) { return; }
 
