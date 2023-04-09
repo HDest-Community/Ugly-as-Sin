@@ -4,6 +4,7 @@ class UaS_LaserLightModule : HDWeapon {
 	int modeLight, modeLaser;
 	bool activated;
 	UaS_LLM_Emitter emitter;
+	UaS_LLM_BounceLight lbounce, fbounce;
 	vector3 oldsc;
 	double offset,heightfactor;
 	double angleoffset,pitchoffset;
@@ -259,7 +260,11 @@ class UaS_LaserLightModule : HDWeapon {
 
 	void Light(int mode) {
 		switch (mode) {
-			case 0: emitter.Deactivate(self); return; break;
+			case 0:
+				// if(fbounce) { fbounce.Destroy(); }
+				emitter.Deactivate(self);
+				return;
+				break;
 			case 1: emitter.IRMode(false); break;
 			case 2: emitter.IRMode(true); break;
 			case 3:
@@ -273,18 +278,34 @@ class UaS_LaserLightModule : HDWeapon {
 			PortableLiteAmp nvg = PortableLiteAmp(plr.FindInventory("PortableLiteAmp"));
 			if (nvg && nvg.worn) { ShowIR = true; }
 		}
-		if (!ShowIR && mode == 2) { emitter.Deactivate(self); return; }
+		if (!ShowIR && mode == 2) {
+			// if(fbounce) { fbounce.Destroy(); }
+			emitter.Deactivate(self);
+			return;
+		}
 
+		FLineTraceData flTrace;
+		emitter.LineTrace(emitter.angle, 512, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		emitter.Activate(self); // turn on dynlight
+
+		//Bounce Light
+		// if (!fbounce && owner is 'HDPlayerPawn') { fbounce = UaS_LLM_BounceLight(actor.spawn("UaS_LLM_BounceLight", flTrace.HitLocation, false)); }
+		// if (fbounce) {
+			// double bouncesize = sin(emitter.SpotOuterAngle) * flTrace.distance * 2;
+			// fbounce.FlashlightType(bouncesize, max(flTrace.distance,1));
+			// fbounce.SetOrigin(flTrace.HitLocation-flTrace.HitDir*10, true);
+			// fbounce.source = self;
+		// }
 
 		// Draw flashlight particle beam
 		if (!beams) { beams = CVar.GetCVar("UaS_FlashlightParticles", players[consoleplayer]); }
 		if (beams.GetBool() == false || (ShowIR && owner == players[consoleplayer].mo)) { return; }
-		FLineTraceData flTrace;
-		emitter.LineTrace(emitter.angle, 64, emitter.pitch, TRF_THRUACTORS, data: flTrace);
 		int start = 1; //particle beam starts at emitter
-		if(owner.CheckLocalView()) { start = 12; } // unless local player
+		// if(owner.CheckLocalView()) { start = 8; } // unless local player
 		if(owner is "DERPBot") { start = 4; } // Reduce beams on DERPs
+
+		double startalpha = 0.75;
+		if(owner.CheckLocalView()) { startalpha = .2; } // unless local player
 
 		// Old angular vector of particle spawn
 		vector3 oldpvec = (
@@ -308,13 +329,18 @@ class UaS_LaserLightModule : HDWeapon {
 		FP.SizeStep = 0;
 		FP.FadeStep = -1;
 		FP.Texture = TexMan.CheckForTexture ("glstuff/glpart.png");
-		for (double d = start; d < flTrace.distance; d = d + (d / 2)) {
-			FP.Size = (sin(20) * d * 8);
+		for (double d = start; d < min(flTrace.distance,64); d = d + (d / 4)) {
 			FP.Pos = emitter.pos + (oldpvec * d) + pold;
 			FP.Vel = (pvoff * d) - pold;
-			FP.StartAlpha = (0.75) / (d ** 1.1);
+			FP.StartAlpha = (startalpha*0.75) / (d);
+			FP.Size = (sin(emitter.SpotOuterAngle) * d) * 6;
+			Level.SpawnParticle(FP);
+			// tighter "beam" particle as well
+			FP.StartAlpha = (startalpha) / (d);
+			FP.Size = (sin(emitter.SpotInnerAngle*0.5) * d) * 8;
 			Level.SpawnParticle(FP);
 		}
+
 	}
 
 	void Laser(int mode) {
@@ -327,7 +353,7 @@ class UaS_LaserLightModule : HDWeapon {
 		LP.Texture = TexMan.CheckForTexture ("glstuff/glpart.png");
 
 		switch (mode) {
-			case 0: return; break;
+			case 0: if(lbounce) { lbounce.Destroy(); } return; break;
 			case 1: LaserAlpha = 1.0; break;
 			case 2: LaserAlpha = 0.0; break;
 		}
@@ -404,11 +430,20 @@ class UaS_LaserLightModule : HDWeapon {
 		LP.Size *= 4; LP.StartAlpha = 0.25*LaserAlpha; Level.SpawnParticle(LP);
 		LP.Size *= 4; LP.StartAlpha = 0.125*LaserAlpha; Level.SpawnParticle(LP);
 		// console.printf("particles "..pspawns);
+
+		//Bounce Light
+		if (!lbounce && owner is 'HDPlayerPawn') { lbounce = UaS_LLM_BounceLight(actor.spawn("UaS_LLM_BounceLight", laserTrace.HitLocation, false)); }
+		if (lbounce) {
+			lbounce.LaserType(color(int(LaserAlpha*255),LaserColor.r,LaserColor.g,LaserColor.b));
+			lbounce.SetOrigin(laserTrace.HitLocation-laserTrace.HitDir*5, true);
+			lbounce.source = self;
+		}
 	}
 
 	//override int getsbarnum(int flags){ return mode; }
 
 	override inventory CreateTossable(int amt) {
+		if(lbounce) { lbounce.destroy(); }
 		if(emitter) { emitter.destroy(); }
 		return super.CreateTossable(amt);
 	}
@@ -438,11 +473,13 @@ class UaS_LaserLightModule : HDWeapon {
 }
 
 class UaS_LLM_Emitter : DynamicLight {
-	actor source;
+	UaS_LaserLightModule source;
 	default {
 		DynamicLight.Type "Point";
 		+DYNAMICLIGHT.ATTENUATE;
-		+DYNAMICLIGHT.SPOT
+		+DYNAMICLIGHT.SPOT;
+		radius 1;
+		height 1;
 	}
 
 	override void PostBeginPlay() {
@@ -452,8 +489,9 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
 		args[DynamicLight.LIGHT_INTENSITY] = 255;
-		SpotInnerAngle = 0;
-		SpotOuterAngle = 25;
+		if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 768; }
+		SpotInnerAngle = 5;
+		SpotOuterAngle = 20;
 	}
 
 	void IRMode(bool on) {
@@ -461,12 +499,53 @@ class UaS_LLM_Emitter : DynamicLight {
 			args[DynamicLight.LIGHT_RED] = 64;
 			args[DynamicLight.LIGHT_GREEN] = 63;
 			args[DynamicLight.LIGHT_BLUE] = 62;
+			SpotInnerAngle = 5;
+			SpotOuterAngle = 8;
 		}
 		else {
 			args[DynamicLight.LIGHT_RED] = 255;
 			args[DynamicLight.LIGHT_GREEN] = 255;
 			args[DynamicLight.LIGHT_BLUE] = 255;
+			SpotInnerAngle = 10;
+			SpotOuterAngle = 25;
 		}
+	}
+
+	override void Tick() {
+		super.tick();
+		if (!source) Destroy();
+	}
+}
+
+class UaS_LLM_BounceLight : DynamicLight {
+	UaS_LaserLightModule source;
+	default {
+		DynamicLight.Type "Point";
+		+DYNAMICLIGHT.ATTENUATE;
+		radius 1;
+		height 1;
+	}
+
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		Deactivate(self);
+	}
+
+	void LaserType(color lc) {
+		args[DynamicLight.LIGHT_RED] = lc.r;
+		args[DynamicLight.LIGHT_GREEN] = lc.g;
+		args[DynamicLight.LIGHT_BLUE] = lc.b;
+		args[DynamicLight.LIGHT_INTENSITY] = int(lc.a/32);
+		Activate(self);
+	}
+
+	void FlashlightType(double size, double distance) {
+		args[DynamicLight.LIGHT_RED] = int(256*((512-distance)/512));
+		args[DynamicLight.LIGHT_GREEN] = int(256*((512-distance)/512));
+		args[DynamicLight.LIGHT_BLUE] = int(256*((512-distance)/512));
+		args[DynamicLight.LIGHT_INTENSITY] = 128;
+		Activate(self);
+		// console.printf("size %i, color %i, distance %i",args[DynamicLight.LIGHT_INTENSITY],args[DynamicLight.LIGHT_RED], distance);
 	}
 
 	override void Tick() {
