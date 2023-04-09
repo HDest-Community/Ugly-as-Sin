@@ -354,6 +354,7 @@ class UaS_LaserLightModule : HDWeapon {
 		// Trace path data for laser particle beam
 		FLineTraceData laserTrace;
 		emitter.LineTrace(emitter.angle, 16384, emitter.pitch, offsetforward:8, data: laserTrace);
+		if (laserTrace.distance<1) { emitter.LineTrace(emitter.angle, 16384, emitter.pitch, flags: TRF_THRUACTORS, offsetforward:8, data: laserTrace); }
 
 		// precalculate position and velocity vectors only once
 		// hopefully moving these out of the loop improves performance
