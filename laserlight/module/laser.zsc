@@ -244,12 +244,18 @@ class UaS_LaserLightModule : HDWeapon {
 				// pitchoffset = 0;
 			// }
 
+			double targetpitch = owner.pitch;
+			if (owner.target) {
+				targetpitch = owner.PitchTo(owner.target, zOfs: owner.height*heightfactor, targZOfs:owner.target.height/2);
+				//console.printf(""..targetpitch);
+			}
+
 			newpos = owner.vec3Angle(
 				offset * cos(-owner.pitch),
 				owner.angle,
 				offset * sin(-owner.pitch) + (owner.height * heightfactor));
 			newangle = emitter.angle + (0.5 * deltaangle(emitter.angle, owner.angle + angleoffset));
-			newpitch = emitter.pitch + (0.5 * deltaangle(emitter.pitch, owner.pitch + pitchoffset));
+			newpitch = emitter.pitch + (0.5 * deltaangle(emitter.pitch, targetpitch + pitchoffset));
 		}
 		emitter.setOrigin(newpos, true);
 		emitter.A_SetAngle(newangle, true);
