@@ -488,8 +488,8 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_RED] = 255;
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
-		args[DynamicLight.LIGHT_INTENSITY] = 255;
-		if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 768; }
+		args[DynamicLight.LIGHT_INTENSITY] = 128;
+		if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
 		SpotInnerAngle = 5;
 		SpotOuterAngle = 20;
 	}
@@ -499,6 +499,7 @@ class UaS_LLM_Emitter : DynamicLight {
 			args[DynamicLight.LIGHT_RED] = 64;
 			args[DynamicLight.LIGHT_GREEN] = 63;
 			args[DynamicLight.LIGHT_BLUE] = 62;
+			args[DynamicLight.LIGHT_INTENSITY] = 384;
 			SpotInnerAngle = 5;
 			SpotOuterAngle = 8;
 		}
@@ -506,8 +507,10 @@ class UaS_LLM_Emitter : DynamicLight {
 			args[DynamicLight.LIGHT_RED] = 255;
 			args[DynamicLight.LIGHT_GREEN] = 255;
 			args[DynamicLight.LIGHT_BLUE] = 255;
-			SpotInnerAngle = 10;
-			SpotOuterAngle = 25;
+			args[DynamicLight.LIGHT_INTENSITY] = 128;
+			if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
+			SpotInnerAngle = 5;
+			SpotOuterAngle = 20;
 		}
 	}
 
