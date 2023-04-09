@@ -50,24 +50,28 @@ extend class UaS_AI_Handler {
 				int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
 				if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) { // don't run the normal check logic if we're incapacitated
-					if (UaS.RandomChance(UaS_AI_PlayDead)) {
+					if (frandom[aillm](0,1) > UaS_AI_PlayDead) {
 						toggleintent = "On";
 					}
 				} else {
 					// More likely to activate in darker areas
-					if (random[aillm](0,192) > lightlevel) { toggleintent = "On"; }
+					if (random[aillm](0,256) > lightlevel) { toggleintent = "On"; }
 					else { toggleintent = "Off"; }
 				}
 
 				// misc other adjustments
-				recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
-				if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
-				if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
+				recheck = max(random[aillm](35, 128), lightlevel); // recheck more often in darker areas
+				prefmode = randompick[aillm](0,0,0,1,2);
 			}
 			// Force on if the monster is aiming at the player
-			if (isowneraiming && owner.target) {
-				prefmode = clamp(prefmode,1,2);
-				toggleintent = "On";
+			if (isowneraiming) {
+				if (owner.target && (owner.CheckSight(owner.target) || frandom[aillm](0,1) < 0.25)) {
+					toggleintent = "On";
+					prefmode = clamp(prefmode,1,2);
+				}
+				else if (frandom[aillm](0,1) > 0.5) {
+					toggleintent = "On";
+				}
 				recheck = 10;
 			}
 			//if (flashing) { UaS.SendIntent("LLM_ModeSwitch", "3", owner); }
