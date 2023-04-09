@@ -495,9 +495,11 @@ class UaS_LLM_Emitter : DynamicLight {
 		args[DynamicLight.LIGHT_GREEN] = 255;
 		args[DynamicLight.LIGHT_BLUE] = 255;
 		args[DynamicLight.LIGHT_INTENSITY] = 128;
-		if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
 		SpotInnerAngle = 5;
 		SpotOuterAngle = 20;
+		if (!source) { return; }
+		if (!source.owner) { return; }
+		if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
 	}
 
 	void IRMode(bool on) {
@@ -514,9 +516,11 @@ class UaS_LLM_Emitter : DynamicLight {
 			args[DynamicLight.LIGHT_GREEN] = 255;
 			args[DynamicLight.LIGHT_BLUE] = 255;
 			args[DynamicLight.LIGHT_INTENSITY] = 128;
-			if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
 			SpotInnerAngle = 5;
 			SpotOuterAngle = 20;
+			if (!source) { return; }
+			if (!source.owner) { return; }
+			if (source.owner is 'HDPlayerPawn') { args[DynamicLight.LIGHT_INTENSITY] = 255; }
 		}
 	}
 
