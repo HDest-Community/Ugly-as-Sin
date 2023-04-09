@@ -7,7 +7,6 @@ Tweaks monster behavior mechanics for a more nuanced and immersive gameplay expe
 * **Searching** `UaS_AI_Searching` Enables monsters tracking the player's last known position and performing simple searches.
 * **Wounding** `UaS_AI_Wounding` Monsters will cry out in pain and lose combat ability the more injured they are.
 * **Lights / Lasers** `UaS_AI_Flashlights` In dark areas, "hitscan" enemies will sometimes use flashlights and laser sights. Lasers are always enabled for cyborg or robot enemies.
-* **Lasers Always On** `UaS_AI_AlwaysLasers` Forces lasers on at all times for human-type enemies.
 * **Stealth** `UaS_AI_Stealth` Allows the player to hide in very dark areas (shown with a blue fade at the bottom of the screen).
 * **Enemy lights when incapped** `UaS_AI_Playdead` Chance for monsters to disable their light/laser when knocked down.
 

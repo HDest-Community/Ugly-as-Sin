@@ -42,29 +42,33 @@ extend class UaS_AI_Handler {
 			!BotClass
 		);
 
-		if (HumanClass && recheck <= 0) {
-			// sample light from ahead of monster
-			FLineTraceData lookSpot;
-			owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
-			int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
+		if (HumanClass) {
+			if (recheck <=0) {
+				// sample light from ahead of monster
+				FLineTraceData lookSpot;
+				owner.LineTrace(owner.angle, 256, owner.pitch, TRF_THRUACTORS, owner.height * 0.75, data: lookSpot);
+				int lightlevel = int(lookSpot.HitSector.LightLevel + owner.cursector.lightlevel) / 2;
 
-			if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) { // don't run the normal check logic if we're incapacitated
-				if (UaS.RandomChance(UaS_AI_PlayDead)) {
-					toggleintent = "On";
+				if (owner.InStateSequence(owner.CurState, owner.ResolveState("falldown"))) { // don't run the normal check logic if we're incapacitated
+					if (UaS.RandomChance(UaS_AI_PlayDead)) {
+						toggleintent = "On";
+					}
+				} else {
+					// More likely to activate in darker areas
+					if (random[aillm](0,192) > lightlevel) { toggleintent = "On"; }
+					else { toggleintent = "Off"; }
 				}
-			} else {
-				// More likely to activate in darker areas
-				if (random[aillm](0,192) > lightlevel) { toggleintent = "On"; }
-				else { toggleintent = "Off"; }
-			}
 
-			// misc other adjustments
-			recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
-			if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
-			if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
-			if (UaS_AI_AlwaysLasers) { // Override to force lasers
+				// misc other adjustments
+				recheck = max(random[aillm](35, 175), lightlevel); // recheck more often in darker areas
+				if (random[aillm](0,1) > 0.75) { prefmode = random[aillm](0,2); }
+				if (random[aillm](0,128) > lightlevel) { prefmode = random[aillm](0,2); }
+			}
+			// Force on if the monster is aiming at the player
+			if (isowneraiming && owner.target) {
 				prefmode = clamp(prefmode,1,2);
 				toggleintent = "On";
+				recheck = 10;
 			}
 			//if (flashing) { UaS.SendIntent("LLM_ModeSwitch", "3", owner); }
 			UaS.SendIntent("LLM_ModeSwitch", string.format("%i",prefmode), owner);
