@@ -23,7 +23,8 @@ extend class UaS_Consumable {
 		}
 		if (random(10,100) <= weaponstatus[UGCS_SPOILAGE]) { addsick = 1; }
 		tracker.EatOrDrink(bitesize, sipsize, mouthful, addsick);
-		owner.A_Log(RandomConsumeMessage(), true);
+		string consumemessage = RandomConsumeMessage();
+		if (consumemessage.length()>0) { owner.A_Log(RandomConsumeMessage(), true); }
 		OnConsume();
 	}
 
