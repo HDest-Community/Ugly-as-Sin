@@ -1,123 +1,142 @@
 extend class UaS_Looting_Handler {
+	array<string> ResultStrings;
 	array<string> ItemStrings;
 	array<string> JoinerWords;
 	array<string> Keywords;
 	array<string> Conditions;
 
 	string FlavorText(bool foundSomething) {
-		if (ItemStrings.Size() == 0 || JoinerWords.Size() == 0) { InitializeStrings(); }
-		string returnMessage = "";
-		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.."There's"; }
-		returnMessage = returnMessage.." nothing";
-		if (foundSomething) { returnMessage = returnMessage.." else"; }
-		if (UaS.RandomChance(0.5)) { returnMessage = returnMessage.." here"; }
-		if (UaS.RandomChance(0.5)) {
-			returnMessage = returnMessage..".";
-			return returnMessage;
-		}
-		returnMessage = returnMessage..JoinerWords[random(0, JoinerWords.Size() - 1)];
-		returnMessage = returnMessage..BuildItemString();
-		//for (int i=0; i<100; i++) { console.printf(BuildItemString()); } // print 100 debugging variations
+		string returnMessage;
+		if (ItemStrings.Size() == 0 || JoinerWords.Size() == 0 || ResultStrings.Size() == 0) { InitializeStrings(); }
+		returnMessage = ResultStrings[random(0, ResultStrings.Size() - 1)];
+		returnMessage.Replace(
+			"$JOINER",
+			JoinerWords[random(0, JoinerWords.Size() - 1)]
+		);
+		returnMessage.Replace(
+			"$ITEM",
+			ItemStrings[random(0, ItemStrings.Size() - 1)]
+		);
+		returnMessage = CollapseSubstrings(returnMessage);
+		console.printf("• "..returnMessage);
 		return UaS.WrapFunction(returnMessage);
 	}
 
-	string BuildItemString() {
-		string item = ItemStrings[random(0, ItemStrings.Size() - 1)];
-
+	string CollapseSubstrings(string input) {
 		// Collapse substrings
 		while (true) {
 			int LeftBrace, RightBrace;
-			LeftBrace = item.RightIndexOf("{");
-			RightBrace = item.IndexOf("}",LeftBrace+1);
+			LeftBrace = input.RightIndexOf("{");
+			RightBrace = input.IndexOf("}",LeftBrace+1);
 			if (LeftBrace == -1 || RightBrace == -1) { break; }
 
-			string substring = item.Mid(LeftBrace+1, (RightBrace-LeftBrace)-1);
-			item.Remove(LeftBrace+1, (RightBrace-LeftBrace)-1);
+			string substring = input.Mid(LeftBrace+1, (RightBrace-LeftBrace)-1);
+			input.Remove(LeftBrace+1, (RightBrace-LeftBrace)-1);
 
 			array<string> substrings;
 			substring.Split(substrings,"|");
 
-			item.Replace("{}", substrings[random(0,substrings.Size()-1)]);
+			input.Replace("{}", substrings[random(0,substrings.Size()-1)]);
 		}
 
-		// Remove double-spaces
+		// Remove excess whitespace
 		while (true) {
-			if (item.IndexOf("  ", 0) > -1) { item.Replace("  ", " "); }
+			if (input.IndexOf("  ", 0) > -1) { input.Replace("  ", " "); }
+			else if (input.IndexOf("\t", 0) > -1) { input.Replace("\t", "  "); }
+			else if (input.IndexOf("\n", 0) > -1) { input.Replace("\n", "  "); }
+			else if (input.IndexOf("\r", 0) > -1) { input.Replace("\r", "  "); }
+			else if (input.IndexOf(" ,", 0) > -1) { input.Replace(" ,", ","); }
+			else if (input.IndexOf(" .", 0) > -1) { input.Replace(" .", "."); }
+			else if (input.Left(1) == " ") { input = input.Mid(1); }
 			else { break; }
 		}
+		input = input.Left(1).MakeUpper()..input.Mid(1);
 
-		return item;
+		return input;
 	}
 
 	void InitializeStrings() {
+		ResultStrings.Clear();
+		ItemStrings.Clear();
+		JoinerWords.Clear();
+
 		// Define substring lists with { } (curly brackets)
 		// Lists may be nested!
 		// Separate string items with | (pipe)
 		// Add leading or trailing pipe characters for chance of blank strings
-		ItemStrings.Push(" {an empty|{a {half-eaten|spoiled|rotten|moldy|||}}} {ration|ration wrapper}{, covered in filth||||}");
-		ItemStrings.Push(" a {small|} collection of {bent|rusty|} grenade pins.");
-		ItemStrings.Push(" {a revenant|an imp} finger bone.");
-		ItemStrings.Push(" a {hairy||||} wad of chewing gum.");
-		ItemStrings.Push(" {an oily|{a {rusty|damaged|gunky|nasty}}} gun part.");
-		ItemStrings.Push(" a {small|large|||} {rusty|shiny|chipped|||} {gold|silver|copper||||||} coin.");
-		ItemStrings.Push(" some {tarnished|empty|dented|cracked|flattened} {brass|steel|polymer} {shotgun|9mm|7mm} {casings|shells}. {The primers are missing.}");
-		ItemStrings.Push(" {some|a piece of} pocket lint.");
-		ItemStrings.Push(" {an empty|a {cracked|broken|}} potion bottle{, missing a cork|. The cork is tightly sealed|.}");
-		ItemStrings.Push(" a {broken |}{standard issue |}PDA. {It looks like it's been {crushed with a hammer.|shot.}}");
-		ItemStrings.Push(" a pinup poster{|||||||||| of Betty Grable| of Imp-tan| of a woman| of a muscular man{|||| holding two grenades| holding a pistol{|| suggestively}}}.");
-		ItemStrings.Push(" two floppy disks, labeled \"DOOM.\"");
-		ItemStrings.Push(" 27 floppy disks, labeled \"Windows 95.\"");
-		ItemStrings.Push(" a {torn|dirty|scorched} paper titled \"TPS REPORT.\"");
-		ItemStrings.Push(" a movie script. {There are notes written in the margins.}");
-		ItemStrings.Push(" some {electrical|USB} cables.");
-		ItemStrings.Push(" an empty {beer|soda|wine|champagne} bottle. {It is {cracked|broken|unlabeled}.}");
-		ItemStrings.Push(" a family photo{.|.|.|, of a marine and ... an imp?} {One of the faces has been {scratched|burned|scribbled|cut} out.}");
-		ItemStrings.Push(" {an action figure|a doll}. {|||||||||||||It is naked.}");
-		ItemStrings.Push(" a {VHS tape|DVD} titled \"{Demolition Man|The Matrix|Total Recall|The Way of the Gun|Falling Down}.\"");
-		ItemStrings.Push(" the secret Ugly as Sin feature.");
-		ItemStrings.Push(" a glass jar.");
-		ItemStrings.Push(" {an SD|a micro-SD|a {PS1|PS2|flash} memory} card.");
-		ItemStrings.Push(" some old paper currency. {It's worthless.|}");
-		ItemStrings.Push(" a {small|large|||} plush {emoji toy|cacodemon|teddy bear|furbie}.");
-		ItemStrings.Push(" a {Rainbow Dash|Twilight Sparkle|Pinkie Pie|Fluttershy|Applejack|Rarity} figurine.");
-		ItemStrings.Push(" a {delicate|intricate|chunky||||} {gold|silver} chain. {There is a charm on it.||||}");
-		ItemStrings.Push(" two A{A|AA} batteries.");
-		ItemStrings.Push(" a {Walkman-brand} {tape|CD} player.");
-		ItemStrings.Push(" a cassete tape{.| labeled \"DOOM.\"}");
-		ItemStrings.Push(" a {melted|moldy|crumbled} {chocolate bar|candy bar|laffy taffy}{.| wrapper.}");
-		ItemStrings.Push(" an RC {airplane|car|drone} remote. {It's broken.}");
-		ItemStrings.Push(" an ancient {hellish|heavenly} artifact.");
-		ItemStrings.Push(" a potion bottle, filled with a non-blue liquid.");
-		ItemStrings.Push(" a broken battery. {All the frag and electronics have leaked out.|||||}");
-		ItemStrings.Push(" a {torn|bloody} tactical pouch{.|, without a vest attached.|, with part of a vest attached.}");
-		ItemStrings.Push(" a {sheared|broken|damaged} bolt assembly from a {ZM66|Boss|Liberator} rifle{.|, chopped into two pieces.}");
-		ItemStrings.Push(" a few {dud|dummy|inert} frag grenades.");
-		ItemStrings.Push(" a {damaged|broken} 7mm auto-reloader.");
-		ItemStrings.Push(" a {|1|2|3|4|5{5}}-pound {weight|dumbell} plate.");
-		ItemStrings.Push(" a tiny violin.}");
-		ItemStrings.Push(" some scraps of {parchment|paper|leather|human skin|demon skin} with various {generic|horror-movie|spooky|arcane|profane|disturbing} phrases scribbled on them.");
-		ItemStrings.Push(" a {blue|red|yellow} {keycard|access card}, {broken in half|caked in blood|melted} and unusable.}");
-		ItemStrings.Push(" a fake {red|blue|yellow} skull{.|, made of{plastic|glass|metal}.}");
-		ItemStrings.Push(" the scrawlings of a madman.");
-		ItemStrings.Push(" {some|a cocktail of|a collection of} {homemade|illegal|unknown} drugs.");
-		ItemStrings.Push(" {an IED|a dead-man's switch}. Thankfully it's {a dud|inert|improperly wired}.");
-		ItemStrings.Push(" a Game{Dude|Bro|Guy} {Advance|Pro|Touch|Color|3D} {game cartridge|, with no cartridge or batteries}.");
-		ItemStrings.Push(" a {teaspoon|handful|pinch} of gunpowder{|||,from a 4.26mm cartridge}.");
-		ItemStrings.Push(" {a|some} junk mail{|| flyers}. ");
-		ItemStrings.Push(" {a shuriken|some shurikens}.");
-		ItemStrings.Push(" someone's {D&D|tabletop game|Roll20|Pathfinder|RPG} character sheet{|| for a {Ranger|Paladin|Barbarian|Cleric|Monk|Necromancer}}.");
-		ItemStrings.Push(" an {||intercepted} {||enemy|friendly} {communique|message}. It's {illegible|encrypted|heavily redacted|...completely mundane}.");
-		ItemStrings.Push(" a suitcase. It's {empty|empty|empty|empty|empty|empty|filled with {hat designs|playing cards|paperback novels|pornography}}.");
-		ItemStrings.Push(" a perfectly square cube of {stone|gravel|dirt|sand}.");
-		ItemStrings.Push(" some custom grips for a 9mm handgun. They {serve no tactical purpose|provide no tactical advantage} whatsoever.");
-		// ItemStrings.Push(" ");
 
+		ResultStrings.Push("{||{||it {appears |seems }}there's}
+			{nothing|not much} {else|more}
+			{||, $JOINER $ITEM}.
+			");
+		ResultStrings.Push("{||{||merely|only|just} $ITEM.}
+			{||{||it {appears |seems }}there's}
+			{nothing|not much} {else|more}{|| here}.
+			");
 
-		JoinerWords.Push(", except");
-		JoinerWords.Push(", except for");
-		JoinerWords.Push(", aside from");
-		JoinerWords.Push(", apart from");
-		JoinerWords.Push(", besides");
-		JoinerWords.Push(", beyond");
+		JoinerWords.Push("{save|except}{ for}");
+		JoinerWords.Push("{aside|apart} from");
+		JoinerWords.Push("besides");
+		JoinerWords.Push("beyond");
+		JoinerWords.Push("only");
+		JoinerWords.Push("just");
+		JoinerWords.Push("merely");
+
+		ItemStrings.Push("{an empty|{a {half-eaten|spoiled|rotten|moldy|||}}} {ration|ration wrapper}{, covered in filth||||}");
+		ItemStrings.Push("a {small|} collection of {bent|rusty|} grenade pins");
+		ItemStrings.Push("{a revenant|an imp} finger bone");
+		ItemStrings.Push("a {hairy||||} wad of chewing gum");
+		ItemStrings.Push("{an oily|{a {rusty|damaged|gunky|nasty}}} gun part");
+		ItemStrings.Push("a {small|large|||} {rusty|shiny|chipped|||} {gold|silver|copper||||||} coin");
+		ItemStrings.Push("some {tarnished|empty|dented|cracked|flattened} {brass|steel|polymer} {shotgun|9mm|7mm} {casings|shells}{. The primers are missing}");
+		ItemStrings.Push("{some|a piece of|a little} pocket lint");
+		ItemStrings.Push("{an empty|a {cracked|broken|}} potion bottle{, missing a cork|. The cork is tightly sealed|}");
+		ItemStrings.Push("a {broken |}{standard issue |}PDA{. It looks like it's been {crushed with a hammer|shot}}");
+		ItemStrings.Push("a pinup poster{|||||||||| of Betty Grable| of Imp-tan| of a woman| of a muscular man{|||| holding two grenades| holding a pistol{|| suggestively}}}");
+		ItemStrings.Push("two floppy disks, labeled \"DOOM\"");
+		ItemStrings.Push("27 floppy disks, labeled \"Windows 95\"");
+		ItemStrings.Push("a {torn|dirty|scorched} paper titled \"TPS REPORT\"");
+		ItemStrings.Push("a movie script{. There are notes written in the margins}");
+		ItemStrings.Push("some {electrical|USB} cables");
+		ItemStrings.Push("an empty {beer|soda|wine|champagne} bottle{. It is {cracked|broken|unlabeled}}");
+		ItemStrings.Push("a family photo{.|.|.|, of a marine and ... an imp?} {One of the faces has been {scratched|burned|scribbled|cut} out}");
+		ItemStrings.Push("{an action figure|a doll}{|||||||||||||. It is naked}");
+		ItemStrings.Push("a {VHS tape|DVD} titled \"{Demolition Man|The Matrix|Total Recall|The Way of the Gun|Falling Down}\"");
+		ItemStrings.Push("the secret Ugly as Sin feature{|||. No, this isn't it{||||. No, it hasn't been found yet}}");
+		ItemStrings.Push("a glass jar");
+		ItemStrings.Push("{an SD|a micro-SD|a {PS1|PS2|flash} memory} card");
+		ItemStrings.Push("some old paper currency{. It's worthless|}");
+		ItemStrings.Push("a {small|large|||} plush {emoji toy|cacodemon|teddy bear|furbie}");
+		ItemStrings.Push("a {Rainbow Dash|Twilight Sparkle|Pinkie Pie|Fluttershy|Applejack|Rarity} figurine");
+		ItemStrings.Push("a {delicate|intricate|chunky||||} {gold|silver} chain{. There is a charm on it||||}");
+		ItemStrings.Push("two {AA|AAA|D-cell|C-cell|9-volt} batteries");
+		ItemStrings.Push("a {Walkman-brand }{tape|CD} player");
+		ItemStrings.Push("a cassete tape{| labeled \"DOOM\"}");
+		ItemStrings.Push("a {melted|moldy|crumbled} {chocolate bar|candy bar|laffy taffy}{|wrapper}");
+		ItemStrings.Push("an RC {airplane|car|drone} remote{. It's broken}");
+		ItemStrings.Push("an ancient {hellish|heavenly} artifact");
+		ItemStrings.Push("a potion bottle, filled with a non-blue liquid");
+		ItemStrings.Push("a broken battery {All the frag and electronics have leaked out|||||}");
+		ItemStrings.Push("a {torn|bloody} tactical pouch{|, without a vest attached|, with part of a vest attached}");
+		ItemStrings.Push("a {sheared|broken|damaged} bolt assembly from a {ZM66|Boss|Liberator} rifle{|, chopped into two pieces}");
+		ItemStrings.Push("a few {dud|dummy|inert} frag grenades");
+		ItemStrings.Push("a {damaged|broken} 7mm auto-reloader");
+		ItemStrings.Push("a {|1|2|3|4|5{5}}-pound {weight|dumbell} plate");
+		ItemStrings.Push("a tiny violin");
+		ItemStrings.Push("some scraps of {parchment|paper|leather|human skin|demon skin} with various {generic|horror-movie|spooky|arcane|profane|disturbing} phrases scribbled on them");
+		ItemStrings.Push("a {blue|red|yellow} {keycard|access card}{, {broken in half|caked in blood|melted} and unusable}");
+		ItemStrings.Push("a fake {|||human }{red|blue|yellow} skull{|, made of {plastic|glass|metal}}");
+		ItemStrings.Push("the scrawlings of a mad{man|woman|pony}");
+		ItemStrings.Push("{some|a cocktail of|a collection of} {homemade|illegal|unknown} drugs");
+		ItemStrings.Push("{an IED|a dead-man's switch}. {Thankfully|Unfortunately} it's {a dud|inert|improperly wired}");
+		ItemStrings.Push("a Game{Dude|Bro|Guy} {Advance|Pro|Touch|Color|3D} {game cartridge|, with no cartridge or batteries}");
+		ItemStrings.Push("a {teaspoon|handful|pinch} of gunpowder{|||, from a 4.26mm cartridge}");
+		ItemStrings.Push("{a|some} junk mail{|| flyers}");
+		ItemStrings.Push("{a shuriken|some shurikens}");
+		ItemStrings.Push("someone's {D&D|tabletop game|Roll20|Pathfinder|RPG} character sheet{|| for a {Ranger|Paladin|Barbarian|Cleric|Monk|Necromancer}}");
+		ItemStrings.Push("an {||intercepted} {||enemy|friendly} {communique|message}. It's {illegible|encrypted|heavily redacted|... completely mundane}");
+		ItemStrings.Push("a suitcase. It's {empty|empty|empty|empty|empty|empty|filled with {hat designs|playing cards|paperback novels|pornography}}");
+		ItemStrings.Push("a perfectly square cube of {stone|gravel|dirt|sand}");
+		ItemStrings.Push("some custom grips for a 9mm handgun. They {serve no tactical purpose|provide no tactical advantage} whatsoever");
 	}
 }
