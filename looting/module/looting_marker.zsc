@@ -26,6 +26,13 @@ class UaS_SearchedCorpseMarker : Inventory {
 	}
 
 	void ReturnLoot() {
+		for(inventory item=self.inv;item!=null;item=item.inv){
+			if (item is 'HDPickup') {
+				console.printf(item.getclassname()); //replace with whatever you actually want to do instead
+			}
+		}
+	}
+	/*void ReturnLoot() {
 		int check = (
 			random[loot](0,100) +
 			random[loot](0,100) +
@@ -56,7 +63,7 @@ class UaS_SearchedCorpseMarker : Inventory {
 		}
 		// Mark complete if no more loot entries
 		if (Loot.Size() <= 0) { fullysearched = true; }
-	}
+	}*/
 
 	void SpawnLootDebris() {
 		for (int i = 0; i < 5; i++) {
