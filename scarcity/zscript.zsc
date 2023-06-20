@@ -1,4 +1,4 @@
-version "4.4"
+version "4.10"
 
 #include "module/scarcity.zsc"
 #include "module/scarcity_drops.zsc"

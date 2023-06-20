@@ -1,28 +1,27 @@
 extend class UaS_Scarcity_Handler {
 	//Remover function which counts all of an item then only removes a set percentage
 	void ExactScarcity(name checkClass, double targetPercent) {
-		string dbgMsg = "Scarcity processing for "..CheckClass;
-		array<Actor> thingArray;
-		Actor nextThing;
+
+		// Build instance array for this class
+		array<HDPickup> thingArray;
+		HDPickup nextThing;
 		let thingCounter = ThinkerIterator.Create(CheckClass);
-		while(nextThing = Actor(thingCounter.Next(false))) {
-			// if(
-				// nextThing.GetClassName() == CheckClass
-				// && nextThing.special == 0
-			// ) { thingArray.Push(nextThing); }
+		while(nextThing = HDPickup(thingCounter.Next(true))) {
+			if (nextThing.owner) continue;
 			thingArray.Push(nextThing);
 		}
 
+		// Calculate how many to keep
 		int originalcount = thingArray.Size();
-		if(originalcount <= 0) { return; }
-		dbgMsg = dbgMsg.."\n\t• Count "..originalcount;
-
+		if(originalcount <= 0) { return; } // sanity?
 		int targetAmount = int(thingArray.Size() * targetPercent);
+
+		// Loop over each instance until we hit the target amount
+		string dbgMsg = "Scarcity processing for "..CheckClass.." x"..originalcount;
 		while(thingArray.Size() > targetAmount) {
 			// pick a random object from array
 			int index = random(0, thingArray.Size()-1);
 			inventory mo = inventory(thingArray[index]);
-			dbgMsg = dbgMsg.."\n\t• For mo "..mo.GetClassName();
 
 			//Find nearby mobs to the object
 			let mobFinder = BlockThingsIterator.Create(mo, 512);
@@ -42,9 +41,12 @@ extend class UaS_Scarcity_Handler {
 				mb = mobArray[mobIndex];
 				if (mb && mo) {
 					//Move item to mob's array
-					mo.setorigin(mb.pos,false);
-					dbgMsg = dbgMsg.."moved to "..mb.GetClassName();
-					pickedUp = mo.CallTryPickup(mb);
+					if (mb.checkmove(mo.pos.xy,PCM_DROPOFF)) {
+						mo.setorigin(mb.pos,false);
+						dbgMsg = dbgMsg.."\n\t• Moved to "..mb.GetClassName();
+						pickedUp = mo.CallTryPickup(mb);
+					}
+					else  { dbgMsg = dbgMsg.."\n\t• did not move"; }
 				}
 			}
 
