@@ -137,7 +137,7 @@ class UaS_Flare : HDPickup {
 	}
 
 	override inventory CreateTossable(int amt) {
-		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
+		if (owner.player) Thrown = (owner.player.cmd.buttons&BT_ZOOM);
 		DroppedFlare = null;
 		DroppedFlare = UaS_Flare(super.CreateTossable(amt));
 		if (DroppedFlare && Activated) {

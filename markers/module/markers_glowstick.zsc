@@ -75,7 +75,7 @@ class UaS_Glowstick : HDPickup {
 	}
 
 	override inventory CreateTossable(int amt) {
-		Thrown = (owner.player.cmd.buttons&BT_ZOOM);
+		if (owner.player) Thrown = (owner.player.cmd.buttons&BT_ZOOM);
 		DroppedGlowStick = null;
 		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
 		if (DroppedGlowStick && Activated) {
