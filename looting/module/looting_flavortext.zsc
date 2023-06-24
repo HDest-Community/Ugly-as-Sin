@@ -18,7 +18,7 @@ extend class UaS_Looting_Handler {
 			ItemStrings[random(0, ItemStrings.Size() - 1)]
 		);
 		returnMessage = CollapseSubstrings(returnMessage);
-		console.printf("• "..returnMessage);
+		//console.printf("• "..returnMessage);
 		return UaS.WrapFunction(returnMessage);
 	}
 
