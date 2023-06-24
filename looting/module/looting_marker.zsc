@@ -19,14 +19,13 @@ class UaS_SearchedCorpseMarker : Inventory {
 				SearchedAmount = 0;
 				foundSomething = true;
 			}
-			else if (frandom[loot](0,1) < UaS_LootingFactor) {
-				UaS_LootList ll = UaS_LootList.get();
-				string backupitem = ll.GetLootItem(owner);
-				UaS.SpawnStuff(backupitem, 1, owner.pos, true);
-				UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
-				fullysearched = true;
-			}
 			else {
+				if (frandom[loot](0,1) < UaS_LootingFactor) {
+					UaS_LootList ll = UaS_LootList.get();
+					string backupitem = ll.GetLootItem(owner);
+					UaS.SpawnStuff(backupitem, 1, owner.pos, true);
+					UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
+				}
 				fullysearched = true;
 			}
 		}
