@@ -53,7 +53,6 @@ class UaS_Looting_Handler : Inventory {
 		if (searchTarget.countinv("UaS_SearchedCorpseMarker") == 0) {
 			searchTarget.GiveInventory("UaS_SearchedCorpseMarker", 1);
 			searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
-			searchMarker.InitLoot();
 		}
 		searchMarker = UaS_SearchedCorpseMarker(searchTarget.FindInventory("UaS_SearchedCorpseMarker"));
 		if (!searchMarker) { return; }

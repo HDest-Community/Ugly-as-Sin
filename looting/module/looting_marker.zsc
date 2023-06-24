@@ -1,27 +1,8 @@
 class UaS_SearchedCorpseMarker : Inventory {
-	array<string> Loot;
 	int searchedAmount;
 	bool foundSomething;
 	string lastMessage;
 	bool fullysearched;
-
-	void InitLoot() {
-		UaS_LootList ll = UaS_LootList.get();
-		int lootslots = random(5,10);
-		double chance = UaS_LootingFactor;
-		for (int i = 0; i < lootslots; i++) {
-			if (UaS.RandomChance(chance)) {
-				string item = ll.GetLootItem(owner);
-				Loot.Push(item);
-			}
-			else { Loot.Push(""); }
-		}
-		string dbgout = "Init loot for "..owner.getclassname().." : ";
-		for(int i=0; i<Loot.Size(); i++) {
-			dbgout = dbgout..Loot[i]..", ";
-		}
-		UaS.LogDebug(DBG_Looting, string.format(dbgout));
-	}
 
 	void ReturnLoot() {
 		int check = (
@@ -37,6 +18,13 @@ class UaS_SearchedCorpseMarker : Inventory {
 				UaS.LogDebug(DBG_Looting, string.format("Loot spawn: "..item.GetClassName()));
 				SearchedAmount = 0;
 				foundSomething = true;
+			}
+			else if (frandom[loot](0,1) < UaS_LootingFactor) {
+				UaS_LootList ll = UaS_LootList.get();
+				string backupitem = ll.GetLootItem(owner);
+				UaS.SpawnStuff(backupitem, 1, owner.pos, true);
+				UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
+				fullysearched = true;
 			}
 			else {
 				fullysearched = true;
