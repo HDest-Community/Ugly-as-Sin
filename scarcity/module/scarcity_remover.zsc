@@ -28,12 +28,12 @@ extend class UaS_Scarcity_Handler {
 			}
 
 			//Find nearby mobs to the object
-			let mobFinder = BlockThingsIterator.Create(mo, 512);
-			array<HDMobBase> mobArray;
+			let mobFinder = BlockThingsIterator.Create(mo, 256);
+			array<HDHumanoid> mobArray;
 			// build a list of mobs
 			while(mobFinder.Next()) {
-				if(mobFinder.thing is 'HDMobBase') {
-					mobArray.push(HDMobBase(mobFinder.thing));
+				if(mobFinder.thing is 'HDHumanoid') {
+					mobArray.push(HDHumanoid(mobFinder.thing));
 				}
 			}
 
