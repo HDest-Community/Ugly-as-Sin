@@ -25,6 +25,7 @@ class UaS_SearchedCorpseMarker : Inventory {
 					string backupitem = ll.GetLootItem(owner);
 					UaS.SpawnStuff(backupitem, 1, owner.pos, true);
 					UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
+					foundSomething = true;
 				}
 				fullysearched = true;
 			}
