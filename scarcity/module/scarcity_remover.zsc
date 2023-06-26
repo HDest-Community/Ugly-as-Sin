@@ -22,6 +22,10 @@ extend class UaS_Scarcity_Handler {
 			// pick a random object from array
 			int index = random(0, thingArray.Size()-1);
 			inventory mo = inventory(thingArray[index]);
+			if(mo.owner) {
+				thingArray.Delete(index);
+				continue;
+			}
 
 			//Find nearby mobs to the object
 			let mobFinder = BlockThingsIterator.Create(mo, 512);
