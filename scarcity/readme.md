@@ -9,7 +9,7 @@
 
 As the exact workings of this module can be obscure or confusing, the section below will give detailed explanation of how this module decides to affect various spawns and clarify the interaction of the two setting sliders.
 
-The **Scarcity** slider determines the percentage of each type of map spawn to be affected by the scarcity module. For example, if there are 16 ZM66 magazines on the map and scarcity is set to 50%, then 8 of them will be marked to be altered by the scarcity system. This generally means the original map spawn is destroyed, denying the player its resources and forcing a more "scavenging" style of play.
+The **Scarcity** slider determines the percentage of each type of map spawn to be affected by the scarcity module. For example, if there are 16 ZM66 magazines on the map and scarcity is set to 50%, then 8 of them will be marked to be altered by the scarcity system. This generally means the original map spawn is destroyed, denying the player its resources and forcing a more "scavenging" style of play. If you have the Looting module enabled, some of these items can be found in the inventories of nearby humanoid monsters (such as zombies).
 
 As higher scarcity levels can prove *very* punishing due to the loss of ammo and medical items, the **Overspawn** slider can be used to fine-tune this behavior. Overspawning controls what's spawned in place or left over when the affected item gets removed. How exactly this is handled depends on the class and type of item, but the general rule is that the spawn is replaced by a *random* amount of the item's sub-type, and the *maximum* random amount is `ITEM_AMOUNT * OVERSPAWN`.
 
