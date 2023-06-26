@@ -1,5 +1,5 @@
 extend class UaS {
-	static play string WrapFunction(string towrap, int wraplen = 30) {
+	static play string WrapFunction(string towrap, uint wraplen = 30) {
 		string r;
 		string templine;
 		array<string> wrapwords;
