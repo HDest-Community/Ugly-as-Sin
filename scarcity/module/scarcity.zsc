@@ -17,9 +17,23 @@ class UaS_Scarcity_Handler : EventHandler {
 		if(level.maptime != 1) { return; }
 		if(UaS_ScarcityEnabled == false) { return; }
 
+		array<class <HDPickup> > ClassesInMap;
+		UaS.LogDebug(DBG_Scarcity, "Classes in map:");
 		foreach (pclass : PickupClasses) {
-			ExactScarcity(pclass.GetClassName(), 1.0 - ScarcityFactor);
+			if (ActorInMap(pclass)) {
+				ClassesInMap.Push(pclass);
+				UaS.LogDebug(DBG_Scarcity, string.format("• "..pclass.GetClassName()));
+			}
 		}
+
+		foreach (mclass : ClassesInMap) {
+			ExactScarcity(mclass.GetClassName(), 1.0 - ScarcityFactor);
+		}
+	}
+
+	bool ActorInMap(class<Actor> type) {
+		let actIt = ThinkerIterator.Create(type);
+		return !!Actor(actIt.Next());
 	}
 }
 
