@@ -40,27 +40,30 @@ extend class UaS_Scarcity_Handler {
 			// Decide based on if mobs were found
 			bool pickedUp = false;
 			HDMobBase mb;
-			if (mobArray.Size()>0) {
+			while (mobArray.Size()>0 && !pickedUp) {
 				int mobIndex = random(0, mobArray.Size()-1); // pick a random mob from the array
 				mb = mobArray[mobIndex];
 				if (mb && mo) {
 					//Move item to mob's array
-					if (mb.checkmove(mo.pos.xy,PCM_DROPOFF)) {
+					if (mb.checkmove(mo.pos.xy,PCM_DROPOFF) && mb.FindInventory("HDPickup",true) == null) {
+						vector3 oldmopos = mo.pos;
 						mo.setorigin(mb.pos,false);
-						dbgMsg = dbgMsg.."\n\t• Moved to "..mb.GetClassName();
 						pickedUp = mo.CallTryPickup(mb);
+						if (pickedUp) {
+							dbgMsg = dbgMsg.."\n\t• Added to "..mb.getclassname().."'s inventory";
+						}
+						else {
+							mo.setorigin(oldmopos,false);
+						}
 					}
-					else  { dbgMsg = dbgMsg.."\n\t• did not move"; }
 				}
+				mobArray.delete(mobIndex);
 			}
 
-			if (pickedUp) {
-				//UaS.LogDebug(DBG_Scarcity, string.format("Added "..mo.getclassname().." to "..mb.getclassname()));
-			}
-			else {
-				//UaS.LogDebug(DBG_Scarcity, string.format("Modified or removed "..mo.getclassname()));
-				//DoReplacement(thingArray[index]);
-				//thingArray[index].destroy();
+			if (!pickedUp) {
+				dbgMsg = dbgMsg.."\n\t• Modified or removed "..mo.getclassname();
+				DoReplacement(mo);
+				thingArray[index].destroy();
 			}
 			thingArray.Delete(index);
 		}
