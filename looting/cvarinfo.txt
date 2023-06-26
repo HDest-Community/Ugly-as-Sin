@@ -1,1 +1,1 @@
-server float UaS_LootingFactor = 0.5;
+server float UaS_LootingFactor = 0.25;
