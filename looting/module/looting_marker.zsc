@@ -13,7 +13,11 @@ class UaS_SearchedCorpseMarker : Inventory {
 		if (check < searchedAmount) {
 			SpawnLootDebris();
 			HDPickup item = HDPickup(owner.FindInventory("HDPickup", true));
-			if (item) {
+			bool validitem = (item
+				&& item.bulk>0
+				&& !item.bNotInPockets
+				&& !item.bNeverShowInPickupManager);
+			if (validitem) {
 				owner.DropInventory(item); // this works!
 				UaS.LogDebug(DBG_Looting, string.format("Loot spawn: "..item.GetClassName()));
 				SearchedAmount = 0;
