@@ -25,6 +25,7 @@ $pitchset UaS/FoodClose 1.15
 
 UaS/Glowstick	dsrifclk
 UaS/Flare		"markers/sounds/tr_flare.wav"
+$volume UaS/Glowstick 0.15
 
 UaS/respirator/vent			"respirator/sounds/resp_vent.wav"
 UaS/respirator/breathing	"respirator/sounds/resp_breathing.wav"

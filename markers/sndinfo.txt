@@ -1,2 +1,3 @@
 UaS/Glowstick	dsrifclk
 UaS/Flare		"sounds/tr_flare.wav"
+$volume UaS/Glowstick 0.15
