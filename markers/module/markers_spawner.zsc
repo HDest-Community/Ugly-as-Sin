@@ -12,7 +12,7 @@ class UaS_Markers_Spawner : EventHandler {
 			e.Thing.GetClassName() == "HDBackpack");
 
 		if(spawnable) {
-			UaS.SpawnStuff('UaS_Flare', randompick[flare](0, 0, 0, 0, 1), e.Thing.pos);
+			//UaS.SpawnStuff('UaS_Flare', randompick[flare](0, 0, 0, 0, 1), e.Thing.pos);
 			UaS.SpawnStuff('UaS_Glowstick', randompick[glowstick](0, 0, 0, 0, 1), e.Thing.pos);
 		}
 	}

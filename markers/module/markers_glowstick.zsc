@@ -1,34 +1,20 @@
 const UAS_HDLD_GLOWSTICK = "gls";
 
-class UaS_Glowstick : HDPickup {
-	bool Activated, Thrown;
+class UaS_Glowstick : UaS_Marker {
 	DynamicLight GlowLight;
-	UaS_Glowstick DroppedGlowStick;
-	int spindir;
+	// int spindir;
 	int brightness;
 	int age;
 
 	Default {
 		Inventory.PickupMessage "Picked up a glowstick.";
 		Inventory.Icon "UGSIB0";
-		HDPickup.Bulk 2;
 		tag "Glowstick";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
-		-HDPickup.DropTranslation;
-		+HDPickup.FitsInBackpack;
-		+FLATSPRITE;
-		+FORCEXYBILLBOARD;
-		+INVENTORY.IGNORESKILL;
+		UaS_Marker.UseSound "UaS/Glowstick";
 	}
 
-	override void Tick() {
-		super.Tick();
-		if (isfrozen()) { return; }
-		if (Thrown) {
-			vel *= 5;
-			vel.z += 5;
-			Thrown = false;
-		}
+	override void HandleAttachedLight() {
 		switch(Activated) {
 			case true:
 				frame = 2;
@@ -62,37 +48,7 @@ class UaS_Glowstick : HDPickup {
 			else { destroy(); }
 		}
 
-		A_SetAngle(angle + vel.length() * 3 * spindir);
-	}
-
-	override bool Use(bool pickup) {
-		if (!Activated) {
-			owner.A_StartSound("UaS/Glowstick", CHAN_AUTO, volume: 0.15);
-			Activated = true;
-			brightness = 1;
-		} else { owner.DropInventory(self); }
-		return false;
-	}
-
-	override inventory CreateTossable(int amt) {
-		if (owner.player) Thrown = (owner.player.cmd.buttons&BT_ZOOM);
-		DroppedGlowStick = null;
-		DroppedGlowStick = UaS_Glowstick(super.CreateTossable(amt));
-		if (DroppedGlowStick && Activated) {
-			DroppedGlowStick.Activated = true;
-			DroppedGlowstick.Brightness = Brightness;
-			DroppedGlowstick.Age = Age;
-			DroppedGlowstick.Spindir = randompick(-1,1);
-			DroppedGlowstick.Thrown = Thrown;
-			if(owner) { Activated = false; }
-		}
-		//Thrown = false;
-		return DroppedGlowStick;
-	}
-
-	override void actualpickup(actor other){
-		if(Activated)return;
-		super.actualpickup(other);
+		//A_SetAngle(angle + vel.length() * 3 * spindir);
 	}
 
 	states {
