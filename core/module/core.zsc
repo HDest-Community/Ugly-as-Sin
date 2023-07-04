@@ -1,2 +1,7 @@
 // Static functions for general use
-class UaS : EventHandler{}
+class UaS : EventHandler{
+	// https://gist.github.com/caligari87/39d1cec3aad776860b4148cc3c659f70
+	static double DampedSpring(double p, double r, double v, double k, double d) { return -(d * v) - (k * (p - r)); }
+
+	static vector3 DampedVec3Spring(vector3 p, vector3 r, vector3 v, double k, double d) { return -(d * v) - (k * (p - r)); }
+}
