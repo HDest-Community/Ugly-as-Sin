@@ -21,7 +21,7 @@ extend class UaS_Scarcity_Handler {
 		while(thingArray.Size() > targetAmount) {
 			// pick a random object from array
 			int index = random(0, thingArray.Size()-1);
-			inventory mo = inventory(thingArray[index]);
+			HDPickup mo = HDPickup(thingArray[index]);
 			if(mo.owner) {
 				thingArray.Delete(index);
 				continue;
@@ -29,11 +29,17 @@ extend class UaS_Scarcity_Handler {
 
 			//Find nearby mobs to the object
 			let mobFinder = BlockThingsIterator.Create(mo, 256);
-			array<HDHumanoid> mobArray;
+			array<HDMobBase> mobArray;
 			// build a list of mobs
 			while(mobFinder.Next()) {
-				if(mobFinder.thing is 'HDHumanoid') {
-					mobArray.push(HDHumanoid(mobFinder.thing));
+				HDMobBase mft = HDMobBase(mobFinder.thing);
+				bool ValidMob = (mft
+					&& mft.bBiped == true
+					&& mft.mass > mo.bulk*5
+					&& !mft.bNoGravity
+					&& mft.FindInventory("HDPickup", true)==null);
+				if(ValidMob) {
+					mobArray.push(mft);
 				}
 			}
 
@@ -41,16 +47,17 @@ extend class UaS_Scarcity_Handler {
 			bool pickedUp = false;
 			HDMobBase mb;
 			while (mobArray.Size()>0 && !pickedUp) {
-				int mobIndex = random(0, mobArray.Size()-1); // pick a random mob from the array
+				int mobIndex = mobArray.Size()-1;
 				mb = mobArray[mobIndex];
 				if (mb && mo) {
 					//Move item to mob's array
-					if (mb.checkmove(mo.pos.xy,PCM_DROPOFF) && mb.FindInventory("HDPickup",true) == null) {
+					bool CanReach = mb.checkmove(mo.pos.xy,PCM_DROPOFF);
+					if (CanReach) {
 						vector3 oldmopos = mo.pos;
 						mo.setorigin(mb.pos,false);
 						pickedUp = mo.CallTryPickup(mb);
 						if (pickedUp) {
-							dbgMsg = dbgMsg.."\n\t• Added to "..mb.getclassname().."'s inventory";
+							dbgMsg = dbgMsg.."\n\t• "..mo.getclassname()..int(oldmopos.length()).." added to "..mb.getclassname()..int(mb.pos.length()).."'s inventory";
 						}
 						else {
 							mo.setorigin(oldmopos,false);
