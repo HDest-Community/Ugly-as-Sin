@@ -282,7 +282,7 @@ class UaS_LaserLightModule : HDWeapon {
 		if (players[consoleplayer].mo.checklocalview()) {
 			PlayerPawn plr = players[consoleplayer].mo;
 			PortableLiteAmp nvg = PortableLiteAmp(plr.FindInventory("PortableLiteAmp"));
-			if (nvg && nvg.worn) { ShowIR = true; }
+			if (nvg && nvg.worn && nvg.amplitude > 0) { ShowIR = true; }
 		}
 		if (!ShowIR && mode == 2) {
 			// if(fbounce) { fbounce.Destroy(); }
