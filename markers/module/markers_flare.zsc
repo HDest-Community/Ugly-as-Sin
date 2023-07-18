@@ -1,13 +1,11 @@
 const UAS_HDLD_FLARE = "flr";
 
 class UaS_Flare : UaS_Marker {
-	bool Activated, Thrown, Burned;
 	DynamicLight FlareLight;
 	DynamicLight FlareLight2;
 	UaS_Flare DroppedFlare;
-	int spindir;
-	int brightness;
-	int age;
+	bool burned;
+	// int spindir;
 
 	Default {
 		Inventory.PickupMessage "Picked up a flare.";
@@ -16,23 +14,16 @@ class UaS_Flare : UaS_Marker {
 		HDPickup.refid UAS_HDLD_FLARE;
 	}
 
-	override void Tick() {
-		super.Tick();
-		if (isfrozen()) { return; }
-		if (Thrown) {
-			vel *= 5;
-			vel.z += 5;
-			Thrown = false;
-		}
+	override void HandleAttachedLight() {
 		burned = (brightness - age) < 0;
 
 		if (Activated && !burned) {
 			if (owner) {
-				owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+				owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.15);
 				owner.A_SoundVolume(818764, double(brightness - age) / 384.0);
 			}
 			else {
-				A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.25);
+				A_StartSound("UaS/Flare", 818764, CHANF_LOOPING|CHANF_NOSTOP, volume: 0.15);
 				A_SoundVolume(818764, double(brightness - age) / 384.0);
 			}
 			if (level.maptime % 2 == 0) { frame = 1; } else { frame = 2; }
@@ -108,50 +99,7 @@ class UaS_Flare : UaS_Marker {
 			//else { destroy(); }
 		}
 
-		A_SetAngle(angle + vel.length() * 3 * spindir);
-	}
-
-	override bool Use(bool pickup) {
-		if (!Activated) {
-			owner.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
-			Activated = true;
-			brightness = 1;
-		}
-		else {
-			owner.A_StopSound(818764);
-			owner.DropInventory(self);
-		}
-		return false;
-	}
-
-	override void DetachFromOwner() {
-		owner.A_StopSound(818764);
-		super.DetachFromOwner();
-	}
-
-	override inventory CreateTossable(int amt) {
-		if (owner.player) Thrown = (owner.player.cmd.buttons&BT_ZOOM);
-		DroppedFlare = null;
-		DroppedFlare = UaS_Flare(super.CreateTossable(amt));
-		if (DroppedFlare && Activated) {
-			DroppedFlare.Activated = true;
-			DroppedFlare.Brightness = Brightness;
-			DroppedFlare.Age = Age;
-			DroppedFlare.Spindir = randompick[flare](-1,1);
-			DroppedFlare.A_StartSound("UaS/Flare", 818764, CHANF_LOOPING, volume: 0.25);
-			DroppedFlare.Thrown = Thrown;
-			if(owner) {
-				owner.A_StopSound(818764);
-				Activated = false;
-			}
-		}
-		//Thrown = false;
-		return DroppedFlare;
-	}
-
-	override void actualpickup(actor other){
-		if(Activated||burned)return;
-		super.actualpickup(other);
+		// A_SetAngle(angle + vel.length() * 3 * spindir);
 	}
 
 	states {
