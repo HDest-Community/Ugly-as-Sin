@@ -3,8 +3,6 @@ const UAS_HDLD_GLOWSTICK = "gls";
 class UaS_Glowstick : UaS_Marker {
 	DynamicLight GlowLight;
 	// int spindir;
-	int brightness;
-	int age;
 
 	Default {
 		Inventory.PickupMessage "Picked up a glowstick.";
@@ -15,37 +13,31 @@ class UaS_Glowstick : UaS_Marker {
 	}
 
 	override void HandleAttachedLight() {
-		switch(Activated) {
-			case true:
-				frame = 2;
-				if (level.maptime % 5 == 0) { brightness = min(brightness + 1, 64); }
-				if (level.maptime % 700 == 0) { age++; }
-				if (!GlowLight) {
-					GlowLight = DynamicLight(Actor.Spawn("UaS_GlowstickLight"));
-					GlowLight.args[DynamicLight.LIGHT_RED] = 32;
-					GlowLight.args[DynamicLight.LIGHT_GREEN] = 128;
-					GlowLight.args[DynamicLight.LIGHT_BLUE] = 32;
-				}
-				GlowLight.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age);
-				if (owner) { GlowLight.target = owner; }
-				else { GlowLight.target = self; }
-				bFitsInBackpack = false;
-				break;
-			case false:
-				frame = 1;
-				if (GlowLight) { glowLight.Destroy(); }
-				brightness = 0;
-				age = 0;
-				bFitsInBackpack = true;
-				break;
+		if(Activated) {
+			frame = 2;
+			if (level.maptime % 5 == 0) { brightness = min(brightness + 1, 64); }
+			if (level.maptime % 700 == 0) { age++; }
+			if (!GlowLight) {
+				GlowLight = DynamicLight(Actor.Spawn("UaS_GlowstickLight"));
+				GlowLight.args[DynamicLight.LIGHT_RED] = 32;
+				GlowLight.args[DynamicLight.LIGHT_GREEN] = 128;
+				GlowLight.args[DynamicLight.LIGHT_BLUE] = 32;
+			}
+			GlowLight.args[DynamicLight.LIGHT_INTENSITY] = (brightness - age);
+			GlowLight.target = self;
+			bFitsInBackpack = false;
+		}
+		else {
+			frame = 1;
+			if (GlowLight) { glowLight.Destroy(); }
+			brightness = 0;
+			age = 0;
+			bFitsInBackpack = true;
 		}
 
 		// Use up when dead?
 		if (Activated && (brightness - age) < 0) {
-			Activated = false;
 			if (GlowLight) { glowLight.Destroy(); }
-			if (owner) { Amount--; }
-			else { destroy(); }
 		}
 
 		//A_SetAngle(angle + vel.length() * 3 * spindir);
