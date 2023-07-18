@@ -1,11 +1,10 @@
 class UaS_Marker : HDPickup abstract {
-	bool Activated;
-	bool UsedLast;
-	UaS_Marker HeldMarker;
+	bool Activated, UsedLast, UsedUp;
 	meta string UseSound;
 	meta string LoopSound;
 	property UseSound : UseSound;
 	property LoopSound : LoopSound;
+	int brightness, age;
 
 	Default {
 		Height 1;
@@ -19,7 +18,6 @@ class UaS_Marker : HDPickup abstract {
 
 	override void DoEffect() {
 		super.DoEffect();
-		HandleHeldMarker();
 	}
 
 	override void Tick() {
@@ -30,75 +28,41 @@ class UaS_Marker : HDPickup abstract {
 	}
 
 	override bool Use(bool pickup) {
-		if (HeldMarker) {
-			// console.printf("Use(): Dropped held marker");
-			if (owner.player.cmd.buttons&BT_ZOOM) {
-				HeldMarker.Vel3DFromAngle(
-					owner.vel.length()+10, owner.angle, owner.pitch-15);
-			}
-			HeldMarker = null;
-			if (UsedLast) { owner.TakeInventory(self.GetClassName(),1); }
-		}
-		else {
-			// console.printf("Use(): activated new held marker");
-			owner.A_StartSound(UseSound, CHAN_AUTO);
-			Activated = true;
-			if (Amount == 1) {
-				Amount++;
-				UsedLast = true;
-			}
-			owner.DropInventory(self);
-		}
+		A_StartSound(UseSound, CHAN_AUTO);
+		Activated = true;
+		owner.DropInventory(self);
 		return false;
 	}
 
 	override Inventory CreateTossable(int amt) {
 		if (Activated) {
-			if (Amount == 1) { Amount++; }
-			// console.printf("CreateTossable(): Created new active held marker and cleared activation flag");
-			HeldMarker = UaS_Marker(super.CreateTossable(amt));
-			HeldMarker.Activated = true;
-			HeldMarker.bFitsInBackpack = false;
-			Activated = false;
-			return HeldMarker;
+			UaS_Marker dropped = UaS_Marker(super.CreateTossable(amt));
+			dropped.Activated = true;
+			if (owner) { Activated = false; }
+			return dropped;
 		}
-		else if (HeldMarker) {
-			Use(false);
-			return null;
-		}
-		console.printf("CreateTossable(): Dropping inactive");
 		return super.CreateTossable(amt);
 	}
 
-	override void actualpickup(actor other){
-		if(Activated) {
-			let em = UaS_Marker(other.FindInventory(self.GetClass()));
-			if (em && em.HeldMarker) { return; }
-			else if (em && !em.HeldMarker) {
-				em.HeldMarker = self;
-				return;
-			}
-			else if (!em) {
-				other.GiveInventory(self.GetClass(),1);
-				let nm = UaS_Marker(other.FindInventory(self.GetClass()));
-				nm.HeldMarker = self;
-				nm.UsedLast = true;
-			}
+	override void OnDrop (actor Dropper) {
+		if (Activated) {
+			bFitsInBackpack = false;
+			AttachHandler(Dropper);
 		}
-		else { super.actualpickup(other); }
 	}
 
+	override bool OnGrab (actor Grabber){
+		if(Activated) {
+			AttachHandler(Grabber);
+			return false;
+		}
+		return super.OnGrab(Grabber);
+	}
 
-	virtual void HandleHeldMarker() {
-		if (!HeldMarker) { return; }
-		HeldMarker.vel += UaS.DampedVec3Spring(
-			HeldMarker.pos,
-			owner.Vec3Angle(
-				owner.radius,
-				owner.angle+70,
-				owner.height/2),
-			HeldMarker.Vel,
-			0.25, 0.5);
+	void AttachHandler(actor other) {
+		other.GiveInventory("UaS_MarkerHandler",1);
+		UaS_MarkerHandler handler = UaS_MarkerHandler(other.FindInventory("UaS_MarkerHandler"));
+		handler.AttachNewMarker(self);
 	}
 
 	virtual void HandleAttachedLight() {}
