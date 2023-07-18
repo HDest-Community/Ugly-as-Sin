@@ -1,0 +1,39 @@
+class UaS_MarkerHandler : Inventory {
+	UaS_Marker AttachedMarker;
+	double offsetangle;
+	default {
+		Inventory.MaxAmount 1;
+	}
+
+	override void DoEffect() {
+		super.DoEffect();
+		HandleAttachedMarker();
+	}
+
+	void HandleAttachedMarker() {
+		if (!AttachedMarker) return;
+		if (owner.pitch<80) { offsetangle=owner.angle+80; }
+		vector3 mpos = owner.Vec3Angle(
+			owner.radius,
+			offsetangle,
+			owner.height/2);
+		AttachedMarker.vel += UaS.DampedVec3Spring(
+			AttachedMarker.pos,
+			mpos,
+			AttachedMarker.vel,
+			0.25, 0.5);
+	}
+
+	void AttachNewMarker(UaS_Marker newmrkr) {
+		if (!newmrkr) { return; }
+		if (AttachedMarker) {
+			bool ShouldDetach = (
+				newmrkr == AttachedMarker
+				&& abs(deltaangle(owner.angle, owner.angleto(AttachedMarker)))<10
+				&& owner.pitch>=80
+			);
+			if (ShouldDetach) { AttachedMarker = null; }
+		}
+		else { AttachedMarker = newmrkr; }
+	}
+}

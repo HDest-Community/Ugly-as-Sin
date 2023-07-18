@@ -1,6 +1,7 @@
 version "4.10"
 
 #include "module/markers_generic.zsc"
-//#include "module/markers_flare.zsc"
+#include "module/markers_handler.zsc"
+#include "module/markers_flare.zsc"
 #include "module/markers_glowstick.zsc"
 #include "module/markers_spawner.zsc"
