@@ -12,6 +12,7 @@ class UaS_Marker : HDPickup abstract {
 		-HDPickup.DropTranslation;
 		+HDPickup.FitsInBackpack;
 		+FLATSPRITE;
+		+ROLLSPRITE;
 		+FORCEXYBILLBOARD;
 		+INVENTORY.IGNORESKILL;
 	}
@@ -25,6 +26,9 @@ class UaS_Marker : HDPickup abstract {
 		if (IsFrozen()) { return; }
 		if (owner) { return; }
 		HandleAttachedLight();
+		bFLATSPRITE = (pos.z-floorz<=1);
+		A_SetRoll(roll+vel.length(),SPF_INTERPOLATE);
+		A_SetAngle(angle+vel.length(),SPF_INTERPOLATE);
 	}
 
 	override bool Use(bool pickup) {
@@ -47,7 +51,14 @@ class UaS_Marker : HDPickup abstract {
 	override void OnDrop (actor Dropper) {
 		if (Activated) {
 			bFitsInBackpack = false;
-			AttachHandler(Dropper);
+			let pd = HDPlayerPawn(Dropper);
+			if (pd && pd.player.cmd.buttons&BT_ZOOM) {
+				self.Vel3DFromAngle(10,
+					pd.angle,
+					pd.pitch-20
+				);
+			}
+			else { AttachHandler(Dropper); }
 		}
 	}
 
