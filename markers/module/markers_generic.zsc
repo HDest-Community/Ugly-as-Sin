@@ -8,6 +8,7 @@ class UaS_Marker : HDPickup abstract {
 
 	Default {
 		Height 1;
+		Radius 4;
 		HDPickup.Bulk 2;
 		-HDPickup.DropTranslation;
 		+HDPickup.FitsInBackpack;

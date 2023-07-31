@@ -12,11 +12,23 @@ class UaS_MarkerHandler : Inventory {
 
 	void HandleAttachedMarker() {
 		if (!AttachedMarker) return;
-		if (owner.pitch<80) { offsetangle=owner.angle+80; }
+		if (owner.pitch<80) { offsetangle=owner.angle+100; }
+		double distcheck = owner.Distance2D(AttachedMarker);
+		if (distcheck >= 128) {
+			// console.printf("teleported marker");
+			AttachedMarker.SetOrigin(owner.pos,false);
+			AttachedMarker.vel=owner.vel;
+			return;
+		}
+		else if (distcheck > owner.radius*2) {
+			// console.printf("detatched marker for distance");
+			AttachedMarker = null;
+			return;
+		}
 		vector3 mpos = owner.Vec3Angle(
-			owner.radius,
+			owner.radius*0.5,
 			offsetangle,
-			owner.height/2);
+			owner.height*0.5);
 		AttachedMarker.vel += UaS.DampedVec3Spring(
 			AttachedMarker.pos,
 			mpos,
@@ -26,6 +38,7 @@ class UaS_MarkerHandler : Inventory {
 
 	void AttachNewMarker(UaS_Marker newmrkr) {
 		if (!newmrkr) { return; }
+		if (newmrkr is "Uas_Flare") { return; }
 		if (AttachedMarker) {
 			bool ShouldDetach = (
 				newmrkr == AttachedMarker
