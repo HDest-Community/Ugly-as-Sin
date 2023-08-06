@@ -8,5 +8,9 @@ AddOptionMenu "UaS_ConfigureModules" {
 
 OptionMenu "UaS_Looting_Options" {
 	Title "Looting Module Settings"
-	Slider "Loot Factor","UaS_LootingFactor", 0.05, 1.0, 0.05, 2
+	Slider "Loot Factor","UaS_LootingFactor", 0.1, 10.0, 0.1, 1
+	Slider "Loot Chance","UaS_LootingChance", 0.00, 1.0, 0.05, 2
+	Slider "Loot RNG Distribution Upper End","UaS_LootingPowUpperX", 1.25, 50.0, 0.25, 2
+	Slider "Loot RNG Distribution Pow. Base","UaS_LootingPowBase", 1.1, 4.0, 0.1, 1
+	Slider "Max Loot per Enemy","UaS_MaxLootPerEnemy", 0.0, 40.0, 1.0, 0
 }

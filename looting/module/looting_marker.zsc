@@ -3,6 +3,33 @@ class UaS_SearchedCorpseMarker : Inventory {
 	bool foundSomething;
 	string lastMessage;
 	bool fullysearched;
+	bool skipBackup;
+	int numBackup;
+
+	bool LootIsInventory() {	
+		HDPickup item = HDPickup(owner.FindInventory("HDPickup", true));
+		bool validitem = (item
+			&& item.bulk>0
+			&& !item.bNotInPockets
+			&& !item.bNeverShowInPickupManager);
+		if (validitem) {
+			owner.DropInventory(item); // this works!
+			UaS.LogDebug(DBG_Looting, string.format("Loot spawn: "..item.GetClassName()));
+			SearchedAmount = 0;
+			foundSomething = true;
+			skipBackup = true;
+		}
+		return validitem;
+	}
+
+	void InitBackupLooting() {
+		numBackup = exp(log(UaS_LootingPowBase) * frandom[loot](1.0, UaS_LootingPowUpperX) / UaS_LootingPowUpperX * UaS_LootingFactor) - 1;
+		UaS.LogDebug(DBG_Looting, string.format("Init backup loot num: "..numBackup));
+	}
+
+	bool RandomChanceNothing() {
+		return !foundSomething && frandom[loot](0,1) > UaS_LootingChance;
+	}
 
 	void ReturnLoot() {
 		int check = (
@@ -12,29 +39,33 @@ class UaS_SearchedCorpseMarker : Inventory {
 
 		if (check < searchedAmount) {
 			SpawnLootDebris();
-			HDPickup item = HDPickup(owner.FindInventory("HDPickup", true));
-			bool validitem = (item
-				&& item.bulk>0
-				&& !item.bNotInPockets
-				&& !item.bNeverShowInPickupManager);
-			if (validitem) {
-				owner.DropInventory(item); // this works!
-				UaS.LogDebug(DBG_Looting, string.format("Loot spawn: "..item.GetClassName()));
-				SearchedAmount = 0;
+			if (RandomChanceNothing()) {
+				fullysearched = true;
+				return;
+			}
+			if (LootIsInventory()) return;
+			// get num of backup loot items
+			if (!foundSomething) {
+				InitBackupLooting();
+			}
+			numBackup--;
+			if (numBackup <= 0) {
+				fullysearched = true;
+				// ... but continue (last loot)
+			}
+			// already replaced by UaS_LootingChance - factor now serves to scale loot amounts
+			// (note: if this isn't the intended use of UaS_LootingFactor do let me know!)
+			//if (frandom[loot](0,1) > UaS_LootingFactor) return;
+			UaS_LootList ll = UaS_LootList.get();
+			string backupitem = ll.GetLootItem(owner);
+			if (backupitem != "") {
+				UaS.SpawnStuff(backupitem, 1, owner.pos, true);
+				UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
 				foundSomething = true;
 			}
 			else {
-				if (frandom[loot](0,1) < UaS_LootingFactor) {
-					UaS_LootList ll = UaS_LootList.get();
-					string backupitem = ll.GetLootItem(owner);
-					if (backupitem != "") {
-						UaS.SpawnStuff(backupitem, 1, owner.pos, true);
-						UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
-						foundSomething = true;
-					}
-					else { UaS.LogDebug(DBG_Looting, string.format("no fallback item")); }
-				}
-				fullysearched = true;
+				UaS.LogDebug(DBG_Looting, string.format("no fallback item"));
+				fullysearched = true; // no use in trying again
 			}
 		}
 		else {
