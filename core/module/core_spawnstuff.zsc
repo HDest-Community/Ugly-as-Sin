@@ -1,13 +1,16 @@
 extend class UaS {
 	//Generic function for spawning some bundle of things, like loose rounds
-	static play void SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
-		if(count <= 0) { return; }
+	static play Actor SpawnStuff(name toSpawn, int count, vector3 pos, bool randomvel = true) {
+		Actor lastspawned;
+		if(count <= 0) { return null; }
 		for(int i = 1; i <= count; i++) {
 			let spawneditem = Actor.Spawn(toSpawn, (pos.x, pos.y, pos.z + 5));
-			if(!spawneditem || randomvel == false) { return; }
+			if(!spawneditem || randomvel == false) { return null; }
 			spawneditem.vel.x += frandom[spawnstuff](-2,2);
 			spawneditem.vel.y += frandom[spawnstuff](-2,2);
 			spawneditem.vel.z += frandom[spawnstuff](1,2);
+			lastspawned = spawneditem;
 		}
+		return lastspawned;
 	}
 }
