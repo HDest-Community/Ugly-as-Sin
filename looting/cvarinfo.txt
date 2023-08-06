@@ -1,5 +1,5 @@
 server int UaS_MaxLootPerEnemy = 7;
 server float UaS_LootingPowUpperX = 30.0;
 server float UaS_LootingPowBase = 2.2;
-server float UaS_LootingFactor = 3;
+server float UaS_LootingFactor = 2.0;
 server float UaS_LootingChance = 0.7;
