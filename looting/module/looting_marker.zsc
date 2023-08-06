@@ -1,78 +1,130 @@
 class UaS_SearchedCorpseMarker : Inventory {
 	int searchedAmount;
-	bool foundSomething;
 	string lastMessage;
 	bool fullysearched;
-	bool skipBackup;
-	int numBackup;
+	int numLoot;
+	int foundItems;
 
-	bool LootIsInventory() {	
+	// Compute amount of loot to spawn with an exponential falloff distribution
+	void SetLootAmount() {
+		double distrib = exp(log(UaS_LootingPowBase)
+		                     * frandom[loot](1.0, UaS_LootingPowUpperX)
+		                     / UaS_LootingPowUpperX
+		                     * UaS_LootingFactor) - 1;
+		numLoot = max(1, floor(distrib));
+
+		UaS.LogDebug(DBG_Looting, string.format(
+			"Init backup loot num: %i (before rounding: %.3f)",
+			numLoot, distrib));
+	}
+
+	// Whether we should just drop nothing.
+	bool RandomChanceNothing() {
+		return !foundItems && frandom[loot](0,1) > UaS_LootingChance;
+	}
+
+	void ReturnLoot() {
+		int check = (
+			random[loot](0,100) +
+				random[loot](0,100) +
+			random[loot](0,100)) / 3;
+
+		if (check >= searchedAmount) {
+			searchedAmount += random[loot](5,10);
+			UaS.LogDebug(DBG_Looting, string.format("Check "..check.." -- Progress "..searchedAmount));
+			return;
+		}
+
+		// after this point, spawn a loot
+		SpawnLootDebris();
+		searchedAmount = 0;
+
+		if (TryFindScarcityLoot()) { return; }
+
+		if (RandomChanceNothing()) {
+			fullysearched = true;
+			return;
+		}
+		
+		if (!foundItems) {
+			SetLootAmount();
+		}
+
+		if (foundItems >= numLoot) {
+			UaS.LogDebug(DBG_Looting, string.format("No more loot"));
+			fullysearched = true;
+			SpawnLootDebris();
+			return;
+		}
+
+		// Not fully searched
+
+		// This check is now purely cosmetic, and if skipped, simply
+		// makes the looting take longer
+		// (the more items already found, the longer it takes)
+		if (frandom[loot](0,1+foundItems) < 0.5) {
+			UaS_LootList ll = UaS_LootList.get();
+			string backupitem = ll.GetLootItem(owner);
+			if(TryGiveDroppableLoot(backupitem)) { return; }
+			UaS.LogDebug(DBG_Looting, string.format("TryGiveDroppableLoot() failed"));
+			if(TrySpawnLoot(backupitem)) { return; }
+			foundItems++;
+		}
+
+		else {
+			UaS.LogDebug(DBG_Looting, string.format("Still fumbling"));
+		}
+	}
+
+
+	// For dropping loot which was placed by the Scarcity module
+	bool TryFindScarcityLoot() {
 		HDPickup item = HDPickup(owner.FindInventory("HDPickup", true));
 		bool validitem = (item
 			&& item.bulk>0
 			&& !item.bNotInPockets
 			&& !item.bNeverShowInPickupManager);
 		if (validitem) {
-			owner.DropInventory(item); // this works!
-			UaS.LogDebug(DBG_Looting, string.format("Loot spawn: "..item.GetClassName()));
-			SearchedAmount = 0;
-			foundSomething = true;
-			skipBackup = true;
+			let wasdropped = owner.DropInventory(item);
+			if (wasdropped) {
+				UaS.LogDebug(DBG_Looting, string.format("TryFindScarcityLoot() dropped: "..wasdropped.GetClassName()));
+				foundItems++;
+				return true;
+			}
+			UaS.LogDebug(DBG_Looting, string.format("TryFindScarcityLoot() failed"));
+			return false;
 		}
-		return validitem;
+		return false;		
 	}
 
-	void InitBackupLooting() {
-		numBackup = exp(log(UaS_LootingPowBase) * frandom[loot](1.0, UaS_LootingPowUpperX) / UaS_LootingPowUpperX * UaS_LootingFactor) - 1;
-		UaS.LogDebug(DBG_Looting, string.format("Init backup loot num: "..numBackup));
+	// For dropping regular Inventory items that can be held by monsters
+	// This is mostly for consistency
+	bool TryGiveDroppableLoot(string item) {
+		if (item~=="") { return false; }
+		if (!owner.GiveInventory(item, 1)) { return false; }
+		let todrop = owner.FindInventory(item);
+		let wasdropped = owner.DropInventory(todrop);
+		if (wasdropped) {
+			UaS.LogDebug(DBG_Looting, string.format("TryGiveDroppableLoot() dropped "..wasdropped.GetClassName()));
+			foundItems++;
+			return true;
+		}
+		UaS.LogDebug(DBG_Looting, string.format("TryGiveDroppableLoot() failed"));
+		return false;
 	}
 
-	bool RandomChanceNothing() {
-		return !foundSomething && frandom[loot](0,1) > UaS_LootingChance;
-	}
 
-	void ReturnLoot() {
-		int check = (
-			random[loot](0,100) +
-			random[loot](0,100) +
-			random[loot](0,100)) / 3;
-
-		if (check < searchedAmount) {
-			SpawnLootDebris();
-			if (RandomChanceNothing()) {
-				fullysearched = true;
-				return;
-			}
-			if (LootIsInventory()) return;
-			// get num of backup loot items
-			if (!foundSomething) {
-				InitBackupLooting();
-			}
-			numBackup--;
-			if (numBackup <= 0) {
-				fullysearched = true;
-				// ... but continue (last loot)
-			}
-			// already replaced by UaS_LootingChance - factor now serves to scale loot amounts
-			// (note: if this isn't the intended use of UaS_LootingFactor do let me know!)
-			//if (frandom[loot](0,1) > UaS_LootingFactor) return;
-			UaS_LootList ll = UaS_LootList.get();
-			string backupitem = ll.GetLootItem(owner);
-			if (backupitem != "") {
-				UaS.SpawnStuff(backupitem, 1, owner.pos, true);
-				UaS.LogDebug(DBG_Looting, string.format("Loot spawn fallback: "..backupitem));
-				foundSomething = true;
-			}
-			else {
-				UaS.LogDebug(DBG_Looting, string.format("no fallback item"));
-				fullysearched = true; // no use in trying again
-			}
+	// For any other non-Inventory loot items
+	bool TrySpawnLoot(string item) {
+		if (item~=="") { return false; }
+		Actor spawned = UaS.SpawnStuff(item, 1, owner.pos, true);
+		if (spawned) {
+			UaS.LogDebug(DBG_Looting, string.format("TrySpawnLoot() dropped "..spawned.GetClassName()));
+			foundItems++;
+			return true;
 		}
-		else {
-			// Otherwise just increment progress
-			searchedAmount += random[loot](5,10);
-			UaS.LogDebug(DBG_Looting, string.format("Check "..check.." -- Progress "..searchedAmount));
-		}
+		UaS.LogDebug(DBG_Looting, string.format("TrySpawnLoot() failed"));
+		return false;
 	}
 
 	void SpawnLootDebris() {

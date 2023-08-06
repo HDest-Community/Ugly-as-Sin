@@ -61,7 +61,7 @@ class UaS_Looting_Handler : Inventory {
 		if (cooldown == 0) {
 			if (searchMarker.fullysearched) {
 				HDWeapon currentWeapon = HDWeapon(owner.player.ReadyWeapon);
-				if(searchMarker.lastMessage == "") { searchMarker.lastMessage = FlavorText(searchMarker.foundSomething); }
+				if(searchMarker.lastMessage == "") { searchMarker.lastMessage = FlavorText(bool(searchMarker.foundItems>0)); }
 				currentWeapon.A_WeaponMessage(searchMarker.lastMessage);
 				return;
 			}
