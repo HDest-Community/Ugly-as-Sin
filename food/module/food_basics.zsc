@@ -3,17 +3,17 @@ class UaS_FoodRation : UaS_Consumable {
 		UaS_Consumable.Calories 400;
 		UaS_Consumable.Fluid 0;
 		UaS_Consumable.Bulk 4;
-		UaS_Consumable.Description "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_FOODRATION_DESCRIPTION";
 		+UaS_Consumable.PACKAGED;
-		Inventory.PickupMessage "Picked up a military food ration.";
-		tag "Food Ration";
+		Inventory.PickupMessage "$UAS_CONSUMABLE_FOODRATION_PICKUP";
+		tag "$UAS_CONSUMABLE_FOODRATION_TAG";
 		Inventory.Icon "HSCVA0";
 	}
 	override void Messages() {
-		AddOpenText("Doesn't look very appealing...");
-		AddConsumeText("It's nutritious at least.");
-		AddConsumeText("They should add some flavor next time.");
-		AddConsumeText("If only it had actual flavor.");
+		AddOpenText("$UAS_CONSUMABLE_FOODRATION_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_3");
 	}
 }
 
