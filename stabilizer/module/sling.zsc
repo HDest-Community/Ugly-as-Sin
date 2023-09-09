@@ -12,12 +12,12 @@ class UaS_WeaponSling : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a weapon sling.";
+		Inventory.PickupMessage "$PICKUP_SLING";
 		Inventory.Icon "HSCVI0";
 		HDPickup.Bulk 10;
 		Scale 0.75;
 		+FLATSPRITE;
-		tag "Weapon Sling";
+		tag "$TAG_SLING";
 		hdpickup.refid UAS_HDLD_SLING;
 	}
 

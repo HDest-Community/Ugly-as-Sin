@@ -5,10 +5,10 @@ const UAS_HDLD_AMMOPOUCH = "apo";
 //==================================================
 class UaS_AmmoPouch : HDBackpack {
 	default {
-		tag "Ammo Pouch";
+		tag "$TAG_AMMOPOUCH";
 		HDBackpack.MaxCapacity 200;
 		Inventory.Icon "UGSPA0";
-		Inventory.PickupMessage "Picked up an ammo pouch!";
+		Inventory.PickupMessage "$PICKUP_AMMOPOUCH";
 		scale 0.6;
 		hdweapon.wornlayer 0;
 		hdweapon.refid UAS_HDLD_AMMOPOUCH;

@@ -5,9 +5,9 @@ class UaS_Glowstick : UaS_Marker {
 	// int spindir;
 
 	Default {
-		Inventory.PickupMessage "Picked up a glowstick.";
+		Inventory.PickupMessage "$PICKUP_GLOWSTICK";
 		Inventory.Icon "UGSIB0";
-		tag "Glowstick";
+		tag "$TAG_GLOWSTICK";
 		HDPickup.refid UAS_HDLD_GLOWSTICK;
 		UaS_Marker.UseSound "UaS/Glowstick";
 	}

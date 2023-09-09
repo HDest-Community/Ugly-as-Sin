@@ -46,13 +46,13 @@ extend class UaS_Respirator {
 		string msg = super.PickupMessage();
 		string status;
 		if (mags[mags.size()-1] >= maxperunit) {
-			status = "It is full.";
+			status = Stringtable.Localize("$RESPIRATOR_FULL");
 		}
 		else if (mags[mags.size()-1] == 0) {
-			status = "It is empty.";
+			status = Stringtable.Localize("$RESPIRATOR_EMPTY");
 		}
 		else {
-			status = string.format("It is at "..mags[mags.size()-1].." percent capacity");
+			status = string.format(Stringtable.Localize("$RESPIRATOR_AMT_PREFIX")..mags[mags.size()-1]..Stringtable.Localize("$RESPIRATOR_AMT_SUFFIX"));
 		}
 		return string.format(""..msg.." "..status);
 	}

@@ -22,10 +22,10 @@ class UaS_LaserLightModule : HDWeapon {
 		height 3;
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a combo laser/light module.";
+		Inventory.PickupMessage "$PICKUP_LLM";
 		Inventory.Icon "UGSIe0";
 		HDWeapon.refid UAS_HDLD_LASERLIGHT;
-		tag "Light/Laser module";
+		tag "$TAG_LLM";
 		scale 0.5;
 		+INVENTORY.INVBAR;
 		+INVENTORY.PERSISTENTPOWER;
@@ -98,15 +98,15 @@ class UaS_LaserLightModule : HDWeapon {
 		if (pressingAltAttack) { modeLaser = (modeLaser + 1) % 3; ToggleSound(); }
 		string modeLightName, modeLaserName, modeLaserColor;
 		switch (modeLaser) {
-			case 0: modeLaserName = "\cmOff"; break;
-			case 1: modeLaserName = "\ccVisible"; break;
-			case 2: modeLaserName = "\cuIR only"; break;
+			case 0: modeLaserName = Stringtable.Localize("$LLM_OFF"); break;
+			case 1: modeLaserName = Stringtable.Localize("$LLM_VISIBLE"); break;
+			case 2: modeLaserName = Stringtable.Localize("$LLM_IRONLY"); break;
 		}
 		switch (modeLight) {
-			case 0: modeLightName = "\cmOff"; break;
-			case 1: modeLightName = "\ccVisible"; break;
-			case 2: modeLightName = "\cuIR only"; break;
-			case 3: modeLightName = "Flashing"; break;
+			case 0: modeLightName = Stringtable.Localize("$LLM_OFF"); break;
+			case 1: modeLightName = Stringtable.Localize("$LLM_VISIBLE"); break;
+			case 2: modeLightName = Stringtable.Localize("$LLM_IRONLY"); break;
+			case 3: modeLightName = Stringtable.Localize("$LLM_FLASHING"); break;
 		}
 		if (LaserColor == "FF 00 00") { modeLaserColor = "Red (650 nm, 670 nm)"; }
 		else if (LaserColor == "FF 1B 00") { modeLaserColor = "\cgRed (638 nm)"; }
@@ -120,12 +120,12 @@ class UaS_LaserLightModule : HDWeapon {
 		else if (LaserColor == "00 33 FF") { modeLaserColor = "\chBlue (450 nm)"; }
 		else if (LaserColor == "54 00 D9") { modeLaserColor = "\ctViolet (405 nm)"; }
 		else { modeLaserColor = "Custom"; }
-		string statusMessage = "--- \coLaser / Flashlight\c- ---\n"
-			.."\cjLight Mode: "..modeLightName.."\n"
-			.."\cjLaser Mode: "..modeLaserName.."\n"
-			.."\cjLaser Color: "..modeLaserColor.."\n\n";
-		if (activated) { statusMessage=statusMessage.."\cj=On="; }
-		else { statusMessage=statusMessage.."\cu=Off="; }
+		string statusMessage = Stringtable.Localize("$LLM_TOP")
+			..Stringtable.Localize("$LLM_LIGHTMODE")..modeLightName.."\n"
+			..Stringtable.Localize("$LLM_LASERMODE")..modeLaserName.."\n"
+			..Stringtable.Localize("$LLM_LASERCOLOR")..modeLaserColor.."\n\n";
+		if (activated) { statusMessage=statusMessage..Stringtable.Localize("$LLM_ACIVATED"); }
+		else { statusMessage=statusMessage..Stringtable.Localize("$LLM_DEACIVATED"); }
 		A_WeaponMessage(statusMessage);
 	}
 

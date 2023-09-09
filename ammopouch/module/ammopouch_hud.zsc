@@ -6,16 +6,16 @@ extend class UaS_AmmoPouch {
 	{
 		int BaseOffset = -80;
 
-		sb.DrawString(sb.pSmallFont, "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []", (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
-		string BulkString = "Total Bulk: \cf"..int(Storage.TotalBulk).."\c-";
-		if  (weaponstatus[APS_AMOUNT] > 1) { BulkString = BulkString.." --- Pouches: \cf"..weaponstatus[APS_AMOUNT].."\c-"; }
+		sb.DrawString(sb.pSmallFont, StringTable.Localize("$AMMOPOUCH_TOP"), (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
+		string BulkString = StringTable.Localize("$AMMOPOUCH_TOTALBULK")..int(Storage.TotalBulk).."\c-";
+		if  (weaponstatus[APS_AMOUNT] > 1) { BulkString = BulkString..StringTable.Localize("$AMMOPOUCH_NUMPOUCHES")..weaponstatus[APS_AMOUNT].."\c-"; }
 		sb.DrawString(sb.pSmallFont, BulkString, (0, BaseOffset + 10), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
 
 		int ItemCount = Storage.Items.Size();
 
 		if (ItemCount == 0)
 		{
-			sb.DrawString(sb.pSmallFont, "No items found.", (0, BaseOffset + 30), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_DARKGRAY);
+			sb.DrawString(sb.pSmallFont, StringTable.Localize("$AMMOPOUCH_NOITEMS"), (0, BaseOffset + 30), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_DARKGRAY);
 			return;
 		}
 
@@ -50,10 +50,10 @@ extend class UaS_AmmoPouch {
 		sb.DrawString(sb.pSmallFont, SelItem.NiceName, (0, BaseOffset + 60), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_FIRE);
 
 		int AmountInBackpack = SelItem.ItemClass is 'HDMagAmmo' ? SelItem.Amounts.Size() : (SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0);
-		sb.DrawString(sb.pSmallFont, "In pouch:  "..sb.FormatNumber(AmountInBackpack, 1, 6), (0, BaseOffset + 70), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountInBackpack > 0 ? Font.CR_BROWN : Font.CR_DARKBROWN);
+		sb.DrawString(sb.pSmallFont, StringTable.Localize("$AMMOPOUCH_INBAG")..sb.FormatNumber(AmountInBackpack, 1, 6), (0, BaseOffset + 70), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountInBackpack > 0 ? Font.CR_BROWN : Font.CR_DARKBROWN);
 
 		int AmountOnPerson = GetAmountOnPerson(hpl.FindInventory(SelItem.ItemClass));
-		sb.DrawString(sb.pSmallFont, "On person:  "..sb.FormatNumber(AmountOnPerson, 1, 6), (0, BaseOffset + 78), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountOnPerson > 0 ?  Font.CR_WHITE : Font.CR_DARKGRAY);
+		sb.DrawString(sb.pSmallFont, StringTable.Localize("$AMMOPOUCH_ONPERSON")..sb.FormatNumber(AmountOnPerson, 1, 6), (0, BaseOffset + 78), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountOnPerson > 0 ?  Font.CR_WHITE : Font.CR_DARKGRAY);
 
 	}
 }

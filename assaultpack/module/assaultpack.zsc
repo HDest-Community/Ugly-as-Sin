@@ -6,10 +6,10 @@ const UAS_STRIP_ASSAULTPACK = STRIP_BACKPACK;
 //==================================================
 class UaS_AssaultPack : HDBackpack {
 	default {
-		tag "Assault Pack";
+		tag "$TAG_ASSAULTPACK";
 		HDBackpack.MaxCapacity 500;
 		Inventory.Icon "UGSQA0";
-		Inventory.PickupMessage "Picked up an assault pack!";
+		Inventory.PickupMessage "$PICKUP_ASSAULTPACK";
 		scale 0.75;
 		hdweapon.wornlayer UAS_STRIP_ASSAULTPACK;
 		hdweapon.refid UAS_HDLD_ASSAULTPACK;
@@ -62,8 +62,8 @@ class UaS_AssaultPack : HDBackpack {
 class UaS_AssaultPackStorage : ItemStorage {
 	override string GetFailMessage() {
 		if (MaxBulk < 500) {
-			return "That item is too large!";
+			return Stringtable.Localize("$ASSAULTPACK_TOOLARGE");
 		}
-		return "Your backpack is too full.";
+		return Stringtable.Localize("$ASSAULTPACK_TOOFULL");
 	}
 }

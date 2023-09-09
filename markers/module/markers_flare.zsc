@@ -8,9 +8,9 @@ class UaS_Flare : UaS_Marker {
 	// int spindir;
 
 	Default {
-		Inventory.PickupMessage "Picked up a flare.";
+		Inventory.PickupMessage "$PICKUP_FLARE";
 		Inventory.Icon "UGSFA0";
-		tag "Flare";
+		tag "$TAG_FLARE";
 		HDPickup.refid UAS_HDLD_FLARE;
 	}
 

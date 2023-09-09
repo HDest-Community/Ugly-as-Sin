@@ -11,11 +11,11 @@ class UaS_GyroStabilizer : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a gyro stabilizer.";
+		Inventory.PickupMessage "$PICKUP_STABILIZER";
 		Inventory.Icon "UGSIR0";
 		HDPickup.Bulk 10;
 		Scale 0.75;
-		tag "Gyroscopic Stabilizer";
+		tag "$TAG_GYROSTABILIZER";
 		hdpickup.refid UAS_HDLD_STABILZER;
 	}
 
