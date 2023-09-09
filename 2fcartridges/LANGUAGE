@@ -1,0 +1,4 @@
+[enu default]
+
+TAG_2FCARTRIDGE    = "Auto-Suture Cartridge";
+PICKUP_2FCARTRIDGE = "Picked up an auto-suture cartridge.";

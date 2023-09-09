@@ -1,0 +1,6 @@
+[enu default]
+
+TAG_FLARE        = "Flare";
+TAG_GLOWSTICK    = "Glowstick";
+PICKUP_FLARE     = "Picked up a flare.";
+PICKUP_GLOWSTICK = "Picked up a glowstick.";

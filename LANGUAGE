@@ -1,15 +1,73 @@
 [enu default]
 
+// Item Tags
+TAG_2FCARTRIDGE                         = "Auto-Suture Cartridge";
+TAG_AMMOPOUCH                           = "Ammo Pouch";
+TAG_ASSAULTPACK                         = "Assault Pack";
+TAG_FLARE                               = "Flare";
+TAG_GLOWSTICK                           = "Glowstick";
+TAG_GYROSTABILIZER                      = "Gyroscopic Stabilizer";
+TAG_LLM                                 = "Light/Laser module";
+TAG_RESPIRATOR                          = "Emergency respirator";
+TAG_SLING                               = "Weapon Sling";
+
+
+// Pickup Messages
+PICKUP_2FCARTRIDGE                      = "Picked up an auto-suture cartridge.";
+PICKUP_AMMOPOUCH                        = "Picked up an ammo pouch!";
+PICKUP_ASSAULTPACK                      = "Picked up an assault pack!";
+PICKUP_FLARE                            = "Picked up a flare.";
+PICKUP_GLOWSTICK                        = "Picked up a glowstick.";
+PICKUP_GYROSTABILIZER                   = "Picked up a gyro stabilizer.";
+PICKUP_LLM                              = "Picked up a combo laser/light module.";
+PICKUP_RESPIRATOR                       = "Picked up an emergency respirator.";
+PICKUP_SLING                            = "Picked up a weapon sling.";
+
+
+// Ammo Pouch HUD
+AMMOPOUCH_TOOFULL                       = "Your ammo pouch is too full.";
+AMMOPOUCH_TOP                           = "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []";
+AMMOPOUCH_TOTALBULK                     = "Total Bulk: \cf";
+AMMOPOUCH_NUMPOUCHES                    = " --- Pouches: \cf";
+AMMOPOUCH_NOITEMS                       = "No items found.";
+AMMOPOUCH_INBAG                         = "In pouch:  ";
+AMMOPOUCH_ONPERSON                      = "On person:  ";
+
+
+// Assault Pack HUD
+ASSAULTPACK_TOOLARGE                    = "That item is too large!";
+ASSAULTPACK_TOOFULL                     = "Your backpack is too full.";
+
+
+// LLM HUD
+LLM_TOP                                 = "--- \coLaser / Flashlight\c- ---\n";
+LLM_OFF                                 = "\cmOff";
+LLM_VISIBLE                             = "\ccVisible";
+LLM_IRONLY                              = "\cuIR only";
+LLM_FLASHING                            = "Flashing";
+LLM_LIGHTMODE                           = "\cjLight Mode: ";
+LLM_LASERMODE                           = "\cjLaser Mode: ";
+LLM_LASERCOLOR                          = "\cjLaser Color: ";
+LLM_ACTIVATED                           = "\cj=On=";
+LLM_DEACTIVATED                         = "\cu=Off=";
+
+
+// Respirator HUD
+RESPIRATOR_FULL                         = "It is full.";
+RESPIRATOR_EMPTY                        = "It is empty.";
+RESPIRATOR_AMT_PREFIX                   = "It is at ";
+RESPIRATOR_AMT_SUFFIX                   = " percent capacity";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------
 
 // From food_basic.zsc - [Ted]
-UAS_CONSUMABLE_FOODRATION_DESCRIPTION = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
-UAS_CONSUMABLE_FOODRATION_PICKUP = "Picked up a military food ration.";
-UAS_CONSUMABLE_FOODRATION_TAG = "Food Ration";
+UAS_CONSUMABLE_FOODRATION_DESCRIPTION   = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
+UAS_CONSUMABLE_FOODRATION_PICKUP        = "Picked up a military food ration.";
+UAS_CONSUMABLE_FOODRATION_TAG           = "Food Ration";
 
-UAS_CONSUMABLE_FOODRATION_OPENTEXT = "Doesn't look very appealing...";
+UAS_CONSUMABLE_FOODRATION_OPENTEXT      = "Doesn't look very appealing...";
 UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_1 = "It's nutritious at least.";
 UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_2 = "They should add some flavor next time.";
 UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_3 = "If only it had actual flavor.";

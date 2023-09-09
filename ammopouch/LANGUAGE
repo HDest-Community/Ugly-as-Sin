@@ -1,0 +1,12 @@
+[enu default]
+
+TAG_AMMOPOUCH        = "Ammo Pouch";
+PICKUP_AMMOPOUCH     = "Picked up an ammo pouch!";
+
+AMMOPOUCH_TOOFULL    = "Your ammo pouch is too full.";
+AMMOPOUCH_TOP        = "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []";
+AMMOPOUCH_TOTALBULK  = "Total Bulk: \cf";
+AMMOPOUCH_NUMPOUCHES = " --- Pouches: \cf";
+AMMOPOUCH_NOITEMS    = "No items found.";
+AMMOPOUCH_INBAG      = "In pouch:  ";
+AMMOPOUCH_ONPERSON   = "On person:  ";

@@ -1,0 +1,9 @@
+[enu default]
+
+TAG_RESPIRATOR        = "Emergency respirator";
+PICKUP_RESPIRATOR     = "Picked up an emergency respirator.";
+
+RESPIRATOR_FULL       = "It is full.";
+RESPIRATOR_EMPTY      = "It is empty.";
+RESPIRATOR_AMT_PREFIX = "It is at ";
+RESPIRATOR_AMT_SUFFIX = " percent capacity";
