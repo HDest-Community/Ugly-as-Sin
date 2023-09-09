@@ -13,6 +13,7 @@ class UaS_FoodRation : UaS_Consumable {
 		AddOpenText("Doesn't look very appealing...");
 		AddConsumeText("It's nutritious at least.");
 		AddConsumeText("They should add some flavor next time.");
+		AddConsumeText("If only it had actual flavor.");
 	}
 }
 
