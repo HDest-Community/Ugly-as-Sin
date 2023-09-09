@@ -124,8 +124,8 @@ class UaS_LaserLightModule : HDWeapon {
 			..Stringtable.Localize("$LLM_LIGHTMODE")..modeLightName.."\n"
 			..Stringtable.Localize("$LLM_LASERMODE")..modeLaserName.."\n"
 			..Stringtable.Localize("$LLM_LASERCOLOR")..modeLaserColor.."\n\n";
-		if (activated) { statusMessage=statusMessage..Stringtable.Localize("$LLM_ACIVATED"); }
-		else { statusMessage=statusMessage..Stringtable.Localize("$LLM_DEACIVATED"); }
+		if (activated) { statusMessage=statusMessage..Stringtable.Localize("$LLM_ACTIVATED"); }
+		else { statusMessage=statusMessage..Stringtable.Localize("$LLM_DEACTIVATED"); }
 		A_WeaponMessage(statusMessage);
 	}
 
