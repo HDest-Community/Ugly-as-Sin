@@ -10,7 +10,7 @@ class UaS_Respirator : HDMagAmmo {
 		Height 12;
 		Radius 4;
 		Inventory.Icon "UGSID0";
-		Inventory.PickupMessage "Picked up an emergency respirator.";
+		Inventory.PickupMessage "$PICKUP_RESPIRATOR";
 		+Inventory.Invbar;
 		HDMagAmmo.mustshowinmagmanager true;
 		HDMagAmmo.maxperunit 100;
@@ -18,7 +18,7 @@ class UaS_Respirator : HDMagAmmo {
 		HDMagAmmo.magbulk 30;
 		HDMagAmmo.inserttime 6;
 		HDMagAmmo.extracttime 4;
-		tag "Emergency respirator";
+		tag "$TAG_RESPIRATOR";
 		HDPickup.refid UAS_HDLD_RESPIRATOR;
 	}
 }
