@@ -1,0 +1,11 @@
+[enu default]
+
+// From food_basic.zsc - [Ted]
+UAS_CONSUMABLE_FOODRATION_DESCRIPTION = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
+UAS_CONSUMABLE_FOODRATION_PICKUP = "Picked up a military food ration.";
+UAS_CONSUMABLE_FOODRATION_TAG = "Food Ration";
+
+UAS_CONSUMABLE_FOODRATION_OPENTEXT = "Doesn't look very appealing...";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_1 = "It's nutritious at least.";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_2 = "They should add some flavor next time.";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_3 = "If only it had actual flavor.";

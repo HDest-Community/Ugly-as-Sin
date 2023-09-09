@@ -1,7 +1,7 @@
 extend class UaS_Consumable {
 	// Setters for randomized text
-	void AddOpenText(string msg) { OpenText.Push(msg); }
-	void AddConsumeText(string msg) { ConsumeText.Push(msg); }
+	void AddOpenText(string msg) { OpenText.Push(Stringtable.Localize(msg)); }
+	void AddConsumeText(string msg) { ConsumeText.Push(Stringtable.Localize(msg)); }
 
 	// Getters for randomized text
 	string RandomOpenMessage() {
