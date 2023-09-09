@@ -21,6 +21,12 @@ class UaS_DrCola : UaS_Consumable {
 		UaS_Consumable.Description "Fizzy sugary cola goodness in a classic red aluminium can.";
 		tag "Dr. Cola soda";
 	}
+	override void Messages() {
+		AddOpenText("Still a bit fizzy.");
+		AddOpenText("Feels... off brand.");
+		AddConsumeText("Tastes... fine.");
+		AddConsumeText("Nothing truly special.");
+	}
 }
 
 // by Fort of Hard Knox
@@ -29,6 +35,11 @@ class UaS_LemonFizzSoda : UaS_Consumable {
 	default {
 		UaS_Consumable.Description "A can of tart lemon-flavored carbonated water.";
 		tag "Lemon Fizz Soda";
+	}
+	override void Messages() {
+		AddOpenText("It has a nice fizz to it.");
+		AddConsumeText("Still fresh. Though not as lemony as you thought it'd be.");
+		AddConsumeText("Fizzy.");
 	}
 }
 
@@ -58,6 +69,11 @@ class UaS_NeoEnglandMix : UaS_Consumable {
 		UaS_Consumable.Description "One of three Coffee Blends still legal in the Reformed United Kingdom.";
 		tag "EnglandCoffee";
 	}
+	override void Messages() {
+		AddOpenText("Smells like the streets of New London.");
+		AddConsumeText("Feels... almost monopolistic."); 
+		AddConsumeText("Tastes strangely like tea.");
+	}
 }
 
 // by Fort of Hard Knox
@@ -72,6 +88,8 @@ class UaS_KnoxCoffee : UaS_Consumable {
 	override void Messages() {
 		AddOpenText("It'll heat up more than your mouth!");
 		AddOpenText("An illegal but tasty cup of hazelnut coffee.");
+		AddConsumeText("Ack! Too hot!");
+		AddConsumeText("Pretty refreshing, even with the mouth burns.");
 	}
 }
 
@@ -85,5 +103,7 @@ class UaS_SpaceCoffee : UaS_Consumable {
 	override void Messages() {
 		AddOpenText("Contractually described as hearty and energizing!");
 		AddOpenText("Who would want this deep space swill?");
+		AddConsumeText("Tastes like Space Dust.");
+		AddConsumeText("Refreshing and plastic-flavored.");
 	}
 }

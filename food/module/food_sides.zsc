@@ -17,6 +17,8 @@ class UaS_LentilChili : UaS_Consumable {
 	}
 	override void Messages() {
 		AddOpenText("Surprisingly filling!");
+		AddConsumeText("Pretty good, despite how small it is.");
+		AddConsumeText("Tastes good!");
 	}
 }
 
@@ -29,6 +31,8 @@ class UaS_BreakfastHashbrowns : UaS_Consumable {
 	override void Messages() {
 		AddOpenText("It's always sunny at Denny's...");
 		AddOpenText("How do they keep these crispy?");
+		AddConsumeText("Still crunchy.");
+		AddConsumeText("Still pretty good!");
 	}
 }
 
@@ -41,6 +45,9 @@ class UaS_CacoGiblets : UaS_Consumable {
 	override void Messages() {
 		AddOpenText("They're... blue. Shouldn't be surprising but still...");
 		AddOpenText("It's kinda like sardines... right?");
-		AddOpenText("[zap] ouch!");
+		AddConsumeText("A bit too staticy.");
+		AddConsumeText("Ack!");
+		AddConsumeText("It... works?");
+		AddConsumeText("[zap] ouch!");
 	}
 }

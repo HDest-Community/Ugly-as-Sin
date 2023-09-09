@@ -16,8 +16,9 @@ class UaS_GarlicBeefStroganoffMRE : UaS_Consumable {
 		UaS_Consumable.Description "Tasty beef and hearty pasta in garlic cream sauce.";
 	}
 	override void Messages() {
-		AddOpenText("The garlic sauce is sublime.");
-		AddOpenText("The beef is actually tasty!");
+		AddOpenText("Smells very garlicy.");
+		AddConsumeText("The garlic sauce is sublime.");
+		AddConsumeText("The beef is actually tasty!");
 	}
 }
 
@@ -31,6 +32,9 @@ class UaS_CurryRiceMRE : UaS_Consumable {
 		AddOpenText("Finally something exciting.");
 		AddOpenText("Maybe this batch won't upset your stomach.");
 		AddOpenText("Hope the rice isn't mushy.");
+		AddConsumeText("The rice is kind of mushy...");
+		AddConsumeText("Your stomach starts hurting...");
+		AddConsumeText("Tastes very good, though a bit too spicy.");
 	}
 }
 
@@ -42,6 +46,9 @@ class UaS_SpaghettiMeatballMarinaraMRE : UaS_Consumable {
 	}
 	override void Messages() {
 		AddOpenText("Just like home... kinda.");
+		AddConsumeText("The sauce feels familiar enough.");
+		AddConsumeText("The meathballs are kind of smushy...");
+		AddConsumeText("The noodles are well cooked at least.");
 	}
 }
 
@@ -65,6 +72,9 @@ class UaS_ChiliMacMRE : UaS_Consumable {
 	}
 	override void Messages() {
 		AddOpenText("Hard to improve on perfection but the army chefs sure tried.");
+		AddConsumeText("Tastes odd.");
+		AddConsumeText("Doesn't feel much like mac and cheese...");
+		AddConsumeText("Hurts your stomach a bit.");
 	}
 }
 
@@ -76,9 +86,10 @@ class UaS_ChickenDumpMRE : UaS_Consumable {
 		UaS_Consumable.Description "Chicken Dumplings with Vegetables.";
 	}
 	override void Messages() {
-		AddOpenText("The sauce is pretty thick.");
-		AddOpenText("The vegetables are super tender!");
-		AddOpenText("How do they keep the chicken moist?");
+		AddOpenText("Hopefully the packaging kept these good.");
+		AddConsumeText("The sauce is pretty thick.");
+		AddConsumeText("The vegetables are super tender!");
+		AddConsumeText("How do they keep the chicken moist?");
 	}
 }
 
@@ -90,10 +101,12 @@ class UaS_EnchCassMRE : UaS_Consumable {
 		UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
 	}
 	override void Messages() {
-		AddOpenText("Man, the sauce has some kick!");
-		AddOpenText("They never include enough refried beans.");
-		AddOpenText("Wish I had a honey packet for this.");
-		AddOpenText("Spicy and smooth!");
+		AddOpenText("Nice, a good amount of sauce!");
+		AddOpenText("Wish it had more beans..");
+		AddConsumeText("Man, the sauce has some kick!");
+		AddConsumeText("They never include enough refried beans.");
+		AddConsumeText("Wish I had a honey packet for this.");
+		AddConsumeText("Spicy and smooth!");
 	}
 }
 
@@ -107,6 +120,8 @@ class UaS_FireballMRE : UaS_Consumable {
 		AddOpenText("Three kinds of meat! Two kinds of Potato!");
 		AddOpenText("Mix the 1st and 3rd hot sauce. Always skip Sauce 2.");
 		AddOpenText("A hearty breakfast meal that works anytime.");
+		AddConsumeText("The meats mush together, though it tastes great!");
+		AddConsumeText("The sauces is spicy, yet good.");
 	}
 }
 
@@ -123,5 +138,9 @@ class UaS_GrabbagMRE : UaS_Consumable {
 		AddOpenText("Salad and barbecue sauce?");
 		AddOpenText("Beef strips, Grape candy, and pear cubes...");
 		AddOpenText("Four cans of energy drink and six energy bars?");
+		AddConsumeText("Tastes a bit too crunchy...");
+		AddConsumeText("It doesn't go down your throat well.");
+		AddConsumeText("Euch... I see why this just has 'whatever' in it...");
+		AddConsumeText("Slimey...");
 	}
 }
