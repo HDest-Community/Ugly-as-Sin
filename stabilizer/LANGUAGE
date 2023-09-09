@@ -1,0 +1,6 @@
+[enu default]
+
+TAG_GYROSTABILIZER    = "Gyroscopic Stabilizer";
+TAG_SLING             = "Weapon Sling";
+PICKUP_GYROSTABILIZER = "Picked up a gyro stabilizer.";
+PICKUP_SLING          = "Picked up a weapon sling.";

@@ -1,0 +1,7 @@
+[enu default]
+
+TAG_ASSAULTPACK      = "Assault Pack";
+PICKUP_ASSAULTPACK   = "Picked up an assault pack!";
+
+ASSAULTPACK_TOOLARGE = "That item is too large!";
+ASSAULTPACK_TOOFULL  = "Your backpack is too full.";

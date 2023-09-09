@@ -1,0 +1,15 @@
+[enu default]
+
+TAG_LLM         = "Light/Laser module";
+PICKUP_LLM      = "Picked up a combo laser/light module.";
+
+LLM_TOP         = "--- \coLaser / Flashlight\c- ---\n";
+LLM_OFF         = "\cmOff";
+LLM_VISIBLE     = "\ccVisible";
+LLM_IRONLY      = "\cuIR only";
+LLM_FLASHING    = "Flashing";
+LLM_LIGHTMODE   = "\cjLight Mode: ";
+LLM_LASERMODE   = "\cjLaser Mode: ";
+LLM_LASERCOLOR  = "\cjLaser Color: ";
+LLM_ACTIVATED   = "\cj=On=";
+LLM_DEACTIVATED = "\cu=Off=";
