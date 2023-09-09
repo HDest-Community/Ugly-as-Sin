@@ -1,6 +1,6 @@
 extend class UaS_Consumable {
 	void HandleInput() {
-		if (CheckButton(BT_ATTACK, CBM_PRESSED)) { Consume(); }
+		if (CheckButton(BT_ATTACK, CBM_HOLDING)) { Consume(); }
 		else if (CheckButton(BT_RELOAD, CBM_PRESSED)) { ResealPackage(); }
 		else if (CheckButton(BT_UNLOAD, CBM_PRESSED)) { OpenPackage(); }
 	}
