@@ -1,0 +1,68 @@
+extend class UaS_Scarcity_Handler {
+	bool DoMedical(Actor mo) {
+		// false = "I'm not handling this"
+		if (!mo) { return false; }
+		bool ValidClass = (
+			mo is "PortableStimpack"
+			|| mo is "PortableMedikit"
+			|| mo is "PortableBerserkPack"
+			|| mo is "SecondBlood"
+		);
+		if (!ValidClass) { return false; }
+
+		bool dbgOverspawned = false;
+
+		// true = "I handled this"
+		switch(mo.GetClassName()) {
+			case 'PortableStimpack':
+				if(MedSpawnCheck()) { dbgOverspawned=true; }
+				else {
+					UaS.SpawnStuff('SpentStim', random(0, 1), mo.pos);
+					UaS.SpawnStuff('UaS_EmptyStimpack', 1, mo.pos);
+					mo.destroy();
+				}
+				break;
+			case 'PortableMedikit': 
+				// break open bonus contents
+				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('PortableStimpack', 1, mo.pos); }
+				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('SecondBlood', 1, mo.pos); }
+				// handle autoinjector
+				if(MedSpawnCheck()) {
+					dbgOverspawned=true;
+					let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', mo.pos));
+					if(!spawnedMedikit) { break; }
+					//assume 7 auto-sutures per module, default 42 sutures = 6 modules
+					int maxmodules = int(max(1, (MEDIKIT_MAXFLESH * UaS_ScarcityOverspawn) / 6));
+					int kitmodules = max(1, random(1, maxmodules));
+					spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] = 7 * kitmodules;
+					if(spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] < MEDIKIT_MAXFLESH) { spawnedMedikit.frame = 2; }
+					if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', 1, mo.pos); }
+				}
+				UaS.SpawnStuff('UaS_EmptyMedikit', 1, mo.pos);
+				mo.destroy();
+				break;
+			case 'PortableBerserkPack':
+				if(MedSpawnCheck()) { dbgOverspawned=true; }
+				else {
+					UaS.SpawnStuff('SpentZerk', random(0, 1), mo.pos);
+					UaS.SpawnStuff('UaS_EmptyZerkpack', 1, mo.pos);
+					mo.destroy();
+				}
+				break;
+		}
+
+		if (dbgOverspawned) { dbgMsg = dbgMsg.."\n\t• overspawned or retained medical item "..mo.getclassname(); }
+		else { dbgMsg = dbgMsg.."\n\t• removed medical item "..mo.getclassname(); }
+		return true;
+	}
+
+	bool MedSpawnCheck() {
+		return (
+			UaS.RandomChance(UaS_ScarcityOverspawn)
+			|| UaS_ScarcityKeepMedical
+		);
+	}
+}
+
+
+//Replacer routines for medical items

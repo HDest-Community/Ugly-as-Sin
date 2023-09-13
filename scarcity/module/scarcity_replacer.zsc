@@ -1,92 +1,86 @@
 extend class UaS_Scarcity_Handler {
-	void DoReplacement(actor targetActor) {
+	bool DoOther(actor mo) {
+		bool dbgActuallyHandled = false;
+		
+		bool boxClass = (
+			mo is 'HD9mBoxPickup'
+			|| mo is 'HD7mBoxPickup'
+			|| mo is 'ShellBoxPickup'
+			|| mo is 'HD355BoxPickup'
+		);
+		bool shellClass = (
+			mo is 'ShellPickup'
+			|| mo is 'HDShellAmmo'
+		);
+
 		//Replacer routines for mag-type items
-		if (targetActor is "HDMagAmmo") {
-			HDMagAmmo m = HDMagAmmo(targetActor);
+		if (mo is 'HDMagAmmo') {
+			dbgActuallyHandled = true;
+			HDMagAmmo m = HDMagAmmo(mo);
 			name magname = m.GetClassName();
 			name roundtype = "";
 			int mpu = m.maxperunit;
 			if (m is "HD7mMag") { mpu = 30; }
 			if (m is "HD7mClip") { mpu = 10; }
 			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
-			MagReplacer(magname, roundtype, mpu, targetActor);
+			MagReplacer(magname, roundtype, mpu, mo);
+			mo.Destroy();
 		}
-		// Replacer routines for HDUPK and ammo items
-		switch(targetActor.GetClassName()) {
-			case 'HD9mBoxPickup':
-			case 'HD7mBoxPickup':
-			case 'ShellBoxPickup':
-			case 'HD355BoxPickup':
-				HDUPK b = HDUPK(targetActor);
-				BoxReplacer(b.GetClassName(), b.pickuptype.GetClassName(), b.amount, targetActor);
-				break;
-			case 'ShellPickup':
-			case 'HDShellAmmo':
-				UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * UaS_ScarcityOverspawn)), targetActor.pos, true);
-				break;
-			case 'RocketBigPickup':
-				for(int i = 1; i <= 5; i++) {
-					if(UaS.RandomChance(UaS_ScarcityOverspawn)) {
-						if(UaS.RandomChance(0.5)) { UaS.SpawnStuff('HDRocketAmmo', random(0, 1), targetActor.pos); }
-						else { UaS.SpawnStuff('DudRocket', random(0, 1), targetActor.pos); }
-					}
+	
+		// Replacer routines for HDUPK-derived and ammo items
+		else if (boxClass) {
+			dbgActuallyHandled = true;
+			HDUPK b = HDUPK(mo);
+			BoxReplacer(b.GetClassName(), b.pickuptype.GetClassName(), b.amount, mo);
+			mo.Destroy();
+		}
+		else if (shellClass) {
+			dbgActuallyHandled = true;
+			UaS.SpawnStuff('HDFumblingShell', random(0, int(4 * UaS_ScarcityOverspawn)), mo.pos, true);
+			mo.Destroy();
+		}
+		else if (mo is 'RocketBigPickup') {
+			dbgActuallyHandled = true;
+			for(int i = 1; i <= 5; i++) {
+				if(UaS.RandomChance(UaS_ScarcityOverspawn)) {
+					if(UaS.RandomChance(0.5)) { UaS.SpawnStuff('HDRocketAmmo', random(0, 1), mo.pos); }
+					else { UaS.SpawnStuff('DudRocket', random(0, 1), mo.pos); }
 				}
-				UaS.SpawnStuff('UaS_EmptyRocketBox', 1, targetActor.pos);
-				break;
-			case 'FragP':
-			case 'HDFragGrenadeAmmo':
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('FragP', random(0, 1), targetActor.pos); }
-				else { UaS.SpawnStuff('HDFragSpoon', random(0, 1), targetActor.pos); }
-				break;
+			}
+			UaS.SpawnStuff('UaS_EmptyRocketBox', 1, mo.pos);
+			mo.Destroy();
 		}
-
-		//Replacer routines for medical items
-		switch(targetActor.GetClassName()) {
-			case 'PortableStimpack':
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_StimInjector', 1, targetActor.pos); }
-				else { UaS.SpawnStuff('SpentStim', random(0, 1), targetActor.pos); }
-				UaS.SpawnStuff('UaS_EmptyStimpack', 1, targetActor.pos);
-				// if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', random(0, 1), targetActor.pos); }
-				break;
-			case 'PortableMedikit':
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('PortableStimpack', 1, targetActor.pos); }
-				let spawnedMedikit = HDMedikitter(actor.Spawn('HDMedikitter', targetActor.pos));
-				if(!spawnedMedikit) { break; }
-				//assume 7 auto-sutures per module, default 42 sutures = 6 modules
-				int maxmodules = int(max(1, (MEDIKIT_MAXFLESH * UaS_ScarcityOverspawn) / 6));
-				int kitmodules = max(1, random(1, maxmodules));
-				spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] = 7 * kitmodules;
-				if(spawnedMedikit.weaponstatus[MEDS_SECONDFLESH] < MEDIKIT_MAXFLESH) { spawnedMedikit.frame = 2; }
-				UaS.SpawnStuff('UaS_EmptyMedikit', 1, targetActor.pos);
-				// if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', maxmodules - kitmodules, targetActor.pos); }
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('SecondBlood', 1, targetActor.pos); }
-				break;
-			case 'PortableBerserkPack':
-				if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_ZerkInjector', 1, targetActor.pos); }
-				else { UaS.SpawnStuff('SpentZerk', random(0, 1), targetActor.pos); }
-				UaS.SpawnStuff('UaS_EmptyZerkpack', 1, targetActor.pos);
-				// if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('UaS_2FCartridge', random(0, 1), targetActor.pos); }
-				break;
+		else if (mo is 'FragP' || mo is 'HDFragGrenadeAmmo') {
+			dbgActuallyHandled = true;
+			if(UaS.RandomChance(UaS_ScarcityOverspawn)) { UaS.SpawnStuff('FragP', random(0, 1), mo.pos); }
+			else { UaS.SpawnStuff('HDFragSpoon', random(0, 1), mo.pos); }
+			mo.Destroy();
 		}
 
 		//Replacer routines for equipment
-		switch(targetActor.GetClassName()) {
-			case 'HDMap':
-				let spawnedMap = UaS_Automap(actor.Spawn('UaS_Automap', targetActor.pos));
-				if(!spawnedMap) { break; }
-				spawnedMap.status = random(0, 2);
-				break;
-			case 'PortableLiteAmp':
-				let spawnedLiteAmp = PortableLiteAmp(actor.Spawn('PortableLiteAmp', targetActor.pos));
-				double avgint = random(200, 800);
-				avgint += random(200, 800);
-				avgint += random(200, 800);
-				avgint /= 3;
-				avgint *= UaS_ScarcityOverspawn;
-				avgint  = clamp(avgint,0,400);
-				PortableLiteAmp(spawnedLiteAmp).setintegrity(int(avgint));
-				UaS.LogDebug(DBG_Scarcity, string.format("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()));
-				break;
+		else if (mo is 'HDMap') {
+			dbgActuallyHandled = true;
+			let spawnedMap = UaS_Automap(actor.Spawn('UaS_Automap', mo.pos));
+			if(spawnedMap) { spawnedMap.status = random(0, 2); }
+			mo.Destroy();
 		}
+		else if (mo is 'PortableLiteAmp') {
+			dbgActuallyHandled = true;
+			let spawnedLiteAmp = PortableLiteAmp(actor.Spawn('PortableLiteAmp', mo.pos));
+			double avgint = random(200, 800);
+			avgint += random(200, 800);
+			avgint += random(200, 800);
+			avgint /= 3;
+			avgint *= UaS_ScarcityOverspawn;
+			avgint  = clamp(avgint,0,400);
+			PortableLiteAmp(spawnedLiteAmp).setintegrity(int(avgint));
+			UaS.LogDebug(DBG_Scarcity, string.format("Liteamp integrity %i", PortableLiteAmp(spawnedLiteAmp).getintegrity()));
+			mo.Destroy();
+		}
+
+		if (dbgActuallyHandled) { dbgMsg = dbgMsg.."\n\t• otherwise modified or removed "..mo.getclassname(); }
+		else { dbgMsg = dbgMsg.."\n\t• ignored unhandled class "..mo.getclassname(); }
+		
+		return true;
 	}
 }

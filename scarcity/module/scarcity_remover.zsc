@@ -1,13 +1,14 @@
 extend class UaS_Scarcity_Handler {
+	string dbgMsg;
 	//Remover function which counts all of an item then only removes a set percentage
 	void ExactScarcity(name checkClass, double targetPercent) {
 
 		// Build instance array for this class
-		array<HDPickup> thingArray;
-		HDPickup nextThing;
+		array<Actor> thingArray;
+		Actor nextThing;
 		let thingCounter = ThinkerIterator.Create(CheckClass);
-		while(nextThing = HDPickup(thingCounter.Next(true))) {
-			if (nextThing.owner) continue;
+		while(nextThing = Actor(thingCounter.Next(true))) {
+			if (nextThing is 'Inventory' && Inventory(nextThing).owner) { continue; }
 			thingArray.Push(nextThing);
 		}
 
@@ -17,61 +18,26 @@ extend class UaS_Scarcity_Handler {
 		int targetAmount = int(thingArray.Size() * targetPercent);
 
 		// Loop over each instance until we hit the target amount
-		string dbgMsg = "Scarcity processing for "..CheckClass.." x"..originalcount;
+		dbgMsg = "Scarcity processing for "..CheckClass.." x"..originalcount;
 		while(thingArray.Size() > targetAmount) {
 			// pick a random object from array
 			int index = random(0, thingArray.Size()-1);
-			HDPickup mo = HDPickup(thingArray[index]);
-			if(mo.owner) {
+			Actor mo = Actor(thingArray[index]);
+			bool skipConditions = (
+				!mo
+				|| (mo is 'Inventory' && Inventory(mo).owner)
+			);
+			if(skipConditions) {
+				dbgMsg = dbgMsg.."\n\t• does not exist";
 				thingArray.Delete(index);
 				continue;
 			}
 
-			//Find nearby mobs to the object
-			let mobFinder = BlockThingsIterator.Create(mo, 256);
-			array<HDMobBase> mobArray;
-			// build a list of mobs
-			while(mobFinder.Next()) {
-				HDMobBase mft = HDMobBase(mobFinder.thing);
-				bool ValidMob = (mft
-					&& mft.bBiped == true
-					&& mft.mass > mo.bulk*5
-					&& !mft.bNoGravity
-					&& mft.FindInventory("HDPickup", true)==null);
-				if(ValidMob) {
-					mobArray.push(mft);
-				}
-			}
-
-			// Decide based on if mobs were found
-			bool pickedUp = false;
-			HDMobBase mb;
-			while (mobArray.Size()>0 && !pickedUp) {
-				int mobIndex = mobArray.Size()-1;
-				mb = mobArray[mobIndex];
-				if (mb && mo) {
-					//Move item to mob's array
-					bool CanReach = mb.checkmove(mo.pos.xy,PCM_DROPOFF);
-					if (CanReach) {
-						vector3 oldmopos = mo.pos;
-						mo.setorigin(mb.pos,false);
-						pickedUp = mo.CallTryPickup(mb);
-						if (pickedUp) {
-							dbgMsg = dbgMsg.."\n\t• "..mo.getclassname()..int(oldmopos.length()).." added to "..mb.getclassname()..int(mb.pos.length()).."'s inventory";
-						}
-						else {
-							mo.setorigin(oldmopos,false);
-						}
-					}
-				}
-				mobArray.delete(mobIndex);
-			}
-
-			if (!pickedUp) {
-				dbgMsg = dbgMsg.."\n\t• Modified or removed "..mo.getclassname();
-				DoReplacement(mo);
-				thingArray[index].destroy();
-			}
+			// Check mob loot integration
+			if (MobLoot(mo)) {}
+			else if (DoWeapons(HDWeapon(mo))) {}
+			else if (DoMedical(mo)) {}
+			else if (DoOther(mo)) {}
 			thingArray.Delete(index);
 		}
 
