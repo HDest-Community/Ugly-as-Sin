@@ -1,0 +1,17 @@
+extend class UaS_Scarcity_Handler {
+	bool DoWeapons(HDWeapon wep) {
+		// false = "I'm not handling this"
+		if (!wep) { return false; }
+		if (wep.slotnumber <= 1 || wep.slotnumber >= 9) { return false; }
+
+		// true = "I handled this"
+		if (UaS_ScarcityKeepWeapons) {
+			dbgMsg = dbgMsg.."\n\t• retained weapon "..wep.getclassname();
+			return true;
+		}
+
+		dbgMsg = dbgMsg.."\n\t• removed weapon "..wep.getclassname();
+		wep.destroy();
+		return true;
+	}
+}

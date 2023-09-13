@@ -94,7 +94,8 @@ class UaS_StimInjector : Actor {
 	override void PostBeginPlay(){
 		let spawneditem = Inventory(actor.Spawn("PortableStimpack", (pos.x, pos.y, pos.z + 5)));
 		if(spawneditem) {
-			spawneditem.sprite = GetSpriteIndex('SYRG');
+			console.printf("BREAKCHECK");
+			spawneditem.sprite = GetSpriteIndex('SYRB');
 			spawneditem.frame = 0;
 			spawneditem.translation = translation;
 			spawneditem.scale.x = 0.32;

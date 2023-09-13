@@ -39,7 +39,13 @@ OptionMenu "UaS_LoadedModules" {
 
 OptionMenu "UaS_CoreOptions" {
 	Title "Core Module Settings"
-	StaticText "Debugging Flags"
+
+	Submenu "DEBUG TOGGLES", "UaS_CoreDebug"
+}
+
+OptionMenu "UaS_CoreDebug" {
+	Title "Debug Output Toggles"
+	StaticText " "
 	FlagOption "Hunger","UaS_Debug","OnOff",0
 	FlagOption "Scarcity","UaS_Debug","OnOff",1
 	FlagOption "Debris","UaS_Debug","OnOff",2
@@ -317,8 +323,21 @@ OptionMenu "UaS_Scarcity_Options" {
 	StaticText " "
 
 	ScaleSlider "Scarcity rate","UaS_ScarcityRate", 0, 100, 5, "Disabled"
-	Slider "Overspawn ratio","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
-	Option "Disable drops","UaS_ScarcityDisableDrops","OnOff"
+	StaticText "Percentage of items that should be"
+	StaticText "removed from the level at load."
+	StaticText " "
+	Submenu "Advanced Tuning", "UaS_Scarcity_Advanced"
+}
+
+OptionMenu "UaS_Scarcity_Advanced" {
+	Title "Advanced Scarcity Tuning"
+
+	Slider "Overspawn ratio ('leftovers')","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
+	Option "Looting integration","UaS_ScarcityLooting","OnOff"
+	Option "Disable mob weapon drops","UaS_ScarcityDisableDrops","OnOff"
+	Option "Preserve medical items","UaS_ScarcityKeepMedical","OnOff"
+	Option "Preserve map weapons","UaS_ScarcityKeepWeapons","OnOff"
+	
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Stabilizer"

@@ -1,14 +1,19 @@
 class UaS_Scarcity_Handler : EventHandler {
 	double ScarcityFactor;
 	actor spawneditem;
-	array<class <HDPickup> > PickupClasses;
+	array<class <Actor> > PickupClasses;
 
 	override void OnRegister() {
 		ScarcityFactor = double(UaS_ScarcityRate) / 100.0;
 
 		UaS.LogDebug(DBG_Scarcity, "Scarcity: Build HDPickup Array");
 		foreach (ac : AllActorClasses) {
-			if (ac is 'HDPickup') PickupClasses.Push(ac);
+			bool validclass = (
+				ac is 'HDPickup'
+				|| ac is 'HDUPK'
+				|| ac is 'HDWeapon'
+			);
+			if (validclass) { PickupClasses.Push(ac); }
 		}
 	}
 
@@ -17,7 +22,7 @@ class UaS_Scarcity_Handler : EventHandler {
 		if(level.maptime != 1) { return; }
 		if(UaS_ScarcityEnabled == false) { return; }
 
-		array<class <HDPickup> > ClassesInMap;
+		array<class <Actor> > ClassesInMap;
 		UaS.LogDebug(DBG_Scarcity, "Classes in map:");
 		foreach (pclass : PickupClasses) {
 			if (ActorInMap(pclass)) {
@@ -33,7 +38,7 @@ class UaS_Scarcity_Handler : EventHandler {
 
 	bool ActorInMap(class<Actor> type) {
 		let actIt = ThinkerIterator.Create(type);
-		return !!Actor(actIt.Next());
+		return !!Actor(actIt.Next(true));
 	}
 }
 
