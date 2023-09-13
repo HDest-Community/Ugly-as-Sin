@@ -37,7 +37,13 @@ OptionMenu "UaS_LoadedModules" {
 
 OptionMenu "UaS_CoreOptions" {
 	Title "Core Module Settings"
-	StaticText "Debugging Flags"
+
+	Submenu "DEBUG TOGGLES", "UaS_CoreDebug"
+}
+
+OptionMenu "UaS_CoreDebug" {
+	Title "Debug Output Toggles"
+	StaticText " "
 	FlagOption "Hunger","UaS_Debug","OnOff",0
 	FlagOption "Scarcity","UaS_Debug","OnOff",1
 	FlagOption "Debris","UaS_Debug","OnOff",2
