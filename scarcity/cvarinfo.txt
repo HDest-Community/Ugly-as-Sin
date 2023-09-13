@@ -1,7 +1,7 @@
 server bool UaS_ScarcityEnabled = false;
 server int UaS_ScarcityRate = 50;
 server float UaS_ScarcityOverspawn = 0.5;
-server bool UaS_ScarcityDisableDrops = false;
 server bool UaS_ScarcityLooting = true;
+server bool UaS_ScarcityDisableDrops = false;
 server bool UaS_ScarcityKeepMedical = true;
 server bool UaS_ScarcityKeepWeapons = true;

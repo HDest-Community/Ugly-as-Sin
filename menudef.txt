@@ -327,8 +327,8 @@ OptionMenu "UaS_Scarcity_Advanced" {
 	Title "Advanced Scarcity Tuning"
 
 	Slider "Overspawn ratio ('leftovers')","UaS_ScarcityOverspawn", 0, 1, 0.05, 2
-	Option "Disable mob weapon drops","UaS_ScarcityDisableDrops","OnOff"
 	Option "Looting integration","UaS_ScarcityLooting","OnOff"
+	Option "Disable mob weapon drops","UaS_ScarcityDisableDrops","OnOff"
 	Option "Preserve medical items","UaS_ScarcityKeepMedical","OnOff"
 	Option "Preserve map weapons","UaS_ScarcityKeepWeapons","OnOff"
 	

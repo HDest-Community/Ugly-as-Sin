@@ -3,7 +3,14 @@
 ## Settings
 
 * **Scarcity Rate** - The random chance for map-spawned items to be removed / replaced upon map load.
+
+### Advanced Settings
+
 * **Overspawn Ratio** - Allows for some usable portion or variant to remain in place of the removed item.
+* **Disable Mob Weapon Drops** - Prevents monsters from dropping guns on death.
+* **Looting Integration** - When items are removed from the map, some may be transfered to nearby monsters instead of being deleted entirely. This synergizes with the looting system by allowing these items to be scavenged from monster corpses.
+* **Preserve Medical Items** - Items such as medikits are excluded from total removal.
+* **Preserve Map Weapons** - Map-placed weapon pickups are excluded from removal.
 
 ## Mechanics
 
