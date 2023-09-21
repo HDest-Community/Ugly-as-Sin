@@ -1,5 +1,9 @@
 [enu default]
 
+//-----------------
+// Food Module Language Lumps
+//-----------------
+
 // From food_basic.zsc - [Ted]
 UAS_CONSUMABLE_FOODRATION_DESCRIPTION = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
 UAS_CONSUMABLE_FOODRATION_PICKUP = "Picked up a military food ration.";
@@ -182,3 +186,28 @@ UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_1 = "A bit too staticy.";
 UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_2 = "Ack!";
 UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_3 = "It... works?";
 UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_4 = "[zap] ouch!";
+
+//-----------------
+// Consumable Language Lumps
+//-----------------
+
+// These are likely way too long of names to be worthwhile but idrc - [Ted]
+UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_TAG = "--- \cc%s\c- ---\n";
+UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_DESCRIPTION = "%s\n";
+UAS_CONSUMABLE_DISPLAY_CONTENTS = "\cpContents\n";
+UAS_CONSUMABLE_DISPLAY_NICEFOODLIST_APPENDFORMAT = "\ce%s\n";
+UAS_CONSUMABLE_DISPLAY_CALORIES = "\ce%i Calories\n";
+UAS_CONSUMABLE_DISPLAY_ML_FLUIDS = "\ce%i mL Fluids\n\n";
+UAS_CONSUMABLE_DISPLAY_PACKAGE_CLOSED = "Package Closed\n";
+UAS_CONSUMABLE_DISPLAY_REMAINING = "\cw%.0f%% Remaining\n";
+UAS_CONSUMABLE_DISPLAY_CONSOOMING = "Consuming...";
+UAS_CONSUMABLE_DISPLAY_SPOILED = "clearly spoiled\n";
+UAS_CONSUMABLE_DISPLAY_NOTWORTHEATING = "not worth eating\n";
+UAS_CONSUMABLE_DISPLAY_SOMEWHATSTALE = "somewhat stale\n";
+UAS_CONSUMABLE_DISPLAY_NOTQUITEFRESH = "not quite fresh\n";
+UAS_CONSUMABLE_DISPLAY_FRESH = "basically fresh\n";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_40 = "\cm";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_30 = "\cu";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_20 = "\cs";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_10 = "\cq";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_0 = "\cd";
