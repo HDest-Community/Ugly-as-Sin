@@ -22,17 +22,17 @@ class UaS_WaterRation : UaS_Consumable {
 		UaS_Consumable.Calories 0;
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Bulk 6;
-		UaS_Consumable.Description "A disposable tear-open water pouch, about equivalent to a single glass of water.";
+		UaS_Consumable.Description "$TAG_UAS_CONSUMABLE_WATERRATION_DESCRIPTION";
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
-		Inventory.PickupMessage "Picked up a military water ration.";
-		tag "Water Ration";
+		Inventory.PickupMessage "$UAS_CONSUMABLE_WATERRATION_PICKUP";
+		tag "$UAS_CONSUMABLE_WATTERRATION_TAG";
 		Inventory.Icon "HSCVR0";
 	}
 	override void Messages() {
-		AddOpenText("Hope it's fresh...");
-		AddConsumeText("Refreshing and plastic-flavored.");
-		AddConsumeText("Water is water.");
-		AddConsumeText("Sometimes simpler is better.");
+		AddOpenText("$UAS_CONSUMABLE_WATERRATION_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_3");
 	}
 }
