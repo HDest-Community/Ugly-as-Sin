@@ -1,8 +1,8 @@
 class UaS_BasicMRE : UaS_Consumable {
 	default {
-		UaS_Consumable.Description "This is probably the saddest MRE you've ever seen, but... at least it comes with a toy!";
-		Inventory.PickupMessage "Picked up a terrible basic MRE.";
-		tag "World's Worst MRE";
+		UaS_Consumable.Description "$UAS_PACKAGE_BASICMRE_DESCRIPTION";
+		Inventory.PickupMessage "$UAS_PACKAGE_BASICMRE_PICKUP";
+		tag "$UAS_PACKAGE_BASICMRE_TAG";
 		Inventory.Icon "HSCVA0";
 	}
 	override void Contents() {

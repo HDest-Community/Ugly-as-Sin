@@ -149,3 +149,8 @@ UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_1 = "Tastes a bit too crunchy...";
 UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_2 = "It doesn't go down your throat well.";
 UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_3 = "Euch... I see why this just has 'whatever' in it...";
 UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_4 = "Slimey...";
+
+// From Food_Packages.zsc - [Ted]
+UAS_PACKAGE_BASICMRE_DESCRIPTION = "This is probably the saddest MRE you've ever seen, but... at least it comes with a toy!";
+UAS_PACKAGE_BASICMRE_PICKUP = "Picked up a terribly basic MRE.";
+UAS_PACKAGE_BASICMRE_TAG = "World's Worst MRE";
