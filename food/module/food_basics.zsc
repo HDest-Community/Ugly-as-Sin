@@ -22,7 +22,7 @@ class UaS_WaterRation : UaS_Consumable {
 		UaS_Consumable.Calories 0;
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Bulk 6;
-		UaS_Consumable.Description "$TAG_UAS_CONSUMABLE_WATERRATION_DESCRIPTION";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_WATERRATION_DESCRIPTION";
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "$UAS_CONSUMABLE_WATERRATION_PICKUP";

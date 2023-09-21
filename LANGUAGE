@@ -18,3 +18,47 @@ UAS_CONSUMABLE_WATERRATION_OPENTEXT = "Hope it's fresh...";
 UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_1 = "Refreshing and plastic-flavored.";
 UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_2 = "Water is water.";
 UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_3 = "Sometimes simpler is better.";
+
+// From food_drinks.zsc - [Ted]
+UAS_MIXIN_SODA_PICKUP = "Picked up a can of soda.";
+
+UAS_CONSUMABLE_DRCOLA_DESCRIPTION = "Fizzy sugary cola goodness in a classic red aluminium can.";
+UAS_CONSUMABLE_DRCOLA_TAG = "Dr. Cola Soda";
+
+UAS_CONSUMABLE_DRCOLA_OPENTEXT_1 = "Still a bit fizzy.";
+UAS_CONSUMABLE_DRCOLA_OPENTEXT_2 = "Feels... off brand.";
+UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_1 = "Tastes... fine.";
+UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_2 = "Nothing truly special.";
+
+UAS_CONSUMABLE_LEMONFIZZ_DESCRIPTION = "A can of tart lemon-flavored carbonated water.";
+UAS_CONSUMABLE_LEMONFIZZ_TAG = "Lemon Fizz Soda";
+
+UAS_CONSUMABLE_LEMONFIZZ_OPENTEXT = "It has a nice fizz to it.";
+UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_1 = "Still fresh. Though not as lemony as you thought it'd be.";
+UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_2 = "Fizzy.";
+
+UAS_MIXIN_COFFEE_PICKUP = "Picked up a disposable, self-heating water pouch with a pack of coffee mix.";
+UAS_MIXIN_COFFEE_DESCRIPTION = "Hey! You! You're not supposed to see this! Did I fuck something up? Oh god.";
+
+UAS_CONSUMABLE_NEOENGLANDMIX_DESCRIPTION = "One of three Coffee Blends still legal in the Reformed United Kingdom.";
+UAS_CONSUMABLE_NEOENGLANDMIX_TAG = "England Coffee";
+
+UAS_CONSUMABLE_NEOENGLANDMIX_OPENTEXT = "Smells like the streets of New London.";
+UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_1 = "Feels... almost monopolistic.";
+UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_2 = "Tastes strangely like tea.";
+
+UAS_CONSUMABLE_KNOXCOFFEE_DESCRIPTION = "A bootlegged coffee pouch. Best Served Very Hot.";
+UAS_CONSUMABLE_KNOXCOFFEE_TAG = "Knox Coffee";
+
+UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_1 = "It'll heat up more than your mouth!";
+UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_2 = "An illegal but tasty cup of hazelnut coffee.";
+UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_1 = "Ack! Too hot!";
+UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_2 = "Pretty refreshing, even with the mouth burns.";
+
+UAS_CONSUMABLE_SPACECOFFEE_DESCRIPTION = "A pouch of coffee served on space stations in Earth's orbit.";
+UAS_CONSUMABLE_SPACECOFFEE_TAG = "Space Coffee";
+
+UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_1 = "Contractually described as hearty and energizing!";
+UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_2 = "Who would want this deep space swill?";
+UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_1 = "Tastes like Space Dust.";
+UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_2 = "Refreshing and plastic-flavored.";
