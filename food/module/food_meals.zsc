@@ -5,76 +5,80 @@ mixin class UaS_BigMREPouch {
 		UaS_Consumable.Bulk 18;
 		+UaS_Consumable.PACKAGED;
 		+UaS_Consumable.RESEALABLE;
-		Inventory.PickupMessage "Picked up a large vacuum-sealed MRE pouch.";
+		Inventory.PickupMessage "$UAS_MIXIN_BIGMREPOUCH_PICKUP";
 	}
 }
 
 class UaS_GarlicBeefStroganoffMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Beef and Garlic Stroganoff";
-		UaS_Consumable.Description "Tasty beef and hearty pasta in garlic cream sauce.";
+		tag "$UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Smells very garlicy.");
-		AddConsumeText("The garlic sauce is sublime.");
-		AddConsumeText("The beef is actually tasty!");
+		AddOpenText("$UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_2");
 	}
 }
 
 class UaS_CurryRiceMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Curry and Rice";
-		UaS_Consumable.Description "Spicy red curry with rice and potatos.";
+		tag "$UAS_CONSUMABLE_CURRYANDRICE_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_CURRYANDRICE_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Finally something exciting.");
-		AddOpenText("Maybe this batch won't upset your stomach.");
-		AddOpenText("Hope the rice isn't mushy.");
-		AddConsumeText("The rice is kind of mushy...");
-		AddConsumeText("Your stomach starts hurting...");
-		AddConsumeText("Tastes very good, though a bit too spicy.");
+		AddOpenText("$UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_2");
+		AddOpenText("$UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_3");
+		AddConsumeText("$UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_3");
 	}
 }
 
 class UaS_SpaghettiMeatballMarinaraMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Spaghetti with Meatballs";
-		UaS_Consumable.Description "Old Faithful. Spaghetti and meatballs in a hearty marinara sauce.";
+		tag "$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Just like home... kinda.");
-		AddConsumeText("The sauce feels familiar enough.");
-		AddConsumeText("The meathballs are kind of smushy...");
-		AddConsumeText("The noodles are well cooked at least.");
+		AddOpenText("$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_3");
 	}
 }
 
 class UaS_BeefTeryakiRiceMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Beef Teriyaki on Rice";
-		UaS_Consumable.Description "Tender shredded beef in a basic teriyaki sauce, mixed with white rice.";
+		tag "$UAS_CONSUMABKE_BEEFTERIYAKIWITHRICE_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("This rice shouldn't be this good!");
-		AddOpenText("That spice packet might cause a stomach ache...");
+		AddOpenText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_3")
+		AddConsumeText("$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_4");
 	}
 }
 
 class UaS_ChiliMacMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Chili-Mac";
-		UaS_Consumable.Description "Blue-box macaroni and 'cheese' mixed with chile con carne.";
+		tag "$UAS_CONSUMABLE_CHILIMAC_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_CHILIMAC_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Hard to improve on perfection but the army chefs sure tried.");
-		AddConsumeText("Tastes odd.");
-		AddConsumeText("Doesn't feel much like mac and cheese...");
-		AddConsumeText("Hurts your stomach a bit.");
+		AddOpenText("$UAS_CONSUMABLE_CHILIMAC_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_3");
 	}
 }
 
@@ -82,14 +86,14 @@ class UaS_ChiliMacMRE : UaS_Consumable {
 class UaS_ChickenDumpMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Chicken and Dumplings";
-		UaS_Consumable.Description "Chicken Dumplings with Vegetables.";
+		tag "$UAS_CONSUMABLE_CHICKENDUMPLINGS_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_CHICKENDUMPLINGS_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Hopefully the packaging kept these good.");
-		AddConsumeText("The sauce is pretty thick.");
-		AddConsumeText("The vegetables are super tender!");
-		AddConsumeText("How do they keep the chicken moist?");
+		AddOpenText("$UAS_CONSUMABLE_CHICKENANDDUMPLINGS_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_3");
 	}
 }
 
@@ -97,50 +101,50 @@ class UaS_ChickenDumpMRE : UaS_Consumable {
 class UaS_EnchCassMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Enchilada Casserole";
-		UaS_Consumable.Description "Enchilada Casserole with Red Sauce.";
+		tag "$UAS_CONSUMABLE_ENCHILADACASSEROLE_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_ENCHILADACASSEROLE_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Nice, a good amount of sauce!");
-		AddOpenText("Wish it had more beans..");
-		AddConsumeText("Man, the sauce has some kick!");
-		AddConsumeText("They never include enough refried beans.");
-		AddConsumeText("Wish I had a honey packet for this.");
-		AddConsumeText("Spicy and smooth!");
+		AddOpenText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_3");
+		AddConsumeText("$UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_4");
 	}
 }
 
 class UaS_FireballMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Fireball Scramble";
-		UaS_Consumable.Description "Hearty Fireball Breakfast Scramble.";
+		tag "$UAS_CONSUMABLE_FIREBALLSCRAMBLE_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_FIREBALLSCRAMBLE_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Three kinds of meat! Two kinds of Potato!");
-		AddOpenText("Mix the 1st and 3rd hot sauce. Always skip Sauce 2.");
-		AddOpenText("A hearty breakfast meal that works anytime.");
-		AddConsumeText("The meats mush together, though it tastes great!");
-		AddConsumeText("The sauces is spicy, yet good.");
+		AddOpenText("$UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_2");
+		AddOpenText("$UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_3");
+		AddConsumeText("$UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_2");
 	}
 }
 
 class UaS_GrabbagMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "Mystery Mix MRE";
-		UaS_Consumable.Description "An MRE that was assembled with whatever was available.";
+		tag "$UAS_CONSUMABLE_GRABBAG_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_GRABBAG_DESCRIPTION";
 	}
 	override void Messages () {
-		AddOpenText("It's just a mix of crackers and patte...");
-		AddOpenText("Two grain bread and processed cheese, huh?");
-		AddOpenText("Why would you pack three kinds of rice and ketchup?");
-		AddOpenText("Salad and barbecue sauce?");
-		AddOpenText("Beef strips, Grape candy, and pear cubes...");
-		AddOpenText("Four cans of energy drink and six energy bars?");
-		AddConsumeText("Tastes a bit too crunchy...");
-		AddConsumeText("It doesn't go down your throat well.");
-		AddConsumeText("Euch... I see why this just has 'whatever' in it...");
-		AddConsumeText("Slimey...");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_2");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_3");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_4");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_5");
+		AddOpenText("$UAS_CONSUMABLE_GRABBAG_OPENTEXT_6");
+		AddConsumeText("$UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_3");
+		AddConsumeText("$UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_4");
 	}
 }
