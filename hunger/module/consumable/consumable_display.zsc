@@ -10,16 +10,16 @@ extend class UaS_Consumable {
 
 	string DisplayDescription() {
 		string r;
-		r.appendformat("--- \cc%s\c- ---\n", gettag());
-		r.appendformat("%s\n", UaS.WrapFunction(Stringtable.Localize(description)));
+		r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_TAG"), gettag());
+		r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_DESCRIPTION"), UaS.WrapFunction(Stringtable.Localize(description)));
 		return r;
 	}
 
 	string DisplayFoodlist() {
 		string r;
 		if (weaponstatus[UGCS_GAVECONTENTS] == false && FoodList.Size() > 0) {
-			r.appendformat("\cpContents\n");
-			for (int i=0; i<NiceFoodList.size(); i++) { r.appendformat("\ce%s\n", NiceFoodList[i]); }
+			r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_CONTENTS"));
+			for (int i=0; i<NiceFoodList.size(); i++) { r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_NICEFOODLIST_APPENDFORMAT"), NiceFoodList[i]); }
 			r.appendformat("\n");
 		}
 		return r;
@@ -29,8 +29,8 @@ extend class UaS_Consumable {
 		string r;
 		if (calories > 0 || fluid > 0) {
 			r.appendformat(
-				"\ce%i Calories\n"..
-				"\ce%i mL Fluids\n\n",
+				Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_CALORIES")..
+				Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_ML_FLUIDS"),
 				calories, fluid);
 		}
 		return r;
@@ -39,30 +39,30 @@ extend class UaS_Consumable {
 	string DisplayStatus() {
 		string r;
 		if (bPACKAGED && weaponstatus[UGCS_OPEN] == UGCSF_SEALED) {
-			r.appendformat("Package Closed\n");
+			r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_PACKAGE_CLOSED"));
 		}
 		else if (calories > 0 || fluid > 0) {
-			r.appendformat("\cw%.0f%% Remaining\n", ((weaponbulk()/bulk)*100) + max(diffbulk, 0));
+			r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_REMAINING"), ((weaponbulk()/bulk)*100) + max(diffbulk, 0));
 			r.appendformat(spoilstatus());
 		}
-		if (!tracker.mouthclear() && level.time % 10 != 0) { r.appendformat("Consuming..."); }
+		if (!tracker.mouthclear() && level.time % 10 != 0) { r.appendformat(Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_CONSOOMING")); }
 		return r;
 	}
 
 	string spoilstatus() {
 		int s = weaponstatus[UGCS_SPOILAGE];
-		if (s >= 40) { return statuscolor(s).."clearly spoiled\n"; }
-		if (s >= 30) { return statuscolor(s).."not worth eating\n"; }
-		if (s >= 20) { return statuscolor(s).."somewhat stale\n"; }
-		if (s >= 10) { return statuscolor(s).."not quite fresh\n"; }
-		return statuscolor(s).."basically fresh\n";
+		if (s >= 40) { return statuscolor(s)..Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_SPOILED"); }
+		if (s >= 30) { return statuscolor(s)..Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_NOTWORTHEATING"); }
+		if (s >= 20) { return statuscolor(s)..Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_SOMEWHATSTALE"); }
+		if (s >= 10) { return statuscolor(s)..Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_NOTQUITEFRESH"); }
+		return statuscolor(s)..Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_FRESH");
 	}
 
 	string statuscolor(int amount) {
-		if (amount >= 40) { 	 return "\cm"; } // black
-		else if (amount >= 30) { return "\cu"; } // dark grey
-		else if (amount >= 20) { return "\cs"; } // dark brown
-		else if (amount >= 10) { return "\cq"; } // dark green
-		return "\cd"; // green
+		if (amount >= 40) { 	 return Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_40"); } // black
+		else if (amount >= 30) { return Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_30"); } // dark grey
+		else if (amount >= 20) { return Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_20"); } // dark brown
+		else if (amount >= 10) { return Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_10"); } // dark green
+		return Stringtable.Localize("$UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_0"); // green
 	}
 }
