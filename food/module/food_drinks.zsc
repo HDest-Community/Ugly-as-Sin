@@ -9,7 +9,7 @@ mixin class UaS_SodaMixin {
 		UaS_Consumable.Bulk 8;
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
-		Inventory.PickupMessage "Picked up a can of soda.";
+		Inventory.PickupMessage "$UAS_MIXIN_SODA_PICKUP";
 		Inventory.Icon "HSCVR0";
 		scale 0.45;
 	}
@@ -18,14 +18,14 @@ mixin class UaS_SodaMixin {
 class UaS_DrCola : UaS_Consumable {
 	mixin UaS_SodaMixin;
 	default {
-		UaS_Consumable.Description "Fizzy sugary cola goodness in a classic red aluminium can.";
-		tag "Dr. Cola soda";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_DRCOLA_DESCRIPTION";
+		tag "$UAS_CONSUMABLE_DRCOLA_TAG";
 	}
 	override void Messages() {
-		AddOpenText("Still a bit fizzy.");
-		AddOpenText("Feels... off brand.");
-		AddConsumeText("Tastes... fine.");
-		AddConsumeText("Nothing truly special.");
+		AddOpenText("$UAS_CONSUMABLE_DRCOLA_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_DRCOLA_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_2");
 	}
 }
 
@@ -33,13 +33,13 @@ class UaS_DrCola : UaS_Consumable {
 class UaS_LemonFizzSoda : UaS_Consumable {
 	mixin UaS_SodaMixin;
 	default {
-		UaS_Consumable.Description "A can of tart lemon-flavored carbonated water.";
-		tag "Lemon Fizz Soda";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_LEMONFIZZ_DESCRIPTION";
+		tag "$UAS_CONSUMABLE_LEMONFIZZ_TAG";
 	}
 	override void Messages() {
-		AddOpenText("It has a nice fizz to it.");
-		AddConsumeText("Still fresh. Though not as lemony as you thought it'd be.");
-		AddConsumeText("Fizzy.");
+		AddOpenText("$UAS_CONSUMABLE_LEMONFIZZ_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_2");
 	}
 }
 
@@ -53,10 +53,10 @@ mixin class UaS_CoffeePack {
 		UaS_Consumable.Calories 150;
 		UaS_Consumable.Fluid 250;
 		UaS_Consumable.Bulk 5;
-        UaS_Consumable.Description "";
+        UaS_Consumable.Description "$UAS_MIXIN_COFFEE_DESCRIPTION";
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
-		Inventory.PickupMessage "Picked up a disposable, self-heating water pouch with a pack of coffee mix.";
+		Inventory.PickupMessage "$UAS_MIXIN_COFFEE_PICKUP";
 		Inventory.Icon "HSCVR0";
 		scale 0.45;
 	}
@@ -66,13 +66,13 @@ mixin class UaS_CoffeePack {
 class UaS_NeoEnglandMix : UaS_Consumable {
 	mixin UaS_CoffeePack;
 	default {
-		UaS_Consumable.Description "One of three Coffee Blends still legal in the Reformed United Kingdom.";
-		tag "EnglandCoffee";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_NEOENGLANDMIX_DESCRIPTION";
+		tag "$UAS_CONSUMABLE_NEOENGLANDMIX_TAG";
 	}
 	override void Messages() {
-		AddOpenText("Smells like the streets of New London.");
-		AddConsumeText("Feels... almost monopolistic."); 
-		AddConsumeText("Tastes strangely like tea.");
+		AddOpenText("$UAS_CONSUMABLE_NEOENGLANDMIX_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_1"); 
+		AddConsumeText("$UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_2");
 	}
 }
 
@@ -82,14 +82,14 @@ class UaS_KnoxCoffee : UaS_Consumable {
 	default {
 		UaS_Consumable.Calories 200;
 		UaS_Consumable.Fluid 200;
-		UaS_Consumable.Description "A bootlegged coffee pouch. Best Served Very Hot.";
-		tag "KnoxCoffee";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_KNOXCOFFEE_DESCRIPTION";
+		tag "$UAS_CONSUMABLE_KNOXCOFFEE_TAG";
 	}
 	override void Messages() {
-		AddOpenText("It'll heat up more than your mouth!");
-		AddOpenText("An illegal but tasty cup of hazelnut coffee.");
-		AddConsumeText("Ack! Too hot!");
-		AddConsumeText("Pretty refreshing, even with the mouth burns.");
+		AddOpenText("$UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_2");
 	}
 }
 
@@ -97,13 +97,13 @@ class UaS_KnoxCoffee : UaS_Consumable {
 class UaS_SpaceCoffee : UaS_Consumable {
 	mixin UaS_CoffeePack;
 	default {
-		UaS_Consumable.Description "A pouch of coffee served on space stations in Earth's orbit.";
-		tag "SpaceCoffee";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_SPACECOFFEE_DESCRIPTION";
+		tag "$UAS_CONSUMABLE_SpACECOFFEE_TAG";
 	}
 	override void Messages() {
-		AddOpenText("Contractually described as hearty and energizing!");
-		AddOpenText("Who would want this deep space swill?");
-		AddConsumeText("Tastes like Space Dust.");
-		AddConsumeText("Refreshing and plastic-flavored.");
+		AddOpenText("$UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_2");
 	}
 }
