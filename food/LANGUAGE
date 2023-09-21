@@ -154,3 +154,31 @@ UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_4 = "Slimey...";
 UAS_PACKAGE_BASICMRE_DESCRIPTION = "This is probably the saddest MRE you've ever seen, but... at least it comes with a toy!";
 UAS_PACKAGE_BASICMRE_PICKUP = "Picked up a terribly basic MRE.";
 UAS_PACKAGE_BASICMRE_TAG = "World's Worst MRE";
+
+// From food_sides.zsc - [Ted]
+UAS_MIXIN_SMALLMRE_PICKUP = "Picked up a small vacuum-sealed MRE item.";
+
+UAS_CONSUMABLE_LENTILCHILI_TAG = "Lentil Chili";
+UAS_CONSUMABLE_LENTILCHILI_DESCRIPTION = "Spicy stewed lentils.";
+
+UAS_CONSUMABLE_LENTILCHILI_OPENTEXT = "Surprisingly filling!";
+UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_1 = "Pretty good, despite how small it is.";
+UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_2 = "Tastes good!";
+
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_TAG = "Breakfast Hashbrowns";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_DESCRIPTION = "Crispy fried potato shavings, just as good as the restaurant.";
+
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_1 = "It's always sunny at Denny's...";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_2 = "How do they keep these crispy?";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_1 = "Still crunchy.";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_2 = "Still pretty good!";
+
+UAS_CONSUMABLE_CACOGIBLETS_TAG = "Cacodemon Giblets";
+UAS_CONSUMABLE_CACOGIBLETS_DESCRIPTIOn = "Fully cooked cacodemon entrails, for the adventurous connoisseur.";
+
+UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_1 = "They're... blue. Shouldn't be surprising but still...";
+UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_2 = "It's kinda like sardines... right?";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_1 = "A bit too staticy.";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_2 = "Ack!";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_3 = "It... works?";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_4 = "[zap] ouch!";
