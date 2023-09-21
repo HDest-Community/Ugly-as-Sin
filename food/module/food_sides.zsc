@@ -4,7 +4,7 @@ mixin class UaS_SmallMREItem {
 		UaS_Consumable.Fluid 200;
 		UaS_Consumable.Bulk 12;
 		+UaS_Consumable.PACKAGED;
-		Inventory.PickupMessage "Picked up a small vacuum-sealed MRE item.";
+		Inventory.PickupMessage "$UAS_MIXIN_SMALLMRE_PICKUP";
 		scale 0.65;
 	}
 }
@@ -12,42 +12,42 @@ mixin class UaS_SmallMREItem {
 class UaS_LentilChili : UaS_Consumable {
 	mixin UaS_SmallMREItem;
 	default {
-		tag "Lentil Chili";
-		UaS_Consumable.Description "Spicy stewed lentils.";
+		tag "$UAS_CONSUMABLE_LENTILCHILI_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_LENTILCHILI_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("Surprisingly filling!");
-		AddConsumeText("Pretty good, despite how small it is.");
-		AddConsumeText("Tastes good!");
+		AddOpenText("$UAS_CONSUMABLE_LENTILCHILI_OPENTEXT");
+		AddConsumeText("$UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_2");
 	}
 }
 
 class UaS_BreakfastHashbrowns : UaS_Consumable {
 	mixin UaS_SmallMREItem;
 	default {
-		tag "Breakfast Hashbrowns";
-		UaS_Consumable.Description "Crispy fried potato shavings, just as good as the restaurant.";
+		tag "$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_DESCRIPTION";
 	}
 	override void Messages() {
-		AddOpenText("It's always sunny at Denny's...");
-		AddOpenText("How do they keep these crispy?");
-		AddConsumeText("Still crunchy.");
-		AddConsumeText("Still pretty good!");
+		AddOpenText("$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_2");
 	}
 }
 
 class UaS_CacoGiblets : UaS_Consumable {
 	mixin UaS_SmallMREItem;
 	default {
-		tag "Cacodemon Giblets";
-		UaS_Consumable.Description "Fully cooked cacodemon entrails, for the adventurous connoisseur.";
+		tag "$UAS_CONSUMABLE_CACOGIBLETS_TAG";
+		UaS_Consumable.Description "$UAS_CONSUMABLE_CACOGIBLETS_DESCRIPTIOn";
 	}
 	override void Messages() {
-		AddOpenText("They're... blue. Shouldn't be surprising but still...");
-		AddOpenText("It's kinda like sardines... right?");
-		AddConsumeText("A bit too staticy.");
-		AddConsumeText("Ack!");
-		AddConsumeText("It... works?");
-		AddConsumeText("[zap] ouch!");
+		AddOpenText("$UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_1");
+		AddOpenText("$UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_1");
+		AddConsumeText("$UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_2");
+		AddConsumeText("$UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_3");
+		AddConsumeText("$UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_4");
 	}
 }
