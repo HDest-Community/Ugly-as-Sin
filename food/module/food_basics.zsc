@@ -26,7 +26,7 @@ class UaS_WaterRation : UaS_Consumable {
 		+UaS_Consumable.DRINKABLE;
 		+UaS_Consumable.PACKAGED;
 		Inventory.PickupMessage "$UAS_CONSUMABLE_WATERRATION_PICKUP";
-		tag "$UAS_CONSUMABLE_WATTERRATION_TAG";
+		tag "$UAS_CONSUMABLE_WATERRATION_TAG";
 		Inventory.Icon "HSCVR0";
 	}
 	override void Messages() {

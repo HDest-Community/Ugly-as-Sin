@@ -55,7 +55,7 @@ class UaS_SpaghettiMeatballMarinaraMRE : UaS_Consumable {
 class UaS_BeefTeryakiRiceMRE : UaS_Consumable {
 	mixin UaS_BigMREPouch;
 	default {
-		tag "$UAS_CONSUMABKE_BEEFTERIYAKIWITHRICE_TAG";
+		tag "$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_TAG";
 		UaS_Consumable.Description "$UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_DESCRIPTION";
 	}
 	override void Messages() {
