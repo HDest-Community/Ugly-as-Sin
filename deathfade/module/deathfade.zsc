@@ -2,7 +2,11 @@ class UaS_DeathFade_Bootstrap : EventHandler {
 	override void WorldTick() {
 		for (int i = 0; i < MAXPLAYERS; i++) {
 			if (!playeringame[i]) { continue; }
-			if(players[i].health > 0) { Deathfade_Bootstrap(i, false); }
+			bool doFade = DoDeathFade(i);
+			if (players[i].health > 0 || !doFade) { Deathfade_Bootstrap(i, false); }
+			else if (players[i].health <= 0 && doFade) {
+				Shader.SetEnabled(players[i], "deathfade", true);
+			}
 		}
 	}
 
