@@ -141,6 +141,46 @@ Sprite "UGSIF0", 17, 18
 	Offset 7, 18
 	Patch "medical/patches/UaS_TraumaKit.png", 0, 0
 }
+
+Graphic "ANESTH", 4, 17
+{
+	Patch "medical/patches/UaS_ANESTH.png", 0, 0
+}
+
+Graphic "BIOFOAM", 6, 17
+{
+	Patch "medical/patches/UaS_BIOFOAM.png", 0, 0
+}
+
+Graphic "FORCEPS", 10, 15
+{
+	Patch "medical/patches/UaS_FORCEPS.png", 0, 0
+}
+
+Graphic "SALINE", 6, 15
+{
+	Patch "medical/patches/UaS_SALINE.png", 0, 0
+}
+
+Graphic "SCALPEL", 3, 16
+{
+	Patch "medical/patches/UaS_SCALPEL.png", 0, 0
+}
+
+Graphic "STAPLER", 5, 18
+{
+	Patch "medical/patches/UaS_STAPLER.png", 0, 0
+}
+
+Graphic "SUTURE", 7, 14
+{
+	Patch "medical/patches/UaS_SUTURE.png", 0, 0
+}
+
+Graphic "CIRCLEBG", 400, 400
+{
+	Patch "medical/patches/circlebg.png", 0, 0
+}
 Sprite "UGSID0", 48, 48
 {
 	XScale 2.500

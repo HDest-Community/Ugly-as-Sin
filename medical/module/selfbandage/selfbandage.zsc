@@ -1,0 +1,157 @@
+// AHHHHHHH, I NEED A MEDIC BAG
+class UaS_SelfBandage : UaS_MedicalTool {
+	int progress;
+	int timer;
+	int timeout;
+	string statusMessage;
+	string toolHelpText;
+	BandageActions actionType;
+
+	Default {
+		Tag "self bandage";
+	}
+
+	override void PostBeginPlay() {
+		Super.PostBeginPlay();
+		weaponstatus[0] = TYPE_BANDAGE;
+		timer = 0;
+		progress = 0;
+		actionType = ACTION_NONE;
+		toolHelpText = "";
+	}
+
+	override string GetHelpText() {
+		return
+			WEPHELP_RELOAD.."/"..WEPHELP_ALTRELOAD.."  Cycle wounds\n"
+			..WEPHELP_FIREMODE.."  Hold and ...\n"
+			.."  +"..WEPHELP_FIRE.."  Remove blood feeder\n"
+			.."  +"..WEPHELP_ALTFIRE.."  Strip worn layers\n"
+			..WEPHELP_ZOOM.."  Treat another player\n\n"
+			..toolHelpText;
+	}
+
+	void ResetAction() {
+		timer = 0;
+		progress = 0;
+		actionType = ACTION_NONE;
+	}
+
+	override void DoEffect() {
+		if (!(owner.player.ReadyWeapon is "UaS_SelfBandage")) { return; }
+
+		Super.DoEffect();
+
+		if (timer >= 0) { --timer; }
+		if (timeout >= 0) { --timeout; }
+		if (timeout <= 0) { ResetAction(); }
+		if (currentMessage.timeout > 0) { --currentMessage.timeout; }
+		else { currentMessage.text = ""; }
+
+		CycleWounds();
+		TryRipBloodbag();
+		TryStripWorn();
+
+		switch (weaponstatus[0]) {
+			default:
+				HandleBandage();
+				break;
+		}
+
+		// update helptext
+		let hdp = HDPlayerPawn(owner);
+		if (hdp) { hdp.wephelptext = "\cu"..GetTag().."\n"..GetHelpText(); }
+		/*
+		if (
+			timer <= 0
+			&& owner.player.cmd.buttons & BT_FIREMODE
+			&& !(owner.player.oldbuttons & BT_FIREMODE)
+		) { ++weaponstatus[0]; }
+		if (weaponstatus[0] > TYPE_BANDAGE) { weaponstatus[0] = TYPE_IMPROVISED; }
+		*/
+	}
+
+	bool CheckCovered() {
+		let blockinv = HDWoundFixer.CheckCovered(patient, CHECKCOV_ONLYFULL);
+		if (blockinv) {
+			currentMessage.text =
+				((patient == owner)? "Take off your " : "Tell them to take off their ")
+				..blockinv.GetTag().." first!";
+			currentMessage.timeout = 2 * 35;
+			return true;
+		}
+
+		return false;
+	}
+
+	// also updates wounds
+	void CycleWounds() {
+		if (wh.critwounds.Size() == 0) { return; }
+
+		if (owner.player.cmd.buttons & BT_RELOAD && !(owner.player.oldbuttons & BT_RELOAD)) {
+			wh.currentWound = wh.GetNextWound();
+			ResetAction();
+			currentMessage.text = "";
+			currentMessage.timeout = 0;
+		}
+		else if (owner.player.cmd.buttons & BT_ALTRELOAD && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
+			wh.currentWound = wh.GetPrevWound();
+			ResetAction();
+			currentMessage.text = "";
+			currentMessage.timeout = 0;
+		}
+	}
+
+	void TryRipBloodbag() {
+		if (
+			!(owner.player.cmd.buttons & BT_FIREMODE && owner.player.cmd.buttons & BT_ATTACK)
+			|| CheckCovered()
+		) { return; }
+		if (!patient.CountInv("BloodBagWorn")) {
+			currentMessage.text = "There's no blood bag attached to "..((patient == owner)? "you." : "them.");
+			currentMessage.timeout = 2 * 35;
+			return;
+		}
+
+		currentMessage.text = "Ripping off blood bag...";
+		currentMessage.timeout = 10;
+		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBLOODBAG) {
+			timeout = 5;
+			progress = 0;
+			actionType = ACTION_RIPBLOODBAG;
+			BandageEffect(10, 15);
+			owner.A_StartSound("bandage/pocket", CHAN_BODY, CHANF_OVERLAP);
+			return;
+		}
+		else if (timer > 0 && timeout > 0) { timeout = 5; return; }
+
+		patient.A_SetBlend("7a 3a 18", 0.1, 4);
+		HDPlayerPawn(owner).A_MuzzleClimb((0, 2), (0, 0), (0, 0), (0, 0));
+		HDPlayerPawn.PlaySkinSound(patient, SKINSOUND_MEDS, "*usemeds");
+		patient.DropInventory(patient.FindInventory("BloodBagWorn"));
+	}
+
+	void TryStripWorn() {
+		if (!(
+			owner.player.cmd.buttons & BT_FIREMODE
+			&& owner.player.cmd.buttons & BT_ALTFIRE
+			&& !(owner.player.oldbuttons & BT_ALTFIRE)
+		)) { return; }
+		if (HDPlayerPawn.CheckStrip(patient, patient, silent: true)) {
+			currentMessage.text = "Nothing to strip.";
+			currentMessage.timeout = 2 * 35;
+			return;
+		}
+	}
+
+	enum BandageTypes {
+		TYPE_IMPROVISED,
+		TYPE_BANDAGE,
+	};
+
+	enum BandageActions {
+		ACTION_NONE,
+		ACTION_BANDAGE,
+		ACTION_RIPBANDAGE,
+		ACTION_RIPBLOODBAG,
+	};
+}

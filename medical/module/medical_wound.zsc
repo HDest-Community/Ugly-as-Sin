@@ -1,0 +1,216 @@
+// Info about values:
+// ------------------
+// depth + patched = open (depth only affects whether you actually bleed or not)
+
+class UaS_Wound : HDBleedingWound {
+	string description;
+	int painkiller;
+	int dirty;
+	int obstructed;
+	int timer;
+	int infection;
+	int pain;
+	int avgstat;
+
+	double open;
+	double cavity; // cavity and width can't be the same, as width determines bleedrate
+	double stabilised;
+
+	// Bandage related values
+	double pressure;
+	double tightness;
+
+	// Incap related
+	double oldPatched;
+
+	override void Tick() {
+		// Heal some old wounds before getting destroyed?
+		if (
+			age
+			&& bleeder
+			&& HDPlayerPawn(bleeder)
+			&& CheckDestroy()
+			&& avgstat < 15
+		) {
+			let hdp = HDPlayerPawn(bleeder);
+			hdp.oldwoundcount = max(hdp.oldwoundcount - random(2, 5), 0);
+		}
+
+		Super.Tick();
+		TryStabilise();
+
+		// Make sure bandage doesn't fall off when trying to bandage yourself while incap
+		if (HDPlayerPawn(bleeder) && HDIncapWeapon(HDPlayerPawn(bleeder).Player.ReadyWeapon) && pressure <= 0.) {
+			float delta = patched - oldPatched;
+			if (delta > 0.) { pressure = delta / frandom(1.5, 2.5); }
+		}
+
+		// Bandage gets more loose over time
+		if (random(0, 1)) {
+			int maxIsMoving = 20;
+			float maxPressureLoss = 0.00025 + 0.00100 * (bleeder.CountInv("IsMoving") / maxIsMoving);
+			pressure = max(pressure - frandom(0, maxPressureLoss), 0);
+		}
+
+		if (pressure > 0. && patched <= 0.) { pressure = 0; }
+		pressure = min(pressure, 8);
+
+		// depth doesn't really equal to wound being open
+		open = depth + patched;
+
+		UpdateAverageStatus();
+		timer = max(timer - 1, 0);
+		pain = max(pain - 1, 0);
+		pain = max(pain - painkiller / 20, 0);
+
+		if (avgstat < 15) { regenrate = (avgstat <= 0)? 0.25 : 0.25 * (15 - avgstat) / 15; }
+		else { regenrate = 0; }
+
+		if (timer <= 0) {
+			// Metabolize some painkiller
+			painkiller = max(painkiller - 1, 0);
+
+			// Infection increases
+			/*
+			if (toHeal <= (avgstat + infection)) {
+				infection = min(infection + 1, 100);
+			}
+			*/
+
+			timer = random[uas_wi](2,5) * (35 + open);
+		}
+
+		oldPatched = patched;
+	}
+
+	// If no pressure is being applied, the bandage is too loose and begins to fall off over time.
+	override void ComeUndone() {
+		if (frandom(0.0, 0.2) <= pressure) { return; }
+
+		pressure = 0;
+		depth += patched;
+		patched = 0;
+	}
+
+	// Natural regeneration :]
+	// 2f has does its own regen so we don't really have to worry about it here.
+	override void Regenerate() {
+		if (depth > 0. || patched > 0.) { Patch(frandom(0.0, 0.2 * regenrate), true); }
+		else if (sealed > 0.) { sealed = max(sealed - frandom(0, 0.4 * regenrate), 0); }
+
+		if (cavity > 0.) { cavity = max(cavity - frandom(0.0, 0.2 * regenrate), 0); }
+
+		// Chance to heal status (NOTE: i should change this)
+		if (frandom(0, 1) > regenrate) { return; }
+
+		//Console.PrintF("healing?");
+		if (dirty > 0) { dirty--; }
+		if (obstructed > 0) { obstructed--; }
+		if (infection > 0) { infection--; }
+
+		// regenrate works really damn weirdly, which makes sense since wounds normally depend on 2f to heal
+		//Super.Regenerate();
+	}
+
+	void TryStabilise() {
+		if (random(0, 10) != 0) { return; }
+
+		float minStable = 0;
+		float maxStable = log(pressure + 1.0001) / max(0.1, depth + patched);
+		stabilised = min(stabilised + frandom(minStable, maxStable), 100);
+	}
+
+	bool inpain(int inflict = 0) {
+		pain += inflict;
+		return (pain > (painkiller + 25) * 2);
+	}
+
+	// TODO: don't rely on Super.Bleedout();
+	override void Bleedout() {
+		if (frandom(1, 100) <= stabilised) { return; }
+
+		float actualWidth = width;
+		if (stabilised > 0.) { width -= width * stabilised / 100; }
+		Super.Bleedout();
+		width = actualWidth;
+	}
+}
+
+// Status methods
+extend class UaS_Wound {
+	// NOTE: Update the values, ples
+	void UpdateAverageStatus() {
+		int retvalue, counted;
+		if (dirty >= 0) { retvalue += dirty; counted++; }
+		if (obstructed >= 0) { retvalue += obstructed; counted++;}
+		if (cavity >= 0) { retvalue += cavity * 10; counted++;}
+		if (open >= 0) { retvalue += open * 10; counted++;}
+		//retvalue += infection;
+		avgstat = retvalue / counted;
+	}
+}
+
+// Static methods
+extend class UaS_Wound {
+	static UaS_Wound Create(HDBleedingWound hdbw) {
+		// NOTE: adjust these values later
+		int depthmin = clamp(hdbw.depth * 10, 0, 100);
+		int depthmax = clamp(hdbw.depth * 20, 0, 100);
+
+		let nw = UaS_Wound(new("UaS_Wound"));
+
+		nw.painkiller = 0;
+		nw.dirty = max(-1, randompick[uas_wi](-1, 1, 1, 1) * random[uas_wi](depthmin, depthmax));
+		nw.obstructed = max(-1, randompick[uas_wi](-1, 1) * random[uas_wi](depthmin, depthmax));
+		//nw.cavity = max(-1, randompick[uas_wi](-1, 1, 1) * random[uas_wi](depthmin, depthmax));
+		nw.cavity = hdbw.width * frandom(1, 3);
+		nw.infection = (nw.dirty + nw.obstructed + nw.open + nw.cavity) / 4;
+		//nw.open = random[uas_wi](depthmin, depthmax);
+		nw.open = hdbw.depth;
+		nw.timer = (random[uas_wi](10, 30) * 35);
+		nw.description = WoundDescription(hdbw.depth);
+		nw.pressure = (hdbw.patched > 0.)? frandom(0.5, hdbw.patched + 0.5) : 0; // Don't let bandaged wounds just fall off instantly
+		nw.stabilised = 0;
+
+		// Inherit
+		nw.bleeder = hdbw.bleeder;
+		nw.source = hdbw.source;
+		nw.depth = hdbw.depth; // How big is the wound?
+		nw.width = hdbw.width; // Affects bleedrate, somewhat
+		nw.patched = hdbw.patched;
+		nw.oldPatched = nw.patched;
+		nw.sealed = hdbw.sealed;
+		nw.regenrate = 0; // avgstat will influence this
+		nw.damagetype = hdbw.damagetype;
+		nw.location = hdbw.location; // Could be used for flavour text?
+		nw.age = hdbw.age;
+
+		return nw;
+	}
+
+	static string WoundDescription(int newsize) {
+		int sevmax = UaS_Wound.severity.size()-1;
+		int typmax = UaS_Wound.type.size()-1;
+		int parmax = UaS_Wound.bodypart.size()-1;
+		return string.format(
+			"%s %s, %s",
+			UaS_Wound.severity[random[uas_wi](0, sevmax)],
+			UaS_Wound.type[random[uas_wi](0, typmax)],
+			UaS_Wound.bodypart[random[uas_wi](0, parmax)]
+		);
+	}
+
+	static const string[] severity = { "minor","small","shallow","superficial","moderate","medium","large","deep","serious","critical" };
+	static const string[] type = { "incision","laceration","puncture","avulsion","penetration" };
+	static const string[] bodypart = {
+		"chest","abdomen","pelvis",
+		"upper back","lower back",
+		"left shoulder","right shoulder",
+		"left upper arm","right upper arm",
+		"left forearm","right forearm",
+		"left hip","right hip",
+		"left thigh","right thigh",
+		"left calf","right calf",
+		"left shin","right shin"
+	};
+}

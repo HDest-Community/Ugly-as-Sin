@@ -1,1 +1,6 @@
-nosave float UaS_TraumaKit_HUDScale = 1.00;
+nosave bool UaS_Medical_Debug = false;
+user bool UaS_TraumaKit_AltControls = false;
+user bool UaS_TraumaKit_InvertCycle = false;
+nosave float UaS_Wheel_Alpha = 0.75;
+nosave float UaS_Wheel_Scale = 1.00;
+nosave float UaS_Bandage_HUDScale = 1.00;

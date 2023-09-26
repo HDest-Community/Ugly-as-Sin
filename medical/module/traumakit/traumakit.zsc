@@ -1,0 +1,219 @@
+const UAS_HDLD_TRAUMAKIT = "trk";
+
+class UaS_TraumaKit : UaS_MedicalTool {
+	string statusMessage;
+
+	transient CVar UaS_TraumaKit_AltControls;
+	transient CVar UaS_TraumaKit_InvertCycle;
+
+	Default {
+		radius 4;
+		height 4;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Picked up a personal trauma kit.";
+		Inventory.Icon "UGSIF0";
+		Inventory.PickupSound "weapons/pocket";
+		+INVENTORY.INVBAR;
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.IGNORESKILL;
+		+WEAPON.NO_AUTO_SWITCH;
+		+hdweapon.fitsinbackpack;
+		//+WEAPON.NOAUTOFIRE;
+		weapon.slotpriority 0.5;
+		hdweapon.refid UAS_HDLD_TRAUMAKIT;
+		scale 0.5;
+		tag "Trauma Kit";
+	}
+
+	override double weaponbulk(){
+		double b = 0;
+		b += (weaponstatus[TKS_PAINKILLER] / 20) * (ENC_STIMPACK * 0.4);
+		b += (weaponstatus[TKS_SALINE] / 1000) * (ENC_STIMPACK * 2 * 0.8);
+		b += (weaponstatus[TKS_BIOFOAM] / 250) * (6 * 0.6);
+		b += (weaponstatus[TKS_STAPLES] / 25) * (6 * 0.1);
+		b = max(b, 15);
+		return b;
+	}
+
+	states {
+		spawn:
+			UGSI F -1;
+			stop;
+	}
+
+	override void DoEffect() {
+		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
+		statusMessage = ""; // This is used for tools to display stuff
+
+		if (!UaS_TraumaKit_AltControls) {
+			UaS_TraumaKit_AltControls = CVar.GetCVar("UaS_TraumaKit_AltControls", owner.player);
+			UaS_TraumaKit_InvertCycle = CVar.GetCVar("UaS_TraumaKit_InvertCycle", owner.player);
+		}
+
+		Super.DoEffect();
+		SetHelpText();
+		CycleWounds();
+		CycleTools();
+		HandleSupplies();
+
+		switch (weaponstatus[TK_SELECTED]) {
+			case T_PAINKILLER:
+				HandlePainkiller();
+				break;
+			case T_SALINE:
+				HandleSaline();
+				break;
+			case T_FORCEPS:
+				HandleForceps();
+				break;
+			case T_BIOFOAM:
+				HandleBiofoam();
+				break;
+			case T_STAPLER:
+				HandleStapler();
+				break;
+			case T_SUTURES:
+				HandleSutures();
+				break;
+			case T_SCALPEL:
+				HandleScalpel();
+				break;
+			default:
+				weaponstatus[TK_SELECTED] = min(weaponstatus[TK_SELECTED], T_SCALPEL);
+				weaponstatus[TK_SELECTED] = max(weaponstatus[TK_SELECTED], 0);
+				break;
+		}
+
+		TickMessages();
+	}
+
+	void TickMessages() {
+		// Tick down transient messages
+		if (currentmessage.timeout > 0) {
+			statusmessage = statusmessage..currentmessage.text;
+			currentmessage.timeout--;
+		}
+	}
+
+	// -1 = left
+	// 0 = none
+	// 1 = right
+	int GetCycleInput() {
+		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
+			return (UaS_TraumaKit_InvertCycle.GetBool())? -1 : 1;
+		}
+		else if ((owner.player.cmd.buttons & BT_ALTRELOAD) && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
+			return (UaS_TraumaKit_InvertCycle.GetBool())? 1 : -1;
+		}
+		return 0;
+	}
+
+	void CycleWounds() {
+		if (
+			wh.critwounds.Size() == 0
+			|| (!UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
+			|| (UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
+		) { return; }
+		if (GetCycleInput() == 1) { wh.currentWound = wh.GetNextWound(); }
+		else if (GetCycleInput() == -1) { wh.currentWound = wh.GetPrevWound(); }
+	}
+
+	void CycleTools(int set = -1) {
+		if (
+			(!UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
+			|| (UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
+		) { return; }
+		if (set != -1) { weaponstatus[TK_SELECTED] = set; return; }
+		if (!UaS_TraumaKit_AltControls.GetBool()) {
+			if (GetCycleInput() == 1) {
+				weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
+				weaponstatus[TK_HOLD] = 0;
+				currentmessage.text = "";
+				currentmessage.timeout = 0;
+			}
+			else if (GetCycleInput() == -1) {
+				weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] - 1);
+				if(weaponstatus[TK_SELECTED] < 0) { weaponstatus[TK_SELECTED] = 6; }
+				weaponstatus[TK_HOLD] = 0;
+				currentmessage.text = "";
+				currentmessage.timeout = 0;
+			}
+		}
+		else {
+			int selected = wheel.GetWheelInput(
+				7, (Screen.GetWidth() / 2, Screen.GetHeight() / 2)
+			);
+			if (selected != -1) { weaponstatus[TK_SELECTED] = selected; }
+		}
+	}
+
+	// Somewhat copied from HD, largely rewritten
+	bool HandleStrip() {
+		string itemname, imperative;
+		// check for intervening items, otherwise exit early
+		bool intervening = (
+			!HDPlayerPawn.CheckStrip(patient, patient, false)
+			|| (wh.currentWound && wh.currentWound.patched > 0.)
+		);
+		if (!intervening) { return true; }
+
+		if (patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
+		else if (patient.countinv("HDArmourWorn")) { itemname = "armour "; }
+		else if (wh.currentWound && wh.currentWound.patched > 0.) { itemname = "bandage "; }
+		else { itemname = "worn layers "; }
+
+		// check owner or other
+		if (patient == owner) {
+			imperative = "Take off your ";
+		}
+		else {
+			imperative = "Have them take off their ";
+		}
+		// display message
+		currentmessage.text = imperative..itemname.."first!\n";
+		currentmessage.timeout = 2*35;
+		return false;
+	}
+
+	void DebugStatus() {
+		if (wh.currentWound) {
+			statusmessage = statusmessage.."dirty "..wh.currentWound.dirty.."\n";
+			statusmessage = statusmessage.."obstructed "..wh.currentWound.obstructed.."\n";
+			statusmessage = statusmessage.."open "..wh.currentWound.open.."\n";
+			statusmessage = statusmessage.."cavity "..wh.currentWound.cavity.."\n";
+			statusmessage = statusmessage.."infection "..wh.currentWound.infection.."\n";
+			statusmessage = statusmessage.."timer "..wh.currentWound.timer.."\n";
+		}
+		statusMessage = statusMessage.."\n";
+		/*
+		statusMessage = statusMessage.."Open Wounds "..patient.woundcount.."\n";
+		statusMessage = statusMessage.."Unstable Wounds "..patient.unstablewoundcount.."\n";
+		*/
+		statusMessage = statusMessage.."Old Wounds "..patient.oldwoundcount.."\n";
+	}
+
+	enum ToolModes {
+		T_PAINKILLER,
+		T_SALINE,
+		T_FORCEPS,
+		T_BIOFOAM,
+		T_STAPLER,
+		T_SUTURES,
+		T_SCALPEL,
+	}
+
+	enum KitFlags {
+		//standard slots
+		TK_SELECTED,
+		TK_BUTTON,
+		TK_HOLD,
+		TK_SCALPEL_CAP,
+
+		//supply slots
+		TKS_PAINKILLER,
+		TKS_SALINE,
+		TKS_BIOFOAM,
+		TKS_STAPLES,
+	}
+}

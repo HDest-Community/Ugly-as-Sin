@@ -15,6 +15,8 @@
   * Laser/Light sprite
 * vitriolicv/valerie_v:
   * Flare sprite.
+* bunyear/Tapwave:
+  * Trauma kit tool sprites.
 
 # Code
 * Zhs2: Spawning code suggestion.
