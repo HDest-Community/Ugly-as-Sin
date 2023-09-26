@@ -1,0 +1,63 @@
+extend class UaS_TraumaKit {
+	void HandleScalpel() {
+		statusMessage = statusmessage.."\cjScalpel\n";
+		statusMessage = statusmessage.."\cuFor re-opening wounds.\n\n\n";
+
+		// Handle actions
+		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
+		if (owner.player.cmd.buttons & BT_UNLOAD && weaponstatus[TK_HOLD] <= 0) {
+			if (weaponstatus[TK_SCALPEL_CAP] == 1) {
+				weaponstatus[TK_SCALPEL_CAP] = 0;
+				currentmessage.text = "Removed safety cap.\n";
+			}
+			else {
+				weaponstatus[TK_SCALPEL_CAP] = 1;
+				currentmessage.text = "Replaced safety cap.\n";
+			}
+			currentmessage.timeout = 25;
+			weaponstatus[TK_HOLD] = 15;
+		}
+
+		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
+			if (weaponstatus[TK_SCALPEL_CAP] == 1) {
+				currentmessage.text = "The cap is still on...\n";
+				currentmessage.timeout = 25;
+				weaponstatus[TK_HOLD] = 25;
+				return;
+			}
+
+			// CRAWWWWWWWWLLLLING INNNNNNNN MMMMYYYYYY SSSKKKKKIIIIIINNNNN
+			// THEEEESSSSEE WOOOOUUUNNNDS THHHEEEEYYY WIILLL NOOOOTTTTT HEEEAAAAALLL
+			if (!wh.currentWound) {
+				owner.A_StartSound("bandage/rip",CHAN_WEAPON);
+				patient.damagemobj(owner,owner,5,"staples");
+				wh.AppendWound(HDBleedingWound.Inflict(patient, frandom(0.4, 2.4), frandom(0.6, 1.8), source: owner));
+				HDPlayerPawn(wh.owner).oldwoundcount += random(4, 6); // no cheesing
+				return;
+			}
+
+			if (!HandleStrip()) { return; }
+			if (wh.currentWound.inpain(75)) {
+				patient.damagemobj(owner,owner,1,"staples");
+				weaponstatus[TK_HOLD] = 50;
+				PainJolt();
+			}
+			else {
+				weaponstatus[TK_HOLD] = 25;
+			}
+			patient.A_MuzzleClimb(
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,4)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,3)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,2)),
+				(frandom[uas_tk](-1,1),frandom[uas_tk](1,1))
+			);
+			//double newDepth = min(wh.currentWound.open + frandom[uas_tk](0.5,2.0-wh.currentWound.painkiller), 20.0);
+			double newDepth = min(wh.currentWound.open + frandom[uas_tk](0.5,2.0), 20.0);
+			wh.currentWound.sealed = max(wh.currentWound.sealed - newDepth, 0);
+			wh.currentWound.depth = newDepth;
+			//wh.currentWound.cavity = min(wh.currentWound.cavity + frandom[uas_tk](0,2.0-(wh.currentWound.painkiller/4)), 20.0);
+			wh.currentWound.cavity = min(wh.currentWound.cavity + frandom[uas_tk](0,2.0), 20.0);
+			return;
+		}
+	}
+}

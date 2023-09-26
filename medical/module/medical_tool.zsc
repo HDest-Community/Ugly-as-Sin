@@ -1,0 +1,56 @@
+// Any medical tool that requires a fancy interface for whatever reason
+class UaS_MedicalTool : HDWeapon {
+	StatusInfo currentMessage; // used for UI messages
+
+	UaS_WoundHandler wh;
+	UaS_MedicalWheel wheel;
+	HDPlayerPawn patient, lastpatient;
+
+	Default {
+		Weapon.SlotNumber 9;
+	}
+
+	override void DoEffect() {
+		if (!wheel || wheel.owner != owner) { wheel = UaS_MedicalWheel(owner.FindInventory("UaS_MedicalWheel")); }
+		SetPatient();
+	}
+
+	void SetPatient() {
+		HDPlayerPawn other;
+		FLineTraceData tktrace;
+		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
+		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
+
+		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
+		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
+
+		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
+		if (!wh) { console.printf("No wound handler!"); return; }
+		if (patient != lastpatient) { wh.currentWound = null; }
+		lastpatient = patient;
+	}
+
+	UaS_Wound GetWound(int index) {
+		if (wh.critwounds.size() <= 0) { return null; }
+		return wh.critwounds[index];
+	}
+
+	ui string GetStatusColor(int amount) {
+		if (amount >= 90) { return "\cm"; } // Black
+		if (amount >= 80) { return "\cr"; } // Dark Red
+		if (amount >= 70) { return "\ca"; } // Brick
+		if (amount >= 60) { return "\cx"; } // Fire
+		if (amount >= 50) { return "\ci"; } // Orange
+		if (amount >= 40) { return "\ck"; } // Yellow
+		if (amount >= 30) { return "\cs"; } // Dark Brown
+		if (amount >= 20) { return "\cq"; } // Dark Green
+		if (amount >= 10) { return "\cd"; } // Green
+		if (amount >= 0) { return "\cd"; } // Grey (wait, isn't this green?)
+		return "\cj"; // White
+	}
+
+	struct StatusInfo {
+		string text;
+		int timeout;
+	}
+}

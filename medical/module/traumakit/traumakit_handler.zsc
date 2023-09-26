@@ -1,0 +1,12 @@
+// mainly used for controls
+class UaS_TraumaKitHandler : EventHandler {
+	override void NetworkProcess(ConsoleEvent e) {
+		if (e.Name != "UaS_TraumaKit_SwitchTo") { return; }
+
+		let player = Players[e.Player];
+		let kit = UaS_TraumaKit(player.ReadyWeapon);
+		if (!kit) { return; }
+
+		kit.weaponstatus[UaS_TraumaKit.TK_SELECTED] = e.Args[0];
+	}
+}

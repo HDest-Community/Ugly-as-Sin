@@ -1,0 +1,158 @@
+class UaS_WoundHandler : Inventory {
+	Array<UaS_Wound> critwounds;
+	UaS_Wound currentWound; // all wound-related tools should use this
+
+	default {
+		+INVENTORY.PERSISTENTPOWER;
+		+INVENTORY.UNDROPPABLE;
+		-INVENTORY.INVBAR;
+		+INVENTORY.UNTOSSABLE;
+	}
+
+	override void DoEffect() {
+		if (!owner) { return; }
+		//ManageWounds();
+		UpdateWounds();
+		WoundPainShake();
+	}
+
+	void WoundPainShake() {
+		if(critwounds.size() <= 0) { return; }
+		double maxpain;
+		for(int i = 0; i < critwounds.size(); i++) {
+			if (!critwounds[i]) { continue; }
+			maxpain = max(maxpain, critwounds[i].pain);
+		}
+		double ps = min(maxpain / 200, 1.5);
+		HDPlayerPawn(owner).A_MuzzleClimb(
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1)),
+			ps*(frandom[uas_wh](-1,1),ps*frandom[uas_wh](-1,1))
+		);
+	}
+
+	// hopefully doesn't cause any performance problems :]
+	void UpdateWounds() {
+		// clean up
+		for (int i = 0; i < critwounds.Size(); i++) {
+			if (critwounds[i]) { continue; }
+
+			UaS_Wound deadWound = critwounds[i];
+
+			critwounds.Delete(i--);
+
+			if (critwounds.Size() > 0 && currentWound == deadWound) {
+				int newWoundIndex = max(0, min(i, critwounds.Size() - 1));
+				currentWound = critwounds[newWoundIndex];
+			}
+		}
+
+		// Override HDBleedingWound
+		let ti = ThinkerIterator.Create("HDBleedingWound", Thinker.STAT_DEFAULT);
+		HDBleedingWound hdbw;
+		while (hdbw = HDBleedingWound(ti.Next())) {
+			if (hdbw.GetClassName() != "HDBleedingWound" || hdbw.bleeder != owner) { continue; }
+
+			AppendWound(hdbw);
+		}
+
+		if (!currentWound && critwounds.Size() > 0) { currentWound = critwounds[0]; }
+	}
+
+	void AppendWound(HDBleedingWound hdbw) {
+		critwounds.Push(UaS_Wound.Create(hdbw));
+		if (UaS_Medical_Debug) {
+			Console.PrintF(
+				"new wound %d: %f (%f, %f)",
+				critwounds.Size(), hdbw.depth, hdbw.location.x, hdbw.location.y);
+		}
+		hdbw.Destroy();
+	}
+
+	// Treat the critwounds array like a circularly linked list
+	UaS_Wound GetNextWound() {
+		if (!currentWound) { return null; }
+
+		int index = critwounds.Find(currentWound) + 1;
+		if (index >= critwounds.Size()) { index = 0; }
+
+		return critwounds[index];
+	}
+
+	UaS_Wound GetPrevWound() {
+		if (!currentWound) { return null; }
+
+		int index = critwounds.Find(currentWound) - 1;
+		if (index < 0) { index = critwounds.Size() - 1; }
+
+		return critwounds[index];
+	}
+
+	/*
+	NOTE: do something with this
+	void ManageWounds() {
+		if (nextwound == 0) { nextwound = random[uas_wh](1, 5); }
+		HDPlayerPawn plr = HDPlayerPawn(owner);
+		if(!plr) return;
+
+		// iterate wound array, drop any wounds marked "clear"
+		// Do this first to hopefully avoid dropping or double-counting
+		for(int i = 0; i <= critwounds.size() - 1; i++) {
+			if (!critwounds[i]) { critwounds.delete(i); continue; }
+			if (critwounds[i].clear) {
+				UaS.LogDebug(DBG_Med, string.format("Cured "..critwounds[i].description), plr);
+				plr.A_Log("Your condition improves.", true);
+				plr.oldwoundcount = max(plr.oldwoundcount - critwounds[i].size, 0);
+				RemoveWound(i);
+				continue;
+			}
+			critwounds[i].TickWound();
+			critwounds[i].painkiller = max(critwounds[i].painkiller, plr.countinv("HDStim") * (50./float(HDStim.HDSTIM_DOSE)));
+		}
+
+		// tabulate new wound array total points
+		int knownwounds;
+		for (int i = 1; i < critwounds.size(); i++) {
+			knownwounds += critwounds[i].size;
+		}
+
+		//compare
+		int diffwounds = plr.oldwoundcount - knownwounds;
+
+		// Create a new wound entry until the wounds array matches number of oldwounds
+		if (diffwounds >= nextwound) {
+			int newsize = nextwound;
+			newsize = min(newsize, diffwounds);
+			critwounds.push(UaS_Wound.Create(newsize));
+			UaS.LogDebug(DBG_Med, string.format("created "..critwounds[critwounds.size() - 1].description.." with size "..newsize));
+			nextwound = random[uas_wh](1, 5);
+		}
+
+		// remove oldest wound entry if passively healed enough points or if wounds are zero
+		if (critwounds.size() > 0 && (diffwounds < 0 || plr.oldwoundcount <= 0)) {
+			bool removedone;
+			// Look for oldest wound of the right size to remove
+			for (int i = 0; i < critwounds.size(); i++) {
+				if (critwounds[i].size == abs(diffwounds)) {
+					UaS.LogDebug(DBG_Med, string.format("passively healed "..critwounds[i].description.." with size "..critwounds[i].size));
+					RemoveWound(i);
+					removedone = true;
+					break;
+				}
+
+			}
+			//Remove the oldest wound if none appropriate
+			if (!removedone && (diffwounds < -5 || plr.oldwoundcount <=0)) {
+				UaS.LogDebug(DBG_Med, string.format("passively healed "..critwounds[0].description.." with size "..critwounds[0].size.. "for diffwound "..diffwounds));
+				RemoveWound(0);
+			}
+		}
+	}
+	*/
+
+	void RemoveWound(int w) {
+		critwounds[w].destroy();
+		critwounds.delete(w);
+	}
+}

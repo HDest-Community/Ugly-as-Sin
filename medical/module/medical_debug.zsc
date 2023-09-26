@@ -1,0 +1,50 @@
+// because printf wasn't good enough
+class UaS_MedicalDebug : EventHandler {
+	ui HUDFont pFont;
+
+	override void RenderOverlay(RenderEvent e) {
+		if (!uas_medical_debug) { return; }
+		let hdp = HDPlayerPawn(e.Camera);
+		if (!hdp) { return; }
+
+		if (!pFont) { pFont = HUDFont.Create(NewSmallFont); }
+
+		let wh = UaS_WoundHandler(hdp.FindInventory("UaS_WoundHandler"));
+		if (!wh) { return; }
+
+		string whInfo = "";
+
+		// player status
+		if (wh.critwounds.Size() > 0) { whInfo = wh.critwounds.Size().." wounds!"; }
+		else { whInfo = "No wounds ('-')b"; }
+
+		let sf = SecondFlesh(hdp.FindInventory("SecondFlesh"));
+		whInfo = String.Format(
+			"%s | bloss %i (%f) | burns %i | 2f %i | tissue dmg %i | ismoving %i\n",
+			whInfo, hdp.bloodloss, double(hdp.bloodloss) / (HDCONST_BLOODBAGAMOUNT<<2), hdp.burncount, (sf)? sf.Amount : 0, hdp.oldwoundcount, hdp.CountInv("IsMoving")
+		);
+
+		// wounds
+		for (int i = 0; i < wh.critwounds.Size(); i++) {
+			if (!wh.critwounds[i]) { continue; }
+			let wi = UaS_Wound(wh.critwounds[i]);
+			if (wi == wh.currentWound) { whInfo = whInfo.."> "; }
+			whInfo = String.Format(
+				"%s%i: open %f | cavity %f | pressure %f | stable? %f",
+				whInfo, i, wi.open, wi.cavity, wi.pressure, wi.stabilised
+			);
+			whInfo = String.Format(
+				"%s | \c[red]%f\c-/\c[gold]%f\c-/\c[darkgray]%f\c- | width %f | regenrate %f",
+				whInfo, wi.depth, wi.patched, wi.sealed, wi.width, wi.regenrate
+			);
+			whInfo = String.Format(
+				"%s | avgstat %i | timer %i",
+				whInfo, wi.avgstat, wi.timer
+			);
+			whInfo = whInfo.."\n";
+		}
+
+		Screen.DrawText(NewSmallFont, OptionMenuSettings.mFontColorValue, 10, 10, whInfo);
+		//StatusBar.DrawString(pFont, whInfo, (0, 0));
+	}
+}

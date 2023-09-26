@@ -1,0 +1,279 @@
+extend class UaS_SelfBandage {
+	ui void DrawWound(
+	        HDStatusbar sb,
+	        UaS_Wound wound,
+	        Vector2 woundsLocation,
+	        Vector2 gridSize,
+	        Vector2 hudScale
+	    ) {
+		// location.x is the angle that you got hit from
+		// location.y is the height that you got hit at
+		Vector2 offset = (gridSize.x / 2.5, gridSize.y / 2.5);
+		Vector2 location = (
+			wound.location.x,
+			min(1, max(0, wound.location.y))
+		);
+		Vector2 woundPosition = (
+			woundsLocation.x + (offset.x * sin(location.x)) * hudScale.x,
+			woundsLocation.y + (offset.y - (offset.y + offset.y) * location.y) * hudScale.y
+		);
+		bool selected = (wound == wh.currentWound);
+		float woundAlpha = (selected)? 1.00 : 0.75;
+		Vector2 woundScale = ((selected)? 1.00 : 0.75) * hudScale;
+
+		// stability (always green when sealed)
+		string symbol = (selected)? "X" : ((wound.open > 0.)? "o" : "-");
+		sb.DrawString(
+			sb.pSmallFont,
+			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
+			woundPosition,
+			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+			(selected)? Font.CR_RED : Font.CR_DARKRED,
+			alpha: woundAlpha,
+			scale: woundScale
+		);
+
+		// bleeding?
+		if (wound.depth > 0.) {
+			let blud = TexMan.CheckForTexture("BLUDC0");
+			Vector2 bludScale = woundScale * log(wound.depth + 1) / 2;
+			Vector2 bludOffset = (
+				sb.pSmallFont.mFont.GetCharWidth("X") / 2 * woundScale.x,
+				sb.pSmallFont.mFont.GetHeight() / 2 * woundScale.y
+			);
+
+			sb.DrawTexture(
+				blud,
+				woundPosition + bludOffset,
+				sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER,
+				woundAlpha - 0.25,
+				scale: bludScale
+			);
+		}
+
+		// pressure
+		if (wound.pressure >= 0.) {
+			int count = 0;
+			int barRed = 255;
+			int barGreen = 0;
+			float barHeight = sb.pSmallFont.mFont.GetHeight() / 5 * woundScale.y;
+			float offset = 5 * barHeight;
+			if (wound.pressure > 5.0) { ++count; }
+			if (wound.pressure > 3.5) { ++count; }
+			if (wound.pressure > 2.0) { ++count; }
+			if (wound.pressure > 1.0) { ++count; }
+			if (wound.pressure > 0.0) { ++count; }
+
+			for (int i = 0; i < count; i++) {
+				sb.Fill(
+					Color(255, barRed, barGreen, 0),
+					woundPosition.x - sb.pSmallFont.mFont.GetCharWidth("X") / 2, woundPosition.y + offset,
+					1.5 * hudScale.x, barHeight,
+					sb.DI_SCREEN_CENTER
+				);
+				barRed -= 51;
+				barGreen += 51;
+				offset -= barHeight;
+			}
+		}
+	}
+
+	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl) {
+		// Draw Weapon Status
+		Super.DrawHUDStuff(sb, hdw, hpl);
+
+		// debug
+		Screen.DrawText(
+			NewSmallFont,
+			OptionMenuSettings.mFontColorValue,
+			10, Screen.GetHeight() * 2 / 3,
+			"type: "..weaponstatus[0].." | timer: "..timer.." | progress: "..progress.." | timeout: "..timeout
+		);
+
+		Vector2 hudScale = (UaS_Bandage_HUDScale, UaS_Bandage_HUDScale);
+		float textHeight = sb.pSmallFont.mFont.GetHeight() * hudscale.y;
+		float padding = 2 * hudScale.y;
+		float padStep = textHeight + padding;
+		float halfStep = padStep / 2;
+		float baseOffset = padStep * -8;
+		int baseFlags = sb.DI_SCREEN_CENTER;
+
+		// Title
+		int titleFlags = baseFlags | sb.DI_TEXT_ALIGN_CENTER;
+		sb.DrawString(
+			sb.pSmallFont,
+			"--- Bandaging ---",
+			(0, baseOffset),
+			titleFlags,
+			Font.CR_GRAY,
+			scale: hudScale
+		);
+
+		// Patient
+		sb.DrawString(
+			sb.pSmallFont,
+			"Treating "..patient.player.GetUsername(),
+			(0, baseOffset + textHeight),
+			titleFlags,
+			Font.CR_GRAY,
+			scale: hudScale
+		);
+
+		// Show wounds
+		Vector2 woundsLocation = (-70 * hudScale.x, 0);
+
+		// cool grid
+		int gridAlpha = 25;
+		Vector2 gridSize = (120 * hudScale.x, 120 * hudScale.y);
+		Color patientColour = patient.Player.GetDisplayColor();
+		Color gridColour = Color(gridAlpha, patientColour.r, patientColour.g, patientColour.b);
+		Vector2 gridPos = (
+			woundsLocation.x - (gridSize.x / 2),
+			woundsLocation.y - (gridSize.y / 2)
+		);
+		int gridFlags = baseFlags;
+		sb.Fill(
+			gridColour,
+			gridPos.x - (2 * hudScale.x), gridPos.y,
+			gridSize.x + (4 * hudScale.x), gridSize.y,
+			gridFlags
+		);
+		for (int i = 0; i < gridSize.y / 2; i++)
+		{
+			sb.Fill(
+				gridColour,
+				gridPos.x, gridPos.y + (i * 2),
+				gridSize.x, hudScale.y,
+				gridFlags
+			);
+		}
+		Vector2 gridStep = (10 * hudScale.x, 10 * hudScale.y);
+		for (int i = 1; i < 12; i++)
+		{
+			sb.Fill(
+				gridColour,
+				gridPos.x + (gridStep.x * i), gridPos.y,
+				hudScale.x, gridSize.y,
+				gridFlags
+			);
+			sb.Fill(
+				gridColour,
+				gridPos.x, gridPos.y + (gridStep.y * i),
+				gridSize.x, hudScale.y,
+				gridFlags
+			);
+		}
+
+		// Wound icons
+		if (!wh) { return; }
+		if (wh.critWounds.Size() == 0) {
+			sb.DrawString(
+				sb.pSmallFont,
+				"You have no wounds.",
+				woundsLocation,
+				baseFlags | sb.DI_TEXT_ALIGN_CENTER,
+				Font.CR_DARKGRAY,
+				scale: hudScale
+			);
+		}
+
+		for (int i = 0; i < wh.critWounds.Size(); i++)
+		{
+			UaS_Wound wound = wh.critWounds[i];
+			if (!wound || wound == wh.currentWound) { continue; }
+
+			DrawWound(sb, wound, woundsLocation, gridSize, hudScale);
+		}
+
+		// Always display selected wound on top
+		if (wh.currentWound) { DrawWound(sb, wh.currentWound, woundsLocation, gridSize, hudScale); }
+
+		// Wound info
+		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
+		Array<string> status;
+
+		if (!wh.currentWound) { status.Push("\c[DarkGray]No wound selected.\c-"); }
+		else {
+			string statusText = GetStatusColor(wh.currentWound.open * 10).."open\c-";
+			if (wh.currentWound.depth <= 0. && wh.currentWound.patched > 0) { statusText = statusText.." but \c[Yellow]patched"; }
+			else if (wh.currentWound.depth <= 0) { statusText = "\c[Green]sealed"; }
+
+			status.Push(String.Format("- The wound is %s", statusText));
+
+			if (wh.currentWound.depth <= 0. && wh.currentWound.patched > 0) {
+				woundInfoPos -= (0, halfStep);
+
+				if (wh.currentWound.pressure > 5.0) { statusText = "very tight"; }
+				else if (wh.currentWound.pressure > 3.5) { statusText = "tight"; }
+				else if (wh.currentWound.pressure > 2.0) { statusText = "a bit tight"; }
+				else if (wh.currentWound.pressure > 1.0) { statusText = "somewhat tight"; }
+				else if (wh.currentWound.pressure > 0.5) { statusText = "somewhat loose"; }
+				else if (wh.currentWound.pressure > 0.2) { statusText = "loose"; }
+				else { statusText = "very loose"; }
+				status.Push("- Bandage feels "..GetStatusColor(max(0, 100 - wh.currentWound.pressure / 5 * 100))..statusText);
+			}
+
+			woundInfoPos -= (0, halfStep);
+			if (wh.currentWound.stabilised >= 100.0) { statusText = "fine"; }
+			else if (wh.currentWound.stabilised > 75.0) { statusText = "somewhat fine"; }
+			else if (wh.currentWound.stabilised > 50.0) { statusText = "decent"; }
+			else if (wh.currentWound.stabilised > 25.0) { statusText = "not that great"; }
+			else if (wh.currentWound.stabilised > 5.0) { statusText = "less horrible"; }
+			else { statusText = "horrible"; }
+			status.Push("- It feels "..GetStatusColor(100 - wh.currentWound.stabilised)..statusText);
+		}
+
+		for (int i = 0; i < status.Size(); i++) {
+			sb.DrawString(
+				sb.pSmallFont,
+				status[i],
+				woundInfoPos,
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+				Font.CR_GRAY,
+				scale: hudScale
+			);
+			woundInfoPos += (0, padStep);
+		}
+
+		Array<string> trueStatusMessage;
+		statusMessage.Split(trueStatusMessage, "\n");
+		Vector2 toolInfoPos = (woundInfoPos.x,  baseOffset / -2 - textHeight / 2 * trueStatusMessage.Size());
+
+		sb.DrawString(
+			sb.pSmallFont,
+			"-----",
+			(toolInfoPos.x, toolInfoPos.y - padStep),
+			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+			Font.CR_GRAY,
+			scale: hudScale
+		);
+		for (int i = 0; i < trueStatusMessage.Size(); i++) {
+			sb.DrawString(
+				sb.pSmallFont,
+				trueStatusMessage[i],
+				toolInfoPos,
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+				Font.CR_GRAY,
+				scale: hudScale
+			);
+			toolInfoPos += (0, textHeight);
+		}
+
+		Array<string> msg;
+		currentMessage.text.Split(msg, "\n");
+		Vector2 msgPos = (0, -baseOffset);
+
+		for (int i = 0; i < msg.Size(); i++) {
+			sb.DrawString(
+				sb.pSmallFont,
+				msg[i],
+				msgPos,
+				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
+				Font.CR_DARKGRAY,
+				scale: hudScale
+			);
+			msgPos += (0, textHeight);
+		}
+	}
+}
+

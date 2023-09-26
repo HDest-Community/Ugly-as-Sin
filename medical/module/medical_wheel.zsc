@@ -1,0 +1,178 @@
+// W H E E L
+class UaS_MedicalWheel : Inventory {
+	Vector2 pointerPos;
+	int timeout;
+
+	// Used for stopping the player from looking around
+	float playerPitch;
+	float playerAngle;
+
+	override void BeginPlay() {
+		pointerPos = (0, 0);
+		timeout = 0;
+	}
+
+	override void Tick() {
+		if (timeout == 0) {
+			pointerPos = (0, 0);
+			playerPitch = 0;
+		}
+		else if (timeout > 0) { --timeout; }
+	}
+
+	float CrossProduct(Vector2 v0, Vector2 v1)
+	{
+		return (v0.x * v1.y) - (v0.y * v1.x);
+	}
+
+	// For an explanation on how this works, see: https://blackpawn.com/texts/pointinpoly/default.html
+	// The only difference is that only 2 sides are checked. That being the top and bottom line
+	bool CheckSameSide(Vector2 point, Vector2 opposite, Vector2 a, Vector2 b) {
+		float cp0 = CrossProduct(b - a, point - a);
+		float cp1 = CrossProduct(b - a, opposite - a);
+		float dp = cp0 * cp1;
+		return (dp >= 0);
+	}
+
+	// mouse input code somewhat based on Gearbox's
+	Vector2 GetPlayerInput() {
+		Vector2 motion = (
+			round(owner.player.cmd.yaw * -0.08),
+			round(owner.player.cmd.pitch * -0.08)
+		);
+
+		owner.player.mo.pitch = playerPitch;
+		owner.player.mo.angle = playerAngle;
+		owner.player.cmd.pitch = 0;
+		owner.player.cmd.yaw = 0;
+
+		return motion;
+	}
+
+	int GetWheelInput(
+		int itemCount,
+		Vector2 circlePos
+	) {
+		let hdp = HDPlayerPawn(owner);
+		if (!hdp) { return 0; }
+
+		if (timeout == 0)
+		{
+			pointerPos = circlePos;
+			playerPitch = owner.player.mo.pitch;
+			playerAngle = owner.player.mo.angle;
+		}
+
+		Vector2 motion = GetPlayerInput();
+		timeout = 2;
+		// apparently, NaN == NaN returns false.... why???
+		// but if motion.x is NaN, motion.x != motion.x returns true???? wtf
+		if (!(motion.x != motion.x)) pointerPos.x += motion.x;
+		if (!(motion.y != motion.y)) pointerPos.y += motion.y;
+
+		pointerPos.x = clamp(pointerPos.x, 0, Screen.GetWidth());
+		pointerPos.y = clamp(pointerPos.y, 0, Screen.GetHeight());
+
+		float anglePerItem = 360.0 / itemCount;
+		float lineAngle = -90 + (anglePerItem / 2);
+		float prevLineAngle = lineAngle - anglePerItem;
+
+		Vector2 line0 = (
+			circlePos.x + cos(prevLineAngle),
+			circlePos.y + sin(prevLineAngle)
+		);
+		int selected = -1;
+		for (int i = 0; i < itemCount; i++) {
+			// Get next line
+			Vector2 line1 = (
+				circlePos.x + cos(lineAngle),
+				circlePos.y + sin(lineAngle)
+			);
+
+			// Check if pointer is in between the two lines
+			if (
+				CheckSameSide(pointerPos, line0, line1, circlePos)
+				&& CheckSameSide(pointerPos, line1, circlePos, line0)
+			) {
+				selected = i;
+				break;
+			}
+
+			line0 = (line1.x, line1.y);
+			prevLineAngle = lineAngle;
+			lineAngle += anglePerItem;
+		}
+
+		return selected;
+	}
+
+	ui void DrawWheel(
+		int selected,
+		int itemCount,
+		Array<String> itemIcons,
+		Vector2 circlePos
+	) {
+		let hdp = HDPlayerPawn(Owner);
+		if (!hdp) { return; }
+
+		double circleRadius = Screen.GetHeight() / 3 * UaS_Wheel_Scale;
+		double circleDiameter = circleRadius * 2;
+		double wheelScale = circleDiameter / 400; // the wheel texture size is 400x400 px
+		let circleTexture = TexMan.CheckForTexture("circlebg");
+		Screen.DrawTexture(
+			circleTexture, false,
+			circlePos.x,
+			circlePos.y,
+			DTA_ALPHA, UaS_Wheel_Alpha,
+			DTA_CENTEROFFSET, true,
+			DTA_SCALEX, wheelScale,
+			DTA_SCALEY, wheelScale
+		);
+
+		float anglePerItem = 360.0 / itemCount;
+		float lineAngle = -90 + anglePerItem / 2;
+		for (int i = 0; i < itemCount; i++) {
+			bool lineSelected = (
+				(i == itemCount - 1 && 0 == selected)
+				|| (i < itemCount - 1 && i + 1 == selected)
+				|| i == selected
+			);
+			Vector2 lineTo = (
+				circlePos.x + (circleRadius * cos(lineAngle)),
+				circlePos.y + (circleRadius * sin(lineAngle))
+			);
+
+			if (i < itemIcons.Size()) {
+				let itemTexture = TexMan.CheckForTexture(itemIcons[i]);
+				Screen.DrawTexture(
+					itemTexture, false,
+					circlePos.x + (circleRadius / 2 * cos(lineAngle - anglePerItem / 2)),
+					circlePos.y + (circleRadius / 2 * sin(lineAngle - anglePerItem / 2)),
+					DTA_ALPHA, (i == selected)? 0.75 : 0.50,
+					DTA_CENTEROFFSET, true,
+					DTA_SCALEX, 2 * wheelScale,
+					DTA_SCALEY, 2 * wheelScale
+				);
+			}
+			Screen.DrawLine(
+				circlePos.x, circlePos.y,
+				lineTo.x, lineTo.y,
+				(lineSelected)? "gold" : "white"
+			);
+
+			lineAngle += anglePerItem;
+		}
+
+		// Draw Pointer
+		Screen.DrawLine(
+			pointerPos.x - 20, pointerPos.y,
+			pointerPos.x + 20, pointerPos.y,
+			"gold"
+		);
+		Screen.DrawLine(
+			pointerPos.x, pointerPos.y - 20,
+			pointerPos.x, pointerPos.y + 20,
+			"gold"
+		);
+	}
+}
