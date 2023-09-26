@@ -22,16 +22,12 @@ zscript:
 	echo >> ../zscript.zsc
 	echo "version \"4.10\"" >> ../zscript.zsc
 	echo >> ../zscript.zsc
-	for f in $$(find ../* -name "core*.zsc" -not -path "*zscript.zsc" | sort -t '/' -k2,2 -k4r ) ; do \
-		ifile=$$(basename $$f) ; \
-		ipath=$$(dirname $${f:3}) ; \
-		echo "#include \"$$ipath/$$ifile\"" >> ../zscript.zsc ; \
+	cat ../core/zscript.zsc | grep -e '#include' | sed -e 's/module/core\/module/' >> ../zscript.zsc
+	for module in $$(find ../* -path "*/zscript.zsc" -not -path "../zscript.zsc" -not -path "*core/zscript.zsc") ; do \
+		modulename=$$(dirname $$module | sed -e 's/..\///g') ; \
+		cat $$module | grep -e '#include' | sed -e 's/module/'$$modulename'\/module/' >> ../zscript.zsc ; \
 	done
-	for f in $$(find ../* -path "*/module/*" -name "*.zsc" -not -path "*zscript.zsc" -not -path "*core*" | sort -t '/' -k2,2 -k4r ) ; do \
-		ifile=$$(basename $$f) ; \
-		ipath=$$(dirname $${f:3}) ; \
-		echo "#include \"$$ipath/$$ifile\"" >> ../zscript.zsc ; \
-	done
+	#cat $$(find ../* -path "*/zscript.zsc" -not -path "zscript.zsc" -not -path "*core/zscript.zsc")
 
 # =========================
 # CVARINFO
