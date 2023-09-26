@@ -79,17 +79,6 @@ extend class UaS_SelfBandage {
 	}
 
 	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl) {
-		// Draw Weapon Status
-		Super.DrawHUDStuff(sb, hdw, hpl);
-
-		// debug
-		Screen.DrawText(
-			NewSmallFont,
-			OptionMenuSettings.mFontColorValue,
-			10, Screen.GetHeight() * 2 / 3,
-			"type: "..weaponstatus[0].." | timer: "..timer.." | progress: "..progress.." | timeout: "..timeout
-		);
-
 		Vector2 hudScale = (UaS_Bandage_HUDScale, UaS_Bandage_HUDScale);
 		float textHeight = sb.pSmallFont.mFont.GetHeight() * hudscale.y;
 		float padding = 2 * hudScale.y;
@@ -274,6 +263,16 @@ extend class UaS_SelfBandage {
 			);
 			msgPos += (0, textHeight);
 		}
+	}
+
+	ui void ShowDebugInfo() {
+		if (!UaS_Medical_Debug) { return; }
+		Screen.DrawText(
+			NewSmallFont,
+			OptionMenuSettings.mFontColorValue,
+			10, Screen.GetHeight() * 2 / 3,
+			"type: "..weaponstatus[0].." | timer: "..timer.." | progress: "..progress.." | timeout: "..timeout
+		);
 	}
 }
 
