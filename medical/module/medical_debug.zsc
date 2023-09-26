@@ -20,8 +20,8 @@ class UaS_MedicalDebug : EventHandler {
 
 		let sf = SecondFlesh(hdp.FindInventory("SecondFlesh"));
 		whInfo = String.Format(
-			"%s | bloss %i (%f) | burns %i | 2f %i | tissue dmg %i | ismoving %i\n",
-			whInfo, hdp.bloodloss, double(hdp.bloodloss) / (HDCONST_BLOODBAGAMOUNT<<2), hdp.burncount, (sf)? sf.Amount : 0, hdp.oldwoundcount, hdp.CountInv("IsMoving")
+			"%s | bloss %i (%f) | burns %i | 2f %i | tissue dmg %i | ismoving %i | beatcount %i\n",
+			whInfo, hdp.bloodloss, double(hdp.bloodloss) / (HDCONST_BLOODBAGAMOUNT<<2), hdp.burncount, (sf)? sf.Amount : 0, hdp.oldwoundcount, hdp.CountInv("IsMoving"), hdp.BeatCount
 		);
 
 		// wounds
