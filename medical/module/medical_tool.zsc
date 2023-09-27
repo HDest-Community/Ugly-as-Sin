@@ -54,6 +54,8 @@ class UaS_MedicalToolInfo : Inventory {
 	}
 
 	override void DoEffect() {
+		// Make sure currentWoundIdx doesn't wrap around to 0 when updating
+		if (wh && wh.critwounds.Size() > 0) { currentWoundIdx = min(currentWoundIdx, wh.critwounds.Size() - 1); }
 		if (!currentWound) { UpdateCurrentWound(currentWoundIdx); }
 	}
 
