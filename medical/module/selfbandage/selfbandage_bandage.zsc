@@ -13,11 +13,11 @@ extend class UaS_SelfBandage {
 	}
 
 	void BandageWound(float toPatch, float pressure) {
-		if (!wh.currentWound) { return; }
+		if (!currentWound) { return; }
 
-		wh.currentWound.Patch(toPatch);
-		if (wh.currentWound.depth <= 0. || wh.currentWound.pressure <= 0.3) {
-			wh.currentWound.pressure += pressure;
+		currentWound.Patch(toPatch);
+		if (currentWound.depth <= 0. || currentWound.pressure <= 0.3) {
+			currentWound.pressure += pressure;
 		}
 	}
 
@@ -28,9 +28,9 @@ extend class UaS_SelfBandage {
 	}
 
 	void TryBandage() {
-		if (CheckCovered() || !wh.currentWound) { return; }
+		if (CheckCovered() || !currentWound) { return; }
 		if (patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
-		if (wh.currentWound.depth <= 0. && wh.currentWound.patched <= 0.) {
+		if (currentWound.depth <= 0. && currentWound.patched <= 0.) {
 			currentMessage.text = "Nothing to be done here.";
 			currentMessage.timeout = 2 * 35;
 			return;
@@ -81,9 +81,9 @@ extend class UaS_SelfBandage {
 	}
 
 	void TryRipBandage() {
-		if (CheckCovered() || !wh.currentWound) { return; }
+		if (CheckCovered() || !currentWound) { return; }
 		if (patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
-		if (wh.currentWound.patched <= 0.) {
+		if (currentWound.patched <= 0.) {
 			currentMessage.text = "Nothing to be done here.";
 			currentMessage.timeout = 2 * 35;
 			return;
@@ -122,9 +122,9 @@ extend class UaS_SelfBandage {
 				owner.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
 
 				progress = 0;
-				wh.currentWound.depth += wh.currentWound.patched;
-				wh.currentWound.patched = 0;
-				wh.currentWound.pressure = 0;
+				currentWound.depth += currentWound.patched;
+				currentWound.patched = 0;
+				currentWound.pressure = 0;
 				break;
 		}
 	}

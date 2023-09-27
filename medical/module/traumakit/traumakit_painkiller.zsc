@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjAnesthetic\n";
 		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
 		statusMessage = statusmessage.."Injections remaining: \cy"..weaponstatus[TKS_PAINKILLER].."\n\n";
-		if (!wh.currentWound) { return; }
-		if (wh.currentWound.open <= 0) { return; }
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_PAINKILLER] <=0) {
 			currentmessage.text = "No painkiller left!\n";
 			currentmessage.timeout = 2*35;
@@ -21,7 +21,7 @@ extend class UaS_TraumaKit {
 				random[uas_tk](25,75) +
 				random[uas_tk](25,75) +
 				random[uas_tk](25,75)) / 3;
-			wh.currentWound.painkiller = min(wh.currentWound.painkiller + inject, 100);
+			currentWound.painkiller = min(currentWound.painkiller + inject, 100);
 			patient.GiveInventory("HDStim", (HDStim.HDSTIM_MAX - HDStim.HDSTIM_DOSE)/20);
 			currentmessage.text = "Anesthetic injected.";
 			currentmessage.timeout = 2*35;

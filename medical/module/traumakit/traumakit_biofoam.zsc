@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjBiofoam\n";
 		statusMessage = statusmessage.."\cuAbsorbent antiseptic flesh-analogue.\n";
 		statusMessage = statusmessage.."Biofoam remaining: \cy"..weaponstatus[TKS_BIOFOAM].."\n\n";
-		if (!wh.currentWound) { return; }
-		if (wh.currentWound.open <= 0) { return; }
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_BIOFOAM] <=0) {
 			currentmessage.text = "No biofoam left!\n";
 			currentmessage.timeout = 2*35;
@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		}
 
 		// Status precheck
-		if (wh.currentWound.cavity < 0) {
+		if (currentWound.cavity < 0) {
 			currentmessage.text = "The wound does not need biofoam.\n";
 			currentmessage.timeout = 10;
 			return;
@@ -45,9 +45,9 @@ extend class UaS_TraumaKit {
 
 				weaponstatus[TKS_BIOFOAM]--;
 
-				if (wh.currentWound.inpain(8)) {
+				if (currentWound.inpain(8)) {
 					weaponstatus[TK_HOLD] = -5;
-					wh.currentWound.inpain(35);
+					currentWound.inpain(35);
 					PainJolt();
 				}
 
@@ -57,9 +57,9 @@ extend class UaS_TraumaKit {
 					frandom[uas_tk](0,10)) / 2;
 
 				// remove some tissue damage
-				if (check < wh.currentWound.cavity) {
+				if (check < currentWound.cavity) {
 					patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
-					wh.currentWound.cavity = max(wh.currentWound.cavity - frandom(0.1, 0.4), 0);
+					currentWound.cavity = max(currentWound.cavity - frandom(0.1, 0.4), 0);
 					//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 					patient.A_MuzzleClimb(
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
@@ -69,8 +69,8 @@ extend class UaS_TraumaKit {
 				}
 
 				// maybe remove some infection. Biofoam better at this than saline
-				if (check < wh.currentWound.infection * 2 && random[uas_tk](0,1) == 0) {
-					wh.currentWound.infection = max(wh.currentWound.infection - 1, 1);
+				if (check < currentWound.infection * 2 && random[uas_tk](0,1) == 0) {
+					currentWound.infection = max(currentWound.infection - 1, 1);
 				}
 			}
 		}

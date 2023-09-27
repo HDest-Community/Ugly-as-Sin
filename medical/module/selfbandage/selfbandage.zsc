@@ -60,14 +60,6 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		// update helptext
 		let hdp = HDPlayerPawn(owner);
 		if (hdp) { hdp.wephelptext = "\cu"..GetTag().."\n"..GetHelpText(); }
-		/*
-		if (
-			timer <= 0
-			&& owner.player.cmd.buttons & BT_FIREMODE
-			&& !(owner.player.oldbuttons & BT_FIREMODE)
-		) { ++weaponstatus[0]; }
-		if (weaponstatus[0] > TYPE_BANDAGE) { weaponstatus[0] = TYPE_IMPROVISED; }
-		*/
 	}
 
 	bool CheckCovered() {
@@ -88,17 +80,18 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		if (wh.critwounds.Size() == 0) { return; }
 
 		if (owner.player.cmd.buttons & BT_RELOAD && !(owner.player.oldbuttons & BT_RELOAD)) {
-			wh.currentWound = wh.GetNextWound();
+			currentWoundIdx++;
 			ResetAction();
-			currentMessage.text = "";
 			currentMessage.timeout = 0;
 		}
 		else if (owner.player.cmd.buttons & BT_ALTRELOAD && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
-			wh.currentWound = wh.GetPrevWound();
+			currentWoundIdx--;
 			ResetAction();
-			currentMessage.text = "";
 			currentMessage.timeout = 0;
 		}
+		currentWoundIdx %= wh.critwounds.Size();
+		if (currentWoundIdx < 0) { currentWoundIdx = wh.critwounds.Size() - 1; }
+		SyncWounds();
 	}
 
 	void TryRipBloodbag() {

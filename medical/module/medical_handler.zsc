@@ -1,6 +1,5 @@
 class UaS_WoundHandler : Inventory {
 	Array<UaS_Wound> critwounds;
-	UaS_Wound currentWound; // all wound-related tools should use this
 
 	default {
 		+INVENTORY.PERSISTENTPOWER;
@@ -37,15 +36,7 @@ class UaS_WoundHandler : Inventory {
 		// clean up
 		for (int i = 0; i < critwounds.Size(); i++) {
 			if (critwounds[i]) { continue; }
-
-			UaS_Wound deadWound = critwounds[i];
-
 			critwounds.Delete(i--);
-
-			if (critwounds.Size() > 0 && currentWound == deadWound) {
-				int newWoundIndex = max(0, min(i, critwounds.Size() - 1));
-				currentWound = critwounds[newWoundIndex];
-			}
 		}
 
 		// Override HDBleedingWound
@@ -56,8 +47,6 @@ class UaS_WoundHandler : Inventory {
 
 			AppendWound(hdbw);
 		}
-
-		if (!currentWound && critwounds.Size() > 0) { currentWound = critwounds[0]; }
 	}
 
 	void AppendWound(HDBleedingWound hdbw) {
@@ -68,25 +57,6 @@ class UaS_WoundHandler : Inventory {
 				critwounds.Size(), hdbw.depth, hdbw.location.x, hdbw.location.y);
 		}
 		hdbw.Destroy();
-	}
-
-	// Treat the critwounds array like a circularly linked list
-	UaS_Wound GetNextWound() {
-		if (!currentWound) { return null; }
-
-		int index = critwounds.Find(currentWound) + 1;
-		if (index >= critwounds.Size()) { index = 0; }
-
-		return critwounds[index];
-	}
-
-	UaS_Wound GetPrevWound() {
-		if (!currentWound) { return null; }
-
-		int index = critwounds.Find(currentWound) - 1;
-		if (index < 0) { index = critwounds.Size() - 1; }
-
-		return critwounds[index];
 	}
 
 	/*

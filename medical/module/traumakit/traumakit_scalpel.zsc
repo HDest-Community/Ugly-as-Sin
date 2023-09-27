@@ -28,7 +28,7 @@ extend class UaS_TraumaKit {
 
 			// CRAWWWWWWWWLLLLING INNNNNNNN MMMMYYYYYY SSSKKKKKIIIIIINNNNN
 			// THEEEESSSSEE WOOOOUUUNNNDS THHHEEEEYYY WIILLL NOOOOTTTTT HEEEAAAAALLL
-			if (!wh.currentWound) {
+			if (!currentWound) {
 				owner.A_StartSound("bandage/rip",CHAN_WEAPON);
 				patient.damagemobj(owner,owner,5,"staples");
 				wh.AppendWound(HDBleedingWound.Inflict(patient, frandom(0.4, 2.4), frandom(0.6, 1.8), source: owner));
@@ -37,7 +37,7 @@ extend class UaS_TraumaKit {
 			}
 
 			if (!HandleStrip()) { return; }
-			if (wh.currentWound.inpain(75)) {
+			if (currentWound.inpain(75)) {
 				patient.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;
 				PainJolt();
@@ -51,12 +51,12 @@ extend class UaS_TraumaKit {
 				(frandom[uas_tk](-1,1),frandom[uas_tk](1,2)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](1,1))
 			);
-			//double newDepth = min(wh.currentWound.open + frandom[uas_tk](0.5,2.0-wh.currentWound.painkiller), 20.0);
-			double newDepth = min(wh.currentWound.open + frandom[uas_tk](0.5,2.0), 20.0);
-			wh.currentWound.sealed = max(wh.currentWound.sealed - newDepth, 0);
-			wh.currentWound.depth = newDepth;
-			//wh.currentWound.cavity = min(wh.currentWound.cavity + frandom[uas_tk](0,2.0-(wh.currentWound.painkiller/4)), 20.0);
-			wh.currentWound.cavity = min(wh.currentWound.cavity + frandom[uas_tk](0,2.0), 20.0);
+			//double newDepth = min(currentWound.open + frandom[uas_tk](0.5,2.0-currentWound.painkiller), 20.0);
+			double newDepth = min(currentWound.open + frandom[uas_tk](0.5,2.0), 20.0);
+			currentWound.sealed = max(currentWound.sealed - newDepth, 0);
+			currentWound.depth = newDepth;
+			//currentWound.cavity = min(currentWound.cavity + frandom[uas_tk](0,2.0-(currentWound.painkiller/4)), 20.0);
+			currentWound.cavity = min(currentWound.cavity + frandom[uas_tk](0,2.0), 20.0);
 			return;
 		}
 	}

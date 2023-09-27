@@ -5,11 +5,11 @@ extend class UaS_TraumaKit {
 	void HandleForceps() {
 		statusMessage = statusmessage.."\cjForceps\n";
 		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n\n";
-		if (!wh.currentWound) { return; }
-		if (wh.currentWound.open <= 0) { return; }
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 
 		// Status precheck
-		if (wh.currentWound.obstructed < 0) {
+		if (currentWound.obstructed < 0) {
 			currentmessage.text = "No obstructions require removal.\n";
 			currentmessage.timeout = 10;
 		}
@@ -29,9 +29,9 @@ extend class UaS_TraumaKit {
 			currentmessage.timeout = 5;
 
 			// Abort if too much pain
-			if (wh.currentWound.inpain(2)) {
+			if (currentWound.inpain(2)) {
 				weaponstatus[TK_HOLD] = -5;
-				wh.currentWound.inpain(35);
+				currentWound.inpain(35);
 				PainJolt();
 			}
 
@@ -39,9 +39,9 @@ extend class UaS_TraumaKit {
 
 			// Extract fragments
 			if ((owner.player.cmd.buttons & BT_UNLOAD) && !(owner.player.oldbuttons & BT_UNLOAD)) {
-				if (wh.currentWound.inpain(10)) {
+				if (currentWound.inpain(10)) {
 					weaponstatus[TK_HOLD] = -5;
-					wh.currentWound.inpain(35);
+					currentWound.inpain(35);
 					PainJolt();
 				}
 				mashes++;
@@ -58,28 +58,28 @@ extend class UaS_TraumaKit {
 
 		if (mashes > 0) {
 			int remove = random[uas_tk](4,8) * mashes;
-			int minimum = wh.currentWound.obstructed / 5;
+			int minimum = currentWound.obstructed / 5;
 			string result;
 
-			if (wh.currentWound.obstructed > 0 && remove > minimum) {
+			if (currentWound.obstructed > 0 && remove > minimum) {
 				result = ExtractionMessage();
 				patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
-				wh.currentWound.obstructed = max(wh.currentWound.obstructed - remove, 0);
+				currentWound.obstructed = max(currentWound.obstructed - remove, 0);
 				//patient.damagemobj(owner,owner,1,"staples");
 			}
 			else { result = "You probe the wound"; }
 
 			// increase cavity on overshoot
 			// NOTE: increase width as well?
-			if (remove > wh.currentWound.obstructed) {
-				wh.currentWound.cavity = wh.currentWound.cavity + (remove / 10);
+			if (remove > currentWound.obstructed) {
+				currentWound.cavity = currentWound.cavity + (remove / 10);
 				result = result..", damaging the surrounding tissue.";
 			}
 			else {
 				result = result..".";
 			}
 
-			wh.currentWound.inpain(remove);
+			currentWound.inpain(remove);
 			owner.A_Log(result, true);
 			mashes = 0;
 		}
