@@ -1,271 +1,271 @@
 [enu default]
 
 // Item Tags
-TAG_2FCARTRIDGE                         = "Auto-Suture Cartridge";
-TAG_AMMOPOUCH                           = "Ammo Pouch";
-TAG_ASSAULTPACK                         = "Assault Pack";
-TAG_FLARE                               = "Flare";
-TAG_GLOWSTICK                           = "Glowstick";
-TAG_GYROSTABILIZER                      = "Gyroscopic Stabilizer";
-TAG_LLM                                 = "Light/Laser module";
-TAG_RESPIRATOR                          = "Emergency respirator";
-TAG_SLING                               = "Weapon Sling";
+TAG_2FCARTRIDGE                                       = "Auto-Suture Cartridge";
+TAG_AMMOPOUCH                                         = "Ammo Pouch";
+TAG_ASSAULTPACK                                       = "Assault Pack";
+TAG_FLARE                                             = "Flare";
+TAG_GLOWSTICK                                         = "Glowstick";
+TAG_GYROSTABILIZER                                    = "Gyroscopic Stabilizer";
+TAG_LLM                                               = "Light/Laser module";
+TAG_RESPIRATOR                                        = "Emergency respirator";
+TAG_SLING                                             = "Weapon Sling";
 
 
 // Pickup Messages
-PICKUP_2FCARTRIDGE                      = "Picked up an auto-suture cartridge.";
-PICKUP_AMMOPOUCH                        = "Picked up an ammo pouch!";
-PICKUP_ASSAULTPACK                      = "Picked up an assault pack!";
-PICKUP_FLARE                            = "Picked up a flare.";
-PICKUP_GLOWSTICK                        = "Picked up a glowstick.";
-PICKUP_GYROSTABILIZER                   = "Picked up a gyro stabilizer.";
-PICKUP_LLM                              = "Picked up a combo laser/light module.";
-PICKUP_RESPIRATOR                       = "Picked up an emergency respirator.";
-PICKUP_SLING                            = "Picked up a weapon sling.";
+PICKUP_2FCARTRIDGE                                    = "Picked up an auto-suture cartridge.";
+PICKUP_AMMOPOUCH                                      = "Picked up an ammo pouch!";
+PICKUP_ASSAULTPACK                                    = "Picked up an assault pack!";
+PICKUP_FLARE                                          = "Picked up a flare.";
+PICKUP_GLOWSTICK                                      = "Picked up a glowstick.";
+PICKUP_GYROSTABILIZER                                 = "Picked up a gyro stabilizer.";
+PICKUP_LLM                                            = "Picked up a combo laser/light module.";
+PICKUP_RESPIRATOR                                     = "Picked up an emergency respirator.";
+PICKUP_SLING                                          = "Picked up a weapon sling.";
 
 
 // Ammo Pouch HUD
-AMMOPOUCH_TOOFULL                       = "Your ammo pouch is too full.";
-AMMOPOUCH_TOP                           = "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []";
-AMMOPOUCH_TOTALBULK                     = "Total Bulk: \cf";
-AMMOPOUCH_NUMPOUCHES                    = " --- Pouches: \cf";
-AMMOPOUCH_NOITEMS                       = "No items found.";
-AMMOPOUCH_INBAG                         = "In pouch:  ";
-AMMOPOUCH_ONPERSON                      = "On person:  ";
+AMMOPOUCH_TOOFULL                                     = "Your ammo pouch is too full.";
+AMMOPOUCH_TOP                                         = "\c[DarkBrown][] [] [] \c[Tan]Ammo Pouch\c[DarkBrown] [] [] []";
+AMMOPOUCH_TOTALBULK                                   = "Total Bulk: \cf";
+AMMOPOUCH_NUMPOUCHES                                  = " --- Pouches: \cf";
+AMMOPOUCH_NOITEMS                                     = "No items found.";
+AMMOPOUCH_INBAG                                       = "In pouch:  ";
+AMMOPOUCH_ONPERSON                                    = "On person:  ";
 
 
 // Assault Pack HUD
-ASSAULTPACK_TOOLARGE                    = "That item is too large!";
-ASSAULTPACK_TOOFULL                     = "Your backpack is too full.";
+ASSAULTPACK_TOOLARGE                                  = "That item is too large!";
+ASSAULTPACK_TOOFULL                                   = "Your backpack is too full.";
 
 
 // LLM HUD
-LLM_TOP                                 = "--- \coLaser / Flashlight\c- ---\n";
-LLM_OFF                                 = "\cmOff";
-LLM_VISIBLE                             = "\ccVisible";
-LLM_IRONLY                              = "\cuIR only";
-LLM_FLASHING                            = "Flashing";
-LLM_LIGHTMODE                           = "\cjLight Mode: ";
-LLM_LASERMODE                           = "\cjLaser Mode: ";
-LLM_LASERCOLOR                          = "\cjLaser Color: ";
-LLM_ACTIVATED                           = "\cj=On=";
-LLM_DEACTIVATED                         = "\cu=Off=";
+LLM_TOP                                               = "--- \coLaser / Flashlight\c- ---\n";
+LLM_OFF                                               = "\cmOff";
+LLM_VISIBLE                                           = "\ccVisible";
+LLM_IRONLY                                            = "\cuIR only";
+LLM_FLASHING                                          = "Flashing";
+LLM_LIGHTMODE                                         = "\cjLight Mode: ";
+LLM_LASERMODE                                         = "\cjLaser Mode: ";
+LLM_LASERCOLOR                                        = "\cjLaser Color: ";
+LLM_ACTIVATED                                         = "\cj=On=";
+LLM_DEACTIVATED                                       = "\cu=Off=";
 
 
 // Respirator HUD
-RESPIRATOR_FULL                         = "It is full.";
-RESPIRATOR_EMPTY                        = "It is empty.";
-RESPIRATOR_AMT_PREFIX                   = "It is at ";
-RESPIRATOR_AMT_SUFFIX                   = " percent capacity";
+RESPIRATOR_FULL                                       = "It is full.";
+RESPIRATOR_EMPTY                                      = "It is empty.";
+RESPIRATOR_AMT_PREFIX                                 = "It is at ";
+RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 
 //-----------------
 // Food Module Language Lumps
 //-----------------
 
 // From food_basic.zsc - [Ted]
-UAS_CONSUMABLE_FOODRATION_DESCRIPTION   = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
-UAS_CONSUMABLE_FOODRATION_PICKUP        = "Picked up a military food ration.";
-UAS_CONSUMABLE_FOODRATION_TAG           = "Food Ration";
+UAS_CONSUMABLE_FOODRATION_DESCRIPTION                 = "A flavorless dehydrated ration bar, intended to replace a single meal with a few energy-dense bites.";
+UAS_CONSUMABLE_FOODRATION_PICKUP                      = "Picked up a military food ration.";
+UAS_CONSUMABLE_FOODRATION_TAG                         = "Food Ration";
 
-UAS_CONSUMABLE_FOODRATION_OPENTEXT      = "Doesn't look very appealing...";
-UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_1 = "It's nutritious at least.";
-UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_2 = "They should add some flavor next time.";
-UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_3 = "If only it had actual flavor.";
+UAS_CONSUMABLE_FOODRATION_OPENTEXT                    = "Doesn't look very appealing...";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_1               = "It's nutritious at least.";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_2               = "They should add some flavor next time.";
+UAS_CONSUMABLE_FOODRATION_CONSUMETEXT_3               = "If only it had actual flavor.";
 
-UAS_CONSUMABLE_WATERRATION_DESCRIPTION = "A disposable tear-open water pouch, about equivalent to a single glass of water.";
-UAS_CONSUMABLE_WATERRATION_PICKUP = "Picked up a military water ration.";
-UAS_CONSUMABLE_WATERRATION_TAG = "Water Ration"; 
+UAS_CONSUMABLE_WATERRATION_DESCRIPTION                = "A disposable tear-open water pouch, about equivalent to a single glass of water.";
+UAS_CONSUMABLE_WATERRATION_PICKUP                     = "Picked up a military water ration.";
+UAS_CONSUMABLE_WATERRATION_TAG                        = "Water Ration"; 
 
-UAS_CONSUMABLE_WATERRATION_OPENTEXT = "Hope it's fresh...";
-UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_1 = "Refreshing and plastic-flavored.";
-UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_2 = "Water is water.";
-UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_3 = "Sometimes simpler is better.";
+UAS_CONSUMABLE_WATERRATION_OPENTEXT                   = "Hope it's fresh...";
+UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_1              = "Refreshing and plastic-flavored.";
+UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_2              = "Water is water.";
+UAS_CONSUMABLE_WATERRATION_CONSUMETEXT_3              = "Sometimes simpler is better.";
 
 // From food_drinks.zsc - [Ted]
-UAS_MIXIN_SODA_PICKUP = "Picked up a can of soda.";
+UAS_MIXIN_SODA_PICKUP                                 = "Picked up a can of soda.";
 
-UAS_CONSUMABLE_DRCOLA_DESCRIPTION = "Fizzy sugary cola goodness in a classic red aluminium can.";
-UAS_CONSUMABLE_DRCOLA_TAG = "Dr. Cola Soda";
+UAS_CONSUMABLE_DRCOLA_DESCRIPTION                     = "Fizzy sugary cola goodness in a classic red aluminium can.";
+UAS_CONSUMABLE_DRCOLA_TAG                             = "Dr. Cola Soda";
 
-UAS_CONSUMABLE_DRCOLA_OPENTEXT_1 = "Still a bit fizzy.";
-UAS_CONSUMABLE_DRCOLA_OPENTEXT_2 = "Feels... off brand.";
-UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_1 = "Tastes... fine.";
-UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_2 = "Nothing truly special.";
+UAS_CONSUMABLE_DRCOLA_OPENTEXT_1                      = "Still a bit fizzy.";
+UAS_CONSUMABLE_DRCOLA_OPENTEXT_2                      = "Feels... off brand.";
+UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_1                   = "Tastes... fine.";
+UAS_CONSUMABLE_DRCOLA_CONSUMETEXT_2                   = "Nothing truly special.";
 
-UAS_CONSUMABLE_LEMONFIZZ_DESCRIPTION = "A can of tart lemon-flavored carbonated water.";
-UAS_CONSUMABLE_LEMONFIZZ_TAG = "Lemon Fizz Soda";
+UAS_CONSUMABLE_LEMONFIZZ_DESCRIPTION                  = "A can of tart lemon-flavored carbonated water.";
+UAS_CONSUMABLE_LEMONFIZZ_TAG                          = "Lemon Fizz Soda";
 
-UAS_CONSUMABLE_LEMONFIZZ_OPENTEXT = "It has a nice fizz to it.";
-UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_1 = "Still fresh. Though not as lemony as you thought it'd be.";
-UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_2 = "Fizzy.";
+UAS_CONSUMABLE_LEMONFIZZ_OPENTEXT                     = "It has a nice fizz to it.";
+UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_1                = "Still fresh. Though not as lemony as you thought it'd be.";
+UAS_CONSUMABLE_LEMONFIZZ_CONSUMETEXT_2                = "Fizzy.";
 
-UAS_MIXIN_COFFEE_PICKUP = "Picked up a disposable, self-heating water pouch with a pack of coffee mix.";
-UAS_MIXIN_COFFEE_DESCRIPTION = "Hey! You! You're not supposed to see this! Did I fuck something up? Oh god.";
+UAS_MIXIN_COFFEE_PICKUP                               = "Picked up a disposable, self-heating water pouch with a pack of coffee mix.";
+UAS_MIXIN_COFFEE_DESCRIPTION                          = "Hey! You! You're not supposed to see this! Did I fuck something up? Oh god.";
 
-UAS_CONSUMABLE_NEOENGLANDMIX_DESCRIPTION = "One of three Coffee Blends still legal in the Reformed United Kingdom.";
-UAS_CONSUMABLE_NEOENGLANDMIX_TAG = "England Coffee";
+UAS_CONSUMABLE_NEOENGLANDMIX_DESCRIPTION              = "One of three Coffee Blends still legal in the Reformed United Kingdom.";
+UAS_CONSUMABLE_NEOENGLANDMIX_TAG                      = "England Coffee";
 
-UAS_CONSUMABLE_NEOENGLANDMIX_OPENTEXT = "Smells like the streets of New London.";
-UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_1 = "Feels... almost monopolistic.";
-UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_2 = "Tastes strangely like tea.";
+UAS_CONSUMABLE_NEOENGLANDMIX_OPENTEXT                 = "Smells like the streets of New London.";
+UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_1            = "Feels... almost monopolistic.";
+UAS_CONSUMABLE_NEOENGLANDMIX_CONSUMETEXT_2            = "Tastes strangely like tea.";
 
-UAS_CONSUMABLE_KNOXCOFFEE_DESCRIPTION = "A bootlegged coffee pouch. Best Served Very Hot.";
-UAS_CONSUMABLE_KNOXCOFFEE_TAG = "Knox Coffee";
+UAS_CONSUMABLE_KNOXCOFFEE_DESCRIPTION                 = "A bootlegged coffee pouch. Best Served Very Hot.";
+UAS_CONSUMABLE_KNOXCOFFEE_TAG                         = "Knox Coffee";
 
-UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_1 = "It'll heat up more than your mouth!";
-UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_2 = "An illegal but tasty cup of hazelnut coffee.";
-UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_1 = "Ack! Too hot!";
-UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_2 = "Pretty refreshing, even with the mouth burns.";
+UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_1                  = "It'll heat up more than your mouth!";
+UAS_CONSUMABLE_KNOXCOFFEE_OPENTEXT_2                  = "An illegal but tasty cup of hazelnut coffee.";
+UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_1               = "Ack! Too hot!";
+UAS_CONSUMABLE_KNOXCOFFEE_CONSUMETEXT_2               = "Pretty refreshing, even with the mouth burns.";
 
-UAS_CONSUMABLE_SPACECOFFEE_DESCRIPTION = "A pouch of coffee served on space stations in Earth's orbit.";
-UAS_CONSUMABLE_SPACECOFFEE_TAG = "Space Coffee";
+UAS_CONSUMABLE_SPACECOFFEE_DESCRIPTION                = "A pouch of coffee served on space stations in Earth's orbit.";
+UAS_CONSUMABLE_SPACECOFFEE_TAG                        = "Space Coffee";
 
-UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_1 = "Contractually described as hearty and energizing!";
-UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_2 = "Who would want this deep space swill?";
-UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_1 = "Tastes like Space Dust.";
-UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_2 = "Refreshing and plastic-flavored.";
+UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_1                 = "Contractually described as hearty and energizing!";
+UAS_CONSUMABLE_SPACECOFFEE_OPENTEXT_2                 = "Who would want this deep space swill?";
+UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_1              = "Tastes like Space Dust.";
+UAS_CONSUMABLE_SPACECOFFEE_CONSUMETEXT_2              = "Refreshing and plastic-flavored.";
 
 // From food_meals.zsc - [Ted]
-UAS_MIXIN_BIGMREPOUCH_PICKUP = "Picked up a large vacuum-sealed MRE pouch.";
+UAS_MIXIN_BIGMREPOUCH_PICKUP                          = "Picked up a large vacuum-sealed MRE pouch.";
 
-UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_TAG = "Beef and Garlic Stroganoff";
-UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_DESCRIPTION = "Tasty beef and hearty pasta in garlic cream sauce.";
+UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_TAG            = "Beef and Garlic Stroganoff";
+UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_DESCRIPTION    = "Tasty beef and hearty pasta in garlic cream sauce.";
 
-UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_OPENTEXT = "Smells very garlicy.";
-UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_1 = "The garlic sauce is sublime.";
-UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_2 = "The beef is actually tasty!";
+UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_OPENTEXT       = "Smells very garlicy.";
+UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_1  = "The garlic sauce is sublime.";
+UAS_CONSUMABLE_BEEFANDGARLICSTROGANOFF_CONSUMETEXT_2  = "The beef is actually tasty!";
 
-UAS_CONSUMABLE_CURRYANDRICE_TAG = "Curry and Rice";
-UAS_CONSUMABLE_CURRYANDRICE_DESCRIPTION = "Spicy red curry with rice and potatoes.";
+UAS_CONSUMABLE_CURRYANDRICE_TAG                       = "Curry and Rice";
+UAS_CONSUMABLE_CURRYANDRICE_DESCRIPTION               = "Spicy red curry with rice and potatoes.";
 
-UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_1 = "Finally something exciting.";
-UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_2 = "Maybe this batch won't upset your stomach.";
-UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_3 = "Hope the rice isn't mushy.";
-UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_1 = "The rice is kind of mushy...";
-UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_2 = "Your stomach starts hurting...";
-UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_3 = "Tastes very good, though a bit too spicy.";
+UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_1                = "Finally something exciting.";
+UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_2                = "Maybe this batch won't upset your stomach.";
+UAS_CONSUMABLE_CURRYANDRICE_OPENTEXT_3                = "Hope the rice isn't mushy.";
+UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_1             = "The rice is kind of mushy...";
+UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_2             = "Your stomach starts hurting...";
+UAS_CONSUMABLE_CURRYANDRICE_CONSUMETEXT_3             = "Tastes very good, though a bit too spicy.";
 
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_TAG = "Spaghetti with Meatballs";
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_DESCRIPTION = "Old Faithful. Spaghetti and meatballs in a hearty marinara sauce.";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_TAG              = "Spaghetti with Meatballs";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_DESCRIPTION      = "Old Faithful. Spaghetti and meatballs in a hearty marinara sauce.";
 
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_OPENTEXT = "Just like home... kinda.";
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_1 = "The sauce feels familiar enough.";
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_2 = "The meathballs are kind of smushy...";
-UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_3 = "The noodles are well cooked at least.";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_OPENTEXT         = "Just like home... kinda.";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_1    = "The sauce feels familiar enough.";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_2    = "The meathballs are kind of smushy...";
+UAS_CONSUMABLE_SPAGHETTIWITHMEATBALL_CONSUMETEXT_3    = "The noodles are well cooked at least.";
 
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_TAG = "Beef Teriyaki on Rice";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_DESCRIPTION = "Tender shredded beef in a basic teriyaki sauce, mixed with white rice.";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_TAG               = "Beef Teriyaki on Rice";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_DESCRIPTION       = "Tender shredded beef in a basic teriyaki sauce, mixed with white rice.";
 
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_1 = "This rice shouldn't be this good!";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_2 = "That spice packet might cause a stomach ache...";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_1 = "Oof, somach pain...";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_2 = "A little too filling...";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_3 = "Tastes good, but doesn't feel too good.";
-UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_4 = "The rice is very tastey!";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_1        = "This rice shouldn't be this good!";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_OPENTEXT_2        = "That spice packet might cause a stomach ache...";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_1     = "Oof, somach pain...";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_2     = "A little too filling...";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_3     = "Tastes good, but doesn't feel too good.";
+UAS_CONSUMABLE_BEEFTERIYAKIWITHRICE_CONSUMETEXT_4     = "The rice is very tastey!";
 
-UAS_CONSUMABLE_CHILIMAC_TAG = "Chili-Mac";
-UAS_CONSUMABLE_CHILIMAC_DESCRIPTION = "Blue-box macaroni and 'cheese' mixed with chile con carne.";
+UAS_CONSUMABLE_CHILIMAC_TAG                           = "Chili-Mac";
+UAS_CONSUMABLE_CHILIMAC_DESCRIPTION                   = "Blue-box macaroni and 'cheese' mixed with chile con carne.";
 
-UAS_CONSUMABLE_CHILIMAC_OPENTEXT = "Hard to improve on perfection but the army chefs sure tried.";
-UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_1 = "Tastes odd.";
-UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_2 = "Doesn't feel much like mac and cheese...";
-UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_3 = "Hurts your stomach a bit.";
+UAS_CONSUMABLE_CHILIMAC_OPENTEXT                      = "Hard to improve on perfection but the army chefs sure tried.";
+UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_1                 = "Tastes odd.";
+UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_2                 = "Doesn't feel much like mac and cheese...";
+UAS_CONSUMABLE_CHILIMAC_CONSUMETEXT_3                 = "Hurts your stomach a bit.";
 
-UAS_CONSUMABLE_CHICKENDUMPLINGS_TAG = "Chicken and Dumplings";
-UAS_CONSUMABLE_CHICKENDUMPLINGS_DESCRIPTION = "Chicken Dumplings with Vegetables.";
+UAS_CONSUMABLE_CHICKENDUMPLINGS_TAG                   = "Chicken and Dumplings";
+UAS_CONSUMABLE_CHICKENDUMPLINGS_DESCRIPTION           = "Chicken Dumplings with Vegetables.";
 
-UAS_CONSUMABLE_CHICKENANDDUMPLINGS_OPENTEXT = "Hopefully the packaging kept these good.";
-UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_1 = "The sauce is pretty thick.";
-UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_2 = "The vegetables are super tender!";
-UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_3 = "How do they keep the chicken moist?";
+UAS_CONSUMABLE_CHICKENANDDUMPLINGS_OPENTEXT           = "Hopefully the packaging kept these good.";
+UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_1      = "The sauce is pretty thick.";
+UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_2      = "The vegetables are super tender!";
+UAS_CONSUMABLE_CHICKENANDDUMPLINGS_CONSUMETEXT_3      = "How do they keep the chicken moist?";
 
-UAS_CONSUMABLE_ENCHILADACASSEROLE_TAG = "Enchilada Casserole";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_DESCRIPTION = "Enchilada Casserole with Red Sauce.";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_TAG                 = "Enchilada Casserole";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_DESCRIPTION         = "Enchilada Casserole with Red Sauce.";
 
-UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_1 = "Nice, a good amount of sauce!";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_2 = "Wish it had more beans..";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_1 = "Man, the sauce has some kick!";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_2 = "They never include enough refried beans.";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_3 = "Wish I had a honey packet for this.";
-UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_4 = "Spicy and smooth!";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_1          = "Nice, a good amount of sauce!";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_OPENTEXT_2          = "Wish it had more beans..";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_1       = "Man, the sauce has some kick!";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_2       = "They never include enough refried beans.";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_3       = "Wish I had a honey packet for this.";
+UAS_CONSUMABLE_ENCHILADACASSEROLE_CONSUMETEXT_4       = "Spicy and smooth!";
 
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_TAG = "Fireball Scramble";
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_DESCRIPTION = "Hearty Fireball Breakfast Scramble.";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_TAG                   = "Fireball Scramble";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_DESCRIPTION           = "Hearty Fireball Breakfast Scramble.";
 
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_1 = "Three kinds of meat! Two kinds of Potato!";
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_2 = "Mix the 1st and 3rd hot sauce. Always skip Sauce 2.";
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_3 = "A hearty breakfast meal that works anytime.";
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_1 = "The meats mush together, though it tastes great!";
-UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_2 = "The sauces is spicy, yet good.";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_1            = "Three kinds of meat! Two kinds of Potato!";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_2            = "Mix the 1st and 3rd hot sauce. Always skip Sauce 2.";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_OPENTEXT_3            = "A hearty breakfast meal that works anytime.";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_1         = "The meats mush together, though it tastes great!";
+UAS_CONSUMABLE_FIREBALLSCRAMBLE_CONSUMETEXT_2         = "The sauces is spicy, yet good.";
 
-UAS_CONSUMABLE_GRABBAG_TAG = "Mystery Mix MRE";
-UAS_CONSUMABLE_GRABBAG_DESCRIPTION = "An MRE that was assembled with whatever was available.";
+UAS_CONSUMABLE_GRABBAG_TAG                            = "Mystery Mix MRE";
+UAS_CONSUMABLE_GRABBAG_DESCRIPTION                    = "An MRE that was assembled with whatever was available.";
 
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_1 = "It's just a mix of crackers and patte...";
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_2 = "Two grain bread and processed cheese, huh?";
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_3 = "Why would you pack three kinds of rice and ketchup?";
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_4 = "Salad and barbecue sauce?";
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_5 = "Beef strips, Grape candy, and pear cubes...";
-UAS_CONSUMABLE_GRABBAG_OPENTEXT_6 = "Four cans of energy drink and six energy bars?";
-UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_1 = "Tastes a bit too crunchy...";
-UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_2 = "It doesn't go down your throat well.";
-UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_3 = "Euch... I see why this just has 'whatever' in it...";
-UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_4 = "Slimey...";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_1                     = "It's just a mix of crackers and patte...";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_2                     = "Two grain bread and processed cheese, huh?";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_3                     = "Why would you pack three kinds of rice and ketchup?";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_4                     = "Salad and barbecue sauce?";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_5                     = "Beef strips, Grape candy, and pear cubes...";
+UAS_CONSUMABLE_GRABBAG_OPENTEXT_6                     = "Four cans of energy drink and six energy bars?";
+UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_1                  = "Tastes a bit too crunchy...";
+UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_2                  = "It doesn't go down your throat well.";
+UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_3                  = "Euch... I see why this just has 'whatever' in it...";
+UAS_CONSUMABLE_GRABBAG_CONSUMETEXT_4                  = "Slimey...";
 
 // From Food_Packages.zsc - [Ted]
-UAS_PACKAGE_BASICMRE_DESCRIPTION = "This is probably the saddest MRE you've ever seen, but... at least it comes with a toy!";
-UAS_PACKAGE_BASICMRE_PICKUP = "Picked up a terribly basic MRE.";
-UAS_PACKAGE_BASICMRE_TAG = "World's Worst MRE";
+UAS_PACKAGE_BASICMRE_DESCRIPTION                      = "This is probably the saddest MRE you've ever seen, but... at least it comes with a toy!";
+UAS_PACKAGE_BASICMRE_PICKUP                           = "Picked up a terribly basic MRE.";
+UAS_PACKAGE_BASICMRE_TAG                              = "World's Worst MRE";
 
 // From food_sides.zsc - [Ted]
-UAS_MIXIN_SMALLMRE_PICKUP = "Picked up a small vacuum-sealed MRE item.";
+UAS_MIXIN_SMALLMRE_PICKUP                             = "Picked up a small vacuum-sealed MRE item.";
 
-UAS_CONSUMABLE_LENTILCHILI_TAG = "Lentil Chili";
-UAS_CONSUMABLE_LENTILCHILI_DESCRIPTION = "Spicy stewed lentils.";
+UAS_CONSUMABLE_LENTILCHILI_TAG                        = "Lentil Chili";
+UAS_CONSUMABLE_LENTILCHILI_DESCRIPTION                = "Spicy stewed lentils.";
 
-UAS_CONSUMABLE_LENTILCHILI_OPENTEXT = "Surprisingly filling!";
-UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_1 = "Pretty good, despite how small it is.";
-UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_2 = "Tastes good!";
+UAS_CONSUMABLE_LENTILCHILI_OPENTEXT                   = "Surprisingly filling!";
+UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_1              = "Pretty good, despite how small it is.";
+UAS_CONSUMABLE_LENTILCHILI_CONSUMETEXT_2              = "Tastes good!";
 
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_TAG = "Breakfast Hashbrowns";
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_DESCRIPTION = "Crispy fried potato shavings, just as good as the restaurant.";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_TAG                = "Breakfast Hashbrowns";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_DESCRIPTION        = "Crispy fried potato shavings, just as good as the restaurant.";
 
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_1 = "It's always sunny at Denny's...";
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_2 = "How do they keep these crispy?";
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_1 = "Still crunchy.";
-UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_2 = "Still pretty good!";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_1         = "It's always sunny at Denny's...";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_OPENTEXT_2         = "How do they keep these crispy?";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_1      = "Still crunchy.";
+UAS_CONSUMABLE_BREAKFASTHASHBROWNS_CONSUMETEXT_2      = "Still pretty good!";
 
-UAS_CONSUMABLE_CACOGIBLETS_TAG = "Cacodemon Giblets";
-UAS_CONSUMABLE_CACOGIBLETS_DESCRIPTIOn = "Fully cooked cacodemon entrails, for the adventurous connoisseur.";
+UAS_CONSUMABLE_CACOGIBLETS_TAG                        = "Cacodemon Giblets";
+UAS_CONSUMABLE_CACOGIBLETS_DESCRIPTIOn                = "Fully cooked cacodemon entrails, for the adventurous connoisseur.";
 
-UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_1 = "They're... blue. Shouldn't be surprising but still...";
-UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_2 = "It's kinda like sardines... right?";
-UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_1 = "A bit too staticy.";
-UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_2 = "Ack!";
-UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_3 = "It... works?";
-UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_4 = "[zap] ouch!";
+UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_1                 = "They're... blue. Shouldn't be surprising but still...";
+UAS_CONSUMABLE_CACOGIBLETS_OPENTEXT_2                 = "It's kinda like sardines... right?";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_1              = "A bit too staticy.";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_2              = "Ack!";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_3              = "It... works?";
+UAS_CONSUMABLE_CACOGIBLETS_CONSUMETEXT_4              = "[zap] ouch!";
 
 //-----------------
 // Consumable Language Lumps
 //-----------------
 
 // These are likely way too long of names to be worthwhile but idrc - [Ted]
-UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_TAG = "--- \cc%s\c- ---\n";
-UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_DESCRIPTION = "%s\n";
-UAS_CONSUMABLE_DISPLAY_CONTENTS = "\cpContents\n";
-UAS_CONSUMABLE_DISPLAY_NICEFOODLIST_APPENDFORMAT = "\ce%s\n";
-UAS_CONSUMABLE_DISPLAY_CALORIES = "\ce%i Calories\n";
-UAS_CONSUMABLE_DISPLAY_ML_FLUIDS = "\ce%i mL Fluids\n\n";
-UAS_CONSUMABLE_DISPLAY_PACKAGE_CLOSED = "Package Closed\n";
-UAS_CONSUMABLE_DISPLAY_REMAINING = "\cw%.0f%% Remaining\n";
-UAS_CONSUMABLE_DISPLAY_CONSOOMING = "Consuming...";
-UAS_CONSUMABLE_DISPLAY_SPOILED = "clearly spoiled\n";
-UAS_CONSUMABLE_DISPLAY_NOTWORTHEATING = "not worth eating\n";
-UAS_CONSUMABLE_DISPLAY_SOMEWHATSTALE = "somewhat stale\n";
-UAS_CONSUMABLE_DISPLAY_NOTQUITEFRESH = "not quite fresh\n";
-UAS_CONSUMABLE_DISPLAY_FRESH = "basically fresh\n";
+UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_TAG               = "--- \cc%s\c- ---\n";
+UAS_CONSUMABLE_DISPLAY_APPENDFORMAT_DESCRIPTION       = "%s\n";
+UAS_CONSUMABLE_DISPLAY_CONTENTS                       = "\cpContents\n";
+UAS_CONSUMABLE_DISPLAY_NICEFOODLIST_APPENDFORMAT      = "\ce%s\n";
+UAS_CONSUMABLE_DISPLAY_CALORIES                       = "\ce%i Calories\n";
+UAS_CONSUMABLE_DISPLAY_ML_FLUIDS                      = "\ce%i mL Fluids\n\n";
+UAS_CONSUMABLE_DISPLAY_PACKAGE_CLOSED                 = "Package Closed\n";
+UAS_CONSUMABLE_DISPLAY_REMAINING                      = "\cw%.0f%% Remaining\n";
+UAS_CONSUMABLE_DISPLAY_CONSOOMING                     = "Consuming...";
+UAS_CONSUMABLE_DISPLAY_SPOILED                        = "clearly spoiled\n";
+UAS_CONSUMABLE_DISPLAY_NOTWORTHEATING                 = "not worth eating\n";
+UAS_CONSUMABLE_DISPLAY_SOMEWHATSTALE                  = "somewhat stale\n";
+UAS_CONSUMABLE_DISPLAY_NOTQUITEFRESH                  = "not quite fresh\n";
+UAS_CONSUMABLE_DISPLAY_FRESH                          = "basically fresh\n";
 UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_40 = "\cm";
 UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_30 = "\cu";
 UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_20 = "\cs";
 UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_10 = "\cq";
-UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_0 = "\cd";
+UAS_CONSUMABLE_DISPLAY_STATUSCOLOR_AMOUNT_LESSTHAN_0  = "\cd";
