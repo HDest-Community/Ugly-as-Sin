@@ -20,8 +20,7 @@ class UaS_MedicalWheel : Inventory {
 		else if (timeout > 0) { --timeout; }
 	}
 
-	float CrossProduct(Vector2 v0, Vector2 v1)
-	{
+	float CrossProduct(Vector2 v0, Vector2 v1) {
 		return (v0.x * v1.y) - (v0.y * v1.x);
 	}
 
@@ -56,8 +55,7 @@ class UaS_MedicalWheel : Inventory {
 		let hdp = HDPlayerPawn(owner);
 		if (!hdp) { return 0; }
 
-		if (timeout == 0)
-		{
+		if (timeout == 0) {
 			pointerPos = circlePos;
 			playerPitch = owner.player.mo.pitch;
 			playerAngle = owner.player.mo.angle;
@@ -67,8 +65,8 @@ class UaS_MedicalWheel : Inventory {
 		timeout = 2;
 		// apparently, NaN == NaN returns false.... why???
 		// but if motion.x is NaN, motion.x != motion.x returns true???? wtf
-		if (!(motion.x != motion.x)) pointerPos.x += motion.x;
-		if (!(motion.y != motion.y)) pointerPos.y += motion.y;
+		if (!(motion.x != motion.x)) { pointerPos.x += motion.x; }
+		if (!(motion.y != motion.y)) { pointerPos.y += motion.y; }
 
 		pointerPos.x = clamp(pointerPos.x, 0, Screen.GetWidth());
 		pointerPos.y = clamp(pointerPos.y, 0, Screen.GetHeight());
