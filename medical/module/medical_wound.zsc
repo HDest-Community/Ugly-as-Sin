@@ -35,8 +35,9 @@ class UaS_Wound : HDBleedingWound {
 			let hdp = HDPlayerPawn(bleeder);
 			hdp.oldwoundcount = max(hdp.oldwoundcount - random(2, 5), 0);
 		}
-
 		Super.Tick();
+		if (!bleeder) { return; }
+
 		if (!CheckSkip()) { TryStabilise(); }
 
 		// Make sure bandage doesn't fall off when trying to bandage yourself while incap
