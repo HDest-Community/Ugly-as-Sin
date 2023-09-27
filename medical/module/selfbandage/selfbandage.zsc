@@ -9,6 +9,8 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 	Default {
 		Tag "self bandage";
+		+Inventory.UNTOSSABLE;
+		+HDWeapon.DONTDISARM;
 	}
 
 	override void PostBeginPlay() {
@@ -28,6 +30,11 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			.."  +"..WEPHELP_ALTFIRE.."  Strip worn layers\n"
 			..WEPHELP_ZOOM.."  Treat another player\n\n"
 			..toolHelpText;
+	}
+
+	override Inventory CreateTossable() {
+		HDWoundFixer.DropMeds(owner, 0);
+		return null;
 	}
 
 	void ResetAction() {
