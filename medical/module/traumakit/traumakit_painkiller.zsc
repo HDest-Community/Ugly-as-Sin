@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjAnesthetic\n";
 		statusMessage = statusmessage.."\cuFast-acting local painkiller.\n";
 		statusMessage = statusmessage.."Injections remaining: \cy"..weaponstatus[TKS_PAINKILLER].."\n\n";
-		if (!currentWound) { return; }
-		if (currentWound.open <= 0) { return; }
+		if (!mti.currentWound) { return; }
+		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_PAINKILLER] <=0) {
 			currentmessage.text = "No painkiller left!\n";
 			currentmessage.timeout = 2*35;
@@ -21,11 +21,11 @@ extend class UaS_TraumaKit {
 				random[uas_tk](25,75) +
 				random[uas_tk](25,75) +
 				random[uas_tk](25,75)) / 3;
-			currentWound.painkiller = min(currentWound.painkiller + inject, 100);
-			patient.GiveInventory("HDStim", (HDStim.HDSTIM_MAX - HDStim.HDSTIM_DOSE)/20);
+			mti.currentWound.painkiller = min(mti.currentWound.painkiller + inject, 100);
+			mti.patient.GiveInventory("HDStim", (HDStim.HDSTIM_MAX - HDStim.HDSTIM_DOSE)/20);
 			currentmessage.text = "Anesthetic injected.";
 			currentmessage.timeout = 2*35;
-			patient.A_MuzzleClimb(
+			mti.patient.A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,

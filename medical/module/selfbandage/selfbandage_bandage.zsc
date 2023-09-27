@@ -13,32 +13,32 @@ extend class UaS_SelfBandage {
 	}
 
 	void BandageWound(float toPatch, float pressure) {
-		if (!currentWound) { return; }
+		if (!mti.currentWound) { return; }
 
-		currentWound.Patch(toPatch);
-		if (currentWound.depth <= 0. || currentWound.pressure <= 0.3) {
-			currentWound.pressure += pressure;
+		mti.currentWound.Patch(toPatch);
+		if (mti.currentWound.depth <= 0. || mti.currentWound.pressure <= 0.3) {
+			mti.currentWound.pressure += pressure;
 		}
 	}
 
 	void BandageEffect(int min, int max) {
 		timer = Random(min, max);
 		HDPlayerPawn(owner).A_MuzzleClimb((FRandom(-1.5, 1.8), FRandom(-2.4, 2.4)), (0, 0), (0, 0), (0, 0));
-		patient.A_StartSound("bandage/rustle", CHAN_BODY, CHANF_OVERLAP);
+		mti.patient.A_StartSound("bandage/rustle", CHAN_BODY, CHANF_OVERLAP);
 	}
 
 	void TryBandage() {
-		if (CheckCovered() || !currentWound) { return; }
-		if (patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
-		if (currentWound.depth <= 0. && currentWound.patched <= 0.) {
+		if (CheckCovered() || !mti.currentWound) { return; }
+		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
+		if (mti.currentWound.depth <= 0. && mti.currentWound.patched <= 0.) {
 			currentMessage.text = "Nothing to be done here.";
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
-		else if (patient.CountInv("IsMoving") >= 4) {
+		else if (mti.patient.CountInv("IsMoving") >= 4) {
 			currentMessage.text =
-				"You need "..((patient == owner)? "" : "them ")
-				.."to stay still to bandage "..((patient == owner)? "yourself!" : "them!");
+				"You need "..((mti.patient == owner)? "" : "them ")
+				.."to stay still to bandage "..((mti.patient == owner)? "yourself!" : "them!");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
@@ -71,8 +71,8 @@ extend class UaS_SelfBandage {
 
 			default:
 				BandageEffect(4, 8);
-				patient.A_StartSound("weapons/pocket", CHAN_BODY, CHANF_OVERLAP);
-				patient.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
+				mti.patient.A_StartSound("weapons/pocket", CHAN_BODY, CHANF_OVERLAP);
+				mti.patient.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
 
 				progress = 0;
 				BandageWound(FRandom(5, 15), FRandom(0.25, 0.95));
@@ -81,17 +81,17 @@ extend class UaS_SelfBandage {
 	}
 
 	void TryRipBandage() {
-		if (CheckCovered() || !currentWound) { return; }
-		if (patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
-		if (currentWound.patched <= 0.) {
+		if (CheckCovered() || !mti.currentWound) { return; }
+		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
+		if (mti.currentWound.patched <= 0.) {
 			currentMessage.text = "Nothing to be done here.";
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
-		else if (patient.CountInv("IsMoving") >= 4) {
+		else if (mti.patient.CountInv("IsMoving") >= 4) {
 			currentMessage.text =
-				"You need "..((patient == owner)? "" : "them ")
-				.."to stay still to rip off "..((patient == owner)? "your " : "their ").."bandage!";
+				"You need "..((mti.patient == owner)? "" : "them ")
+				.."to stay still to rip off "..((mti.patient == owner)? "your " : "their ").."bandage!";
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
@@ -118,13 +118,13 @@ extend class UaS_SelfBandage {
 
 			default:
 				BandageEffect(0, 0);
-				patient.A_StartSound("bandage/rip", CHAN_BODY, CHANF_OVERLAP);
+				mti.patient.A_StartSound("bandage/rip", CHAN_BODY, CHANF_OVERLAP);
 				owner.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
 
 				progress = 0;
-				currentWound.depth += currentWound.patched;
-				currentWound.patched = 0;
-				currentWound.pressure = 0;
+				mti.currentWound.depth += mti.currentWound.patched;
+				mti.currentWound.patched = 0;
+				mti.currentWound.pressure = 0;
 				break;
 		}
 	}

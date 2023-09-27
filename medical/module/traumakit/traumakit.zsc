@@ -86,7 +86,6 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		}
 
 		TickMessages();
-		currentWound = GetWound(currentWoundIdx);
 	}
 
 	void TickMessages() {
@@ -112,15 +111,12 @@ class UaS_TraumaKit : UaS_MedicalTool {
 
 	void CycleWounds() {
 		if (
-			wh.critwounds.Size() == 0
+			mti.wh.critwounds.Size() == 0
 			|| (!UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
 			|| (UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
 		) { return; }
-		if (GetCycleInput() == 1) { currentWoundIdx++; }
-		else if (GetCycleInput() == -1) { currentWoundIdx--; }
-		currentWoundIdx %= wh.critwounds.Size();
-		if (currentWoundIdx < 0) { currentWoundIdx = wh.critwounds.Size() - 1; }
-		SyncWounds();
+		if (GetCycleInput() == 1) { mti.UpdateCurrentWound(mti.currentWoundIdx + 1); }
+		else if (GetCycleInput() == -1) { mti.UpdateCurrentWound(mti.currentWoundIdx - 1); }
 	}
 
 	void CycleTools(int set = -1) {
@@ -157,18 +153,18 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		string itemname, imperative;
 		// check for intervening items, otherwise exit early
 		bool intervening = (
-			!HDPlayerPawn.CheckStrip(patient, patient, false)
-			|| (currentWound && currentWound.patched > 0.)
+			!HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)
+			|| (mti.currentWound && mti.currentWound.patched > 0.)
 		);
 		if (!intervening) { return true; }
 
-		if (patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
-		else if (patient.countinv("HDArmourWorn")) { itemname = "armour "; }
-		else if (currentWound && currentWound.patched > 0.) { itemname = "bandage "; }
+		if (mti.patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
+		else if (mti.patient.countinv("HDArmourWorn")) { itemname = "armour "; }
+		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = "bandage "; }
 		else { itemname = "worn layers "; }
 
 		// check owner or other
-		if (patient == owner) {
+		if (mti.patient == owner) {
 			imperative = "Take off your ";
 		}
 		else {
@@ -181,20 +177,20 @@ class UaS_TraumaKit : UaS_MedicalTool {
 	}
 
 	void DebugStatus() {
-		if (currentWound) {
-			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
-			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
-			statusmessage = statusmessage.."open "..currentWound.open.."\n";
-			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
-			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
-			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
+		if (mti.currentWound) {
+			statusmessage = statusmessage.."dirty "..mti.currentWound.dirty.."\n";
+			statusmessage = statusmessage.."obstructed "..mti.currentWound.obstructed.."\n";
+			statusmessage = statusmessage.."open "..mti.currentWound.open.."\n";
+			statusmessage = statusmessage.."cavity "..mti.currentWound.cavity.."\n";
+			statusmessage = statusmessage.."infection "..mti.currentWound.infection.."\n";
+			statusmessage = statusmessage.."timer "..mti.currentWound.timer.."\n";
 		}
 		statusMessage = statusMessage.."\n";
 		/*
-		statusMessage = statusMessage.."Open Wounds "..patient.woundcount.."\n";
-		statusMessage = statusMessage.."Unstable Wounds "..patient.unstablewoundcount.."\n";
+		statusMessage = statusMessage.."Open Wounds "..mti.patient.woundcount.."\n";
+		statusMessage = statusMessage.."Unstable Wounds "..mti.patient.unstablewoundcount.."\n";
 		*/
-		statusMessage = statusMessage.."Old Wounds "..patient.oldwoundcount.."\n";
+		statusMessage = statusMessage.."Old Wounds "..mti.patient.oldwoundcount.."\n";
 	}
 
 	enum ToolModes {

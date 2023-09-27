@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjSaline\n";
 		statusMessage = statusmessage.."\cuNeutral wound debriding solution.\n";
 		statusMessage = statusmessage.."Saline remaining: \cy"..weaponstatus[TKS_SALINE].."\n\n";
-		if (!currentWound) { return; }
-		if (currentWound.open <= 0) { return; }
+		if (!mti.currentWound) { return; }
+		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_SALINE] <=0) {
 			currentmessage.text = "No saline left!\n";
 			currentmessage.timeout = 2*35;
@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		}
 
 		// Status precheck
-		if (currentWound.dirty < 0) {
+		if (mti.currentWound.dirty < 0) {
 			currentmessage.text = "The wound does not need debriding.\n";
 			currentmessage.timeout = 10;
 			return;
@@ -45,24 +45,24 @@ extend class UaS_TraumaKit {
 					random[uas_tk](0,75) +
 					random[uas_tk](0,100)) / 2;
 
-				if (currentWound.inpain(5)) {
+				if (mti.currentWound.inpain(5)) {
 					weaponstatus[TK_HOLD] = -5;
-					currentWound.inpain(35);
+					mti.currentWound.inpain(35);
 					PainJolt();
 				}
 
 				// remove some dirt
-				if (check < currentWound.dirty) {
+				if (check < mti.currentWound.dirty) {
 					owner.A_StartSound("misc/smallslop", CHAN_WEAPON);
-					currentWound.dirty = max(currentWound.dirty - random[uas_tk](1,2), 0);
+					mti.currentWound.dirty = max(mti.currentWound.dirty - random[uas_tk](1,2), 0);
 					if(random[uas_tk](0, 35) == 0) {
-						patient.A_StartSound(patient.gruntsound, CHAN_VOICE);
+						mti.patient.A_StartSound(mti.patient.gruntsound, CHAN_VOICE);
 					}
 				}
 
 				// maybe remove some infection
-				if (check < currentWound.infection && random[uas_tk](0,1) == 0) {
-					currentWound.infection = max(currentWound.infection - 1, 1);
+				if (check < mti.currentWound.infection && random[uas_tk](0,1) == 0) {
+					mti.currentWound.infection = max(mti.currentWound.infection - 1, 1);
 				}
 
 				HDPlayerPawn(owner).A_MuzzleClimb(

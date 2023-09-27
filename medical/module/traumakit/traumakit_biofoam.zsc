@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjBiofoam\n";
 		statusMessage = statusmessage.."\cuAbsorbent antiseptic flesh-analogue.\n";
 		statusMessage = statusmessage.."Biofoam remaining: \cy"..weaponstatus[TKS_BIOFOAM].."\n\n";
-		if (!currentWound) { return; }
-		if (currentWound.open <= 0) { return; }
+		if (!mti.currentWound) { return; }
+		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_BIOFOAM] <=0) {
 			currentmessage.text = "No biofoam left!\n";
 			currentmessage.timeout = 2*35;
@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		}
 
 		// Status precheck
-		if (currentWound.cavity < 0) {
+		if (mti.currentWound.cavity < 0) {
 			currentmessage.text = "The wound does not need biofoam.\n";
 			currentmessage.timeout = 10;
 			return;
@@ -28,7 +28,7 @@ extend class UaS_TraumaKit {
 			if (!(owner.player.oldbuttons & BT_ATTACK)) {
 				weaponstatus[TK_HOLD] = random[uas_tk](20,35);
 				owner.A_StartSound("UaS/traumakit/biofoam", CHAN_WEAPON, CHANF_DEFAULT, 0.1);
-				patient.A_MuzzleClimb(
+				mti.patient.A_MuzzleClimb(
 					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
 					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
 					(frandom[uas_tk](-.1,.1),frandom[uas_tk](.01,.1)),
@@ -45,9 +45,9 @@ extend class UaS_TraumaKit {
 
 				weaponstatus[TKS_BIOFOAM]--;
 
-				if (currentWound.inpain(8)) {
+				if (mti.currentWound.inpain(8)) {
 					weaponstatus[TK_HOLD] = -5;
-					currentWound.inpain(35);
+					mti.currentWound.inpain(35);
 					PainJolt();
 				}
 
@@ -57,11 +57,11 @@ extend class UaS_TraumaKit {
 					frandom[uas_tk](0,10)) / 2;
 
 				// remove some tissue damage
-				if (check < currentWound.cavity) {
-					patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
-					currentWound.cavity = max(currentWound.cavity - frandom(0.1, 0.4), 0);
+				if (check < mti.currentWound.cavity) {
+					mti.patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
+					mti.currentWound.cavity = max(mti.currentWound.cavity - frandom(0.1, 0.4), 0);
 					//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
-					patient.A_MuzzleClimb(
+					mti.patient.A_MuzzleClimb(
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),
@@ -69,8 +69,8 @@ extend class UaS_TraumaKit {
 				}
 
 				// maybe remove some infection. Biofoam better at this than saline
-				if (check < currentWound.infection * 2 && random[uas_tk](0,1) == 0) {
-					currentWound.infection = max(currentWound.infection - 1, 1);
+				if (check < mti.currentWound.infection * 2 && random[uas_tk](0,1) == 0) {
+					mti.currentWound.infection = max(mti.currentWound.infection - 1, 1);
 				}
 			}
 		}
