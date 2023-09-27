@@ -9,6 +9,8 @@ class UaS_MedicalTool : HDWeapon {
 	int currentWoundIdx;
 
 	Default {
+		+Weapon.WIMPY_WEAPON;
+		+Weapon.NO_AUTO_SWITCH;
 		Weapon.SlotNumber 9;
 	}
 
