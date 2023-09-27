@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjStapler\n";
 		statusMessage = statusmessage.."\cuManual hand-stapler.\n";
 		statusMessage = statusmessage.."Staples remaining: \cy"..weaponstatus[TKS_STAPLES].."\n\n";
-		if (!currentWound) { return; }
-		if (currentWound.open <= 0) { return; }
+		if (!mti.currentWound) { return; }
+		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_STAPLES] <=0) {
 			currentmessage.text = "No staples left!\n";
 			currentmessage.timeout = 2*35;
@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		}
 
 		// Status precheck
-		if (currentWound.open <= 0) {
+		if (mti.currentWound.open <= 0) {
 			//currentmessage.text = "The wound is closed.\n";
 			//currentmessage.timeout = 10;
 			return;
@@ -24,8 +24,8 @@ extend class UaS_TraumaKit {
 			if (!HandleStrip()) { return; }
 			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
 			weaponstatus[TKS_STAPLES]--;
-			if (currentWound.inpain(25)) {
-				patient.damagemobj(owner,owner,1,"staples");
+			if (mti.currentWound.inpain(25)) {
+				mti.patient.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;
 				PainJolt();
 			}
@@ -33,13 +33,13 @@ extend class UaS_TraumaKit {
 				//PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 				weaponstatus[TK_HOLD] = 15;
 			}
-			patient.A_MuzzleClimb(
+			mti.patient.A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
 			);
-			currentWound.Patch(frandom[uas_tk](0.5,2), true);
+			mti.currentWound.Patch(frandom[uas_tk](0.5,2), true);
 		}
 	}
 }

@@ -70,10 +70,10 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	}
 
 	bool CheckCovered() {
-		let blockinv = HDWoundFixer.CheckCovered(patient, CHECKCOV_ONLYFULL);
+		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_ONLYFULL);
 		if (blockinv) {
 			currentMessage.text =
-				((patient == owner)? "Take off your " : "Tell them to take off their ")
+				((mti.patient == owner)? "Take off your " : "Tell them to take off their ")
 				..blockinv.GetTag().." first!";
 			currentMessage.timeout = 2 * 35;
 			return true;
@@ -84,21 +84,18 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 	// also updates wounds
 	void CycleWounds() {
-		if (wh.critwounds.Size() == 0) { return; }
+		if (mti.wh.critwounds.Size() == 0) { return; }
 
 		if (owner.player.cmd.buttons & BT_RELOAD && !(owner.player.oldbuttons & BT_RELOAD)) {
-			currentWoundIdx++;
+			mti.UpdateCurrentWound(mti.currentWoundIdx + 1);
 			ResetAction();
 			currentMessage.timeout = 0;
 		}
 		else if (owner.player.cmd.buttons & BT_ALTRELOAD && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
-			currentWoundIdx--;
+			mti.UpdateCurrentWound(mti.currentWoundIdx - 1);
 			ResetAction();
 			currentMessage.timeout = 0;
 		}
-		currentWoundIdx %= wh.critwounds.Size();
-		if (currentWoundIdx < 0) { currentWoundIdx = wh.critwounds.Size() - 1; }
-		SyncWounds();
 	}
 
 	void TryRipBloodbag() {
@@ -106,8 +103,8 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			!(owner.player.cmd.buttons & BT_FIREMODE && owner.player.cmd.buttons & BT_ATTACK)
 			|| CheckCovered()
 		) { return; }
-		if (!patient.CountInv("BloodBagWorn")) {
-			currentMessage.text = "There's no blood bag attached to "..((patient == owner)? "you." : "them.");
+		if (!mti.patient.CountInv("BloodBagWorn")) {
+			currentMessage.text = "There's no blood bag attached to "..((mti.patient == owner)? "you." : "them.");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
@@ -124,10 +121,10 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		}
 		else if (timer > 0 && timeout > 0) { timeout = 5; return; }
 
-		patient.A_SetBlend("7a 3a 18", 0.1, 4);
+		mti.patient.A_SetBlend("7a 3a 18", 0.1, 4);
 		HDPlayerPawn(owner).A_MuzzleClimb((0, 2), (0, 0), (0, 0), (0, 0));
-		HDPlayerPawn.PlaySkinSound(patient, SKINSOUND_MEDS, "*usemeds");
-		patient.DropInventory(patient.FindInventory("BloodBagWorn"));
+		HDPlayerPawn.PlaySkinSound(mti.patient, SKINSOUND_MEDS, "*usemeds");
+		mti.patient.DropInventory(mti.patient.FindInventory("BloodBagWorn"));
 	}
 
 	void TryStripWorn() {
@@ -136,7 +133,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			&& owner.player.cmd.buttons & BT_ALTFIRE
 			&& !(owner.player.oldbuttons & BT_ALTFIRE)
 		)) { return; }
-		if (HDPlayerPawn.CheckStrip(patient, patient, silent: true)) {
+		if (HDPlayerPawn.CheckStrip(mti.patient, mti.patient, silent: true)) {
 			currentMessage.text = "Nothing to strip.";
 			currentMessage.timeout = 2 * 35;
 			return;

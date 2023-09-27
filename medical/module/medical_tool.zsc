@@ -2,11 +2,8 @@
 class UaS_MedicalTool : HDWeapon {
 	StatusInfo currentMessage; // used for UI messages
 
-	UaS_WoundHandler wh;
 	UaS_MedicalWheel wheel;
-	HDPlayerPawn patient, lastpatient;
-	UaS_Wound currentWound;
-	int currentWoundIdx;
+	UaS_MedicalToolInfo mti;
 
 	Default {
 		+Weapon.WIMPY_WEAPON;
@@ -14,47 +11,15 @@ class UaS_MedicalTool : HDWeapon {
 		Weapon.SlotNumber 9;
 	}
 
-	override void BeginPlay() {
-		currentWoundIdx = 0;
-		Super.BeginPlay();
-	}
-
 	override void DoEffect() {
 		if (!wheel || wheel.owner != owner) { wheel = UaS_MedicalWheel(owner.FindInventory("UaS_MedicalWheel")); }
-		SetPatient();
-	}
-
-	void SetPatient() {
-		HDPlayerPawn other;
-		FLineTraceData tktrace;
-		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
-		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
-
-		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
-		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
-
-		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
-		if (!wh) { console.printf("No wound handler!"); return; }
-		if (patient != lastpatient) { currentWound = null; }
-		lastpatient = patient;
-	}
-
-	// Tries to sync the current selected wound with other `UaS_MedicalTool`s
-	void SyncWounds() {
-		UaS_Wound old = currentWound;
-		currentWound = GetWound(currentWoundIdx);
-		if (old == currentWound) { return; }
-		for (let item = owner.Inv; item; item = item.Inv) {
-			let tool = UaS_MedicalTool(item);
-			if (!tool || tool == self) { continue; }
-
-			tool.currentWoundIdx = currentWoundIdx;
-		}
+		if (!mti || mti.owner != owner) { mti = UaS_MedicalToolInfo(owner.FindInventory("UaS_MedicalToolInfo")); }
+		if (mti) { mti.SetPatient(); }
 	}
 
 	UaS_Wound GetWound(int index) {
-		if (wh.critwounds.size() <= 0) { return null; }
-		return wh.critwounds[index];
+		if (mti.wh.critwounds.size() <= 0) { return null; }
+		return mti.wh.critwounds[index];
 	}
 
 	ui string GetStatusColor(int amount) {
@@ -74,5 +39,44 @@ class UaS_MedicalTool : HDWeapon {
 	struct StatusInfo {
 		string text;
 		int timeout;
+	}
+}
+
+class UaS_MedicalToolInfo : Inventory {
+	UaS_WoundHandler wh;
+	HDPlayerPawn patient, lastpatient;
+	UaS_Wound currentWound;
+	int currentWoundIdx;
+
+	override void BeginPlay() {
+		currentWoundIdx = 0;
+		Super.BeginPlay();
+	}
+
+	override void DoEffect() {
+		if (!currentWound) { UpdateCurrentWound(currentWoundIdx); }
+	}
+
+	void UpdateCurrentWound(int idx) {
+		if (!wh || wh.critwounds.Size() <= 0) { currentWound = null; currentWoundIdx = 0; return; }
+
+		currentWoundIdx = idx % wh.critwounds.Size();
+		if (currentWoundIdx < 0) { currentWoundIdx = wh.critwounds.Size() - 1; }
+		currentWound = wh.critwounds[currentWoundIdx];
+	}
+
+	void SetPatient() {
+		HDPlayerPawn other;
+		FLineTraceData tktrace;
+		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
+		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
+
+		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
+		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
+
+		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
+		if (!wh) { console.printf("No wound handler!"); return; }
+		if (patient != lastpatient) { UpdateCurrentWound(0); }
+		lastpatient = patient;
 	}
 }

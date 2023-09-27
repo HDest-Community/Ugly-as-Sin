@@ -32,6 +32,9 @@ class UaS_Medical_Bootstrap : EventHandler {
 			if (!p.mo.countinv("UaS_SelfBandage")) {
 				p.mo.giveinventory("UaS_SelfBandage", 1);
 			}
+			if (!p.mo.countinv("UaS_MedicalToolInfo")) {
+				p.mo.giveinventory("UaS_MedicalToolInfo", 1);
+			}
 		}
 	}
 }

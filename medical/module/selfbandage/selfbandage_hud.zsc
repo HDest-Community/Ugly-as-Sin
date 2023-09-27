@@ -17,7 +17,7 @@ extend class UaS_SelfBandage {
 			woundsLocation.x + (offset.x * sin(location.x)) * hudScale.x,
 			woundsLocation.y + (offset.y - (offset.y + offset.y) * location.y) * hudScale.y
 		);
-		bool selected = (wound == currentWound);
+		bool selected = (wound == mti.currentWound);
 		float woundAlpha = (selected)? 1.00 : 0.75;
 		Vector2 woundScale = ((selected)? 1.00 : 0.75) * hudScale;
 
@@ -101,7 +101,7 @@ extend class UaS_SelfBandage {
 		// Patient
 		sb.DrawString(
 			sb.pSmallFont,
-			"Treating "..patient.player.GetUsername(),
+			"Treating "..mti.patient.player.GetUsername(),
 			(0, baseOffset + textHeight),
 			titleFlags,
 			Font.CR_GRAY,
@@ -114,7 +114,7 @@ extend class UaS_SelfBandage {
 		// cool grid
 		int gridAlpha = 25;
 		Vector2 gridSize = (120 * hudScale.x, 120 * hudScale.y);
-		Color patientColour = patient.Player.GetDisplayColor();
+		Color patientColour = mti.patient.Player.GetDisplayColor();
 		Color gridColour = Color(gridAlpha, patientColour.r, patientColour.g, patientColour.b);
 		Vector2 gridPos = (
 			woundsLocation.x - (gridSize.x / 2),
@@ -154,8 +154,8 @@ extend class UaS_SelfBandage {
 		}
 
 		// Wound icons
-		if (!wh) { return; }
-		if (wh.critWounds.Size() == 0) {
+		if (!mti.wh) { return; }
+		if (mti.wh.critWounds.Size() == 0) {
 			sb.DrawString(
 				sb.pSmallFont,
 				"You have no wounds.",
@@ -166,50 +166,50 @@ extend class UaS_SelfBandage {
 			);
 		}
 
-		for (int i = 0; i < wh.critWounds.Size(); i++)
+		for (int i = 0; i < mti.wh.critWounds.Size(); i++)
 		{
-			UaS_Wound wound = wh.critWounds[i];
-			if (!wound || wound == currentWound) { continue; }
+			UaS_Wound wound = mti.wh.critWounds[i];
+			if (!wound || wound == mti.currentWound) { continue; }
 
 			DrawWound(sb, wound, woundsLocation, gridSize, hudScale);
 		}
 
 		// Always display selected wound on top
-		if (currentWound) { DrawWound(sb, currentWound, woundsLocation, gridSize, hudScale); }
+		if (mti.currentWound) { DrawWound(sb, mti.currentWound, woundsLocation, gridSize, hudScale); }
 
 		// Wound info
 		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
 		Array<string> status;
 
-		if (!currentWound) { status.Push("\c[DarkGray]No wound selected.\c-"); }
+		if (!mti.currentWound) { status.Push("\c[DarkGray]No wound selected.\c-"); }
 		else {
-			string statusText = GetStatusColor(currentWound.open * 10).."open\c-";
-			if (currentWound.depth <= 0. && currentWound.patched > 0) { statusText = statusText.." but \c[Yellow]patched"; }
-			else if (currentWound.depth <= 0) { statusText = "\c[Green]sealed"; }
+			string statusText = GetStatusColor(mti.currentWound.open * 10).."open\c-";
+			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = statusText.." but \c[Yellow]patched"; }
+			else if (mti.currentWound.depth <= 0) { statusText = "\c[Green]sealed"; }
 
 			status.Push(String.Format("- The wound is %s", statusText));
 
-			if (currentWound.depth <= 0. && currentWound.patched > 0) {
+			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);
 
-				if (currentWound.pressure > 5.0) { statusText = "very tight"; }
-				else if (currentWound.pressure > 3.5) { statusText = "tight"; }
-				else if (currentWound.pressure > 2.0) { statusText = "a bit tight"; }
-				else if (currentWound.pressure > 1.0) { statusText = "somewhat tight"; }
-				else if (currentWound.pressure > 0.5) { statusText = "somewhat loose"; }
-				else if (currentWound.pressure > 0.2) { statusText = "loose"; }
+				if (mti.currentWound.pressure > 5.0) { statusText = "very tight"; }
+				else if (mti.currentWound.pressure > 3.5) { statusText = "tight"; }
+				else if (mti.currentWound.pressure > 2.0) { statusText = "a bit tight"; }
+				else if (mti.currentWound.pressure > 1.0) { statusText = "somewhat tight"; }
+				else if (mti.currentWound.pressure > 0.5) { statusText = "somewhat loose"; }
+				else if (mti.currentWound.pressure > 0.2) { statusText = "loose"; }
 				else { statusText = "very loose"; }
-				status.Push("- Bandage feels "..GetStatusColor(max(0, 100 - currentWound.pressure / 5 * 100))..statusText);
+				status.Push("- Bandage feels "..GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))..statusText);
 			}
 
 			woundInfoPos -= (0, halfStep);
-			if (currentWound.stabilised >= 100.0) { statusText = "fine"; }
-			else if (currentWound.stabilised > 75.0) { statusText = "somewhat fine"; }
-			else if (currentWound.stabilised > 50.0) { statusText = "decent"; }
-			else if (currentWound.stabilised > 25.0) { statusText = "not that great"; }
-			else if (currentWound.stabilised > 5.0) { statusText = "less horrible"; }
+			if (mti.currentWound.stabilised >= 100.0) { statusText = "fine"; }
+			else if (mti.currentWound.stabilised > 75.0) { statusText = "somewhat fine"; }
+			else if (mti.currentWound.stabilised > 50.0) { statusText = "decent"; }
+			else if (mti.currentWound.stabilised > 25.0) { statusText = "not that great"; }
+			else if (mti.currentWound.stabilised > 5.0) { statusText = "less horrible"; }
 			else { statusText = "horrible"; }
-			status.Push("- It feels "..GetStatusColor(100 - currentWound.stabilised)..statusText);
+			status.Push("- It feels "..GetStatusColor(100 - mti.currentWound.stabilised)..statusText);
 		}
 
 		for (int i = 0; i < status.Size(); i++) {

@@ -24,8 +24,9 @@ class UaS_MedicalDebug : EventHandler {
 			whInfo, hdp.bloodloss, double(hdp.bloodloss) / (HDCONST_BLOODBAGAMOUNT<<2), hdp.burncount, (sf)? sf.Amount : 0, hdp.oldwoundcount, hdp.CountInv("IsMoving"), hdp.BeatCount
 		);
 
+		let mti = UaS_MedicalToolInfo(hdp.FindInventory("UaS_MedicalToolInfo"));
 		UaS_Wound currentWound = null;
-		if (UaS_MedicalTool(hdp.Player.ReadyWeapon)) { currentWound = UaS_MedicalTool(hdp.Player.ReadyWeapon).currentWound; }
+		if (mti) { currentWound = mti.currentWound; }
 
 		// wounds
 		for (int i = 0; i < wh.critwounds.Size(); i++) {
