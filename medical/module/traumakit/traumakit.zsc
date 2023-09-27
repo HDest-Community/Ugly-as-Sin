@@ -86,6 +86,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		}
 
 		TickMessages();
+		currentWound = GetWound(currentWoundIdx);
 	}
 
 	void TickMessages() {
@@ -115,8 +116,11 @@ class UaS_TraumaKit : UaS_MedicalTool {
 			|| (!UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
 			|| (UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
 		) { return; }
-		if (GetCycleInput() == 1) { wh.currentWound = wh.GetNextWound(); }
-		else if (GetCycleInput() == -1) { wh.currentWound = wh.GetPrevWound(); }
+		if (GetCycleInput() == 1) { currentWoundIdx++; }
+		else if (GetCycleInput() == -1) { currentWoundIdx--; }
+		currentWoundIdx %= wh.critwounds.Size();
+		if (currentWoundIdx < 0) { currentWoundIdx = wh.critwounds.Size() - 1; }
+		SyncWounds();
 	}
 
 	void CycleTools(int set = -1) {
@@ -154,13 +158,13 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		// check for intervening items, otherwise exit early
 		bool intervening = (
 			!HDPlayerPawn.CheckStrip(patient, patient, false)
-			|| (wh.currentWound && wh.currentWound.patched > 0.)
+			|| (currentWound && currentWound.patched > 0.)
 		);
 		if (!intervening) { return true; }
 
 		if (patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
 		else if (patient.countinv("HDArmourWorn")) { itemname = "armour "; }
-		else if (wh.currentWound && wh.currentWound.patched > 0.) { itemname = "bandage "; }
+		else if (currentWound && currentWound.patched > 0.) { itemname = "bandage "; }
 		else { itemname = "worn layers "; }
 
 		// check owner or other
@@ -177,13 +181,13 @@ class UaS_TraumaKit : UaS_MedicalTool {
 	}
 
 	void DebugStatus() {
-		if (wh.currentWound) {
-			statusmessage = statusmessage.."dirty "..wh.currentWound.dirty.."\n";
-			statusmessage = statusmessage.."obstructed "..wh.currentWound.obstructed.."\n";
-			statusmessage = statusmessage.."open "..wh.currentWound.open.."\n";
-			statusmessage = statusmessage.."cavity "..wh.currentWound.cavity.."\n";
-			statusmessage = statusmessage.."infection "..wh.currentWound.infection.."\n";
-			statusmessage = statusmessage.."timer "..wh.currentWound.timer.."\n";
+		if (currentWound) {
+			statusmessage = statusmessage.."dirty "..currentWound.dirty.."\n";
+			statusmessage = statusmessage.."obstructed "..currentWound.obstructed.."\n";
+			statusmessage = statusmessage.."open "..currentWound.open.."\n";
+			statusmessage = statusmessage.."cavity "..currentWound.cavity.."\n";
+			statusmessage = statusmessage.."infection "..currentWound.infection.."\n";
+			statusmessage = statusmessage.."timer "..currentWound.timer.."\n";
 		}
 		statusMessage = statusMessage.."\n";
 		/*

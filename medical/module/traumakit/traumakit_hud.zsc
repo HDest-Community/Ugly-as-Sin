@@ -42,7 +42,7 @@ extend class UaS_TraumaKit {
 			);
 		} else {
 			Array<string> wounds;
-			int idx = (wh.currentWound)? wh.critWounds.Find(wh.currentWound) : 0;
+			int idx = (currentWound)? currentWoundIdx : 0;
 			int loopMin = Min(idx - 2, wh.critWounds.Size() - 5);
 			int loopMax = Max(idx + 2, 4);
 
@@ -55,7 +55,7 @@ extend class UaS_TraumaKit {
 				) { continue; }
 
 				string textColor;
-				bool selected = (wh.currentWound && i == idx);
+				bool selected = (currentWound && i == idx);
 				if (wh.critWounds[i].avgstat >= 15) {
 					textColor = (selected)? "\ca" : "\cr"; // Red / Dark Red
 				} else {
@@ -109,76 +109,75 @@ extend class UaS_TraumaKit {
 		// Wound info
 		int woundInfoOffsetX = 12;
 		float woundInfoOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
-		if (wh.currentWound) {
-			Array<string> status;
-
-			if (wh.currentWound.open <= 0) {
-				status.Push("-The wound is "..GetStatusColor(wh.currentWound.open).."closed\c-.");
+		Array<string> status;
+		if (currentWound) {
+			if (currentWound.open <= 0) {
+				status.Push("-The wound is "..GetStatusColor(currentWound.open).."closed\c-.");
 			}
-			else if (wh.currentWound.depth <= 0. && wh.currentWound.patched > 0.) {
-				status.Push("-The wound is "..GetStatusColor(wh.currentWound.open * 10).."open\c- but \c[Yellow]patched\c-");
+			else if (currentWound.depth <= 0. && currentWound.patched > 0.) {
+				status.Push("-The wound is "..GetStatusColor(currentWound.open * 10).."open\c- but \c[Yellow]patched\c-");
 
 				string tmpStr;
-				if (wh.currentWound.stabilised >= 100.0) { tmpStr = "fine"; }
-				else if (wh.currentWound.stabilised > 75.0) { tmpStr = "somewhat fine"; }
-				else if (wh.currentWound.stabilised > 50.0) { tmpStr = "decent"; }
-				else if (wh.currentWound.stabilised > 25.0) { tmpStr = "not that great"; }
-				else if (wh.currentWound.stabilised > 5.0) { tmpStr = "less horrible"; }
+				if (currentWound.stabilised >= 100.0) { tmpStr = "fine"; }
+				else if (currentWound.stabilised > 75.0) { tmpStr = "somewhat fine"; }
+				else if (currentWound.stabilised > 50.0) { tmpStr = "decent"; }
+				else if (currentWound.stabilised > 25.0) { tmpStr = "not that great"; }
+				else if (currentWound.stabilised > 5.0) { tmpStr = "less horrible"; }
 				else { tmpStr = "horrible"; }
-				status.Push("-It seems to be "..GetStatusColor(100 - wh.currentWound.stabilised)..tmpStr);
+				status.Push("-It seems to be "..GetStatusColor(100 - currentWound.stabilised)..tmpStr);
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push("-The wound is "..GetStatusColor(wh.currentWound.open * 10).."open");
+				status.Push("-The wound is "..GetStatusColor(currentWound.open * 10).."open");
 
 				string tmpStr;
 
 				// Painkillers
 				tmpStr = "not numbed.";
-				if (wh.currentWound.painkiller >= 75) tmpStr = "numbed";
-				else if (wh.currentWound.painkiller >= 50) tmpStr = "mostly numbed";
-				else if (wh.currentWound.painkiller >= 25) tmpStr = "somewhat numbed";
+				if (currentWound.painkiller >= 75) tmpStr = "numbed";
+				else if (currentWound.painkiller >= 50) tmpStr = "mostly numbed";
+				else if (currentWound.painkiller >= 25) tmpStr = "somewhat numbed";
 
-				status.Push("-It is "..GetStatusColor(100 - wh.currentWound.painkiller)..tmpStr);
+				status.Push("-It is "..GetStatusColor(100 - currentWound.painkiller)..tmpStr);
 				woundInfoOffsetY -= halfStep;
 
 				// Dirty
-				if (wh.currentWound.dirty >= 0) {
+				if (currentWound.dirty >= 0) {
 					tmpStr = "completely clean";
-					if (wh.currentWound.dirty >= 65) { tmpStr = "filthy"; }
-					else if (wh.currentWound.dirty >= 55) { tmpStr = "very dirty"; }
-					else if (wh.currentWound.dirty >= 45) { tmpStr = "somewhat dirty"; }
-					else if (wh.currentWound.dirty >= 35) { tmpStr = "a bit dirty"; }
-					else if (wh.currentWound.dirty >= 25) { tmpStr = "almost clean"; }
-					else if (wh.currentWound.dirty >= 15) { tmpStr = "acceptably clean"; }
+					if (currentWound.dirty >= 65) { tmpStr = "filthy"; }
+					else if (currentWound.dirty >= 55) { tmpStr = "very dirty"; }
+					else if (currentWound.dirty >= 45) { tmpStr = "somewhat dirty"; }
+					else if (currentWound.dirty >= 35) { tmpStr = "a bit dirty"; }
+					else if (currentWound.dirty >= 25) { tmpStr = "almost clean"; }
+					else if (currentWound.dirty >= 15) { tmpStr = "acceptably clean"; }
 
-					status.Push("-It is "..GetStatusColor(wh.currentWound.dirty)..tmpStr);
+					status.Push("-It is "..GetStatusColor(currentWound.dirty)..tmpStr);
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Obstructions
-				if (wh.currentWound.obstructed >= 0) {
+				if (currentWound.obstructed >= 0) {
 					tmpStr = "no apparent obstructions";
-					if (wh.currentWound.obstructed >= 55) { tmpStr = "many obstructions"; }
-					else if (wh.currentWound.obstructed >= 45) { tmpStr = "several obstructions"; }
-					else if (wh.currentWound.obstructed >= 35) { tmpStr = "a few obstructions"; }
-					else if (wh.currentWound.obstructed >= 25) { tmpStr = "some obstructions"; }
-					else if (wh.currentWound.obstructed >= 15) { tmpStr = "very little obstructions"; }
+					if (currentWound.obstructed >= 55) { tmpStr = "many obstructions"; }
+					else if (currentWound.obstructed >= 45) { tmpStr = "several obstructions"; }
+					else if (currentWound.obstructed >= 35) { tmpStr = "a few obstructions"; }
+					else if (currentWound.obstructed >= 25) { tmpStr = "some obstructions"; }
+					else if (currentWound.obstructed >= 15) { tmpStr = "very little obstructions"; }
 
-					status.Push("-There are "..GetStatusColor(wh.currentWound.obstructed)..tmpStr);
+					status.Push("-There are "..GetStatusColor(currentWound.obstructed)..tmpStr);
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Cavity
-				if (wh.currentWound.cavity >= 0) {
+				if (currentWound.cavity >= 0) {
 					tmpStr = "no treatable tissue damage";
-					if (wh.currentWound.cavity >= 12.0) { tmpStr = "severe tissue damage"; }
-					else if (wh.currentWound.cavity >= 8.5) { tmpStr = "significant tissue damage"; }
-					else if (wh.currentWound.cavity >= 5.0) { tmpStr = "moderate tissue damage"; }
-					else if (wh.currentWound.cavity >= 2.5) { tmpStr = "some tissue damage"; }
-					else if (wh.currentWound.cavity >= 1.0) { tmpStr = "little tissue damage"; }
+					if (currentWound.cavity >= 12.0) { tmpStr = "severe tissue damage"; }
+					else if (currentWound.cavity >= 8.5) { tmpStr = "significant tissue damage"; }
+					else if (currentWound.cavity >= 5.0) { tmpStr = "moderate tissue damage"; }
+					else if (currentWound.cavity >= 2.5) { tmpStr = "some tissue damage"; }
+					else if (currentWound.cavity >= 1.0) { tmpStr = "little tissue damage"; }
 
-					status.Push("-There is "..GetStatusColor(wh.currentWound.cavity * 5)..tmpStr);
+					status.Push("-There is "..GetStatusColor(currentWound.cavity * 5)..tmpStr);
 					woundInfoOffsetY -= halfStep;
 				}
 			}

@@ -5,9 +5,16 @@ class UaS_MedicalTool : HDWeapon {
 	UaS_WoundHandler wh;
 	UaS_MedicalWheel wheel;
 	HDPlayerPawn patient, lastpatient;
+	UaS_Wound currentWound;
+	int currentWoundIdx;
 
 	Default {
 		Weapon.SlotNumber 9;
+	}
+
+	override void BeginPlay() {
+		currentWoundIdx = 0;
+		Super.BeginPlay();
 	}
 
 	override void DoEffect() {
@@ -26,8 +33,21 @@ class UaS_MedicalTool : HDWeapon {
 
 		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
 		if (!wh) { console.printf("No wound handler!"); return; }
-		if (patient != lastpatient) { wh.currentWound = null; }
+		if (patient != lastpatient) { currentWound = null; }
 		lastpatient = patient;
+	}
+
+	// Tries to sync the current selected wound with other `UaS_MedicalTool`s
+	void SyncWounds() {
+		UaS_Wound old = currentWound;
+		currentWound = GetWound(currentWoundIdx);
+		if (old == currentWound) { return; }
+		for (let item = owner.Inv; item; item = item.Inv) {
+			let tool = UaS_MedicalTool(item);
+			if (!tool || tool == self) { continue; }
+
+			tool.currentWoundIdx = currentWoundIdx;
+		}
 	}
 
 	UaS_Wound GetWound(int index) {

@@ -3,8 +3,8 @@ extend class UaS_TraumaKit {
 		statusMessage = statusmessage.."\cjStapler\n";
 		statusMessage = statusmessage.."\cuManual hand-stapler.\n";
 		statusMessage = statusmessage.."Staples remaining: \cy"..weaponstatus[TKS_STAPLES].."\n\n";
-		if (!wh.currentWound) { return; }
-		if (wh.currentWound.open <= 0) { return; }
+		if (!currentWound) { return; }
+		if (currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_STAPLES] <=0) {
 			currentmessage.text = "No staples left!\n";
 			currentmessage.timeout = 2*35;
@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		}
 
 		// Status precheck
-		if (wh.currentWound.open <= 0) {
+		if (currentWound.open <= 0) {
 			//currentmessage.text = "The wound is closed.\n";
 			//currentmessage.timeout = 10;
 			return;
@@ -24,7 +24,7 @@ extend class UaS_TraumaKit {
 			if (!HandleStrip()) { return; }
 			owner.A_StartSound("medikit/staple",CHAN_WEAPON);
 			weaponstatus[TKS_STAPLES]--;
-			if (wh.currentWound.inpain(25)) {
+			if (currentWound.inpain(25)) {
 				patient.damagemobj(owner,owner,1,"staples");
 				weaponstatus[TK_HOLD] = 50;
 				PainJolt();
@@ -39,7 +39,7 @@ extend class UaS_TraumaKit {
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))
 			);
-			wh.currentWound.Patch(frandom[uas_tk](0.5,2), true);
+			currentWound.Patch(frandom[uas_tk](0.5,2), true);
 		}
 	}
 }
