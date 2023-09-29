@@ -216,6 +216,16 @@ UAS_TRAUMAKIT_HELPTEXT_REMOVECAP = "  Re-open wound\n";
 UAS_TRAUMAKIT_HELPTEXT_REPLACECAP = "  Replace safety cap\n";
 UAS_TRAUMAKIT_HELPTEXT_PLUS = "  +";
 
+// Foreceps
+UAS_TRAUMAKIT_FORECEPS_TITLE = "\cjForceps\n";
+UAS_TRAUMAKIT_FORECEPS_DESCRIPTION = "\cuPrecision tool for removing obstructions.\n\n\n";
+UAS_TRAUMAKIT_FORECEPS_UNUSABLE = "No obstructions require removal.\n";
+UAS_TRAUMAKIT_FORECEPS_HOLDINGWOUNDOPEN = "Holding the wound open.\n";
+UAS_TRAUMAKIT_FORECEPS_PROBEWOUND = "You probe the wound";
+UAS_TRAUMAKIT_FORECEPS_DAMAGE = ", damaging the surrounding tissue.";
+UAS_TRAUMAKIT_FORECEPS_PROBEPERIOD = ".";
+UAS_TRAUMAKIT_FORECEPS_OUTOFWOUND = "You %s %s %s out of the wound";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------
