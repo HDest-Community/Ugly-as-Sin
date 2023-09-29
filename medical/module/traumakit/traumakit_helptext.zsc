@@ -10,52 +10,52 @@ extend class UaS_TraumaKit {
 		string r;
 		LocalizeHelp();
 		if (UaS_TraumaKit_AltControls && UaS_Traumakit_AltControls.GetBool()) {
-			r.AppendFormat(LWPHELP_RELOAD.."  Cycle wounds down\n");
-			r.AppendFormat(LWPHELP_ALTRELOAD.."  Cycle wounds up\n");
-			r.AppendFormat(LWPHELP_FIREMODE.."  Hold and ...\n");
-			r.AppendFormat("  +"..LWPHELP_RELOAD.."  Cycle tools forward\n");
-			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."  Cycle tools backward\n");
+			r.AppendFormat(LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN");
+			r.AppendFormat(LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP");
+			r.AppendFormat(LWPHELP_FIREMODE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDAND");
+			r.AppendFormat("  +"..LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD");
+			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD");
 		} else {
-			r.AppendFormat(LWPHELP_RELOAD.."  Cycle tools forward\n");
-			r.AppendFormat(LWPHELP_ALTRELOAD.."  Cycle tools backward\n");
-			r.AppendFormat(LWPHELP_FIREMODE.."  Hold and ...\n");
-			r.AppendFormat("  +"..LWPHELP_RELOAD.."  Cycle wounds down\n");
-			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."  Cycle wounds up\n");
+			r.AppendFormat(LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD");
+			r.AppendFormat(LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD");
+			r.AppendFormat(LWPHELP_FIREMODE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDAND");
+			r.AppendFormat("  +"..LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN");
+			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP");
 		}
-		r.AppendFormat(LWPHELP_ZOOM.."  Treat another player\n");
-		r.AppendFormat(LWPHELP_DROPONE.."  Drop some excess supplies\n\n");
+		r.AppendFormat(LWPHELP_ZOOM.."$UAS_TRAUMAKIT_HELPTEXT_TREATANOTHERPLAYER");
+		r.AppendFormat(LWPHELP_DROPONE.."$UAS_TRAUMAKIT_HELPTEXT_DROPEXCESS");
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
-				r.AppendFormat(LWPHELP_FIRE.."  Inject anesthetic\n");
-				r.AppendFormat(LWPHELP_ALTFIRE.."  Refill anesthetic\n(break down stimpack)\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_INJECTANESTHETIC");
+				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLANESTHETIC");
 				break;
 			case T_SALINE:
-				r.AppendFormat(LWPHELP_FIRE.."  Flush wound\n");
-				r.AppendFormat(LWPHELP_ALTFIRE.."  Refill saline\n(break down bloodpack)\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_FLUSHWOUND");
+				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLSALINE");
 				break;
 			case T_FORCEPS:
-				r.AppendFormat(LWPHELP_FIRE.."  Hold wound open\n");
-				r.AppendFormat(LWPHELP_UNLOAD.."  Extract obstructions\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDWOUNDOPEN");
+				r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_EXTRACTOBSTRUCTIONS");
 				break;
 			case T_BIOFOAM:
-				r.AppendFormat(LWPHELP_FIRE.."  Inject biofoam\n");
-				r.AppendFormat(LWPHELP_ALTFIRE.."  Refill biofoam\n(break down suture cart)\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_INJECTBIOFOAM");
+				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLBIOFOAM");
 				break;
 			case T_STAPLER:
-				r.AppendFormat(LWPHELP_FIRE.."  Staple wound closed\n");
-				r.AppendFormat(LWPHELP_ALTFIRE.."  Refill staples\n(break down suture cart)\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_STAPLEWOUND");
+				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLSTAPLES");
 				break;
 			case T_SUTURES:
 				r.AppendFormat(LWPHELP_FIRE.."  Suture wound closed\n");
 				break;
 			case T_SCALPEL:
-				r.AppendFormat(LWPHELP_FIRE.."  Re-open wound\n");
+				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_REOPENWOUND");
 				if (weaponstatus[TK_SCALPEL_CAP] == 1) {
-					r.AppendFormat(LWPHELP_UNLOAD.."  Remove safety cap\n");
+					r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_REMOVECAP");
 				}
 				else {
-					r.AppendFormat(LWPHELP_UNLOAD.."  Replace safety cap\n");
+					r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_REPLACECAP");
 				}
 				break;
 		}
