@@ -195,3 +195,10 @@ UAS_TRAUMAKIT_SCALPEL_DESCRIPTION = "\cuFor re-opening wounds.\n\n\n";
 UAS_TRAUMAKIT_SCALPEL_REMOVECAP = "Removed safety cap.\n";
 UAS_TRAUMAKIT_SCALPEL_REPLACECAP = "Replaced safety cap.\n";
 UAS_TRAUMAKIT_SCALPEL_CAPON = "The cap is still on...\n";
+
+// Stapler
+UAS_TRAUMAKIT_STAPLER_TITLE = "\cjStapler\n";
+UAS_TRAUMAKIT_STAPLER_DESCRIPTION = "\cuManual hand-stapler.\n";
+UAS_TRAUMAKIT_STAPLER_REMAINING = "Staples remaining: \cy";
+UAS_TRAUMAKIT_STAPLER_NEWLINE = "\n\n";
+UAS_TRAUMAKIT_STAPLER_NONELEFT = "No staples left!\n";
