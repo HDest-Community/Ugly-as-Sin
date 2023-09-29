@@ -58,12 +58,28 @@ extend class UaS_TraumaKit {
 	// Copied from HD to avoid inheritance chain
 	// Thanks to MarinaGryphon (jade-2562) for figuring this out
 	void TakeInjector(class<inventory> injectortype) {
-		let mmm=HDMagAmmo(owner.findinventory(injectortype));
-		if(mmm){
-			mmm.amount--;
-			if(mmm.amount<1)mmm.destroy();
-			else if(mmm.mags.size())mmm.mags.pop();
+		// for pre-injector overhaul
+		let mmm = HDMagAmmo(owner.FindInventory(injectortype));
+		if (mmm) {
+			mmm.Amount--;
+			if (mmm.Amount < 1) { mmm.Destroy(); }
+			else if (mmm.Mags.Size()) { mmm.Mags.Pop(); }
+			return;
 		}
+
+		// for post-injector overhaul
+		let spw = SpareWeapons(owner.FindInventory("SpareWeapons"));
+		if (HDWeapon.GetActualAmount(owner, injectortype.GetClassName()) == 1 || !spw) {
+			let item = owner.FindInventory(injectortype);
+			item.Destroy();
+			return;
+		}
+
+		int i = spw.weapontype.Find(injectortype.GetClassName());
+		if (i == spw.weapontype.Size()) { return; }
+		spw.weapontype.Delete(i);
+		spw.weaponbulk.Delete(i);
+		spw.weaponstatus.Delete(i);
 	}
 
 	void HandleSupplies() {
