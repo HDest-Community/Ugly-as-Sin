@@ -278,6 +278,16 @@ UAS_TRAUMAKIT_REFILL_SALINE = "\cvRefilled saline.\nconsumed one Second Blood pa
 UAS_TRAUMAKIT_REFILL_NOBLOOD = "No available Second Blood packs.";
 UAS_TRAUMAKIT_REFILL_2FCARTRIDGE = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
 UAS_TRAUMAKIT_REFILL_NOCARTRIDGES = "No available auto-suture cartridges.";
+UAS_TRAUMAKIT_PICKUP = "Picked up a personal trauma kit.";
+UAS_TRAUMAKIT_TAG = "Trauma Kit";
+UAS_TRAUMAKIT_ENVIROSUIT = "environment suit ";
+UAS_TRAUMAKIT_ARMOUR = "armour ";
+UAS_TRAUMAKIT_BANDAGE = "bandage ";
+UAS_TRAUMAKIT_WORNLAYERS = "worn layers ";
+UAS_TRAUMAKIT_TAKEOFFYOUR = "Take off your ";
+UAS_TRAUMAKIT_HAVETHEMTAKEOFF = "Have them take off their ";
+UAS_TRAUMAKIT_FIRST = "first!\n";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------
