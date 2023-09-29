@@ -192,6 +192,30 @@ UAS_TRAUMAKIT_TOOLLIST_NAMES_SP = "SP";
 UAS_TRAUMAKIT_TOOLLIST_NAMES_ST = "ST";
 UAS_TRAUMAKIT_TOOLLIST_NAMES_SC = "SC";
 
+// Trauma Kit Help Text
+UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN = "  Cycle wounds down\n";
+UAS_TRAUMAKIT_HELPTEXT_CYCLEUP = "  Cycle wounds up\n";
+UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD = "  Cycle tools forward\n";
+UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD = "  Cycle tools backward\n";
+UAS_TRAUMAKIT_HELPTEXT_HOLDAND = "  Hold and ...\n";
+UAS_TRAUMAKIT_HELPTEXT_TREATANOTHERPLAYER = "  Treat another player\n";
+UAS_TRAUMAKIT_HELPTEXT_DROPEXCESS = "  Drop some excess supplies\n\n";
+UAS_TRAUMAKIT_HELPTEXT_INJECTANESTHETIC = "  Inject anesthetic\n";
+UAS_TRAUMAKIT_HELPTEXT_REFILLANESTHETIC = "  Refill anesthetic\n(break down stimpack)\n";
+UAS_TRAUMAKIT_HELPTEXT_FLUSHWOUND = "  Flush wound\n";
+UAS_TRAUMAKIT_HELPTEXT_REFILLSALINE = "  Refill saline\n(break down bloodpack)\n";
+UAS_TRAUMAKIT_HELPTEXT_HOLDWOUNDOPEN = "  Hold wound open\n";
+UAS_TRAUMAKIT_HELPTEXT_EXTRACTOBSTRUCTIONS = "  Extract obstructions\n";
+UAS_TRAUMAKIT_HELPTEXT_INJECTBIOFOAM = "  Inject biofoam\n";
+UAS_TRAUMAKIT_HELPTEXT_REFILLBIOFOAM = "  Refill biofoam\n(break down suture cart)\n";
+UAS_TRAUMAKIT_HELPTEXT_STAPLEWOUND = "  Staple wound closed\n";
+UAS_TRAUMAKIT_HELPTEXT_REFILLSTAPLES = "  Refill staples\n(break down suture cart)\n";
+UAS_TRAUMAKIT_HELPTEXT_SUTUREWOUND = "  Suture wound closed\n";
+UAS_TRAUMAKIT_HELPTEXT_REOPENWOUND = "  Re-open wound\n";
+UAS_TRAUMAKIT_HELPTEXT_REMOVECAP = "  Re-open wound\n";
+UAS_TRAUMAKIT_HELPTEXT_REPLACECAP = "  Replace safety cap\n";
+UAS_TRAUMAKIT_HELPTEXT_PLUS = "  +";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------

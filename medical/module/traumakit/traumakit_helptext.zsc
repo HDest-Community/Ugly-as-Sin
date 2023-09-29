@@ -2,60 +2,60 @@ extend class UaS_TraumaKit {
 	void SetHelpText(){ //non-action version
 		let hdp=hdplayerpawn(owner);if(hdp){
 			string ttt=self.gethelptext();
-			if(ttt!="")hdp.lwphelptext="\cu"..gettag().."\n"..ttt;
-			else hdp.lwphelptext=ttt;
+			if(ttt!="")hdp.wephelptext="\cu"..gettag().."\n"..ttt;
+			else hdp.wephelptext=ttt;
 		}
 	}
 	override string gethelptext(){
 		string r;
 		LocalizeHelp();
 		if (UaS_TraumaKit_AltControls && UaS_Traumakit_AltControls.GetBool()) {
-			r.AppendFormat(LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN");
-			r.AppendFormat(LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP");
-			r.AppendFormat(LWPHELP_FIREMODE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDAND");
-			r.AppendFormat("  +"..LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD");
-			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD");
+			r.AppendFormat(LWPHELP_RELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN"));
+			r.AppendFormat(LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP"));
+			r.AppendFormat(LWPHELP_FIREMODE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_HOLDAND"));
+			r.AppendFormat(Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_PLUS")..LWPHELP_RELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD"));
+			r.AppendFormat(Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_PLUS")..LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD"));
 		} else {
-			r.AppendFormat(LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD");
-			r.AppendFormat(LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD");
-			r.AppendFormat(LWPHELP_FIREMODE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDAND");
-			r.AppendFormat("  +"..LWPHELP_RELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN");
-			r.AppendFormat("  +"..LWPHELP_ALTRELOAD.."$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP");
+			r.AppendFormat(LWPHELP_RELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD"));
+			r.AppendFormat(LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD"));
+			r.AppendFormat(LWPHELP_FIREMODE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_HOLDAND"));
+			r.AppendFormat(Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_PLUS")..LWPHELP_RELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN"));
+			r.AppendFormat(Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_PLUS")..LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_CYCLEUP"));
 		}
-		r.AppendFormat(LWPHELP_ZOOM.."$UAS_TRAUMAKIT_HELPTEXT_TREATANOTHERPLAYER");
-		r.AppendFormat(LWPHELP_DROPONE.."$UAS_TRAUMAKIT_HELPTEXT_DROPEXCESS");
+		r.AppendFormat(LWPHELP_ZOOM..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_TREATANOTHERPLAYER"));
+		r.AppendFormat(LWPHELP_DROPONE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_DROPEXCESS"));
 
 		switch (weaponstatus[TK_SELECTED]) {
 			case T_PAINKILLER:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_INJECTANESTHETIC");
-				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLANESTHETIC");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_INJECTANESTHETIC"));
+				r.AppendFormat(LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REFILLANESTHETIC"));
 				break;
 			case T_SALINE:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_FLUSHWOUND");
-				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLSALINE");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_FLUSHWOUND"));
+				r.AppendFormat(LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REFILLSALINE"));
 				break;
 			case T_FORCEPS:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_HOLDWOUNDOPEN");
-				r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_EXTRACTOBSTRUCTIONS");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_HOLDWOUNDOPEN"));
+				r.AppendFormat(LWPHELP_UNLOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_EXTRACTOBSTRUCTIONS"));
 				break;
 			case T_BIOFOAM:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_INJECTBIOFOAM");
-				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLBIOFOAM");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_INJECTBIOFOAM"));
+				r.AppendFormat(LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REFILLBIOFOAM"));
 				break;
 			case T_STAPLER:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_STAPLEWOUND");
-				r.AppendFormat(LWPHELP_ALTFIRE.."$UAS_TRAUMAKIT_HELPTEXT_REFILLSTAPLES");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_STAPLEWOUND"));
+				r.AppendFormat(LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REFILLSTAPLES"));
 				break;
 			case T_SUTURES:
 				r.AppendFormat(LWPHELP_FIRE.."  Suture wound closed\n");
 				break;
 			case T_SCALPEL:
-				r.AppendFormat(LWPHELP_FIRE.."$UAS_TRAUMAKIT_HELPTEXT_REOPENWOUND");
+				r.AppendFormat(LWPHELP_FIRE..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REOPENWOUND"));
 				if (weaponstatus[TK_SCALPEL_CAP] == 1) {
-					r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_REMOVECAP");
+					r.AppendFormat(LWPHELP_UNLOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REMOVECAP"));
 				}
 				else {
-					r.AppendFormat(LWPHELP_UNLOAD.."$UAS_TRAUMAKIT_HELPTEXT_REPLACECAP");
+					r.AppendFormat(LWPHELP_UNLOAD..Stringtable.Localize("$UAS_TRAUMAKIT_HELPTEXT_REPLACECAP"));
 				}
 				break;
 		}
