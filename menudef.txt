@@ -290,7 +290,7 @@ AddOptionMenu "UaS_ConfigureModules" {
 }
 
 AddOptionMenu "UaS_Controls" {
-	Control "Use Bandage", "use UaS_SelfBandage"
+	Control "Use Bandage", "hd_band"
 	Control "Use Trauma Kit", "use UaS_TraumaKit"
 	Control "Trauma Kit: Switch to Anesthetic", "netevent UaS_TraumaKit_SwitchTo 0"
 	Control "Trauma Kit: Switch to Saline", "netevent UaS_TraumaKit_SwitchTo 1"
