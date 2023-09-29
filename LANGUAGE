@@ -58,18 +58,139 @@ RESPIRATOR_EMPTY                                      = "It is empty.";
 RESPIRATOR_AMT_PREFIX                                 = "It is at ";
 RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 
+//-----------------
+// Medical Module Language Lumps
+//-----------------
+
 // Medical UI
-UAS_MEDICAL_UI_BLACK                                  = "\cm";
-UAS_MEDICAL_UI_DARKRED                                = "\cr";
-UAS_MEDICAL_UI_BRICK                                  = "\ca";
-UAS_MEDICAL_UI_FIRE                                   = "\cx";
-UAS_MEDICAL_UI_ORANGE                                 = "\ci";
-UAS_MEDICAL_UI_YELLOW                                 = "\ck";
-UAS_MEDICAL_UI_DARKBROWN                              = "\cs";
-UAS_MEDICAL_UI_DARKGREEN                              = "\cq";
-UAS_MEDICAL_UI_GREEN                                  = "\cd";
-UAS_MEDICAL_UI_GREY                                   = "\cd";
-UAS_MEDICAL_UI_WHITE                                  = "\cj";
+UAS_MEDICAL_UI_BLACK = "\cm";
+UAS_MEDICAL_UI_DARKRED = "\cr";
+UAS_MEDICAL_UI_BRICK = "\ca";
+UAS_MEDICAL_UI_FIRE = "\cx";
+UAS_MEDICAL_UI_ORANGE = "\ci";
+UAS_MEDICAL_UI_YELLOW = "\ck";
+UAS_MEDICAL_UI_DARKBROWN = "\cs";
+UAS_MEDICAL_UI_DARKGREEN = "\cq";
+UAS_MEDICAL_UI_GREEN = "\cd";
+UAS_MEDICAL_UI_GREY = "\cd";
+UAS_MEDICAL_UI_WHITE = "\cj";
+
+// Wound Descriptions
+UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";
+
+// Not implemented yet as I haven't figured out a non-disgusting way to implement this just yet. - [Ted]
+UAS_MEDICAL_UI_SEVERITY_MINOR = "minor";
+UAS_MEDICAL_UI_SEVERITY_SMALL = "small";
+UAS_MEDICAL_UI_SEVERITY_SHALLOW = "shallow";
+UAS_MEDICAL_UI_SEVERITY_SUPERFICIAL = "superficial";
+UAS_MEDICAL_UI_SEVERITY_MODERATE = "moderate";
+UAS_MEDICAL_UI_SEVERITY_MEDIUM = "medium";
+UAS_MEDICAL_UI_SEVERITY_LARGE = "large";
+UAS_MEDICAL_UI_SEVERITY_DEEP = "deep";
+UAS_MEDICAL_UI_SEVERITY_SERIOUS = "serious";
+UAS_MEDICAL_UI_SEVERITY_CRITICAL = "critical";
+
+UAS_MEDICAL_UI_TYPE_INCISION = "incision";
+UAS_MEDICAL_UI_TYPE_LACERATION = "laceration";
+UAS_MEDICAL_UI_TYPE_PUNCTURE = "puncture";
+UAS_MEDICAL_UI_TYPE_AVULSION = "avulsion";
+UAS_MEDICAL_UI_TYPE_PENETRATION = "penetration";
+
+UAS_MEDICAL_UI_BODYPART_CHEST = "chest";
+UAS_MEDICAL_UI_BODYPART_ABDOMEN = "abdomen";
+UAS_MEDICAL_UI_BODYPART_PELVIS = "pelvis";
+UAS_MEDICAL_UI_BODYPART_UPPERBACK = "upper back";
+UAS_MEDICAL_UI_BODYPART_LOWERBACK = "lower back";
+UAS_MEDICAL_UI_BODYPART_LEFTSHOULDER = "left shoulder";
+UAS_MEDICAL_UI_BODYPART_RIGHTSHOULDER = "right shoulder";
+UAS_MEDICAL_UI_BODYPART_LEFTUPPERARM = "left upper arm";
+UAS_MEDICAL_UI_BODYPART_RIGHTUPPERARM = "right upper arm";
+UAS_MEDICAL_UI_BODYPART_LEFTFOREARM = "left forearm";
+UAS_MEDICAL_UI_BODYPART_RIGHTFOREARM = "right forearm";
+UAS_MEDICAL_UI_BODYPART_LEFTHIP = "left hip";
+UAS_MEDICAL_UI_BODYPART_RIGHTHIP = "right hip";
+UAS_MEDICAL_UI_BODYPART_LEFTTHIGH = "left thigh";
+UAS_MEDICAL_UI_BODYPART_RIGHTTHIGH = "right thigh";
+UAS_MEDICAL_UI_BODYPART_LEFTCALF = "left calf";
+UAS_MEDICAL_UI_BODYPART_RIGHTCALF = "right calf";
+UAS_MEDICAL_UI_BODYPART_LEFTSHIN = "left shin";
+UAS_MEDICAL_UI_BODYPART_RIGHTSHIN = "right shin";
+
+// Trauma Kit Main Hud
+UAS_TRAUMAKIT_UI_HUD_TITLE = "--- \cyTrauma Kit\c- ---";
+UAS_TRAUMAKIT_UI_HUD_TREATING = "Treating \cg";
+UAS_TRAUMAKIT_UI_HUD_NOTREATABLE = "No treatable wounds";
+UAS_TRAUMAKIT_UI_HUD_RED = "\ca";
+UAS_TRAUMAKIT_UI_HUD_DARKRED = "\cr";
+UAS_TRAUMAKIT_UI_HUD_GREEN = "\cd";
+UAS_TRAUMAKIT_UI_HUD_DARKGREEN = "\cq";
+UAS_TRAUMAKIT_UI_HUD_SELECTED = " <";
+UAS_TRAUMAKIT_UI_HUD_NOTSELECTED = "";
+UAS_TRAUMAKIT_UI_HUD_TOPOVERFLOWDOTS = ". . .";
+UAS_TRAUMAKIT_UI_HUD_BOTTOMOVERFLOWDOTS = ". . .";
+UAS_TRAUMAKIT_UI_HUD_NOWOUNDSELECTED = "-No wounds selected-";
+
+// Trauma Kit Wound Info
+UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS = "-The wound is ";
+UAS_TRAUMAKIT_WOUNDINFO_CLOSED = "closed\c-.";
+UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2 = "-The wound is ";
+UAS_TRAUMAKIT_WOUNDINFO_PATCHED = "open\c- but \c[Yellow]patched\c-";
+
+UAS_TRAUMAKIT_WOUNDINFO_FINE = "fine";
+UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE = "somewhat fine";
+UAS_TRAUMAKIT_WOUNDINFO_DECENT = "decent";
+UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT = "not that great";
+UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE = "less horrible";
+UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE = "horrible";
+UAS_TRAUMAKIT_WOUNDINFO_SEEMSTOBE = "-It seems to be ";
+
+UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3 = "-The wound is ";
+UAS_TRAUMAKIT_WOUNDINFO_OPEN = "open";
+
+UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED = "not numbed.";
+UAS_TRAUMAKIT_PAINKILLERS_NUMBED = "numbed";
+UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED = "mostly numbed";
+UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED = "somewhat numbed";
+UAS_TRAUMAKIT_PAINKILLERS_ITIS = "-It is ";
+
+UAS_TRAUMAKIT_DIRTINESS_CLEAN = "completely clean";
+UAS_TRAUMAKIT_DIRTINESS_FILTHY = "filthy";
+UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY = "very dirty";
+UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY = "somewhat dirty";
+UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY = "a bit dirty";
+UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN = "almost clean";
+UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN = "acceptably clean";
+UAS_TRAUMAKIT_DIRTINESS_ITIS = "-It is ";
+
+UAS_TRAUMAKIT_OBSTRUCTIONS_NONE = "no apparent obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_MANY = "many obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL = "several obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW = "a few obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_SOME = "some obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW = "very few obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_THEREARE = "-There are ";
+
+UAS_TRAUMAKIT_CAVITY_NODAMAGE = "no treatable tissue damage";
+UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE = "severe tissue damage";
+UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE = "significant tissue damage";
+UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE = "moderate tissue damage";
+UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE = "some tissue damage";
+UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE = "little tissue damage";
+UAS_TRAUMAKIT_CAVITY_THEREIS = "-There is ";
+
+UAS_TRAUMAKIT_TOOLLIST_FORMATTING = "%s%s";
+UAS_TRAUMAKIT_TOOLLIST_WHITE = "\c[White]";
+UAS_TRAUMAKIT_TOOLLIST_DARKGREY = "\c[DarkGrey]";
+UAS_TRAUMAKIT_TOOLLIST_NEWLINE = "\n";
+
+// Also not implemented yet as I haven't figured out a non-disgusting way to implement this just yet. - [Ted]
+UAS_TRAUMAKIT_TOOLLIST_NAMES_AT = "AT";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_SL = "SL";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_FC = "FC";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_BF = "BF";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_SP = "SP";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_ST = "ST";
+UAS_TRAUMAKIT_TOOLLIST_NAMES_SC = "SC";
 
 //-----------------
 // Food Module Language Lumps
