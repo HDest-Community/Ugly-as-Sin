@@ -176,5 +176,15 @@ UAS_TRAUMAKIT_BIOFOAM_INJECTING = "Injecting biofoam...\n";
 UAS_TRAUMAKIT_PAINKILLER_TITLE = "\cjAnesthetic\n";
 UAS_TRAUMAKIT_PAINKILLER_DESCRIPTION = "\cuFast-acting local painkiller.\n";
 UAS_TRAUMAKIT_PAINKILLER_REMAINING = "Injections remaining: \cy";
+UAS_TRAUMAKIT_PAINKILLER_NEWLINES = "\n\n";
 UAS_TRAUMAKIT_PAINKILLER_NONELEFT = "No anesthetic left!\n";
-UAS_TRAUMAKIT_PAINKLILLER_INJECTED = "Anesthetic injected.";
+UAS_TRAUMAKIT_PAINKILLER_INJECTED = "Anesthetic injected.";
+
+// Saline
+UAS_TRAUMAKIT_SALINE_TITLE = "\cjSaline\n";
+UAS_TRAUMAKIT_SALINE_DESCRIPTION = "\cuNeutral wound debriding solution.\n";
+UAS_TRAUMAKIT_SALINE_REMAINING = "Saline remaining: \cy";
+UAS_TRAUMAKIT_SALINE_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_SALINE_NONELEFT = "No saline left!\n";
+UAS_TRAUMAKIT_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
+UAS_TRAUMAKIT_SALINE_FLUSHING = "Flushing the wound...\n";

@@ -243,6 +243,15 @@ UAS_TRAUMAKIT_PAINKILLER_NEWLINES = "\n\n";
 UAS_TRAUMAKIT_PAINKILLER_NONELEFT = "No anesthetic left!\n";
 UAS_TRAUMAKIT_PAINKILLER_INJECTED = "Anesthetic injected.";
 
+// Saline
+UAS_TRAUMAKIT_SALINE_TITLE = "\cjSaline\n";
+UAS_TRAUMAKIT_SALINE_DESCRIPTION = "\cuNeutral wound debriding solution.\n";
+UAS_TRAUMAKIT_SALINE_REMAINING = "Saline remaining: \cy";
+UAS_TRAUMAKIT_SALINE_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_SALINE_NONELEFT = "No saline left!\n";
+UAS_TRAUMAKIT_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
+UAS_TRAUMAKIT_SALINE_FLUSHING = "Flushing the wound...\n";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------
