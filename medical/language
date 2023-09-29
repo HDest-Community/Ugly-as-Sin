@@ -188,3 +188,10 @@ UAS_TRAUMAKIT_SALINE_NEWLINES = "\n\n";
 UAS_TRAUMAKIT_SALINE_NONELEFT = "No saline left!\n";
 UAS_TRAUMAKIT_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
 UAS_TRAUMAKIT_SALINE_FLUSHING = "Flushing the wound...\n";
+
+// Scalpel
+UAS_TRAUMAKIT_SCALPEL_TITLE = "\cjScalpel\n";
+UAS_TRAUMAKIT_SCALPEL_DESCRIPTION = "\cuFor re-opening wounds.\n\n\n";
+UAS_TRAUMAKIT_SCALPEL_REMOVECAP = "Removed safety cap.\n";
+UAS_TRAUMAKIT_SCALPEL_REPLACECAP = "Replaced safety cap.\n";
+UAS_TRAUMAKIT_SCALPEL_CAPON = "The cap is still on...\n";
