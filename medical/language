@@ -162,3 +162,12 @@ UAS_TRAUMAKIT_FORECEPS_PROBEWOUND = "You probe the wound";
 UAS_TRAUMAKIT_FORECEPS_DAMAGE = ", damaging the surrounding tissue.";
 UAS_TRAUMAKIT_FORECEPS_PROBEPERIOD = ".";
 UAS_TRAUMAKIT_FORECEPS_OUTOFWOUND = "You %s %s %s out of the wound";
+
+// Biofoam
+UAS_TRAUMAKIT_BIOFOAM_TITLE = "\cjBiofoam\n";
+UAS_TRAUMAKIT_BIOFOAM_DESCRIPTION = "\cuAbsorbent antiseptic flesh-analogue.\n";
+UAS_TRAUMAKIT_BIOFOAM_REMAINING = "Biofoam remaining: \cy";
+UAS_TRAUMAKIT_BIOFOAM_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_BIOFOAM_NONELEFT = "No biofoam left!\n";
+UAS_TRAUMAKIT_BIOFOAM_UNNECESSARY = "The wound does not need biofoam.\n";
+UAS_TRAUMAKIT_BIOFOAM_INJECTING = "Injecting biofoam...\n";
