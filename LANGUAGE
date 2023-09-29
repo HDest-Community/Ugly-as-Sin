@@ -266,6 +266,14 @@ UAS_TRAUMAKIT_STAPLER_REMAINING = "Staples remaining: \cy";
 UAS_TRAUMAKIT_STAPLER_NEWLINE = "\n\n";
 UAS_TRAUMAKIT_STAPLER_NONELEFT = "No staples left!\n";
 
+// Pickups & Refills
+UAS_TRAUMAKIT_REFILL_SUPPLIES = "\cgRefilled Trauma Kit supplies";
+UAS_TRAUMAKIT_REFILL_ANESTHETIC = "\cvRefilled anesthetic.\nconsumed one stimpack";
+UAS_TRAUMAKIT_REFILL_NOSTIMS = "No available stimpacks.";
+UAS_TRAUMAKIT_REFILL_SALINE = "\cvRefilled saline.\nconsumed one Second Blood pack";
+UAS_TRAUMAKIT_REFILL_NOBLOOD = "No available Second Blood packs.";
+UAS_TRAUMAKIT_REFILL_2FCARTRIDGE = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
+UAS_TRAUMAKIT_REFILL_NOCARTRIDGES = "No available auto-suture cartridges.";
 //-----------------
 // Food Module Language Lumps
 //-----------------
