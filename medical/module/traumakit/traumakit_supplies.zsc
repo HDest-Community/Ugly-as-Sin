@@ -122,7 +122,7 @@ extend class UaS_TraumaKit {
 						currentmessage.timeout = 2*35;
 					}
 					else {
-						currentmessage.text = "No available auto-suture cartridges.";
+						currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_REFILL_NOCARTRIDGES");
 						currentmessage.timeout = 2*35;
 					}
 					break;
