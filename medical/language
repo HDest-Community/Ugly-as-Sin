@@ -171,3 +171,10 @@ UAS_TRAUMAKIT_BIOFOAM_NEWLINES = "\n\n";
 UAS_TRAUMAKIT_BIOFOAM_NONELEFT = "No biofoam left!\n";
 UAS_TRAUMAKIT_BIOFOAM_UNNECESSARY = "The wound does not need biofoam.\n";
 UAS_TRAUMAKIT_BIOFOAM_INJECTING = "Injecting biofoam...\n";
+
+// Painkillers/Anesthetic
+UAS_TRAUMAKIT_PAINKILLER_TITLE = "\cjAnesthetic\n";
+UAS_TRAUMAKIT_PAINKILLER_DESCRIPTION = "\cuFast-acting local painkiller.\n";
+UAS_TRAUMAKIT_PAINKILLER_REMAINING = "Injections remaining: \cy";
+UAS_TRAUMAKIT_PAINKILLER_NONELEFT = "No anesthetic left!\n";
+UAS_TRAUMAKIT_PAINKLILLER_INJECTED = "Anesthetic injected.";
