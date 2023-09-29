@@ -58,6 +58,19 @@ RESPIRATOR_EMPTY                                      = "It is empty.";
 RESPIRATOR_AMT_PREFIX                                 = "It is at ";
 RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 
+// Medical UI
+UAS_MEDICAL_UI_BLACK                                  = "\cm";
+UAS_MEDICAL_UI_DARKRED                                = "\cr";
+UAS_MEDICAL_UI_BRICK                                  = "\ca";
+UAS_MEDICAL_UI_FIRE                                   = "\cx";
+UAS_MEDICAL_UI_ORANGE                                 = "\ci";
+UAS_MEDICAL_UI_YELLOW                                 = "\ck";
+UAS_MEDICAL_UI_DARKBROWN                              = "\cs";
+UAS_MEDICAL_UI_DARKGREEN                              = "\cq";
+UAS_MEDICAL_UI_GREEN                                  = "\cd";
+UAS_MEDICAL_UI_GREY                                   = "\cd";
+UAS_MEDICAL_UI_WHITE                                  = "\cj";
+
 //-----------------
 // Food Module Language Lumps
 //-----------------
