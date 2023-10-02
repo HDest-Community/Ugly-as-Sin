@@ -314,6 +314,9 @@ OptionMenu "UaS_Medical_Options" {
 	StaticText "Use firemode to change tools instead (item wheel included)", "White"
 	Option "Use Alternative Trauma Kit Controls","UaS_TraumaKit_AltControls", "YesNo"
 	StaticText " "
+
+	StaticText "Bandage options", "White"
+	Option "Wounds shake when not patched/sealed up","UaS_Bandage_WoundShake", "YesNo"
 }
 AddOptionMenu "UaS_LoadedModules" {
 	StaticText "Respirator"

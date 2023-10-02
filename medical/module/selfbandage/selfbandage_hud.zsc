@@ -21,6 +21,8 @@ extend class UaS_SelfBandage {
 		float woundAlpha = (selected)? 1.00 : 0.75;
 		Vector2 woundScale = ((selected)? 1.00 : 0.75) * hudScale;
 
+		if (UaS_Bandage_WoundShake && wound.depth > 0.) { woundPosition.y += HDPlayerPawn(owner).Flip * hudScale.y; }
+
 		// stability (always green when sealed)
 		string symbol = (selected)? "X" : ((wound.open > 0.)? "o" : "-");
 		sb.DrawString(

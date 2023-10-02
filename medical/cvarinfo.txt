@@ -1,4 +1,5 @@
 nosave bool UaS_Medical_Debug = false;
+nosave bool UaS_Bandage_WoundShake = true;
 user bool UaS_TraumaKit_AltControls = false;
 user bool UaS_TraumaKit_InvertCycle = false;
 nosave float UaS_Wheel_Alpha = 0.75;
