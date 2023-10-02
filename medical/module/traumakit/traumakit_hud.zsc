@@ -128,7 +128,7 @@ extend class UaS_TraumaKit {
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open * 10).."open");
+				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open / 15 * 100).."open");
 
 				string tmpStr;
 
@@ -177,7 +177,7 @@ extend class UaS_TraumaKit {
 					else if (mti.currentWound.cavity >= 2.5) { tmpStr = "some tissue damage"; }
 					else if (mti.currentWound.cavity >= 1.0) { tmpStr = "little tissue damage"; }
 
-					status.Push("-There is "..GetStatusColor(mti.currentWound.cavity * 5)..tmpStr);
+					status.Push("-There is "..GetStatusColor(mti.currentWound.cavity / 12 * 100)..tmpStr);
 					woundInfoOffsetY -= halfStep;
 				}
 			}

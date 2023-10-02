@@ -52,8 +52,8 @@ class UaS_WoundHandler : Inventory {
 		critwounds.Push(UaS_Wound.Create(hdbw));
 		if (UaS_Medical_Debug) {
 			Console.PrintF(
-				"new wound %d: %f (%f, %f)",
-				critwounds.Size(), hdbw.depth, hdbw.location.x, hdbw.location.y);
+				"new wound %d: %f (%f, %f) [age: %d]",
+				critwounds.Size(), hdbw.depth, hdbw.location.x, hdbw.location.y, hdbw.age);
 		}
 		hdbw.Destroy();
 	}

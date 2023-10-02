@@ -142,8 +142,8 @@ extend class UaS_Wound {
 		int retvalue, counted;
 		if (dirty >= 0) { retvalue += dirty; counted++; }
 		if (obstructed >= 0) { retvalue += obstructed; counted++;}
-		if (cavity >= 0) { retvalue += cavity * 10; counted++;}
-		if (open >= 0) { retvalue += open * 10; counted++;}
+		if (cavity >= 0) { retvalue += cavity / 12 * 100; counted++;}
+		if (open >= 0) { retvalue += open / 15 * 100; counted++;}
 		//retvalue += infection;
 		avgstat = retvalue / counted;
 	}
