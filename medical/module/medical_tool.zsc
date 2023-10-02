@@ -37,7 +37,7 @@ class UaS_MedicalTool : HDWeapon {
 	}
 
 	ui string GetOpenStatus(UaS_Wound currentWound) {
-		string statusText = GetStatusColor(currentWound.open / 15 * 10).."open\c-";
+		string statusText = GetStatusColor(currentWound.open / 15 * 100).."open\c-";
 		if (currentWound.depth <= 0. && currentWound.patched > 0.) { statusText = statusText.." but \c[Yellow]patched"; }
 		else if (currentWound.patched > 0.) { statusText = statusText.." but \c[Orange]somewhat patched"; }
 		else if (currentWound.depth <= 0.) { statusText = "\c[Green]sealed"; }
