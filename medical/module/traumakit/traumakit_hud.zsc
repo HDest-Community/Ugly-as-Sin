@@ -111,11 +111,11 @@ extend class UaS_TraumaKit {
 		float woundInfoOffsetY = baseOffset + (3 * textHeight) + (3 * padStep);
 		Array<string> status;
 		if (mti.currentWound) {
-			if (mti.currentWound.open <= 0) {
+			if (mti.currentWound.open <= 0.) {
 				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open).."closed\c-.");
 			}
-			else if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0.) {
-				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open * 10).."open\c- but \c[Yellow]patched\c-");
+			else if (mti.currentWound.patched > 0.) {
+				status.Push(String.Format("-The wound is %s", GetOpenStatus(mti.currentWound)));
 
 				string tmpStr;
 				if (mti.currentWound.stabilised >= 100.0) { tmpStr = "fine"; }
@@ -128,7 +128,7 @@ extend class UaS_TraumaKit {
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open / 15 * 100).."open");
+				status.Push(String.Format("-The wound is %s", GetOpenStatus(mti.currentWound)));
 
 				string tmpStr;
 
