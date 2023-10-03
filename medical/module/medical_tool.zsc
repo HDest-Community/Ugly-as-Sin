@@ -36,6 +36,15 @@ class UaS_MedicalTool : HDWeapon {
 		return Stringtable.Localize("$UAS_MEDICAL_UI_WHITE");
 	}
 
+	ui string GetOpenStatus(UaS_Wound currentWound) {
+		string statusText = GetStatusColor(currentWound.open / 15 * 100).."open\c-";
+		if (currentWound.depth <= 0. && currentWound.patched > 0.) { statusText = statusText.." but \c[Yellow]patched"; }
+		else if (currentWound.patched > 0.) { statusText = statusText.." but \c[Orange]somewhat patched"; }
+		else if (currentWound.depth <= 0.) { statusText = "\c[Green]sealed"; }
+
+		return statusText;
+	}
+
 	struct StatusInfo {
 		string text;
 		int timeout;
