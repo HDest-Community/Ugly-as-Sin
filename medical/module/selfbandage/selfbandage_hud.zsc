@@ -22,7 +22,7 @@ extend class UaS_SelfBandage {
 		Vector2 woundScale = ((selected)? 1.00 : 0.75) * hudScale;
 
 		// stability (always green when sealed)
-		string symbol = (selected)? "X" : ((wound.open > 0.)? "o" : "-");
+		string symbol = (selected)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1") : ((wound.open > 0.)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL2") : Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL3"));
 		sb.DrawString(
 			sb.pSmallFont,
 			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
@@ -38,7 +38,7 @@ extend class UaS_SelfBandage {
 			let blud = TexMan.CheckForTexture("BLUDC0");
 			Vector2 bludScale = woundScale * log(wound.depth + 1) / 2;
 			Vector2 bludOffset = (
-				sb.pSmallFont.mFont.GetCharWidth("X") / 2 * woundScale.x,
+				sb.pSmallFont.mFont.GetCharWidth(Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1")) / 2 * woundScale.x,
 				sb.pSmallFont.mFont.GetHeight() / 2 * woundScale.y
 			);
 
@@ -67,7 +67,7 @@ extend class UaS_SelfBandage {
 			for (int i = 0; i < count; i++) {
 				sb.Fill(
 					Color(255, barRed, barGreen, 0),
-					woundPosition.x - sb.pSmallFont.mFont.GetCharWidth("X") / 2, woundPosition.y + offset,
+					woundPosition.x - sb.pSmallFont.mFont.GetCharWidth(Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1")) / 2, woundPosition.y + offset,
 					1.5 * hudScale.x, barHeight,
 					sb.DI_SCREEN_CENTER
 				);
@@ -91,7 +91,7 @@ extend class UaS_SelfBandage {
 		int titleFlags = baseFlags | sb.DI_TEXT_ALIGN_CENTER;
 		sb.DrawString(
 			sb.pSmallFont,
-			"--- Bandaging ---",
+			Stringtable.Localize("$UAS_BANDAGING_HUD_TITLE"),
 			(0, baseOffset),
 			titleFlags,
 			Font.CR_GRAY,
@@ -101,7 +101,7 @@ extend class UaS_SelfBandage {
 		// Patient
 		sb.DrawString(
 			sb.pSmallFont,
-			"Treating "..mti.patient.player.GetUsername(),
+			Stringtable.Localize("$UAS_BANDAGING_HUD_TREATING")..mti.patient.player.GetUsername(),
 			(0, baseOffset + textHeight),
 			titleFlags,
 			Font.CR_GRAY,
