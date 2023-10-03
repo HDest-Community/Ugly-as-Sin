@@ -189,7 +189,7 @@ extend class UaS_SelfBandage {
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = statusText..Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_PATCHED"); }
 			else if (mti.currentWound.depth <= 0) { statusText = Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_SEALED"); }
 
-			status.Push(String.Format(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_WOUNDIS")Stringtable.Localize(statusText)));
+			status.Push(String.Format(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_WOUNDIS"),Stringtable.Localize(statusText)));
 
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);

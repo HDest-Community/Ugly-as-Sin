@@ -115,69 +115,69 @@ extend class UaS_TraumaKit {
 				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS")..GetStatusColor(mti.currentWound.open)..Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_CLOSED"));
 			}
 			else if (mti.currentWound.patched > 0.) {
-				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2"), GetOpenStatus(mti.currentWound)));
+				status.Push(String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2"), GetOpenStatus(mti.currentWound)));
 
 				string tmpStr;
-				if (mti.currentWound.stabilised >= 100.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_FINE"); }
-				else if (mti.currentWound.stabilised > 75.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE"); }
-				else if (mti.currentWound.stabilised > 50.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_DECENT"); }
-				else if (mti.currentWound.stabilised > 25.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT"); }
-				else if (mti.currentWound.stabilised > 5.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE"); }
-				else { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE"); }
-				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_ITSEEMSTOBE")..GetStatusColor(100 - mti.currentWound.stabilised)..tmpStr);
+				if (mti.currentWound.stabilised >= 100.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_FINE"; }
+				else if (mti.currentWound.stabilised > 75.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE"; }
+				else if (mti.currentWound.stabilised > 50.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_DECENT"; }
+				else if (mti.currentWound.stabilised > 25.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT"; }
+				else if (mti.currentWound.stabilised > 5.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE"; }
+				else { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE"; }
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_ITSEEMSTOBE")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(tmpStr));
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3"), GetOpenStatus(mti.currentWound)));
+				status.Push(String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3"), GetOpenStatus(mti.currentWound)));
 
 				string tmpStr;
 
 				// Painkillers
-				tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED");
-				if (mti.currentWound.painkiller >= 75) tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_NUMBED");
-				else if (mti.currentWound.painkiller >= 50) tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED");
-				else if (mti.currentWound.painkiller >= 25) tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED");
+				tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED";
+				if (mti.currentWound.painkiller >= 75) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_NUMBED";
+				else if (mti.currentWound.painkiller >= 50) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED";
+				else if (mti.currentWound.painkiller >= 25) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED";
 
-				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_ITIS")..GetStatusColor(100 - mti.currentWound.painkiller)..tmpStr);
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_ITIS")..GetStatusColor(100 - mti.currentWound.painkiller)..Stringtable.Localize(tmpStr));
 				woundInfoOffsetY -= halfStep;
 
 				// Dirty
 				if (mti.currentWound.dirty >= 0) {
-					tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_CLEAN");
-					if (mti.currentWound.dirty >= 65) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_FILTHY"); }
-					else if (mti.currentWound.dirty >= 55) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY"); }
-					else if (mti.currentWound.dirty >= 45) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY"); }
-					else if (mti.currentWound.dirty >= 35) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY"); }
-					else if (mti.currentWound.dirty >= 25) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN"); }
-					else if (mti.currentWound.dirty >= 15) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN"); }
+					tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_CLEAN";
+					if (mti.currentWound.dirty >= 65) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_FILTHY"; }
+					else if (mti.currentWound.dirty >= 55) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY"; }
+					else if (mti.currentWound.dirty >= 45) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY"; }
+					else if (mti.currentWound.dirty >= 35) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY"; }
+					else if (mti.currentWound.dirty >= 25) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN"; }
+					else if (mti.currentWound.dirty >= 15) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN"; }
 
-					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ITIS")..GetStatusColor(mti.currentWound.dirty)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ITIS")..GetStatusColor(mti.currentWound.dirty)..Stringtable.Localize(tmpStr));
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Obstructions
 				if (mti.currentWound.obstructed >= 0) {
-					tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_NONE");
-					if (mti.currentWound.obstructed >= 55) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_MANY"); }
-					else if (mti.currentWound.obstructed >= 45) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL"); }
-					else if (mti.currentWound.obstructed >= 35) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW"); }
-					else if (mti.currentWound.obstructed >= 25) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_SOME"); }
-					else if (mti.currentWound.obstructed >= 15) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW"); }
+					tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_NONE";
+					if (mti.currentWound.obstructed >= 55) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_MANY"; }
+					else if (mti.currentWound.obstructed >= 45) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL"; }
+					else if (mti.currentWound.obstructed >= 35) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW"; }
+					else if (mti.currentWound.obstructed >= 25) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_SOME"; }
+					else if (mti.currentWound.obstructed >= 15) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW"; }
 
-					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_THEREARE")..GetStatusColor(mti.currentWound.obstructed)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_THEREARE")..GetStatusColor(mti.currentWound.obstructed)..Stringtable.Localize(tmpStr));
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Cavity
 				if (mti.currentWound.cavity >= 0) {
-					tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_NODAMAGE");
-					if (mti.currentWound.cavity >= 12.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE"); }
-					else if (mti.currentWound.cavity >= 8.5) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE"); }
-					else if (mti.currentWound.cavity >= 5.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE"); }
-					else if (mti.currentWound.cavity >= 2.5) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE"); }
-					else if (mti.currentWound.cavity >= 1.0) { tmpStr = Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE"); }
+					tmpStr = "$UAS_TRAUMAKIT_CAVITY_NODAMAGE";
+					if (mti.currentWound.cavity >= 12.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE"; }
+					else if (mti.currentWound.cavity >= 8.5) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE"; }
+					else if (mti.currentWound.cavity >= 5.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE"; }
+					else if (mti.currentWound.cavity >= 2.5) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE"; }
+					else if (mti.currentWound.cavity >= 1.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE"; }
 
-					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_THEREIS")..GetStatusColor(mti.currentWound.cavity / 12 * 100)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_THEREIS")..GetStatusColor(mti.currentWound.cavity / 12 * 100)..Stringtable.Localize(tmpStr));
 
 					woundInfoOffsetY -= halfStep;
 				}
