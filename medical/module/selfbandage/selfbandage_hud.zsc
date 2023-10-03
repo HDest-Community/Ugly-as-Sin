@@ -21,6 +21,8 @@ extend class UaS_SelfBandage {
 		float woundAlpha = (selected)? 1.00 : 0.75;
 		Vector2 woundScale = ((selected)? 1.00 : 0.75) * hudScale;
 
+		if (UaS_Bandage_WoundShake && wound.depth > 0.) { woundPosition.y += HDPlayerPawn(owner).Flip * hudScale.y; }
+
 		// stability (always green when sealed)
 		string symbol = (selected)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1") : ((wound.open > 0.)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL2") : Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL3"));
 		sb.DrawString(
@@ -183,13 +185,10 @@ extend class UaS_SelfBandage {
 
 		if (!mti.currentWound) { status.Push("\c[DarkGray]No wound selected.\c-"); }
 		else {
-			string statusText = GetStatusColor(mti.currentWound.open * 10).."open\c-";
-			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = statusText.." but \c[Yellow]patched"; }
-			else if (mti.currentWound.depth <= 0) { statusText = "\c[Green]sealed"; }
+			string statusText;
+			status.Push(String.Format("- The wound is %s", GetOpenStatus(mti.currentWound)));
 
-			status.Push(String.Format("- The wound is %s", statusText));
-
-			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
+			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0.) {
 				woundInfoPos -= (0, halfStep);
 
 				if (mti.currentWound.pressure > 5.0) { statusText = "very tight"; }

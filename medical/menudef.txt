@@ -7,7 +7,7 @@ AddOptionMenu "UaS_ConfigureModules" {
 }
 
 AddOptionMenu "UaS_Controls" {
-	Control "Use Bandage", "use UaS_SelfBandage"
+	Control "Use Bandage", "use hd_band"
 	Control "Use Trauma Kit", "use UaS_TraumaKit"
 	Control "Trauma Kit: Switch to Anesthetic", "netevent UaS_TraumaKit_SwitchTo 0"
 	Control "Trauma Kit: Switch to Saline", "netevent UaS_TraumaKit_SwitchTo 1"
@@ -31,4 +31,7 @@ OptionMenu "UaS_Medical_Options" {
 	StaticText "Use firemode to change tools instead (item wheel included)", "White"
 	Option "Use Alternative Trauma Kit Controls","UaS_TraumaKit_AltControls", "YesNo"
 	StaticText " "
+
+	StaticText "Bandage options", "White"
+	Option "Wounds shake when not patched/sealed up","UaS_Bandage_WoundShake", "YesNo"
 }
