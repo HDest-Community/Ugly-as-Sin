@@ -43,8 +43,10 @@ class UaS_DeathFader : Thinker {
 
 	override void Tick() {
 		super.Tick();
-		fadeamount = min(fadeamount + (1.0/counttoblack), 1.0);
-		Shader.SetUniform1f(plr.player, "deathfade", "fadeamount", fadeamount);
-		if (fadeamount >= 1.0 || plr.health > 0) { destroy(); }
+		if (plr && fadeamount < 1.0 && plr.health <= 0) {
+			fadeamount = min(fadeamount + (1.0/counttoblack), 1.0);
+			Shader.SetUniform1f(plr.player, "deathfade", "fadeamount", fadeamount);
+		}
+		else { Destroy(); }
 	}
 }
