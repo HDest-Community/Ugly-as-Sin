@@ -1,6 +1,8 @@
 [enu default]
 
 // Medical UI
+
+// Colors
 UAS_MEDICAL_UI_BLACK = "\cm";
 UAS_MEDICAL_UI_DARKRED = "\cr";
 UAS_MEDICAL_UI_BRICK = "\ca";
@@ -12,6 +14,12 @@ UAS_MEDICAL_UI_DARKGREEN = "\cq";
 UAS_MEDICAL_UI_GREEN = "\cd";
 UAS_MEDICAL_UI_GREY = "\cd";
 UAS_MEDICAL_UI_WHITE = "\cj";
+
+// Open Status
+UAS_MEDICAL_UI_OPENSTATUS_OPEN = "open\c-";
+UAS_MEDICAL_UI_OPENSTATUS_PATCHED = " but \c[Yellow]patched";
+UAS_MEDICAL_UI_OPENSTATUS_SOMEWHATPATCHED = " but \c[Orange]somewhat patched";
+UAS_MEDICAL_UI_OPENSTATUS_SEALED = "\c[Green]sealed";
 
 // Wound Descriptions
 UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";

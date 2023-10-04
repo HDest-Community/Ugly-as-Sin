@@ -63,6 +63,8 @@ RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 //-----------------
 
 // Medical UI
+
+// Colors
 UAS_MEDICAL_UI_BLACK = "\cm";
 UAS_MEDICAL_UI_DARKRED = "\cr";
 UAS_MEDICAL_UI_BRICK = "\ca";
@@ -74,6 +76,12 @@ UAS_MEDICAL_UI_DARKGREEN = "\cq";
 UAS_MEDICAL_UI_GREEN = "\cd";
 UAS_MEDICAL_UI_GREY = "\cd";
 UAS_MEDICAL_UI_WHITE = "\cj";
+
+// Open Status
+UAS_MEDICAL_UI_OPENSTATUS_OPEN = "open\c-";
+UAS_MEDICAL_UI_OPENSTATUS_PATCHED = " but \c[Yellow]patched";
+UAS_MEDICAL_UI_OPENSTATUS_SOMEWHATPATCHED = " but \c[Orange]somewhat patched";
+UAS_MEDICAL_UI_OPENSTATUS_SEALED = "\c[Green]sealed";
 
 // Wound Descriptions
 UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";
@@ -115,6 +123,8 @@ UAS_MEDICAL_UI_BODYPART_LEFTCALF = "left calf";
 UAS_MEDICAL_UI_BODYPART_RIGHTCALF = "right calf";
 UAS_MEDICAL_UI_BODYPART_LEFTSHIN = "left shin";
 UAS_MEDICAL_UI_BODYPART_RIGHTSHIN = "right shin";
+
+// Trauma Kit
 
 // Trauma Kit Main Hud
 UAS_TRAUMAKIT_UI_HUD_TITLE = "--- \cyTrauma Kit\c- ---";
@@ -287,6 +297,8 @@ UAS_TRAUMAKIT_WORNLAYERS = "worn layers ";
 UAS_TRAUMAKIT_TAKEOFFYOUR = "Take off your ";
 UAS_TRAUMAKIT_HAVETHEMTAKEOFF = "Have them take off their ";
 UAS_TRAUMAKIT_FIRST = "first!\n";
+
+// Banadaging
 
 // Bandage Hud & Messages
 UAS_BANDAGING_SELECTED_SYMBOL1 = "X";
