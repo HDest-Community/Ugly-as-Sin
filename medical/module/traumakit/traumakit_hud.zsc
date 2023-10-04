@@ -124,7 +124,7 @@ extend class UaS_TraumaKit {
 				else if (mti.currentWound.stabilised > 25.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT"; }
 				else if (mti.currentWound.stabilised > 5.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE"; }
 				else { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE"; }
-				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_ITSEEMSTOBE")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(tmpStr));
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_SEEMSTOBE")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(tmpStr));
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
