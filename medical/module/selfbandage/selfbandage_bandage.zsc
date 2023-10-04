@@ -1,11 +1,11 @@
 extend class UaS_SelfBandage {
 	void HandleBandage() {
-		statusMessage = "\c[Gray]Bandage\n";
-		statusMessage = statusMessage.."\c[DarkGray]Useful if you're bleeding out.";
+		statusMessage = Stringtable.Localize("$UAS_BANDAGING_DESCRIPTION_TITLE");
+		statusMessage = statusMessage..Stringtable.Localize("$UAS_BANDAGING_DESCRIPTION_DESCRIPTION");
 
 		toolHelpText =
-			WEPHELP_FIRE.."  Bandage wound\n"
-			..WEPHELP_ALTFIRE.."  Rip bandage\n";
+			LWPHELP_FIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_BANDAGEWOUND")
+			..LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_RIPBANDAGE");
 
 		if (owner.player.cmd.buttons & BT_FIREMODE) { return; }
 		if (owner.player.cmd.buttons & BT_ATTACK) { TryBandage(); }
@@ -31,19 +31,19 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.depth <= 0. && mti.currentWound.patched <= 0.) {
-			currentMessage.text = "Nothing to be done here.";
+			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
 			currentMessage.text =
-				"You need "..((mti.patient == owner)? "" : "them ")
-				.."to stay still to bandage "..((mti.patient == owner)? "yourself!" : "them!");
+				Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUNEED")..((mti.patient == owner)? "" : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEM"))
+				..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_TOSTAYSTILL")..((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOURSELF") : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEMBUTCOOLER"));
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = "Attempting to bandage wound...";
+		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_ATTEMPTINGTOBANDAGE");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_BANDAGE) {
 			timeout = 5;
@@ -84,19 +84,19 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.patched <= 0.) {
-			currentMessage.text = "Nothing to be done here.";
+			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
 			currentMessage.text =
-				"You need "..((mti.patient == owner)? "" : "them ")
-				.."to stay still to rip off "..((mti.patient == owner)? "your " : "their ").."bandage!";
+				Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUNEED")..((mti.patient == owner)? "" : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEM"))
+				..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_STAYSTILL")..((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUR") : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEIR"))..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_BANDAGE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = "Ripping off bandage...";
+		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_RIPPINGOFF");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBANDAGE) {
 			timeout = 5;
