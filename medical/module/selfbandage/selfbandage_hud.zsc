@@ -232,7 +232,8 @@ extend class UaS_SelfBandage {
 
 		sb.DrawString(
 			sb.pSmallFont,
-			Stringtable.Localize("$UAS_BANDAGING_HUD_SPACER"),
+			// For some reason this won't translate properly. Dunno why. This isn't the only sb.DrawString with a Stringtable.Localize call I've done here yet it's the only one that doesn't work... - [Ted]
+			"-----",
 			(toolInfoPos.x, toolInfoPos.y - padStep),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
 			Font.CR_GRAY,
