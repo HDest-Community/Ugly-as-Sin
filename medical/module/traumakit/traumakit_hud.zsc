@@ -115,7 +115,7 @@ extend class UaS_TraumaKit {
 				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS")..GetStatusColor(mti.currentWound.open)..Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_CLOSED"));
 			}
 			else if (mti.currentWound.patched > 0.) {
-				status.Push(String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2"), GetOpenStatus(mti.currentWound)));
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2")..GetOpenStatus(mti.currentWound));
 
 				string tmpStr;
 				if (mti.currentWound.stabilised >= 100.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_FINE"; }
@@ -128,7 +128,7 @@ extend class UaS_TraumaKit {
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push(String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3"), GetOpenStatus(mti.currentWound)));
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3")..GetOpenStatus(mti.currentWound));
 
 				string tmpStr;
 
