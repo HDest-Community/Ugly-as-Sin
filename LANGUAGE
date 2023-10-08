@@ -58,6 +58,11 @@ RESPIRATOR_EMPTY                                      = "It is empty.";
 RESPIRATOR_AMT_PREFIX                                 = "It is at ";
 RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 
+
+// Looting Module
+FISTWH_USE                                            = "   Crouch next to a body\n      and hold to search.";
+
+
 //-----------------
 // Medical Module Language Lumps
 //-----------------
