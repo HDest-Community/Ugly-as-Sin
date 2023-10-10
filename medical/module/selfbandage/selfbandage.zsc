@@ -105,7 +105,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			|| CheckCovered()
 		) { return; }
 		if (!mti.patient.CountInv("BloodBagWorn")) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAGATTACHED")..((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_YOU") : Stringtable.Localize("$UASS_BANDAGING_HELPTEXT_THEM"));
+			currentMessage.text = ((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_YOU") : Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEM"));
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
