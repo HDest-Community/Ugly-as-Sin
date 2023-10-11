@@ -24,7 +24,8 @@ extend class UaS_SelfBandage {
 		if (UaS_Bandage_WoundShake && wound.depth > 0.) { woundPosition.y += HDPlayerPawn(owner).Flip * hudScale.y; }
 
 		// stability (always green when sealed)
-		string symbol = (selected)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1") : ((wound.open > 0.)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL2") : Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL3"));
+		int symbolNum = (selected)? 1 : ((wound.open > 0.)? 2 : 3);
+		string symbol = Stringtable.Localize("$UAS_BANDAGING_WOUND_SYMBOL"..symbolNum);
 		sb.DrawString(
 			sb.pSmallFont,
 			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
@@ -103,7 +104,7 @@ extend class UaS_SelfBandage {
 		// Patient
 		sb.DrawString(
 			sb.pSmallFont,
-			Stringtable.Localize("$UAS_BANDAGING_HUD_TREATING")..mti.patient.player.GetUsername(),
+			string.Format(Stringtable.Localize("$UAS_BANDAGING_HUD_TREATING"), mti.patient.player.GetUsername()),
 			(0, baseOffset + textHeight),
 			titleFlags,
 			Font.CR_GRAY,
@@ -183,35 +184,32 @@ extend class UaS_SelfBandage {
 		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
 		Array<string> status;
 
-		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_NOWOUNDSELECTED")); }
+		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UAS_BANDAGING_NOWOUNDSELECTED")); }
 		else {
-			string statusText = GetStatusColor(mti.currentWound.open * 10)..Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_OPEN");
-			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = statusText..Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_PATCHED"); }
-			else if (mti.currentWound.depth <= 0) { statusText = Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_SEALED"); }
-
-			status.Push(String.Format(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_WOUNDIS"),Stringtable.Localize(statusText)));
+			string statusText;
+			status.Push(GetOpenStatus(mti.currentWound));
 
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);
 
-				if (mti.currentWound.pressure > 5.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_VERYTIGHT"; }
-				else if (mti.currentWound.pressure > 3.5) { statusText = "$UAS_BANDAGING_WOUNDINFO_TIGHT"; }
-				else if (mti.currentWound.pressure > 2.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_ABITTIGHT"; }
-				else if (mti.currentWound.pressure > 1.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATTIGHT"; }
-				else if (mti.currentWound.pressure > 0.5) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATLOOSE"; }
-				else if (mti.currentWound.pressure > 0.2) { statusText = "$UAS_BANDAGING_WOUNDINFO_LOOSE"; }
-				else { statusText = "$UAS_BANDAGING_WOUNDINFO_VERYLOOSE"; }
-				status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_BANDAGEFEELS")..GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))..Stringtable.Localize(statusText));
+				if (mti.currentWound.pressure > 5.0) { statusText = "$UAS_BANDAGING_BANDAGE_VERYTIGHT"; }
+				else if (mti.currentWound.pressure > 3.5) { statusText = "$UAS_BANDAGING_BANDAGE_TIGHT"; }
+				else if (mti.currentWound.pressure > 2.0) { statusText = "$UAS_BANDAGING_BANDAGE_ABITTIGHT"; }
+				else if (mti.currentWound.pressure > 1.0) { statusText = "$UAS_BANDAGING_BANDAGE_SOMEWHATTIGHT"; }
+				else if (mti.currentWound.pressure > 0.5) { statusText = "$UAS_BANDAGING_BANDAGE_SOMEWHATLOOSE"; }
+				else if (mti.currentWound.pressure > 0.2) { statusText = "$UAS_BANDAGING_BANDAGE_LOOSE"; }
+				else { statusText = "$UAS_BANDAGING_BANDAGE_VERYLOOSE"; }
+				status.Push(string.Format(Stringtable.Localize(statusText), GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
 			}
 
 			woundInfoPos -= (0, halfStep);
-			if (mti.currentWound.stabilised >= 100.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_FINE"; }
-			else if (mti.currentWound.stabilised > 75.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATFINE"; }
-			else if (mti.currentWound.stabilised > 50.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_DECENT"; }
-			else if (mti.currentWound.stabilised > 25.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_NOTTHATGREAT"; }
-			else if (mti.currentWound.stabilised > 5.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_LESSHORRIBLE"; }
-			else { statusText = "$UAS_BANDAGING_WOUNDINFO_HORRIBLE"; }
-			status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_ITFEELS")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(statusText));
+			if (mti.currentWound.stabilised >= 100.0) { statusText = "$UAS_BANDAGING_STABILITY_FINE"; }
+			else if (mti.currentWound.stabilised > 75.0) { statusText = "$UAS_BANDAGING_STABILITY_SOMEWHATFINE"; }
+			else if (mti.currentWound.stabilised > 50.0) { statusText = "$UAS_BANDAGING_STABILITY_DECENT"; }
+			else if (mti.currentWound.stabilised > 25.0) { statusText = "$UAS_BANDAGING_STABILITY_NOTTHATGREAT"; }
+			else if (mti.currentWound.stabilised > 5.0) { statusText = "$UAS_BANDAGING_STABILITY_LESSHORRIBLE"; }
+			else { statusText = "$UAS_BANDAGING_STABILITY_HORRIBLE"; }
+			status.Push(string.Format(Stringtable.Localize(statusText), GetStatusColor(100 - mti.currentWound.stabilised)));
 		}
 
 		for (int i = 0; i < status.Size(); i++) {

@@ -67,6 +67,7 @@ FISTWH_USE                                            = "   Crouch next to a bod
 // Medical Module Language Lumps
 //-----------------
 
+
 // Medical UI
 
 // Colors
@@ -83,10 +84,10 @@ UAS_MEDICAL_UI_GREY = "\cd";
 UAS_MEDICAL_UI_WHITE = "\cj";
 
 // Open Status
-UAS_MEDICAL_UI_OPENSTATUS_OPEN = "open\c-";
-UAS_MEDICAL_UI_OPENSTATUS_PATCHED = " but \c[Yellow]patched";
-UAS_MEDICAL_UI_OPENSTATUS_SOMEWHATPATCHED = " but \c[Orange]somewhat patched";
-UAS_MEDICAL_UI_OPENSTATUS_SEALED = "\c[Green]sealed";
+UAS_MEDICAL_WOUND_OPEN = "- The wound is %sopen";
+UAS_MEDICAL_WOUND_PATCHED = "- The wound is %sopen\c- but \c[Yellow]patched";
+UAS_MEDICAL_WOUND_SOMEWHATPATCHED = "- The wound is %sopen\c- but \c[Orange]somewhat patched";
+UAS_MEDICAL_WOUND_SEALED = "- The wound is \c[Green]sealed";
 
 // Wound Descriptions
 UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";
@@ -129,8 +130,6 @@ UAS_MEDICAL_UI_BODYPART_RIGHTCALF = "right calf";
 UAS_MEDICAL_UI_BODYPART_LEFTSHIN = "left shin";
 UAS_MEDICAL_UI_BODYPART_RIGHTSHIN = "right shin";
 
-// Trauma Kit
-
 // Trauma Kit Main Hud
 UAS_TRAUMAKIT_UI_HUD_TITLE = "--- \cyTrauma Kit\c- ---";
 UAS_TRAUMAKIT_UI_HUD_TREATING = "Treating \cg";
@@ -146,11 +145,6 @@ UAS_TRAUMAKIT_UI_HUD_BOTTOMOVERFLOWDOTS = ". . .";
 UAS_TRAUMAKIT_UI_HUD_NOWOUNDSELECTED = "-No wounds selected-";
 
 // Trauma Kit Wound Info
-UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS = "-The wound is ";
-UAS_TRAUMAKIT_WOUNDINFO_CLOSED = "closed\c-.";
-UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2 = "-The wound is ";
-UAS_TRAUMAKIT_WOUNDINFO_PATCHED = "open\c- but \c[Yellow]patched\c-";
-
 UAS_TRAUMAKIT_WOUNDINFO_FINE = "fine";
 UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE = "somewhat fine";
 UAS_TRAUMAKIT_WOUNDINFO_DECENT = "decent";
@@ -158,9 +152,6 @@ UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT = "not that great";
 UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE = "less horrible";
 UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE = "horrible";
 UAS_TRAUMAKIT_WOUNDINFO_SEEMSTOBE = "-It seems to be ";
-
-UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3 = "-The wound is ";
-UAS_TRAUMAKIT_WOUNDINFO_OPEN = "open";
 
 UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED = "not numbed.";
 UAS_TRAUMAKIT_PAINKILLERS_NUMBED = "numbed";
@@ -198,7 +189,6 @@ UAS_TRAUMAKIT_TOOLLIST_WHITE = "\c[White]";
 UAS_TRAUMAKIT_TOOLLIST_DARKGREY = "\c[DarkGrey]";
 UAS_TRAUMAKIT_TOOLLIST_NEWLINE = "\n";
 
-// Also not implemented yet as I haven't figured out a non-disgusting way to implement this just yet. - [Ted]
 UAS_TRAUMAKIT_TOOLLIST_NAMES_AT = "AT";
 UAS_TRAUMAKIT_TOOLLIST_NAMES_SL = "SL";
 UAS_TRAUMAKIT_TOOLLIST_NAMES_FC = "FC";
@@ -303,53 +293,40 @@ UAS_TRAUMAKIT_TAKEOFFYOUR = "Take off your ";
 UAS_TRAUMAKIT_HAVETHEMTAKEOFF = "Have them take off their ";
 UAS_TRAUMAKIT_FIRST = "first!\n";
 
-// Banadaging
-
 // Bandage Hud & Messages
-UAS_BANDAGING_SELECTED_SYMBOL1 = "X";
-UAS_BANDAGING_SELECTED_SYMBOL2 = "o";
-UAS_BANDAGING_SELECTED_SYMBOL3 = "-";
+UAS_BANDAGING_WOUND_SYMBOL1 = "X";
+UAS_BANDAGING_WOUND_SYMBOL2 = "o";
+UAS_BANDAGING_WOUND_SYMBOL3 = "-";
 UAS_BANDAGING_HUD_TITLE = "--- Bandaging ---";
-UAS_BANDAGING_HUD_TREATING = "Treating ";
+UAS_BANDAGING_HUD_TREATING = "Treating %s";
 UAS_BANDAGING_NOWOUNDS = "You have no wounds.";
 UAS_BANDAGING_HUD_SPACER = "-----";
 UAS_BANDAGING_TAG = "self bandage";
 UAS_BANDAGING_DESCRIPTION_TITLE = "\c[Gray]Bandage\n";
 UAS_BANDAGING_DESCRIPTION_DESCRIPTION = "\c[DarkGray]Useful if you're bleeding out.";
-UAS_BANDAGING_MESSAGE_NOTHINGTOBEDONE = "Nothing to be done here.";
-UAS_BANDAGING_MESSAGE_YOUNEED = "You need ";
-UAS_BANDAGING_MESSAGE_THEM = "them ";
-UAS_BANDAGING_MESSAGE_TOSTAYSTILL = "to stay still to bandage ";
-UAS_BANDAGING_MESSAGE_YOURSELF = "yourself!";
-UAS_BANDAGING_MESSAGE_THEMBUTCOOLER = "them!";
-UAS_BANDAGING_MESSAGE_ATTEMPTINGTOBANDAGE = "Attempting to bandage wound...";
-UAS_BANDAGING_MESSAGE_STAYSTILL = "to stay still to rip off ";
-UAS_BANDAGING_MESSAGE_YOUR = "your ";
-UAS_BANDAGING_MESSAGE_THEIR = "their ";
-UAS_BANDAGING_MESSAGE_BANDAGE = "bandage!";
-UAS_BANDAGING_MESSAGE_RIPPINGOFF = "Ripping off bandage...";
+UAS_BANDAGING_MSG_NOTHINGTOBEDONE = "Nothing to be done here.";
+UAS_BANDAGING_BANDAGEMSG_STAYSTILL_YOU = "You need to stay still to bandage yourself!";
+UAS_BANDAGING_BANDAGEMSG_STAYSTILL_THEY = "You need them to stay still to bandage them!";
+UAS_BANDAGING_BANDAGEMSG_ATTEMPTING = "Attempting to bandage wound...";
+UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_YOU = "You need to stay still to rip off your bandage!";
+UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_THEY = "You need them to stay still to rip off their bandage!";
+UAS_BANDAGING_RIPBANDAGEMSG_ATTEMPTING = "Ripping off bandage...";
 
 // Bandage Woundinfo
-UAS_BANDAGING_WOUNDINFO_NOWOUNDSELECTED = "\c[DarkGray]No wound selected.\c-";
-UAS_BANDAGING_WOUNDINFO_OPEN = "open\c-";
-UAS_BANDAGING_WOUNDINFO_PATCHED = " but \c[Yellow]patched";
-UAS_BANDAGING_WOUNDINFO_SEALED = "\c[Green]sealed";
-UAS_BANDAGING_WOUNDINFO_WOUNDIS = "- The wound is %s";
-UAS_BANDAGING_WOUNDINFO_VERYTIGHT = "very tight";
-UAS_BANDAGING_WOUNDINFO_TIGHT = "tight";
-UAS_BANDAGING_WOUNDINFO_ABITTIGHT = "a bit tight";
-UAS_BANDAGING_WOUNDINFO_SOMEWHATTIGHT = "somewhat tight";
-UAS_BANDAGING_WOUNDINFO_SOMEWHATLOOSE = "somewhat loose";
-UAS_BANDAGING_WOUNDINFO_LOOSE = "loose";
-UAS_BANDAGING_WOUNDINFO_VERYLOOSE = "very loose";
-UAS_BANDAGING_WOUNDINFO_BANDAGEFEELS = "- Bandage feels ";
-UAS_BANDAGING_WOUNDINFO_FINE = "fine";
-UAS_BANDAGING_WOUNDINFO_SOMEWHATFINE = "somewhat fine";
-UAS_BANDAGING_WOUNDINFO_DECENT = "decent";
-UAS_BANDAGING_WOUNDINFO_NOTTHATGREAT = "not that great";
-UAS_BANDAGING_WOUNDINFO_LESSHORRIBLE = "less horrible";
-UAS_BANDAGING_WOUNDINFO_HORRIBLE = "horrible";
-UAS_BANDAGING_WOUNDINFO_ITFEELS = "- It feels ";
+UAS_BANDAGING_NOWOUNDSELECTED = "\c[DarkGray]No wound selected.\c-";
+UAS_BANDAGING_BANDAGE_VERYTIGHT = "- Bandage feels %svery tight";
+UAS_BANDAGING_BANDAGE_TIGHT = "- Bandage feels %stight";
+UAS_BANDAGING_BANDAGE_ABITTIGHT = "- Bandage feels %sa bit tight";
+UAS_BANDAGING_BANDAGE_SOMEWHATTIGHT = "- Bandage feels %ssomewhat tight";
+UAS_BANDAGING_BANDAGE_SOMEWHATLOOSE = "- Bandage feels %ssomewhat loose";
+UAS_BANDAGING_BANDAGE_LOOSE = "- Bandage feels %sloose";
+UAS_BANDAGING_BANDAGE_VERYLOOSE = "- Bandage feels %svery loose";
+UAS_BANDAGING_STABILITY_FINE = "- It feels %sfine";
+UAS_BANDAGING_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
+UAS_BANDAGING_STABILITY_DECENT = "- It feels %sdecent";
+UAS_BANDAGING_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
+UAS_BANDAGING_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
+UAS_BANDAGING_STABILITY_HORRIBLE = "- It feels %shorrible";
 
 // Bandage Helptext
 UAS_BANDAGING_HELPTEXT_CYCLEWOUNDS = "  Cycle wounds\n";
@@ -359,11 +336,10 @@ UAS_BANDAGING_HELPTEXT_HOLDAND = "  Hold and ...\n";
 UAS_BANDAGING_HELPTEXT_REMOVEBLOODFEEDER = "  Remove blood feeder\n";
 UAS_BANDAGING_HELPTEXT_STRIPLAYERS = "  Strip worn layers\n";
 UAS_BANDAGING_HELPTEXT_TREATANOTHER = "  Treat another player\n\n";
-UAS_BANDAGING_HELPTEXT_TAKEOFFYOUR = "Take off your ";
-UAS_BANDAGING_HELPTEXT_TAKEOFFTHEIRS = "Tell them to take off their ";
-UAS_BANDAGING_HELPTEXT_FIRST = " first!";
+UAS_BANDAGING_HELPTEXT_TAKEOFF_YOU = "Take off your %s first!";
+UAS_BANDAGING_HELPTEXT_TAKEOFF_THEY = "Tell them to take off their %s first!";
 UAS_BANDAGING_HELPTEXT_NOBLOODBAG_YOU = "There's no blood bag attached to you.";
-UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEM = "There's no blood bag attached to them.";
+UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEY = "There's no blood bag attached to them.";
 UAS_BANDAGING_HELPTEXT_RIPPINGOFFBAG = "Ripping off blood bag...";
 UAS_BANDAGING_HELPTEXT_NOTHINGTOSTRIP = "Nothing to strip.";
 UAS_BANDAGING_HELPTEXT_BANDAGEWOUND = "  Bandage wound\n";
