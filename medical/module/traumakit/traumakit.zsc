@@ -11,7 +11,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		height 4;
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Picked up a personal trauma kit.";
+		Inventory.PickupMessage "$UAS_TRAUMAKIT_PICKUP";
 		Inventory.Icon "UGSIF0";
 		Inventory.PickupSound "weapons/pocket";
 		+INVENTORY.INVBAR;
@@ -23,7 +23,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		weapon.slotpriority 0.5;
 		hdweapon.refid UAS_HDLD_TRAUMAKIT;
 		scale 0.5;
-		tag "Trauma Kit";
+		tag "$UAS_TRAUMAKIT_TAG";
 	}
 
 	override double weaponbulk(){
@@ -158,20 +158,20 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		);
 		if (!intervening) { return true; }
 
-		if (mti.patient.countinv("WornRadsuit")) { itemname = "environment suit "; }
-		else if (mti.patient.countinv("HDArmourWorn")) { itemname = "armour "; }
-		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = "bandage "; }
-		else { itemname = "worn layers "; }
+		if (mti.patient.countinv("WornRadsuit")) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_ENVIROSUIT"); }
+		else if (mti.patient.countinv("HDArmourWorn")) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_ARMOUR"); }
+		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_BANDAGE"); }
+		else { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_WORNLAYERS"); }
 
 		// check owner or other
 		if (mti.patient == owner) {
-			imperative = "Take off your ";
+			imperative = Stringtable.Localize("$UAS_TRAUMAKIT_TAKEOFFYOUR");
 		}
 		else {
-			imperative = "Have them take off their ";
+			imperative = Stringtable.Localize("$UAS_TRAUMAKIT_HAVEATHEMTAKEOFF");
 		}
 		// display message
-		currentmessage.text = imperative..itemname.."first!\n";
+		currentmessage.text = imperative..itemname..Stringtable.Localize("$UAS_TRAUMAKIT_FIRST");
 		currentmessage.timeout = 2*35;
 		return false;
 	}

@@ -24,7 +24,7 @@ extend class UaS_SelfBandage {
 		if (UaS_Bandage_WoundShake && wound.depth > 0.) { woundPosition.y += HDPlayerPawn(owner).Flip * hudScale.y; }
 
 		// stability (always green when sealed)
-		string symbol = (selected)? "X" : ((wound.open > 0.)? "o" : "-");
+		string symbol = (selected)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL1") : ((wound.open > 0.)? Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL2") : Stringtable.Localize("$UAS_BANDAGING_SELECTED_SYMBOL3"));
 		sb.DrawString(
 			sb.pSmallFont,
 			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
@@ -93,7 +93,7 @@ extend class UaS_SelfBandage {
 		int titleFlags = baseFlags | sb.DI_TEXT_ALIGN_CENTER;
 		sb.DrawString(
 			sb.pSmallFont,
-			"--- Bandaging ---",
+			Stringtable.Localize("$UAS_BANDAGING_HUD_TITLE"),
 			(0, baseOffset),
 			titleFlags,
 			Font.CR_GRAY,
@@ -103,7 +103,7 @@ extend class UaS_SelfBandage {
 		// Patient
 		sb.DrawString(
 			sb.pSmallFont,
-			"Treating "..mti.patient.player.GetUsername(),
+			Stringtable.Localize("$UAS_BANDAGING_HUD_TREATING")..mti.patient.player.GetUsername(),
 			(0, baseOffset + textHeight),
 			titleFlags,
 			Font.CR_GRAY,
@@ -160,7 +160,7 @@ extend class UaS_SelfBandage {
 		if (mti.wh.critWounds.Size() == 0) {
 			sb.DrawString(
 				sb.pSmallFont,
-				"You have no wounds.",
+				Stringtable.Localize("$UAS_BANDAGING_NOWOUNDS"),
 				woundsLocation,
 				baseFlags | sb.DI_TEXT_ALIGN_CENTER,
 				Font.CR_DARKGRAY,
@@ -183,32 +183,35 @@ extend class UaS_SelfBandage {
 		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
 		Array<string> status;
 
-		if (!mti.currentWound) { status.Push("\c[DarkGray]No wound selected.\c-"); }
+		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_NOWOUNDSELECTED")); }
 		else {
-			string statusText;
-			status.Push(String.Format("- The wound is %s", GetOpenStatus(mti.currentWound)));
+			string statusText = GetStatusColor(mti.currentWound.open * 10)..Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_OPEN");
+			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = statusText..Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_PATCHED"); }
+			else if (mti.currentWound.depth <= 0) { statusText = Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_SEALED"); }
 
-			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0.) {
+			status.Push(String.Format(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_WOUNDIS"),Stringtable.Localize(statusText)));
+
+			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);
 
-				if (mti.currentWound.pressure > 5.0) { statusText = "very tight"; }
-				else if (mti.currentWound.pressure > 3.5) { statusText = "tight"; }
-				else if (mti.currentWound.pressure > 2.0) { statusText = "a bit tight"; }
-				else if (mti.currentWound.pressure > 1.0) { statusText = "somewhat tight"; }
-				else if (mti.currentWound.pressure > 0.5) { statusText = "somewhat loose"; }
-				else if (mti.currentWound.pressure > 0.2) { statusText = "loose"; }
-				else { statusText = "very loose"; }
-				status.Push("- Bandage feels "..GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))..statusText);
+				if (mti.currentWound.pressure > 5.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_VERYTIGHT"; }
+				else if (mti.currentWound.pressure > 3.5) { statusText = "$UAS_BANDAGING_WOUNDINFO_TIGHT"; }
+				else if (mti.currentWound.pressure > 2.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_ABITTIGHT"; }
+				else if (mti.currentWound.pressure > 1.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATTIGHT"; }
+				else if (mti.currentWound.pressure > 0.5) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATLOOSE"; }
+				else if (mti.currentWound.pressure > 0.2) { statusText = "$UAS_BANDAGING_WOUNDINFO_LOOSE"; }
+				else { statusText = "$UAS_BANDAGING_WOUNDINFO_VERYLOOSE"; }
+				status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_BANDAGEFEELS")..GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))..Stringtable.Localize(statusText));
 			}
 
 			woundInfoPos -= (0, halfStep);
-			if (mti.currentWound.stabilised >= 100.0) { statusText = "fine"; }
-			else if (mti.currentWound.stabilised > 75.0) { statusText = "somewhat fine"; }
-			else if (mti.currentWound.stabilised > 50.0) { statusText = "decent"; }
-			else if (mti.currentWound.stabilised > 25.0) { statusText = "not that great"; }
-			else if (mti.currentWound.stabilised > 5.0) { statusText = "less horrible"; }
-			else { statusText = "horrible"; }
-			status.Push("- It feels "..GetStatusColor(100 - mti.currentWound.stabilised)..statusText);
+			if (mti.currentWound.stabilised >= 100.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_FINE"; }
+			else if (mti.currentWound.stabilised > 75.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_SOMEWHATFINE"; }
+			else if (mti.currentWound.stabilised > 50.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_DECENT"; }
+			else if (mti.currentWound.stabilised > 25.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_NOTTHATGREAT"; }
+			else if (mti.currentWound.stabilised > 5.0) { statusText = "$UAS_BANDAGING_WOUNDINFO_LESSHORRIBLE"; }
+			else { statusText = "$UAS_BANDAGING_WOUNDINFO_HORRIBLE"; }
+			status.Push(Stringtable.Localize("$UAS_BANDAGING_WOUNDINFO_ITFEELS")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(statusText));
 		}
 
 		for (int i = 0; i < status.Size(); i++) {
@@ -229,6 +232,7 @@ extend class UaS_SelfBandage {
 
 		sb.DrawString(
 			sb.pSmallFont,
+			// For some reason this won't translate properly. Dunno why. This isn't the only sb.DrawString with a Stringtable.Localize call I've done here yet it's the only one that doesn't work... - [Ted]
 			"-----",
 			(toolInfoPos.x, toolInfoPos.y - padStep),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,

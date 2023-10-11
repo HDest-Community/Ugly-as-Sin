@@ -12,7 +12,7 @@ extend class UaS_TraumaKit {
 		// Header
 		sb.DrawString(
 			sb.pSmallFont,
-			"--- \cyTrauma Kit\c- ---",
+			Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_TITLE"),
 			(0, baseOffset),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
 			Font.CR_GRAY,
@@ -20,7 +20,7 @@ extend class UaS_TraumaKit {
 		);
 		sb.DrawString(
 			sb.pSmallFont,
-			"Treating \cg" .. mti.patient.player.GetUsername(),
+			Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_TREATING") .. mti.patient.player.GetUsername(),
 			(0, baseOffset + textHeight),
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
 			Font.CR_GRAY,
@@ -34,7 +34,7 @@ extend class UaS_TraumaKit {
 		if (mti.wh.critWounds.Size() == 0) {
 			sb.DrawString(
 				sb.pSmallFont,
-				"No treatable wounds",
+				Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_NOTREATABLE"),
 				(0, woundListOffsetY),
 				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
 				Font.CR_GRAY,
@@ -57,12 +57,12 @@ extend class UaS_TraumaKit {
 				string textColor;
 				bool selected = (mti.currentWound && i == idx);
 				if (mti.wh.critWounds[i].avgstat >= 15) {
-					textColor = (selected)? "\ca" : "\cr"; // Red / Dark Red
+					textColor = (selected)? Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_RED") : Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_DARKRED");
 				} else {
-					textColor = (selected)? "\cd" : "\cq"; // Green / Dark Green
+					textColor = (selected)? Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_GREEN") : Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_DARKGREEN");
 				}
 
-				string pointer = (selected)? " <" : "";
+				string pointer = (selected)? Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_SELECTED") : Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_NOTSELECTED");
 				wounds.push(textColor..mti.wh.critWounds[i].description..pointer);
 				woundListOffsetY -= halfStep;
 			}
@@ -72,7 +72,7 @@ extend class UaS_TraumaKit {
 			if (loopMin > 0) {
 				sb.DrawString(
 					sb.pSmallFont,
-					". . .",
+					Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_TOPOVERFLOWDOTS"),
 					(woundListOffsetX, woundListOffsetY - padStep),
 					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
 					Font.CR_GRAY,
@@ -97,7 +97,7 @@ extend class UaS_TraumaKit {
 			if (loopMax < mti.wh.critWounds.Size() - 1) {
 				sb.DrawString(
 					sb.pSmallFont,
-					". . .",
+					Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_BOTTOMOVERFLOWDOTS"),
 					(woundListOffsetX, woundListOffsetY),
 					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_RIGHT,
 					Font.CR_GRAY,
@@ -112,72 +112,73 @@ extend class UaS_TraumaKit {
 		Array<string> status;
 		if (mti.currentWound) {
 			if (mti.currentWound.open <= 0.) {
-				status.Push("-The wound is "..GetStatusColor(mti.currentWound.open).."closed\c-.");
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS")..GetStatusColor(mti.currentWound.open)..Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_CLOSED"));
 			}
 			else if (mti.currentWound.patched > 0.) {
-				status.Push(String.Format("-The wound is %s", GetOpenStatus(mti.currentWound)));
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS2")..GetOpenStatus(mti.currentWound));
 
 				string tmpStr;
-				if (mti.currentWound.stabilised >= 100.0) { tmpStr = "fine"; }
-				else if (mti.currentWound.stabilised > 75.0) { tmpStr = "somewhat fine"; }
-				else if (mti.currentWound.stabilised > 50.0) { tmpStr = "decent"; }
-				else if (mti.currentWound.stabilised > 25.0) { tmpStr = "not that great"; }
-				else if (mti.currentWound.stabilised > 5.0) { tmpStr = "less horrible"; }
-				else { tmpStr = "horrible"; }
-				status.Push("-It seems to be "..GetStatusColor(100 - mti.currentWound.stabilised)..tmpStr);
+				if (mti.currentWound.stabilised >= 100.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_FINE"; }
+				else if (mti.currentWound.stabilised > 75.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE"; }
+				else if (mti.currentWound.stabilised > 50.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_DECENT"; }
+				else if (mti.currentWound.stabilised > 25.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT"; }
+				else if (mti.currentWound.stabilised > 5.0) { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE"; }
+				else { tmpStr = "$UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE"; }
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_SEEMSTOBE")..GetStatusColor(100 - mti.currentWound.stabilised)..Stringtable.Localize(tmpStr));
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push(String.Format("-The wound is %s", GetOpenStatus(mti.currentWound)));
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_WOUNDINFO_WOUNDIS3")..GetOpenStatus(mti.currentWound));
 
 				string tmpStr;
 
 				// Painkillers
-				tmpStr = "not numbed.";
-				if (mti.currentWound.painkiller >= 75) tmpStr = "numbed";
-				else if (mti.currentWound.painkiller >= 50) tmpStr = "mostly numbed";
-				else if (mti.currentWound.painkiller >= 25) tmpStr = "somewhat numbed";
+				tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED";
+				if (mti.currentWound.painkiller >= 75) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_NUMBED";
+				else if (mti.currentWound.painkiller >= 50) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED";
+				else if (mti.currentWound.painkiller >= 25) tmpStr = "$UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED";
 
-				status.Push("-It is "..GetStatusColor(100 - mti.currentWound.painkiller)..tmpStr);
+				status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLERS_ITIS")..GetStatusColor(100 - mti.currentWound.painkiller)..Stringtable.Localize(tmpStr));
 				woundInfoOffsetY -= halfStep;
 
 				// Dirty
 				if (mti.currentWound.dirty >= 0) {
-					tmpStr = "completely clean";
-					if (mti.currentWound.dirty >= 65) { tmpStr = "filthy"; }
-					else if (mti.currentWound.dirty >= 55) { tmpStr = "very dirty"; }
-					else if (mti.currentWound.dirty >= 45) { tmpStr = "somewhat dirty"; }
-					else if (mti.currentWound.dirty >= 35) { tmpStr = "a bit dirty"; }
-					else if (mti.currentWound.dirty >= 25) { tmpStr = "almost clean"; }
-					else if (mti.currentWound.dirty >= 15) { tmpStr = "acceptably clean"; }
+					tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_CLEAN";
+					if (mti.currentWound.dirty >= 65) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_FILTHY"; }
+					else if (mti.currentWound.dirty >= 55) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY"; }
+					else if (mti.currentWound.dirty >= 45) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY"; }
+					else if (mti.currentWound.dirty >= 35) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY"; }
+					else if (mti.currentWound.dirty >= 25) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN"; }
+					else if (mti.currentWound.dirty >= 15) { tmpStr = "$UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN"; }
 
-					status.Push("-It is "..GetStatusColor(mti.currentWound.dirty)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_DIRTINESS_ITIS")..GetStatusColor(mti.currentWound.dirty)..Stringtable.Localize(tmpStr));
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Obstructions
 				if (mti.currentWound.obstructed >= 0) {
-					tmpStr = "no apparent obstructions";
-					if (mti.currentWound.obstructed >= 55) { tmpStr = "many obstructions"; }
-					else if (mti.currentWound.obstructed >= 45) { tmpStr = "several obstructions"; }
-					else if (mti.currentWound.obstructed >= 35) { tmpStr = "a few obstructions"; }
-					else if (mti.currentWound.obstructed >= 25) { tmpStr = "some obstructions"; }
-					else if (mti.currentWound.obstructed >= 15) { tmpStr = "very little obstructions"; }
+					tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_NONE";
+					if (mti.currentWound.obstructed >= 55) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_MANY"; }
+					else if (mti.currentWound.obstructed >= 45) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL"; }
+					else if (mti.currentWound.obstructed >= 35) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW"; }
+					else if (mti.currentWound.obstructed >= 25) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_SOME"; }
+					else if (mti.currentWound.obstructed >= 15) { tmpStr = "$UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW"; }
 
-					status.Push("-There are "..GetStatusColor(mti.currentWound.obstructed)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_OBSTRUCTIONS_THEREARE")..GetStatusColor(mti.currentWound.obstructed)..Stringtable.Localize(tmpStr));
 					woundInfoOffsetY -= halfStep;
 				}
 
 				// Cavity
 				if (mti.currentWound.cavity >= 0) {
-					tmpStr = "no treatable tissue damage";
-					if (mti.currentWound.cavity >= 12.0) { tmpStr = "severe tissue damage"; }
-					else if (mti.currentWound.cavity >= 8.5) { tmpStr = "significant tissue damage"; }
-					else if (mti.currentWound.cavity >= 5.0) { tmpStr = "moderate tissue damage"; }
-					else if (mti.currentWound.cavity >= 2.5) { tmpStr = "some tissue damage"; }
-					else if (mti.currentWound.cavity >= 1.0) { tmpStr = "little tissue damage"; }
+					tmpStr = "$UAS_TRAUMAKIT_CAVITY_NODAMAGE";
+					if (mti.currentWound.cavity >= 12.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE"; }
+					else if (mti.currentWound.cavity >= 8.5) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE"; }
+					else if (mti.currentWound.cavity >= 5.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE"; }
+					else if (mti.currentWound.cavity >= 2.5) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE"; }
+					else if (mti.currentWound.cavity >= 1.0) { tmpStr = "$UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE"; }
 
-					status.Push("-There is "..GetStatusColor(mti.currentWound.cavity / 12 * 100)..tmpStr);
+					status.Push(Stringtable.Localize("$UAS_TRAUMAKIT_CAVITY_THEREIS")..GetStatusColor(mti.currentWound.cavity / 12 * 100)..Stringtable.Localize(tmpStr));
+
 					woundInfoOffsetY -= halfStep;
 				}
 			}
@@ -197,7 +198,7 @@ extend class UaS_TraumaKit {
 		} else if (mti.wh.critWounds.Size() > 0) {
 			sb.DrawString(
 				sb.pSmallFont,
-				"-No wounds selected-",
+				Stringtable.Localize("$UAS_TRAUMAKIT_UI_HUD_NOWOUNDSELECTED"),
 				(woundInfoOffsetX, woundInfoOffsetY),
 				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
 				Font.CR_DARKGRAY,
@@ -212,8 +213,8 @@ extend class UaS_TraumaKit {
 		Array<String> toolIcons;
 		for (int i = 0; i <= T_SCALPEL; i++) {
 			string toolName = String.Format(
-				"%s%s",
-				(i == weaponstatus[TK_SELECTED])? "\c[White]" : "\c[DarkGrey]", toolListNames[i]
+				Stringtable.Localize("$UAS_TRAUMAKIT_TOOLLIST_FORMATTING"),
+				(i == weaponstatus[TK_SELECTED])? Stringtable.Localize("$UAS_TRAUMAKIT_TOOLLIST_WHITE") : Stringtable.Localize("$UAS_TRAUMAKIT_TOOLLIST_DARKGREY") , toolListNames[i]
 			);
 			float alpha = (i == weaponstatus[TK_SELECTED])? 0.75 : 0.50;
 
@@ -240,7 +241,7 @@ extend class UaS_TraumaKit {
 		// Tool info
 		float toolInfoOffset = baseOffset + (4 * textHeight) + (8 * padStep);
 		Array<string> trueStatusMessage;
-		statusMessage.Split(trueStatusMessage, "\n"); // it just works
+		statusMessage.Split(trueStatusMessage, Stringtable.Localize("$UAS_TRAUMAKIT_TOOLLIST_NEWLINE")); // it just works | Even betterer - [Ted]
 
 		for (int i = 0; i < trueStatusMessage.Size(); i++) {
 			sb.DrawString(

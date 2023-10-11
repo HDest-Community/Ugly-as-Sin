@@ -8,7 +8,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	BandageActions actionType;
 
 	Default {
-		Tag "self bandage";
+		Tag "$UAS_BANDAGING_TAG";
 		+Inventory.UNTOSSABLE;
 		+HDWeapon.DONTDISARM;
 	}
@@ -23,12 +23,13 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	}
 
 	override string GetHelpText() {
+		LocalizeHelp();
 		return
-			WEPHELP_RELOAD.."/"..WEPHELP_ALTRELOAD.."  Cycle wounds\n"
-			..WEPHELP_FIREMODE.."  Hold and ...\n"
-			.."  +"..WEPHELP_FIRE.."  Remove blood feeder\n"
-			.."  +"..WEPHELP_ALTFIRE.."  Strip worn layers\n"
-			..WEPHELP_ZOOM.."  Treat another player\n\n"
+			LWPHELP_RELOAD..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_SLASH")..LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_CYCLEWOUNDS")
+			..LWPHELP_FIREMODE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_HOLDAND")
+			..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_PLUS")..LWPHELP_FIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_REMOVEBLOODFEEDER")
+			..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_PLUS")..LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_STRIPLAYERS")
+			..LWPHELP_ZOOM..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TREATANOTHER")
 			..toolHelpText;
 	}
 
@@ -73,8 +74,8 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_ONLYFULL);
 		if (blockinv) {
 			currentMessage.text =
-				((mti.patient == owner)? "Take off your " : "Tell them to take off their ")
-				..blockinv.GetTag().." first!";
+				((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TAKEOFFYOUR") : Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TAKEOFFTHEIRS"))
+				..blockinv.GetTag()..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_FIRST");
 			currentMessage.timeout = 2 * 35;
 			return true;
 		}
@@ -104,12 +105,12 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			|| CheckCovered()
 		) { return; }
 		if (!mti.patient.CountInv("BloodBagWorn")) {
-			currentMessage.text = "There's no blood bag attached to "..((mti.patient == owner)? "you." : "them.");
+			currentMessage.text = ((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_YOU") : Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEM"));
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = "Ripping off blood bag...";
+		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_RIPPINGOFFBAG");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBLOODBAG) {
 			timeout = 5;
@@ -134,7 +135,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			&& !(owner.player.oldbuttons & BT_ALTFIRE)
 		)) { return; }
 		if (HDPlayerPawn.CheckStrip(mti.patient, mti.patient, silent: true)) {
-			currentMessage.text = "Nothing to strip.";
+			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOTHINGTOSTRIP");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}

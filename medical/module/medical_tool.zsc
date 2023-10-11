@@ -23,24 +23,24 @@ class UaS_MedicalTool : HDWeapon {
 	}
 
 	ui string GetStatusColor(int amount) {
-		if (amount >= 90) { return "\cm"; } // Black
-		if (amount >= 80) { return "\cr"; } // Dark Red
-		if (amount >= 70) { return "\ca"; } // Brick
-		if (amount >= 60) { return "\cx"; } // Fire
-		if (amount >= 50) { return "\ci"; } // Orange
-		if (amount >= 40) { return "\ck"; } // Yellow
-		if (amount >= 30) { return "\cs"; } // Dark Brown
-		if (amount >= 20) { return "\cq"; } // Dark Green
-		if (amount >= 10) { return "\cd"; } // Green
-		if (amount >= 0) { return "\cd"; } // Grey (wait, isn't this green?)
-		return "\cj"; // White
+		if (amount >= 90) { return Stringtable.Localize("$UAS_MEDICAL_UI_BLACK"); }
+		if (amount >= 80) { return Stringtable.Localize("$UAS_MEDICAL_UI_DARKRED"); }
+		if (amount >= 70) { return Stringtable.Localize("$UAS_MEDICAL_UI_BRICK"); }
+		if (amount >= 60) { return Stringtable.Localize("$UAS_MEDICAL_UI_FIRE"); }
+		if (amount >= 50) { return Stringtable.Localize("$UAS_MEDICAL_UI_ORANGE"); }
+		if (amount >= 40) { return Stringtable.Localize("$UAS_MEDICAL_UI_YELLOW"); }
+		if (amount >= 30) { return Stringtable.Localize("$UAS_MEDICAL_UI_DARKBROWN"); }
+		if (amount >= 20) { return Stringtable.Localize("$UAS_MEDICAL_UI_DARKGREEN"); }
+		if (amount >= 10) { return Stringtable.Localize("$UAS_MEDICAL_UI_GREEN"); }
+		if (amount >= 0) { return Stringtable.Localize("$UAS_MEDICAL_UI_GREY"); }
+		return Stringtable.Localize("$UAS_MEDICAL_UI_WHITE");
 	}
 
 	ui string GetOpenStatus(UaS_Wound currentWound) {
-		string statusText = GetStatusColor(currentWound.open / 15 * 100).."open\c-";
-		if (currentWound.depth <= 0. && currentWound.patched > 0.) { statusText = statusText.." but \c[Yellow]patched"; }
-		else if (currentWound.patched > 0.) { statusText = statusText.." but \c[Orange]somewhat patched"; }
-		else if (currentWound.depth <= 0.) { statusText = "\c[Green]sealed"; }
+		string statusText = GetStatusColor(currentWound.open / 15 * 100)..Stringtable.Localize("$UAS_MEDICAL_UI_OPENSTATUS_OPEN");
+		if (currentWound.depth <= 0. && currentWound.patched > 0.) { statusText = statusText..Stringtable.Localize("$UAS_MEDICAL_UI_OPENSTATUS_PATCHED"); }
+		else if (currentWound.patched > 0.) { statusText = statusText..Stringtable.Localize("$UAS_MEDICAL_UI_OPENSTATUS_SOMEWHATPATCHED"); }
+		else if (currentWound.depth <= 0.) { statusText = Stringtable.Localize("$UAS_MEDICAL_UI_OPENSTATUS_SEALED"); }
 
 		return statusText;
 	}

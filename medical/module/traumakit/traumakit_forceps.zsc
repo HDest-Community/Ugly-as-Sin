@@ -3,14 +3,14 @@ extend class UaS_TraumaKit {
 	int mashes;
 
 	void HandleForceps() {
-		statusMessage = statusmessage.."\cjForceps\n";
-		statusMessage = statusmessage.."\cuPrecision tool for removing obstructions.\n\n\n";
+		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_TITLE");
+		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_DESCRIPTION");
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 
 		// Status precheck
 		if (mti.currentWound.obstructed < 0) {
-			currentmessage.text = "No obstructions require removal.\n";
+			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_UNUSABLE");
 			currentmessage.timeout = 10;
 		}
 
@@ -25,7 +25,7 @@ extend class UaS_TraumaKit {
 			if (!HandleStrip()) { return; }
 			holdingopen = true;
 			weaponstatus[TK_HOLD]++;
-			currentmessage.text = "Holding the wound open.\n";
+			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_HOLDINGWOUNDOPEN");
 			currentmessage.timeout = 5;
 
 			// Abort if too much pain
@@ -67,16 +67,16 @@ extend class UaS_TraumaKit {
 				mti.currentWound.obstructed = max(mti.currentWound.obstructed - remove, 0);
 				//mti.patient.damagemobj(owner,owner,1,"staples");
 			}
-			else { result = "You probe the wound"; }
+			else { result = Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_PROBEWOUND"); }
 
 			// increase cavity on overshoot
 			// NOTE: increase width as well?
 			if (remove > mti.currentWound.obstructed) {
 				mti.currentWound.cavity = mti.currentWound.cavity + (remove / 10);
-				result = result..", damaging the surrounding tissue.";
+				result = result..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_DAMAGE");
 			}
 			else {
-				result = result..".";
+				result = result..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_PROBEPERIOD");
 			}
 
 			mti.currentWound.inpain(remove);
@@ -89,7 +89,7 @@ extend class UaS_TraumaKit {
 extend class UaS_TraumaKit {
 	string ExtractionMessage(bool damage = false) {
 		string r;
-		r = string.format("You %s %s %s out of the wound",
+		r = string.format(Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_OUTOFWOUND"),
 			UaS_TraumaKit.verb[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
 			UaS_TraumaKit.piece[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)],
 			UaS_TraumaKit.material[random[uas_tk](0,UaS_TraumaKit.verb.size()-1)]
