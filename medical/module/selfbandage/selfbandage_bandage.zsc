@@ -31,19 +31,18 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.depth <= 0. && mti.currentWound.patched <= 0.) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_NOTHINGTOBEDONE");
+			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MSG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
-			currentMessage.text =
-				Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUNEED")..((mti.patient == owner)? "" : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEM"))
-				..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_TOSTAYSTILL")..((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOURSELF") : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEMBUTCOOLER"));
+			string text = "$UAS_BANDAGING_BANDAGEMSG_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
+			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_ATTEMPTINGTOBANDAGE");
+		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_BANDAGEMSG_ATTEMPTING");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_BANDAGE) {
 			timeout = 5;
@@ -84,19 +83,18 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.patched <= 0.) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_NOTHINGTOBEDONE");
+			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MSG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
-			currentMessage.text =
-				Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUNEED")..((mti.patient == owner)? "" : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEM"))
-				..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_STAYSTILL")..((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_MESSAGE_YOUR") : Stringtable.Localize("$UAS_BANDAGING_MESSAGE_THEIR"))..Stringtable.Localize("$UAS_BANDAGING_MESSAGE_BANDAGE");
+			string text = "$UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
+			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MESSAGE_RIPPINGOFF");
+		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_RIPBANDAGEMSG_ATTEMPTING");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBANDAGE) {
 			timeout = 5;

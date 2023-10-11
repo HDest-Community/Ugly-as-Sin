@@ -73,9 +73,8 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	bool CheckCovered() {
 		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_ONLYFULL);
 		if (blockinv) {
-			currentMessage.text =
-				((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TAKEOFFYOUR") : Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TAKEOFFTHEIRS"))
-				..blockinv.GetTag()..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_FIRST");
+			string text = "$UAS_BANDAGING_HELPTEXT_TAKEOFF_"..((mti.patient == owner)? "YOU" : "THEY");
+			currentMessage.text = string.Format(Stringtable.Localize(text), blockinv.GetTag());
 			currentMessage.timeout = 2 * 35;
 			return true;
 		}
@@ -105,7 +104,8 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			|| CheckCovered()
 		) { return; }
 		if (!mti.patient.CountInv("BloodBagWorn")) {
-			currentMessage.text = ((mti.patient == owner)? Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_YOU") : Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEM"));
+			string text = "$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_"..((mti.patient == owner)? "YOU" : "THEY");
+			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
