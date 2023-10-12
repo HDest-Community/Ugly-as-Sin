@@ -24,7 +24,6 @@ class UaS_Wound : HDBleedingWound {
 	double oldPatched;
 
 	override void Tick() {
-		BloodDrops();
 		// Heal some old wounds before getting destroyed?
 		if (
 			age
@@ -40,6 +39,7 @@ class UaS_Wound : HDBleedingWound {
 		if (!bleeder) { return; }
 
 		if (!CheckSkip()) { TryStabilise(); }
+		BloodDrops();
 
 		// Make sure bandage doesn't fall off when trying to bandage yourself while incap
 		if (HDPlayerPawn(bleeder) && HDIncapWeapon(HDPlayerPawn(bleeder).Player.ReadyWeapon) && pressure <= 0.) {
