@@ -24,6 +24,7 @@ class UaS_Wound : HDBleedingWound {
 	double oldPatched;
 
 	override void Tick() {
+		BloodDrops();
 		// Heal some old wounds before getting destroyed?
 		if (
 			age
@@ -130,6 +131,7 @@ class UaS_Wound : HDBleedingWound {
 
 		float actualWidth = width;
 		if (stabilised > 0.) { width -= width * stabilised / 100; }
+		CreateBloodDrops();
 		Super.Bleedout();
 		width = actualWidth;
 	}
@@ -212,4 +214,102 @@ extend class UaS_Wound {
 		"left calf","right calf",
 		"left shin","right shin"
 	};
+}
+
+extend class UaS_Wound {
+	array<UaS_BloodParticle> drops;
+	FSpawnParticleParams BP;
+	vector3 oldpos;
+
+	void CreateBloodDrops() {
+		// This randompick is a hack.
+		// It's supposed to be based on how much
+		// blood the player loses in bleedout()
+		for (int i=0; i<=randompick(0,0,0,0,1,1,1,2,2,3); i++) {
+			double avgsize = (width + depth) / 2.0;
+			let newdrop = UaS_BloodParticle(new("UaS_BloodParticle"));
+			newdrop.pos.x = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.pos.y = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.pos.z = frandom[ubw](-avgsize, avgsize) * 0.05;
+			newdrop.size = 0;
+			newdrop.maxsize = frandom[ubw](1,2);
+			newdrop.maxz = frandom[ubw](-8, -5);
+			newdrop.startlife = 0-i;
+			drops.push(newdrop);
+		}
+	}
+
+	void BloodDrops() {
+		// Calculate offset
+		vector3 off = bleeder.pos + (
+			cos(location.x+bleeder.angle) * bleeder.radius * 0.7,
+			sin(location.x+bleeder.angle) * bleeder.radius * 0.7,
+			location.y * bleeder.height);
+		vector3 interpvel = level.Vec3Diff(oldpos, off);
+		double avgsize = (width + depth) / 2.0;
+
+		// Spawn a wound particle;
+		if (depth >= 8) { BP.Texture = TexMan.CheckForTexture ("BLUDC0"); }
+		else if (depth >= 4) { BP.Texture = TexMan.CheckForTexture ("BLUDB0"); }
+		else if (depth >= 1) { BP.Texture = TexMan.CheckForTexture ("BLUDA0"); }
+		else { BP.Texture = TexMan.CheckForTexture (""); }
+		BP.Color1 = "DarkRed";
+		BP.Pos = oldpos;
+		BP.Lifetime = 1;
+		BP.Vel = interpvel;
+		BP.Size = (depth+1)/2;
+		BP.Flags = SPF_REPLACE;
+		BP.FadeStep = 0;
+		BP.Style = STYLE_Normal;
+		BP.StartAlpha = max((depth/width), 0.3);
+		level.SpawnParticle(BP);
+
+		// Do appearing and drops running down body
+		for (int i=drops.size()-1; i>0; i--) {
+			let d = drops[i];
+			if (d.startlife < 0) { d.startlife++; continue; }
+			BP.Pos = oldpos + d.pos;
+			BP.Pos.z -= d.vel.z;
+			BP.Size = d.size / 2;
+			BP.Texture = TexMan.CheckForTexture ("");
+			BP.StartAlpha = d.size / (d.maxsize + 1);
+			BP.Lifetime = 1;
+			BP.Accel.Z = 0;
+			BP.Vel = interpvel;
+			BP.Vel.Z += d.vel.z;
+
+			if (d.size >= d.maxsize) {
+				d.vel.z = clamp(
+					d.vel.z + frandom[ubw](-0.01, 0.01),
+					-0.25, 0);
+			}
+			d.pos += d.vel;
+			d.size = min(d.size + frandom[ubw](0.01, 0.1), d.maxsize);
+
+			// allow flinging off
+			//if (interpvel.length() > 5) {
+			//	BP.Lifetime = random[ubw](10,20);
+			//	BP.Size = d.size / 3;
+			//}
+
+			// Drop free after a bit
+			if (d.pos.z < d.maxz && random[ubw](1,5) == 1) {
+				BP.Accel.Z = -bleeder.gravity * 0.5;
+				BP.Lifetime = random[ubw](10,20);
+				BP.Vel.Z += d.vel.z;
+				d.destroy();
+				drops.delete(i);
+			}
+
+			level.SpawnParticle(BP);
+		}
+		drops.shrinktofit();
+		oldpos = off;
+	}
+}
+
+class UaS_BloodParticle {
+	double size, maxsize, maxz;
+	vector3 pos, oldpos, vel, oldvel;
+	int startlife;
 }
