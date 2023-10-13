@@ -68,221 +68,204 @@ FISTWH_USE                                            = "   Crouch next to a bod
 //-----------------
 
 
-// Medical UI
+// Item tags: Medical
+TAG_SELFBANDAGE = "self bandage";
+TAG_TRAUMAKIT   = "Trauma Kit";
 
-// Colors
-UAS_MEDICAL_UI_BLACK = "\cm";
-UAS_MEDICAL_UI_DARKRED = "\cr";
-UAS_MEDICAL_UI_BRICK = "\ca";
-UAS_MEDICAL_UI_FIRE = "\cx";
-UAS_MEDICAL_UI_ORANGE = "\ci";
-UAS_MEDICAL_UI_YELLOW = "\ck";
-UAS_MEDICAL_UI_DARKBROWN = "\cs";
-UAS_MEDICAL_UI_DARKGREEN = "\cq";
-UAS_MEDICAL_UI_GREEN = "\cd";
-UAS_MEDICAL_UI_GREY = "\cd";
-UAS_MEDICAL_UI_WHITE = "\cj";
+// Pickup Messages: Medical
+PICKUP_TRK_REFILL = "\cgRefilled Trauma Kit supplies";
+PICKUP_TRK        = "Picked up a personal trauma kit.";
 
-// Open Status
-UAS_MEDICAL_WOUND_OPEN = "- The wound is %sopen";
-UAS_MEDICAL_WOUND_PATCHED = "- The wound is %sopen\c- but \c[Yellow]patched";
-UAS_MEDICAL_WOUND_SOMEWHATPATCHED = "- The wound is %sopen\c- but \c[Orange]somewhat patched";
-UAS_MEDICAL_WOUND_SEALED = "- The wound is \c[Green]sealed";
+// UI: General wound info
+// (note: %s is where the colour would be applied)
+UI_WOUND_OPEN            = "- The wound is %sopen";
+UI_WOUND_PATCHED         = "- The wound is %sopen\c- but \c[Yellow]patched";
+UI_WOUND_SOMEWHATPATCHED = "- The wound is %sopen\c- but \c[Orange]somewhat patched";
+UI_WOUND_SEALED          = "- The wound is \c[Green]sealed";
 
-UAS_MEDICAL_STABILITY_FINE = "- It feels %sfine";
-UAS_MEDICAL_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
-UAS_MEDICAL_STABILITY_DECENT = "- It feels %sdecent";
-UAS_MEDICAL_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
-UAS_MEDICAL_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
-UAS_MEDICAL_STABILITY_HORRIBLE = "- It feels %shorrible";
+UI_STABILITY_FINE         = "- It feels %sfine";
+UI_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
+UI_STABILITY_DECENT       = "- It feels %sdecent";
+UI_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
+UI_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
+UI_STABILITY_HORRIBLE     = "- It feels %shorrible";
+
 
 // Wound Descriptions
-UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";
+UI_WOUND_DESCRIPTION_FORMAT = "%s %s, %s";
 
 // Not implemented yet as I haven't figured out a non-disgusting way to implement this just yet. - [Ted]
-UAS_MEDICAL_UI_SEVERITY_MINOR = "minor";
-UAS_MEDICAL_UI_SEVERITY_SMALL = "small";
-UAS_MEDICAL_UI_SEVERITY_SHALLOW = "shallow";
-UAS_MEDICAL_UI_SEVERITY_SUPERFICIAL = "superficial";
-UAS_MEDICAL_UI_SEVERITY_MODERATE = "moderate";
-UAS_MEDICAL_UI_SEVERITY_MEDIUM = "medium";
-UAS_MEDICAL_UI_SEVERITY_LARGE = "large";
-UAS_MEDICAL_UI_SEVERITY_DEEP = "deep";
-UAS_MEDICAL_UI_SEVERITY_SERIOUS = "serious";
-UAS_MEDICAL_UI_SEVERITY_CRITICAL = "critical";
+UI_WOUND_SEVERITY_MINOR = "minor";
+UI_WOUND_SEVERITY_SMALL = "small";
+UI_WOUND_SEVERITY_SHALLOW = "shallow";
+UI_WOUND_SEVERITY_SUPERFICIAL = "superficial";
+UI_WOUND_SEVERITY_MODERATE = "moderate";
+UI_WOUND_SEVERITY_MEDIUM = "medium";
+UI_WOUND_SEVERITY_LARGE = "large";
+UI_WOUND_SEVERITY_DEEP = "deep";
+UI_WOUND_SEVERITY_SERIOUS = "serious";
+UI_WOUND_SEVERITY_CRITICAL = "critical";
 
-UAS_MEDICAL_UI_TYPE_INCISION = "incision";
-UAS_MEDICAL_UI_TYPE_LACERATION = "laceration";
-UAS_MEDICAL_UI_TYPE_PUNCTURE = "puncture";
-UAS_MEDICAL_UI_TYPE_AVULSION = "avulsion";
-UAS_MEDICAL_UI_TYPE_PENETRATION = "penetration";
+UI_WOUND_TYPE_INCISION = "incision";
+UI_WOUND_TYPE_LACERATION = "laceration";
+UI_WOUND_TYPE_PUNCTURE = "puncture";
+UI_WOUND_TYPE_AVULSION = "avulsion";
+UI_WOUND_TYPE_PENETRATION = "penetration";
 
-UAS_MEDICAL_UI_BODYPART_CHEST = "chest";
-UAS_MEDICAL_UI_BODYPART_ABDOMEN = "abdomen";
-UAS_MEDICAL_UI_BODYPART_PELVIS = "pelvis";
-UAS_MEDICAL_UI_BODYPART_UPPERBACK = "upper back";
-UAS_MEDICAL_UI_BODYPART_LOWERBACK = "lower back";
-UAS_MEDICAL_UI_BODYPART_LEFTSHOULDER = "left shoulder";
-UAS_MEDICAL_UI_BODYPART_RIGHTSHOULDER = "right shoulder";
-UAS_MEDICAL_UI_BODYPART_LEFTUPPERARM = "left upper arm";
-UAS_MEDICAL_UI_BODYPART_RIGHTUPPERARM = "right upper arm";
-UAS_MEDICAL_UI_BODYPART_LEFTFOREARM = "left forearm";
-UAS_MEDICAL_UI_BODYPART_RIGHTFOREARM = "right forearm";
-UAS_MEDICAL_UI_BODYPART_LEFTHIP = "left hip";
-UAS_MEDICAL_UI_BODYPART_RIGHTHIP = "right hip";
-UAS_MEDICAL_UI_BODYPART_LEFTTHIGH = "left thigh";
-UAS_MEDICAL_UI_BODYPART_RIGHTTHIGH = "right thigh";
-UAS_MEDICAL_UI_BODYPART_LEFTCALF = "left calf";
-UAS_MEDICAL_UI_BODYPART_RIGHTCALF = "right calf";
-UAS_MEDICAL_UI_BODYPART_LEFTSHIN = "left shin";
-UAS_MEDICAL_UI_BODYPART_RIGHTSHIN = "right shin";
+UI_WOUND_BODYPART_CHEST = "chest";
+UI_WOUND_BODYPART_ABDOMEN = "abdomen";
+UI_WOUND_BODYPART_PELVIS = "pelvis";
+UI_WOUND_BODYPART_UPPERBACK = "upper back";
+UI_WOUND_BODYPART_LOWERBACK = "lower back";
+UI_WOUND_BODYPART_LEFTSHOULDER = "left shoulder";
+UI_WOUND_BODYPART_RIGHTSHOULDER = "right shoulder";
+UI_WOUND_BODYPART_LEFTUPPERARM = "left upper arm";
+UI_WOUND_BODYPART_RIGHTUPPERARM = "right upper arm";
+UI_WOUND_BODYPART_LEFTFOREARM = "left forearm";
+UI_WOUND_BODYPART_RIGHTFOREARM = "right forearm";
+UI_WOUND_BODYPART_LEFTHIP = "left hip";
+UI_WOUND_BODYPART_RIGHTHIP = "right hip";
+UI_WOUND_BODYPART_LEFTTHIGH = "left thigh";
+UI_WOUND_BODYPART_RIGHTTHIGH = "right thigh";
+UI_WOUND_BODYPART_LEFTCALF = "left calf";
+UI_WOUND_BODYPART_RIGHTCALF = "right calf";
+UI_WOUND_BODYPART_LEFTSHIN = "left shin";
+UI_WOUND_BODYPART_RIGHTSHIN = "right shin";
 
-// Trauma Kit Main Hud
-UAS_TRAUMAKIT_UI_HUD_TITLE = "--- \cyTrauma Kit\c- ---";
-UAS_TRAUMAKIT_UI_HUD_TREATING = "Treating \cg";
-UAS_TRAUMAKIT_UI_HUD_NOTREATABLE = "No treatable wounds";
-UAS_TRAUMAKIT_UI_HUD_RED = "\ca";
-UAS_TRAUMAKIT_UI_HUD_DARKRED = "\cr";
-UAS_TRAUMAKIT_UI_HUD_GREEN = "\cd";
-UAS_TRAUMAKIT_UI_HUD_DARKGREEN = "\cq";
-UAS_TRAUMAKIT_UI_HUD_SELECTED = " <";
-UAS_TRAUMAKIT_UI_HUD_NOTSELECTED = "";
-UAS_TRAUMAKIT_UI_HUD_TOPOVERFLOWDOTS = ". . .";
-UAS_TRAUMAKIT_UI_HUD_BOTTOMOVERFLOWDOTS = ". . .";
-UAS_TRAUMAKIT_UI_HUD_NOWOUNDSELECTED = "-No wounds selected-";
+// UI: Status Colors
+UI_STATUS_BLACK = "\cm";
+UI_STATUS_DARKRED = "\cr";
+UI_STATUS_BRICK = "\ca";
+UI_STATUS_FIRE = "\cx";
+UI_STATUS_ORANGE = "\ci";
+UI_STATUS_YELLOW = "\ck";
+UI_STATUS_DARKBROWN = "\cs";
+UI_STATUS_DARKGREEN = "\cq";
+UI_STATUS_GREEN = "\cd";
+UI_STATUS_GREY = "\cd";
+UI_STATUS_WHITE = "\cj";
 
-// Trauma Kit Wound Info
-UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED = "- It is %snot numbed.";
-UAS_TRAUMAKIT_PAINKILLERS_NUMBED = "- It is %snumbed";
-UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED = "- It is %smostly numbed";
-UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED = "- It is %ssomewhat numbed";
+// UI: Trauma Kit
+UI_TRK_TITLE              = "--- \cyTrauma Kit\c- ---";
+UI_TRK_TREATING           = "Treating \cg";
+UI_TRK_NOTREATABLE        = "No treatable wounds";
+UI_TRK_RED                = "\ca";
+UI_TRK_DARKRED            = "\cr";
+UI_TRK_GREEN              = "\cd";
+UI_TRK_DARKGREEN          = "\cq";
+UI_TRK_SELECTED           = " <";
+UI_TRK_NOTSELECTED        = "";
+UI_TRK_TOPOVERFLOWDOTS    = ". . .";
+UI_TRK_BOTTOMOVERFLOWDOTS = ". . .";
+UI_TRK_NOWOUNDSELECTED    = "-No wounds selected-";
 
-UAS_TRAUMAKIT_DIRTINESS_CLEAN = "- It is %scompletely clean";
-UAS_TRAUMAKIT_DIRTINESS_FILTHY = "- It is %sfilthy";
-UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY = "- It is %svery dirty";
-UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY = "- It is %ssomewhat dirty";
-UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY = "- It is %sa bit dirty";
-UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN = "- It is %salmost clean";
-UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN = "- It is %sacceptably clean";
+UI_TRK_PAINKILLERS_NOTNUMBED      = "- It is %snot numbed.";
+UI_TRK_PAINKILLERS_NUMBED         = "- It is %snumbed";
+UI_TRK_PAINKILLERS_MOSTLYNUMBED   = "- It is %smostly numbed";
+UI_TRK_PAINKILLERS_SOMEWHATNUMBED = "- It is %ssomewhat numbed";
 
-UAS_TRAUMAKIT_OBSTRUCTIONS_NONE = "- There are %sno apparent obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_MANY = "- There are %smany obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL = "- There are %sseveral obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW = "- There are %sa few obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_SOME = "- There are %ssome obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW = "- There are %svery few obstructions";
+UI_TRK_DIRTINESS_CLEAN           = "- It is %scompletely clean";
+UI_TRK_DIRTINESS_FILTHY          = "- It is %sfilthy";
+UI_TRK_DIRTINESS_VERYDIRTY       = "- It is %svery dirty";
+UI_TRK_DIRTINESS_SOMEWHATDIRTY   = "- It is %ssomewhat dirty";
+UI_TRK_DIRTINESS_ABITDIRTY       = "- It is %sa bit dirty";
+UI_TRK_DIRTINESS_ALMOSTCLEAN     = "- It is %salmost clean";
+UI_TRK_DIRTINESS_ACCEPTABLYCLEAN = "- It is %sacceptably clean";
 
-UAS_TRAUMAKIT_CAVITY_NODAMAGE = "- There is %sno treatable tissue damage";
-UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE = "- There is %ssevere tissue damage";
-UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE = "- There is %ssignificant tissue damage";
-UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE = "- There is %smoderate tissue damage";
-UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE = "- There is %ssome tissue damage";
-UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE = "- There is %slittle tissue damage";
+UI_TRK_OBSTRUCTIONS_NONE    = "- There are %sno apparent obstructions";
+UI_TRK_OBSTRUCTIONS_MANY    = "- There are %smany obstructions";
+UI_TRK_OBSTRUCTIONS_SEVERAL = "- There are %sseveral obstructions";
+UI_TRK_OBSTRUCTIONS_AFEW    = "- There are %sa few obstructions";
+UI_TRK_OBSTRUCTIONS_SOME    = "- There are %ssome obstructions";
+UI_TRK_OBSTRUCTIONS_VERYFEW = "- There are %svery few obstructions";
 
-UAS_TRAUMAKIT_TOOLLIST_FORMATTING = "%s%s";
-UAS_TRAUMAKIT_TOOLLIST_WHITE = "\c[White]";
-UAS_TRAUMAKIT_TOOLLIST_DARKGREY = "\c[DarkGrey]";
-UAS_TRAUMAKIT_TOOLLIST_NEWLINE = "\n";
+UI_TRK_CAVITY_NODAMAGE          = "- There is %sno treatable tissue damage";
+UI_TRK_CAVITY_SEVEREDAMAGE      = "- There is %ssevere tissue damage";
+UI_TRK_CAVITY_SIGNIFICANTDAMAGE = "- There is %ssignificant tissue damage";
+UI_TRK_CAVITY_MODERATEDAMAGE    = "- There is %smoderate tissue damage";
+UI_TRK_CAVITY_SOMEDAMAGE        = "- There is %ssome tissue damage";
+UI_TRK_CAVITY_LITTLEDAMAGE      = "- There is %slittle tissue damage";
 
-UAS_TRAUMAKIT_TOOLLIST_NAMES_AT = "AT";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_SL = "SL";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_FC = "FC";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_BF = "BF";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_SP = "SP";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_ST = "ST";
-UAS_TRAUMAKIT_TOOLLIST_NAMES_SC = "SC";
+UI_TRK_TOOLLIST_FORMATTING = "%s%s";
+UI_TRK_TOOLLIST_WHITE      = "\c[White]";
+UI_TRK_TOOLLIST_DARKGREY   = "\c[DarkGrey]";
+UI_TRK_TOOLLIST_NEWLINE    = "\n";
 
-// Trauma Kit Help Text
-UAS_TRAUMAKIT_HELPTEXT_CYCLEDOWN = "  Cycle wounds down\n";
-UAS_TRAUMAKIT_HELPTEXT_CYCLEUP = "  Cycle wounds up\n";
-UAS_TRAUMAKIT_HELPTEXT_CYCLEFORWARD = "  Cycle tools forward\n";
-UAS_TRAUMAKIT_HELPTEXT_CYCLEBACKWARD = "  Cycle tools backward\n";
-UAS_TRAUMAKIT_HELPTEXT_HOLDAND = "  Hold and ...\n";
-UAS_TRAUMAKIT_HELPTEXT_TREATANOTHERPLAYER = "  Treat another player\n";
-UAS_TRAUMAKIT_HELPTEXT_DROPEXCESS = "  Drop some excess supplies\n\n";
-UAS_TRAUMAKIT_HELPTEXT_INJECTANESTHETIC = "  Inject anesthetic\n";
-UAS_TRAUMAKIT_HELPTEXT_REFILLANESTHETIC = "  Refill anesthetic\n(break down stimpack)\n";
-UAS_TRAUMAKIT_HELPTEXT_FLUSHWOUND = "  Flush wound\n";
-UAS_TRAUMAKIT_HELPTEXT_REFILLSALINE = "  Refill saline\n(break down bloodpack)\n";
-UAS_TRAUMAKIT_HELPTEXT_HOLDWOUNDOPEN = "  Hold wound open\n";
-UAS_TRAUMAKIT_HELPTEXT_EXTRACTOBSTRUCTIONS = "  Extract obstructions\n";
-UAS_TRAUMAKIT_HELPTEXT_INJECTBIOFOAM = "  Inject biofoam\n";
-UAS_TRAUMAKIT_HELPTEXT_REFILLBIOFOAM = "  Refill biofoam\n(break down suture cart)\n";
-UAS_TRAUMAKIT_HELPTEXT_STAPLEWOUND = "  Staple wound closed\n";
-UAS_TRAUMAKIT_HELPTEXT_REFILLSTAPLES = "  Refill staples\n(break down suture cart)\n";
-UAS_TRAUMAKIT_HELPTEXT_SUTUREWOUND = "  Suture wound closed\n";
-UAS_TRAUMAKIT_HELPTEXT_REOPENWOUND = "  Re-open wound\n";
-UAS_TRAUMAKIT_HELPTEXT_REMOVECAP = "  Re-open wound\n";
-UAS_TRAUMAKIT_HELPTEXT_REPLACECAP = "  Replace safety cap\n";
-UAS_TRAUMAKIT_HELPTEXT_PLUS = "  +";
+UI_TRK_TOOLLIST_NAMES_AT = "AT";
+UI_TRK_TOOLLIST_NAMES_SL = "SL";
+UI_TRK_TOOLLIST_NAMES_FC = "FC";
+UI_TRK_TOOLLIST_NAMES_BF = "BF";
+UI_TRK_TOOLLIST_NAMES_SP = "SP";
+UI_TRK_TOOLLIST_NAMES_ST = "ST";
+UI_TRK_TOOLLIST_NAMES_SC = "SC";
 
-// Foreceps
-UAS_TRAUMAKIT_FORECEPS_INFO =
+// UI: Trauma Kit (Forceps)
+UI_TRK_FORCEPS_INFO =
 	"\cjForceps\n"
 	"\cuPrecision tool for removing obstructions.\n\n\n";
-UAS_TRAUMAKIT_FORECEPS_UNUSABLE = "No obstructions require removal.\n";
-UAS_TRAUMAKIT_FORECEPS_HOLDINGWOUNDOPEN = "Holding the wound open.\n";
-UAS_TRAUMAKIT_FORECEPS_PROBEWOUND = "You probe the wound";
-UAS_TRAUMAKIT_FORECEPS_DAMAGE = ", damaging the surrounding tissue.";
-UAS_TRAUMAKIT_FORECEPS_PROBEPERIOD = ".";
-UAS_TRAUMAKIT_FORECEPS_OUTOFWOUND = "You %s %s %s out of the wound";
+UI_TRK_FORCEPS_UNUSABLE         = "No obstructions require removal.\n";
+UI_TRK_FORCEPS_HOLDINGWOUNDOPEN = "Holding the wound open.\n";
+UI_TRK_FORCEPS_PROBEWOUND       = "You probe the wound";
+UI_TRK_FORCEPS_DAMAGE           = ", damaging the surrounding tissue.";
+UI_TRK_FORCEPS_PROBEPERIOD      = ".";
+UI_TRK_FORCEPS_OUTOFWOUND       = "You %s %s %s out of the wound";
 
-// Biofoam
-UAS_TRAUMAKIT_BIOFOAM_INFO =
+// UI: Trauma Kit (Biofoam)
+UI_TRK_BIOFOAM_INFO =
 	"\cjBiofoam\n"
 	"\cuAbsorbent antiseptic flesh-analogue.\n"
 	"Biofoam remaining: \cy%d\n\n";
-UAS_TRAUMAKIT_BIOFOAM_NONELEFT = "No biofoam left!\n";
-UAS_TRAUMAKIT_BIOFOAM_UNNECESSARY = "The wound does not need biofoam.\n";
-UAS_TRAUMAKIT_BIOFOAM_INJECTING = "Injecting biofoam...\n";
+UI_TRK_BIOFOAM_NONELEFT    = "No biofoam left!\n";
+UI_TRK_BIOFOAM_UNNECESSARY = "The wound does not need biofoam.\n";
+UI_TRK_BIOFOAM_INJECTING   = "Injecting biofoam...\n";
 
-// Painkillers/Anesthetic
-UAS_TRAUMAKIT_PAINKILLER_INFO =
+// UI: Trauma Kit (Painkillers/Anesthetic)
+UI_TRK_PAINKILLER_INFO =
 	"\cjAnesthetic\n"
 	"\cuFast-acting local painkiller.\n"
 	"Injections remaining: \cy%d\n\n";
-UAS_TRAUMAKIT_PAINKILLER_NONELEFT = "No anesthetic left!\n";
-UAS_TRAUMAKIT_PAINKILLER_INJECTED = "Anesthetic injected.";
+UI_TRK_PAINKILLER_NONELEFT = "No anesthetic left!\n";
+UI_TRK_PAINKILLER_INJECTED = "Anesthetic injected.";
+UI_TRK_PAINKILLER_REFILL   = "\cvRefilled anesthetic.\nconsumed one stimpack";
+UI_TRK_PAINKILLER_NOSTIMS  = "No available stimpacks.";
 
-// Saline
-UAS_TRAUMAKIT_SALINE_INFO =
+// UI: Trauma Kit (Saline)
+UI_TRK_SALINE_INFO =
 	"\cjSaline\n"
 	"\cuNeutral wound debriding solution.\n"
 	"Saline remaining: \cy%d\n\n";
-UAS_TRAUMAKIT_SALINE_NONELEFT = "No saline left!\n";
-UAS_TRAUMAKIT_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
-UAS_TRAUMAKIT_SALINE_FLUSHING = "Flushing the wound...\n";
+UI_TRK_SALINE_NONELEFT    = "No saline left!\n";
+UI_TRK_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
+UI_TRK_SALINE_FLUSHING    = "Flushing the wound...\n";
+UI_TRK_SALINE_REFILL      = "\cvRefilled saline.\nconsumed one Second Blood pack";
+UI_TRK_SALINE_NOBLOOD     = "No available Second Blood packs.";
 
-// Scalpel
-UAS_TRAUMAKIT_SCALPEL_INFO =
+// UI: Trauma Kit (Scalpel)
+UI_TRK_SCALPEL_INFO =
 	"\cjScalpel\n"
 	"\cuFor re-opening wounds.\n\n\n";
-UAS_TRAUMAKIT_SCALPEL_REMOVECAP = "Removed safety cap.\n";
-UAS_TRAUMAKIT_SCALPEL_REPLACECAP = "Replaced safety cap.\n";
-UAS_TRAUMAKIT_SCALPEL_CAPON = "The cap is still on...\n";
+UI_TRK_SCALPEL_REMOVECAP  = "Removed safety cap.\n";
+UI_TRK_SCALPEL_REPLACECAP = "Replaced safety cap.\n";
+UI_TRK_SCALPEL_CAPON      = "The cap is still on...\n";
 
-// Stapler
-UAS_TRAUMAKIT_STAPLER_INFO =
+// UI: Trauma Kit (Stapler)
+UI_TRK_STAPLER_INFO =
 	"\cjStapler\n"
 	"\cuManual hand-stapler.\n"
 	"Staples remaining: \cy%d\n\n";
-UAS_TRAUMAKIT_STAPLER_NONELEFT = "No staples left!\n";
+UI_TRK_STAPLER_NONELEFT = "No staples left!\n";
 
-// Sutures
-UAS_TRAUMAKIT_SUTURES_INFO =
+// UI: Trauma Kit (Sutures)
+UI_TRK_SUTURES_INFO =
 	"\cjSutures\n"
 	"\cuHook needle and biodegradable thread.\n\n\n";
 
-// Pickups & Refills
-UAS_TRAUMAKIT_REFILL_SUPPLIES = "\cgRefilled Trauma Kit supplies";
-UAS_TRAUMAKIT_REFILL_ANESTHETIC = "\cvRefilled anesthetic.\nconsumed one stimpack";
-UAS_TRAUMAKIT_REFILL_NOSTIMS = "No available stimpacks.";
-UAS_TRAUMAKIT_REFILL_SALINE = "\cvRefilled saline.\nconsumed one Second Blood pack";
-UAS_TRAUMAKIT_REFILL_NOBLOOD = "No available Second Blood packs.";
-UAS_TRAUMAKIT_REFILL_2FCARTRIDGE = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
-UAS_TRAUMAKIT_REFILL_NOCARTRIDGES = "No available auto-suture cartridges.";
-UAS_TRAUMAKIT_PICKUP = "Picked up a personal trauma kit.";
-UAS_TRAUMAKIT_TAG = "Trauma Kit";
+// UI: Trauma Kit (refill)
+UI_TRK_2FCARTRIDGE_REFILL       = "\cvRefilled staples and biofoam.\nconsumed one auto-suture cartridge";
+UI_TRK_2FCARTRIDGE_NOCARTRIDGES = "No available auto-suture cartridges.";
+
+// UI: Trauma Kit (worn layer)
+// TODO: rewrite code for this thing
 UAS_TRAUMAKIT_ENVIROSUIT = "environment suit ";
 UAS_TRAUMAKIT_ARMOUR = "armour ";
 UAS_TRAUMAKIT_BANDAGE = "bandage ";
@@ -290,6 +273,47 @@ UAS_TRAUMAKIT_WORNLAYERS = "worn layers ";
 UAS_TRAUMAKIT_TAKEOFFYOUR = "Take off your ";
 UAS_TRAUMAKIT_HAVETHEMTAKEOFF = "Have them take off their ";
 UAS_TRAUMAKIT_FIRST = "first!\n";
+
+// Help Text: Trauma Kit
+HELPTEXT_TRK_NORMAL =
+	"%s  Cycle tools forward\n"
+	"%s  Cycle tools backward\n"
+	"%s  Hold and ...\n"
+	"  +%s  Cycle wounds down\n"
+	"  +%s  Cycle wounds up\n"
+	"%s  Treat another player\n"
+	"%s  Drop some excess supplies\n\n";
+HELPTEXT_TRK_ALT =
+	"%s  Cycle wounds down\n"
+	"%s  Cycle wounds up\n"
+	"%s  Hold and ...\n"
+	"  +%s  Cycle tools forward\n"
+	"  +%s  Cycle tools backward\n"
+	"%s  Treat another player\n"
+	"%s  Drop some excess supplies\n\n";
+HELPTEXT_TRK_PAINKILLER =
+	"%s  Inject anesthetic\n"
+	"%s  Refill anesthetic\n(break down stimpack)\n";
+HELPTEXT_TRK_SALINE =
+	"%s  Flush wound\n"
+	"%s  Refill saline\n(break down stimpack)\n";
+HELPTEXT_TRK_FORCEPS =
+	"%s  Hold wound open\n"
+	"%s  Extract obstructions\n";
+HELPTEXT_TRK_BIOFOAM =
+	"%s  Inject biofoam\n"
+	"%s  Refill biofoam\n(break down suture cart)\n";
+HELPTEXT_TRK_STAPLER =
+	"%s  Staple wound closed\n"
+	"%s  Refill staples\n(break down suture cart)\n";
+HELPTEXT_TRK_SUTURES =
+	"%s  Suture wound closed\n";
+HELPTEXT_TRK_SCALPEL_CAP =
+	"%s  Re-open wound\n"
+	"%s  Remove safety cap\n";
+HELPTEXT_TRK_SCALPEL_NOCAP =
+	"%s  Re-open wound\n"
+	"%s  Replace safety cap\n";
 
 // Bandage Hud & Messages
 UAS_BANDAGING_WOUND_SYMBOL1 = "X";
@@ -299,7 +323,6 @@ UAS_BANDAGING_HUD_TITLE = "--- Bandaging ---";
 UAS_BANDAGING_HUD_TREATING = "Treating %s";
 UAS_BANDAGING_NOWOUNDS = "You have no wounds.";
 UAS_BANDAGING_HUD_SPACER = "-----";
-UAS_BANDAGING_TAG = "self bandage";
 UAS_BANDAGING_DESCRIPTION_TITLE = "\c[Gray]Bandage\n";
 UAS_BANDAGING_DESCRIPTION_DESCRIPTION = "\c[DarkGray]Useful if you're bleeding out.";
 UAS_BANDAGING_MSG_NOTHINGTOBEDONE = "Nothing to be done here.";

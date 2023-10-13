@@ -192,7 +192,7 @@ extend class UaS_Wound {
 		int typmax = UaS_Wound.type.size()-1;
 		int parmax = UaS_Wound.bodypart.size()-1;
 		return string.format(
-			Stringtable.Localize("$UAS_MEDICAL_UI_DESCRIPTION_FORMAT"),
+			Stringtable.Localize("$UI_WOUND_DESCRIPTION_FORMAT"),
 			UaS_Wound.severity[random[uas_wi](0, sevmax)],
 			UaS_Wound.type[random[uas_wi](0, typmax)],
 			UaS_Wound.bodypart[random[uas_wi](0, parmax)]

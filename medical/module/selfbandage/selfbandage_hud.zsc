@@ -203,13 +203,7 @@ extend class UaS_SelfBandage {
 			}
 
 			woundInfoPos -= (0, halfStep);
-			if (mti.currentWound.stabilised >= 100.0) { statusText = "$UAS_MEDICAL_STABILITY_FINE"; }
-			else if (mti.currentWound.stabilised > 75.0) { statusText = "$UAS_MEDICAL_STABILITY_SOMEWHATFINE"; }
-			else if (mti.currentWound.stabilised > 50.0) { statusText = "$UAS_MEDICAL_STABILITY_DECENT"; }
-			else if (mti.currentWound.stabilised > 25.0) { statusText = "$UAS_MEDICAL_STABILITY_NOTTHATGREAT"; }
-			else if (mti.currentWound.stabilised > 5.0) { statusText = "$UAS_MEDICAL_STABILITY_LESSHORRIBLE"; }
-			else { statusText = "$UAS_MEDICAL_STABILITY_HORRIBLE"; }
-			status.Push(string.Format(Stringtable.Localize(statusText), GetStatusColor(100 - mti.currentWound.stabilised)));
+			status.Push(GetStabilityStatus(mti.currentWound));
 		}
 
 		for (int i = 0; i < status.Size(); i++) {

@@ -11,7 +11,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		height 4;
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "$UAS_TRAUMAKIT_PICKUP";
+		Inventory.PickupMessage "$PICKUP_TRK";
 		Inventory.Icon "UGSIF0";
 		Inventory.PickupSound "weapons/pocket";
 		+INVENTORY.INVBAR;
@@ -23,7 +23,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		weapon.slotpriority 0.5;
 		hdweapon.refid UAS_HDLD_TRAUMAKIT;
 		scale 0.5;
-		tag "$UAS_TRAUMAKIT_TAG";
+		tag "$TAG_TRAUMAKIT";
 	}
 
 	override double weaponbulk(){

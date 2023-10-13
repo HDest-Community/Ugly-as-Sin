@@ -1,10 +1,10 @@
 extend class UaS_TraumaKit {
 	void HandlePainkiller() {
-		statusMessage = statusmessage..String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLER_INFO"), weaponstatus[TKS_PAINKILLER]);
+		statusMessage = statusmessage..String.Format(Stringtable.Localize("$UI_TRK_PAINKILLER_INFO"), weaponstatus[TKS_PAINKILLER]);
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_PAINKILLER] <=0) {
-			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLER_NONELEFT");
+			currentmessage.text = Stringtable.Localize("$UI_TRK_PAINKILLER_NONELEFT");
 			currentmessage.timeout = 2*35;
 			return;
 		}
@@ -21,7 +21,7 @@ extend class UaS_TraumaKit {
 				random[uas_tk](25,75)) / 3;
 			mti.currentWound.painkiller = min(mti.currentWound.painkiller + inject, 100);
 			mti.patient.GiveInventory("HDStim", (HDStim.HDSTIM_MAX - HDStim.HDSTIM_DOSE)/20);
-			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_PAINKILLER_INJECTED");
+			currentmessage.text = Stringtable.Localize("$UI_TRK_PAINKILLER_INJECTED");
 			currentmessage.timeout = 2*35;
 			mti.patient.A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1))/10,

@@ -8,7 +8,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	BandageActions actionType;
 
 	Default {
-		Tag "$UAS_BANDAGING_TAG";
+		Tag "$TAG_SELFBANDAGE";
 		+Inventory.UNTOSSABLE;
 		+HDWeapon.DONTDISARM;
 	}
