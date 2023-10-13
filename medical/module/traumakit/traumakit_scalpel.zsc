@@ -1,17 +1,17 @@
 extend class UaS_TraumaKit {
 	void HandleScalpel() {
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_INFO");
+		statusMessage = statusmessage..Stringtable.Localize("$UI_TRK_SCALPEL_INFO");
 
 		// Handle actions
 		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
 		if (owner.player.cmd.buttons & BT_UNLOAD && weaponstatus[TK_HOLD] <= 0) {
 			if (weaponstatus[TK_SCALPEL_CAP] == 1) {
 				weaponstatus[TK_SCALPEL_CAP] = 0;
-				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_REMOVECAP");
+				currentmessage.text = Stringtable.Localize("$UI_TRK_SCALPEL_REMOVECAP");
 			}
 			else {
 				weaponstatus[TK_SCALPEL_CAP] = 1;
-				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_REPLACECAP");
+				currentmessage.text = Stringtable.Localize("$UI_TRK_SCALPEL_REPLACECAP");
 			}
 			currentmessage.timeout = 25;
 			weaponstatus[TK_HOLD] = 15;
@@ -19,7 +19,7 @@ extend class UaS_TraumaKit {
 
 		if ((owner.player.cmd.buttons & BT_ATTACK) && !(owner.player.oldbuttons & BT_ATTACK) && (weaponstatus[TK_HOLD] <= 0)){
 			if (weaponstatus[TK_SCALPEL_CAP] == 1) {
-				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_CAPON");
+				currentmessage.text = Stringtable.Localize("$UI_TRK_SCALPEL_CAPON");
 				currentmessage.timeout = 25;
 				weaponstatus[TK_HOLD] = 25;
 				return;

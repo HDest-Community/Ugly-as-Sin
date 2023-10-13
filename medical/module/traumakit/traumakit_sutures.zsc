@@ -1,6 +1,6 @@
 extend class UaS_TraumaKit {
 	void HandleSutures() {
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_SUTURES_INFO");
+		statusMessage = statusmessage..Stringtable.Localize("$UI_TRK_SUTURES_INFO");
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 

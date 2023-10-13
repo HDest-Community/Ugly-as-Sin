@@ -1,17 +1,17 @@
 extend class UaS_TraumaKit {
 	void HandleBioFoam() {
-		statusMessage = statusmessage..String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_BIOFOAM_INFO"), weaponstatus[TKS_BIOFOAM]);
+		statusMessage = statusmessage..String.Format(Stringtable.Localize("$UI_TRK_BIOFOAM_INFO"), weaponstatus[TKS_BIOFOAM]);
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_BIOFOAM] <=0) {
-			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_BIOFOAM_NONELEFT");
+			currentmessage.text = Stringtable.Localize("$UI_TRK_BIOFOAM_NONELEFT");
 			currentmessage.timeout = 2*35;
 			return;
 		}
 
 		// Status precheck
 		if (mti.currentWound.cavity < 0) {
-			currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_BIOFOAM_UNNECESSARY");
+			currentmessage.text = Stringtable.Localize("$UI_TRK_BIOFOAM_UNNECESSARY");
 			currentmessage.timeout = 10;
 			return;
 		}
@@ -38,7 +38,7 @@ extend class UaS_TraumaKit {
 			}
 
 			if (weaponstatus[TK_HOLD] > 0) {
-				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_BIOFOAM_INJECTING");
+				currentmessage.text = Stringtable.Localize("$UI_TRK_BIOFOAM_INJECTING");
 				currentmessage.timeout = 10;
 
 				weaponstatus[TKS_BIOFOAM]--;
