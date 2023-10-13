@@ -1,7 +1,6 @@
 extend class UaS_TraumaKit {
 	void HandleScalpel() {
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_TITLE");
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_DESCRIPTION");
+		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_INFO");
 
 		// Handle actions
 		if (weaponstatus[TK_HOLD] > 0) { weaponstatus[TK_HOLD]--; }
@@ -12,7 +11,7 @@ extend class UaS_TraumaKit {
 			}
 			else {
 				weaponstatus[TK_SCALPEL_CAP] = 1;
-				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_REPLACEDCAP");
+				currentmessage.text = Stringtable.Localize("$UAS_TRAUMAKIT_SCALPEL_REPLACECAP");
 			}
 			currentmessage.timeout = 25;
 			weaponstatus[TK_HOLD] = 15;

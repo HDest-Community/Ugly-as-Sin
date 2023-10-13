@@ -1,8 +1,6 @@
 extend class UaS_TraumaKit {
 	void HandleStapler() {
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_STAPLER_TITLE");
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_STAPLER_DESCRIPTION");
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_STAPLER_REMAINING")..weaponstatus[TKS_STAPLES]..Stringtable.Localize("$UAS_TRAUMAKIT_STAPLER_NEWLINE");
+		statusMessage = statusmessage..String.Format(Stringtable.Localize("$UAS_TRAUMAKIT_STAPLER_INFO"), weaponstatus[TKS_STAPLES]);
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 		if (weaponstatus[TKS_STAPLES] <=0) {

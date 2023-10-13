@@ -3,8 +3,7 @@ extend class UaS_TraumaKit {
 	int mashes;
 
 	void HandleForceps() {
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_TITLE");
-		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_DESCRIPTION");
+		statusMessage = statusmessage..Stringtable.Localize("$UAS_TRAUMAKIT_FORECEPS_INFO");
 		if (!mti.currentWound) { return; }
 		if (mti.currentWound.open <= 0) { return; }
 
