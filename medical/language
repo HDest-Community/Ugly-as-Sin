@@ -21,6 +21,13 @@ UAS_MEDICAL_WOUND_PATCHED = "- The wound is %sopen\c- but \c[Yellow]patched";
 UAS_MEDICAL_WOUND_SOMEWHATPATCHED = "- The wound is %sopen\c- but \c[Orange]somewhat patched";
 UAS_MEDICAL_WOUND_SEALED = "- The wound is \c[Green]sealed";
 
+UAS_MEDICAL_STABILITY_FINE = "- It feels %sfine";
+UAS_MEDICAL_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
+UAS_MEDICAL_STABILITY_DECENT = "- It feels %sdecent";
+UAS_MEDICAL_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
+UAS_MEDICAL_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
+UAS_MEDICAL_STABILITY_HORRIBLE = "- It feels %shorrible";
+
 // Wound Descriptions
 UAS_MEDICAL_UI_DESCRIPTION_FORMAT = "%s %s, %s";
 
@@ -77,44 +84,32 @@ UAS_TRAUMAKIT_UI_HUD_BOTTOMOVERFLOWDOTS = ". . .";
 UAS_TRAUMAKIT_UI_HUD_NOWOUNDSELECTED = "-No wounds selected-";
 
 // Trauma Kit Wound Info
-UAS_TRAUMAKIT_WOUNDINFO_FINE = "fine";
-UAS_TRAUMAKIT_WOUNDINFO_SOMEWHATFINE = "somewhat fine";
-UAS_TRAUMAKIT_WOUNDINFO_DECENT = "decent";
-UAS_TRAUMAKIT_WOUNDINFO_NOTTHATGREAT = "not that great";
-UAS_TRAUMAKIT_WOUNDINFO_LESSHORRIBLE = "less horrible";
-UAS_TRAUMAKIT_WOUNDINFO_HORRIBLE = "horrible";
-UAS_TRAUMAKIT_WOUNDINFO_SEEMSTOBE = "-It seems to be ";
+UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED = "- It is %snot numbed.";
+UAS_TRAUMAKIT_PAINKILLERS_NUMBED = "- It is %snumbed";
+UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED = "- It is %smostly numbed";
+UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED = "- It is %ssomewhat numbed";
 
-UAS_TRAUMAKIT_PAINKILLERS_NOTNUMBED = "not numbed.";
-UAS_TRAUMAKIT_PAINKILLERS_NUMBED = "numbed";
-UAS_TRAUMAKIT_PAINKILLERS_MOSTLYNUMBED = "mostly numbed";
-UAS_TRAUMAKIT_PAINKILLERS_SOMEWHATNUMBED = "somewhat numbed";
-UAS_TRAUMAKIT_PAINKILLERS_ITIS = "-It is ";
+UAS_TRAUMAKIT_DIRTINESS_CLEAN = "- It is %scompletely clean";
+UAS_TRAUMAKIT_DIRTINESS_FILTHY = "- It is %sfilthy";
+UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY = "- It is %svery dirty";
+UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY = "- It is %ssomewhat dirty";
+UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY = "- It is %sa bit dirty";
+UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN = "- It is %salmost clean";
+UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN = "- It is %sacceptably clean";
 
-UAS_TRAUMAKIT_DIRTINESS_CLEAN = "completely clean";
-UAS_TRAUMAKIT_DIRTINESS_FILTHY = "filthy";
-UAS_TRAUMAKIT_DIRTINESS_VERYDIRTY = "very dirty";
-UAS_TRAUMAKIT_DIRTINESS_SOMEWHATDIRTY = "somewhat dirty";
-UAS_TRAUMAKIT_DIRTINESS_ABITDIRTY = "a bit dirty";
-UAS_TRAUMAKIT_DIRTINESS_ALMOSTCLEAN = "almost clean";
-UAS_TRAUMAKIT_DIRTINESS_ACCEPTABLYCLEAN = "acceptably clean";
-UAS_TRAUMAKIT_DIRTINESS_ITIS = "-It is ";
+UAS_TRAUMAKIT_OBSTRUCTIONS_NONE = "- There are %sno apparent obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_MANY = "- There are %smany obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL = "- There are %sseveral obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW = "- There are %sa few obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_SOME = "- There are %ssome obstructions";
+UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW = "- There are %svery few obstructions";
 
-UAS_TRAUMAKIT_OBSTRUCTIONS_NONE = "no apparent obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_MANY = "many obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_SEVERAL = "several obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_AFEW = "a few obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_SOME = "some obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_VERYFEW = "very few obstructions";
-UAS_TRAUMAKIT_OBSTRUCTIONS_THEREARE = "-There are ";
-
-UAS_TRAUMAKIT_CAVITY_NODAMAGE = "no treatable tissue damage";
-UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE = "severe tissue damage";
-UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE = "significant tissue damage";
-UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE = "moderate tissue damage";
-UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE = "some tissue damage";
-UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE = "little tissue damage";
-UAS_TRAUMAKIT_CAVITY_THEREIS = "-There is ";
+UAS_TRAUMAKIT_CAVITY_NODAMAGE = "- There is %sno treatable tissue damage";
+UAS_TRAUMAKIT_CAVITY_SEVEREDAMAGE = "- There is %ssevere tissue damage";
+UAS_TRAUMAKIT_CAVITY_SIGNIFICANTDAMAGE = "- There is %ssignificant tissue damage";
+UAS_TRAUMAKIT_CAVITY_MODERATEDAMAGE = "- There is %smoderate tissue damage";
+UAS_TRAUMAKIT_CAVITY_SOMEDAMAGE = "- There is %ssome tissue damage";
+UAS_TRAUMAKIT_CAVITY_LITTLEDAMAGE = "- There is %slittle tissue damage";
 
 UAS_TRAUMAKIT_TOOLLIST_FORMATTING = "%s%s";
 UAS_TRAUMAKIT_TOOLLIST_WHITE = "\c[White]";
@@ -154,8 +149,9 @@ UAS_TRAUMAKIT_HELPTEXT_REPLACECAP = "  Replace safety cap\n";
 UAS_TRAUMAKIT_HELPTEXT_PLUS = "  +";
 
 // Foreceps
-UAS_TRAUMAKIT_FORECEPS_TITLE = "\cjForceps\n";
-UAS_TRAUMAKIT_FORECEPS_DESCRIPTION = "\cuPrecision tool for removing obstructions.\n\n\n";
+UAS_TRAUMAKIT_FORECEPS_INFO =
+	"\cjForceps\n"
+	"\cuPrecision tool for removing obstructions.\n\n\n";
 UAS_TRAUMAKIT_FORECEPS_UNUSABLE = "No obstructions require removal.\n";
 UAS_TRAUMAKIT_FORECEPS_HOLDINGWOUNDOPEN = "Holding the wound open.\n";
 UAS_TRAUMAKIT_FORECEPS_PROBEWOUND = "You probe the wound";
@@ -164,48 +160,50 @@ UAS_TRAUMAKIT_FORECEPS_PROBEPERIOD = ".";
 UAS_TRAUMAKIT_FORECEPS_OUTOFWOUND = "You %s %s %s out of the wound";
 
 // Biofoam
-UAS_TRAUMAKIT_BIOFOAM_TITLE = "\cjBiofoam\n";
-UAS_TRAUMAKIT_BIOFOAM_DESCRIPTION = "\cuAbsorbent antiseptic flesh-analogue.\n";
-UAS_TRAUMAKIT_BIOFOAM_REMAINING = "Biofoam remaining: \cy";
-UAS_TRAUMAKIT_BIOFOAM_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_BIOFOAM_INFO =
+	"\cjBiofoam\n"
+	"\cuAbsorbent antiseptic flesh-analogue.\n"
+	"Biofoam remaining: \cy%d\n\n";
 UAS_TRAUMAKIT_BIOFOAM_NONELEFT = "No biofoam left!\n";
 UAS_TRAUMAKIT_BIOFOAM_UNNECESSARY = "The wound does not need biofoam.\n";
 UAS_TRAUMAKIT_BIOFOAM_INJECTING = "Injecting biofoam...\n";
 
 // Painkillers/Anesthetic
-UAS_TRAUMAKIT_PAINKILLER_TITLE = "\cjAnesthetic\n";
-UAS_TRAUMAKIT_PAINKILLER_DESCRIPTION = "\cuFast-acting local painkiller.\n";
-UAS_TRAUMAKIT_PAINKILLER_REMAINING = "Injections remaining: \cy";
-UAS_TRAUMAKIT_PAINKILLER_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_PAINKILLER_INFO =
+	"\cjAnesthetic\n"
+	"\cuFast-acting local painkiller.\n"
+	"Injections remaining: \cy%d\n\n";
 UAS_TRAUMAKIT_PAINKILLER_NONELEFT = "No anesthetic left!\n";
 UAS_TRAUMAKIT_PAINKILLER_INJECTED = "Anesthetic injected.";
 
 // Saline
-UAS_TRAUMAKIT_SALINE_TITLE = "\cjSaline\n";
-UAS_TRAUMAKIT_SALINE_DESCRIPTION = "\cuNeutral wound debriding solution.\n";
-UAS_TRAUMAKIT_SALINE_REMAINING = "Saline remaining: \cy";
-UAS_TRAUMAKIT_SALINE_NEWLINES = "\n\n";
+UAS_TRAUMAKIT_SALINE_INFO =
+	"\cjSaline\n"
+	"\cuNeutral wound debriding solution.\n"
+	"Saline remaining: \cy%d\n\n";
 UAS_TRAUMAKIT_SALINE_NONELEFT = "No saline left!\n";
 UAS_TRAUMAKIT_SALINE_UNNECESSARY = "The wound does not need debriding.\n";
 UAS_TRAUMAKIT_SALINE_FLUSHING = "Flushing the wound...\n";
 
 // Scalpel
-UAS_TRAUMAKIT_SCALPEL_TITLE = "\cjScalpel\n";
-UAS_TRAUMAKIT_SCALPEL_DESCRIPTION = "\cuFor re-opening wounds.\n\n\n";
+UAS_TRAUMAKIT_SCALPEL_INFO =
+	"\cjScalpel\n"
+	"\cuFor re-opening wounds.\n\n\n";
 UAS_TRAUMAKIT_SCALPEL_REMOVECAP = "Removed safety cap.\n";
 UAS_TRAUMAKIT_SCALPEL_REPLACECAP = "Replaced safety cap.\n";
 UAS_TRAUMAKIT_SCALPEL_CAPON = "The cap is still on...\n";
 
 // Stapler
-UAS_TRAUMAKIT_STAPLER_TITLE = "\cjStapler\n";
-UAS_TRAUMAKIT_STAPLER_DESCRIPTION = "\cuManual hand-stapler.\n";
-UAS_TRAUMAKIT_STAPLER_REMAINING = "Staples remaining: \cy";
-UAS_TRAUMAKIT_STAPLER_NEWLINE = "\n\n";
+UAS_TRAUMAKIT_STAPLER_INFO =
+	"\cjStapler\n"
+	"\cuManual hand-stapler.\n"
+	"Staples remaining: \cy%d\n\n";
 UAS_TRAUMAKIT_STAPLER_NONELEFT = "No staples left!\n";
 
 // Sutures
-UAS_TRAUMAKIT_SUTURES_TITLE = "\cjSutures\n";
-UAS_TRAUMAKIT_SUTURES_DESCRIPTION = "\cuHook needle and biodegradable thread.\n\n\n";
+UAS_TRAUMAKIT_SUTURES_INFO =
+	"\cjSutures\n"
+	"\cuHook needle and biodegradable thread.\n\n\n";
 
 // Pickups & Refills
 UAS_TRAUMAKIT_REFILL_SUPPLIES = "\cgRefilled Trauma Kit supplies";
@@ -253,12 +251,6 @@ UAS_BANDAGING_BANDAGE_SOMEWHATTIGHT = "- Bandage feels %ssomewhat tight";
 UAS_BANDAGING_BANDAGE_SOMEWHATLOOSE = "- Bandage feels %ssomewhat loose";
 UAS_BANDAGING_BANDAGE_LOOSE = "- Bandage feels %sloose";
 UAS_BANDAGING_BANDAGE_VERYLOOSE = "- Bandage feels %svery loose";
-UAS_BANDAGING_STABILITY_FINE = "- It feels %sfine";
-UAS_BANDAGING_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
-UAS_BANDAGING_STABILITY_DECENT = "- It feels %sdecent";
-UAS_BANDAGING_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
-UAS_BANDAGING_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
-UAS_BANDAGING_STABILITY_HORRIBLE = "- It feels %shorrible";
 
 // Bandage Helptext
 UAS_BANDAGING_HELPTEXT_CYCLEWOUNDS = "  Cycle wounds\n";
