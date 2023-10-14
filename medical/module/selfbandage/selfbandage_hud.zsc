@@ -24,8 +24,8 @@ extend class UaS_SelfBandage {
 		if (UaS_Bandage_WoundShake && wound.depth > 0.) { woundPosition.y += HDPlayerPawn(owner).Flip * hudScale.y; }
 
 		// stability (always green when sealed)
-		int symbolNum = (selected)? 1 : ((wound.open > 0.)? 2 : 3);
-		string symbol = Stringtable.Localize("$UAS_BANDAGING_WOUND_SYMBOL"..symbolNum);
+		string type = (selected)? "SELECTED" : ((wound.open > 0.)? "OPEN" : "SEALED");
+		string symbol = Stringtable.Localize("$UI_SELFBDG_WOUND_"..type);
 		sb.DrawString(
 			sb.pSmallFont,
 			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
@@ -94,7 +94,7 @@ extend class UaS_SelfBandage {
 		int titleFlags = baseFlags | sb.DI_TEXT_ALIGN_CENTER;
 		sb.DrawString(
 			sb.pSmallFont,
-			Stringtable.Localize("$UAS_BANDAGING_HUD_TITLE"),
+			Stringtable.Localize("$UI_SELFBDG_TITLE"),
 			(0, baseOffset),
 			titleFlags,
 			Font.CR_GRAY,
@@ -104,7 +104,7 @@ extend class UaS_SelfBandage {
 		// Patient
 		sb.DrawString(
 			sb.pSmallFont,
-			string.Format(Stringtable.Localize("$UAS_BANDAGING_HUD_TREATING"), mti.patient.player.GetUsername()),
+			string.Format(Stringtable.Localize("$UI_SELFBDG_TREATING"), mti.patient.player.GetUsername()),
 			(0, baseOffset + textHeight),
 			titleFlags,
 			Font.CR_GRAY,
@@ -161,7 +161,7 @@ extend class UaS_SelfBandage {
 		if (mti.wh.critWounds.Size() == 0) {
 			sb.DrawString(
 				sb.pSmallFont,
-				Stringtable.Localize("$UAS_BANDAGING_NOWOUNDS"),
+				Stringtable.Localize("$UI_SELFBDG_NOWOUNDS"),
 				woundsLocation,
 				baseFlags | sb.DI_TEXT_ALIGN_CENTER,
 				Font.CR_DARKGRAY,
@@ -184,7 +184,7 @@ extend class UaS_SelfBandage {
 		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
 		Array<string> status;
 
-		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UAS_BANDAGING_NOWOUNDSELECTED")); }
+		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UI_SELFBDG_NOWOUNDSELECTED")); }
 		else {
 			string statusText;
 			status.Push(GetOpenStatus(mti.currentWound));
@@ -192,13 +192,13 @@ extend class UaS_SelfBandage {
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);
 
-				if (mti.currentWound.pressure > 5.0) { statusText = "$UAS_BANDAGING_BANDAGE_VERYTIGHT"; }
-				else if (mti.currentWound.pressure > 3.5) { statusText = "$UAS_BANDAGING_BANDAGE_TIGHT"; }
-				else if (mti.currentWound.pressure > 2.0) { statusText = "$UAS_BANDAGING_BANDAGE_ABITTIGHT"; }
-				else if (mti.currentWound.pressure > 1.0) { statusText = "$UAS_BANDAGING_BANDAGE_SOMEWHATTIGHT"; }
-				else if (mti.currentWound.pressure > 0.5) { statusText = "$UAS_BANDAGING_BANDAGE_SOMEWHATLOOSE"; }
-				else if (mti.currentWound.pressure > 0.2) { statusText = "$UAS_BANDAGING_BANDAGE_LOOSE"; }
-				else { statusText = "$UAS_BANDAGING_BANDAGE_VERYLOOSE"; }
+				if (mti.currentWound.pressure > 5.0) { statusText = "$UI_SELFBDG_BANDAGE_VERYTIGHT"; }
+				else if (mti.currentWound.pressure > 3.5) { statusText = "$UI_SELFBDG_BANDAGE_TIGHT"; }
+				else if (mti.currentWound.pressure > 2.0) { statusText = "$UI_SELFBDG_BANDAGE_ABITTIGHT"; }
+				else if (mti.currentWound.pressure > 1.0) { statusText = "$UI_SELFBDG_BANDAGE_SOMEWHATTIGHT"; }
+				else if (mti.currentWound.pressure > 0.5) { statusText = "$UI_SELFBDG_BANDAGE_SOMEWHATLOOSE"; }
+				else if (mti.currentWound.pressure > 0.2) { statusText = "$UI_SELFBDG_BANDAGE_LOOSE"; }
+				else { statusText = "$UI_SELFBDG_BANDAGE_VERYLOOSE"; }
 				status.Push(string.Format(Stringtable.Localize(statusText), GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
 			}
 

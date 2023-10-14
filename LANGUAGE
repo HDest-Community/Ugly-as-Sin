@@ -315,50 +315,54 @@ HELPTEXT_TRK_SCALPEL_NOCAP =
 	"%s  Re-open wound\n"
 	"%s  Replace safety cap\n";
 
-// Bandage Hud & Messages
-UAS_BANDAGING_WOUND_SYMBOL1 = "X";
-UAS_BANDAGING_WOUND_SYMBOL2 = "o";
-UAS_BANDAGING_WOUND_SYMBOL3 = "-";
-UAS_BANDAGING_HUD_TITLE = "--- Bandaging ---";
-UAS_BANDAGING_HUD_TREATING = "Treating %s";
-UAS_BANDAGING_NOWOUNDS = "You have no wounds.";
-UAS_BANDAGING_HUD_SPACER = "-----";
-UAS_BANDAGING_DESCRIPTION_TITLE = "\c[Gray]Bandage\n";
-UAS_BANDAGING_DESCRIPTION_DESCRIPTION = "\c[DarkGray]Useful if you're bleeding out.";
-UAS_BANDAGING_MSG_NOTHINGTOBEDONE = "Nothing to be done here.";
-UAS_BANDAGING_BANDAGEMSG_STAYSTILL_YOU = "You need to stay still to bandage yourself!";
-UAS_BANDAGING_BANDAGEMSG_STAYSTILL_THEY = "You need them to stay still to bandage them!";
-UAS_BANDAGING_BANDAGEMSG_ATTEMPTING = "Attempting to bandage wound...";
-UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_YOU = "You need to stay still to rip off your bandage!";
-UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_THEY = "You need them to stay still to rip off their bandage!";
-UAS_BANDAGING_RIPBANDAGEMSG_ATTEMPTING = "Ripping off bandage...";
+// UI: Self Bandage
+UI_SELFBDG_WOUND_SELECTED = "X";
+UI_SELFBDG_WOUND_OPEN     = "o";
+UI_SELFBDG_WOUND_SEALED   = "-";
+UI_SELFBDG_TITLE    = "--- Bandaging ---";
+UI_SELFBDG_TREATING = "Treating %s";
+UI_SELFBDG_NOWOUNDS = "You have no wounds.";
+UI_SELFBDG_SPACER   = "-----";
 
-// Bandage Woundinfo
-UAS_BANDAGING_NOWOUNDSELECTED = "\c[DarkGray]No wound selected.\c-";
-UAS_BANDAGING_BANDAGE_VERYTIGHT = "- Bandage feels %svery tight";
-UAS_BANDAGING_BANDAGE_TIGHT = "- Bandage feels %stight";
-UAS_BANDAGING_BANDAGE_ABITTIGHT = "- Bandage feels %sa bit tight";
-UAS_BANDAGING_BANDAGE_SOMEWHATTIGHT = "- Bandage feels %ssomewhat tight";
-UAS_BANDAGING_BANDAGE_SOMEWHATLOOSE = "- Bandage feels %ssomewhat loose";
-UAS_BANDAGING_BANDAGE_LOOSE = "- Bandage feels %sloose";
-UAS_BANDAGING_BANDAGE_VERYLOOSE = "- Bandage feels %svery loose";
+UI_SELFBDG_NOTHINGTOBEDONE           = "Nothing to be done here.";
+UI_SELFBDG_BANDAGE_STAYSTILL_YOU     = "You need to stay still to bandage yourself!";
+UI_SELFBDG_BANDAGE_STAYSTILL_THEY    = "You need them to stay still to bandage them!";
+UI_SELFBDG_BANDAGE_ATTEMPTING        = "Attempting to bandage wound...";
+UI_SELFBDG_RIPBANDAGE_STAYSTILL_YOU  = "You need to stay still to rip off your bandage!";
+UI_SELFBDG_RIPBANDAGE_STAYSTILL_THEY = "You need them to stay still to rip off their bandage!";
+UI_SELFBDG_RIPBANDAGE_ATTEMPTING     = "Ripping off bandage...";
+UI_SELFBDG_TOOL_BANDAGE =
+	"\c[Gray]Bandage\n"
+	"\c[DarkGray]Useful if you're bleeding out.";
 
-// Bandage Helptext
-UAS_BANDAGING_HELPTEXT_CYCLEWOUNDS = "  Cycle wounds\n";
-UAS_BANDAGING_HELPTEXT_SLASH = "/";
-UAS_BANDAGING_HELPTEXT_PLUS = "  +";
-UAS_BANDAGING_HELPTEXT_HOLDAND = "  Hold and ...\n";
-UAS_BANDAGING_HELPTEXT_REMOVEBLOODFEEDER = "  Remove blood feeder\n";
-UAS_BANDAGING_HELPTEXT_STRIPLAYERS = "  Strip worn layers\n";
-UAS_BANDAGING_HELPTEXT_TREATANOTHER = "  Treat another player\n\n";
-UAS_BANDAGING_HELPTEXT_TAKEOFF_YOU = "Take off your %s first!";
-UAS_BANDAGING_HELPTEXT_TAKEOFF_THEY = "Tell them to take off their %s first!";
-UAS_BANDAGING_HELPTEXT_NOBLOODBAG_YOU = "There's no blood bag attached to you.";
-UAS_BANDAGING_HELPTEXT_NOBLOODBAG_THEY = "There's no blood bag attached to them.";
-UAS_BANDAGING_HELPTEXT_RIPPINGOFFBAG = "Ripping off blood bag...";
-UAS_BANDAGING_HELPTEXT_NOTHINGTOSTRIP = "Nothing to strip.";
-UAS_BANDAGING_HELPTEXT_BANDAGEWOUND = "  Bandage wound\n";
-UAS_BANDAGING_HELPTEXT_RIPBANDAGE = "  Rip bandage\n";
+UI_SELFBDG_NOBLOODBAG_YOU = "There's no blood bag attached to you.";
+UI_SELFBDG_NOBLOODBAG_THEY = "There's no blood bag attached to them.";
+UI_SELFBDG_RIPPINGOFFBAG = "Ripping off blood bag...";
+
+UI_SELFBDG_TAKEOFF_YOU = "Take off your %s first!";
+UI_SELFBDG_TAKEOFF_THEY = "Tell them to take off their %s first!";
+UI_SELFBDG_NOTHINGTOSTRIP = "Nothing to strip.";
+
+// UI: Self Bandage (Wound info)
+UI_SELFBDG_NOWOUNDSELECTED       = "\c[DarkGray]No wound selected.\c-";
+UI_SELFBDG_BANDAGE_VERYTIGHT     = "- Bandage feels %svery tight";
+UI_SELFBDG_BANDAGE_TIGHT         = "- Bandage feels %stight";
+UI_SELFBDG_BANDAGE_ABITTIGHT     = "- Bandage feels %sa bit tight";
+UI_SELFBDG_BANDAGE_SOMEWHATTIGHT = "- Bandage feels %ssomewhat tight";
+UI_SELFBDG_BANDAGE_SOMEWHATLOOSE = "- Bandage feels %ssomewhat loose";
+UI_SELFBDG_BANDAGE_LOOSE         = "- Bandage feels %sloose";
+UI_SELFBDG_BANDAGE_VERYLOOSE     = "- Bandage feels %svery loose";
+
+// Helptext: Self Bandage
+HELPTEXT_SELFBDG =
+	"%s/%s  Cycle wounds\n"
+	"%s  Hold and ...\n"
+	"  +%s  Remove blood feeder\n"
+	"  +%s  Strip worn layers\n"
+	"%s  Treat another player\n\n";
+HELPTEXT_SELFBDG_BANDAGE =
+	"%s  Bandage wound\n"
+	"%s  Rip bandage\n";
 
 //-----------------
 // Food Module Language Lumps
