@@ -200,9 +200,6 @@ UI_TRK_2FCARTRIDGE_REFILL       = "\cvRefilled staples and biofoam.\nconsumed on
 UI_TRK_2FCARTRIDGE_NOCARTRIDGES = "No available auto-suture cartridges.";
 
 // UI: Trauma Kit (worn layer)
-// TODO: rewrite code for this thing to not rely on LANGUAGE for item names
-UI_TRK_ENVIROSUIT = "environment suit";
-UI_TRK_ARMOUR = "armour";
 UI_TRK_BANDAGE = "bandage";
 UI_TRK_WORNLAYERS = "worn layers";
 UI_TRK_TAKEOFF_YOU = "Take off your %s first!\n";
