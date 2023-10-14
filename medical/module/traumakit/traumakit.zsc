@@ -158,20 +158,16 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		);
 		if (!intervening) { return true; }
 
-		if (mti.patient.countinv("WornRadsuit")) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_ENVIROSUIT"); }
-		else if (mti.patient.countinv("HDArmourWorn")) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_ARMOUR"); }
-		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_BANDAGE"); }
-		else { itemname = Stringtable.Localize("$UAS_TRAUMAKIT_WORNLAYERS"); }
+		if (mti.patient.countinv("WornRadsuit")) { itemname = Stringtable.Localize("$UI_TRK_ENVIROSUIT"); }
+		else if (mti.patient.countinv("HDArmourWorn")) { itemname = Stringtable.Localize("$UI_TRK_ARMOUR"); }
+		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = Stringtable.Localize("$UI_TRK_BANDAGE"); }
+		else { itemname = Stringtable.Localize("$UI_TRK_WORNLAYERS"); }
 
 		// check owner or other
-		if (mti.patient == owner) {
-			imperative = Stringtable.Localize("$UAS_TRAUMAKIT_TAKEOFFYOUR");
-		}
-		else {
-			imperative = Stringtable.Localize("$UAS_TRAUMAKIT_HAVEATHEMTAKEOFF");
-		}
+		imperative = Stringtable.Localize("$UI_TRK_TAKEOFF_"..((mti.patient == owner)? "YOU" : "THEY"));
+
 		// display message
-		currentmessage.text = imperative..itemname..Stringtable.Localize("$UAS_TRAUMAKIT_FIRST");
+		currentmessage.text = String.Format(imperative, itemname);
 		currentmessage.timeout = 2*35;
 		return false;
 	}

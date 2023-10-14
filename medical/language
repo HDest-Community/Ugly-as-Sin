@@ -27,6 +27,7 @@ UI_STABILITY_HORRIBLE     = "- It feels %shorrible";
 UI_WOUND_DESCRIPTION_FORMAT = "%s %s, %s";
 
 // Not implemented yet as I haven't figured out a non-disgusting way to implement this just yet. - [Ted]
+// Neither have I. - [dastrukar]
 UI_WOUND_SEVERITY_MINOR = "minor";
 UI_WOUND_SEVERITY_SMALL = "small";
 UI_WOUND_SEVERITY_SHALLOW = "shallow";
@@ -91,6 +92,7 @@ UI_TRK_TOPOVERFLOWDOTS    = ". . .";
 UI_TRK_BOTTOMOVERFLOWDOTS = ". . .";
 UI_TRK_NOWOUNDSELECTED    = "-No wounds selected-";
 
+// (note: %s is where the colour would be applied)
 UI_TRK_PAINKILLERS_NOTNUMBED      = "- It is %snot numbed.";
 UI_TRK_PAINKILLERS_NUMBED         = "- It is %snumbed";
 UI_TRK_PAINKILLERS_MOSTLYNUMBED   = "- It is %smostly numbed";
@@ -118,6 +120,7 @@ UI_TRK_CAVITY_MODERATEDAMAGE    = "- There is %smoderate tissue damage";
 UI_TRK_CAVITY_SOMEDAMAGE        = "- There is %ssome tissue damage";
 UI_TRK_CAVITY_LITTLEDAMAGE      = "- There is %slittle tissue damage";
 
+// this isn't used in the code afaik - [dastrukar]
 UI_TRK_TOOLLIST_FORMATTING = "%s%s";
 UI_TRK_TOOLLIST_WHITE      = "\c[White]";
 UI_TRK_TOOLLIST_DARKGREY   = "\c[DarkGrey]";
@@ -197,14 +200,13 @@ UI_TRK_2FCARTRIDGE_REFILL       = "\cvRefilled staples and biofoam.\nconsumed on
 UI_TRK_2FCARTRIDGE_NOCARTRIDGES = "No available auto-suture cartridges.";
 
 // UI: Trauma Kit (worn layer)
-// TODO: rewrite code for this thing
-UAS_TRAUMAKIT_ENVIROSUIT = "environment suit ";
-UAS_TRAUMAKIT_ARMOUR = "armour ";
-UAS_TRAUMAKIT_BANDAGE = "bandage ";
-UAS_TRAUMAKIT_WORNLAYERS = "worn layers ";
-UAS_TRAUMAKIT_TAKEOFFYOUR = "Take off your ";
-UAS_TRAUMAKIT_HAVETHEMTAKEOFF = "Have them take off their ";
-UAS_TRAUMAKIT_FIRST = "first!\n";
+// TODO: rewrite code for this thing to not rely on LANGUAGE for item names
+UI_TRK_ENVIROSUIT = "environment suit";
+UI_TRK_ARMOUR = "armour";
+UI_TRK_BANDAGE = "bandage";
+UI_TRK_WORNLAYERS = "worn layers";
+UI_TRK_TAKEOFF_YOU = "Take off your %s first!\n";
+UI_TRK_TAKEOFF_THEY = "Have them take off their %s first!\n";
 
 // Help Text: Trauma Kit
 HELPTEXT_TRK_NORMAL =
