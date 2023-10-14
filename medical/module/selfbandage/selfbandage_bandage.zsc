@@ -1,11 +1,12 @@
 extend class UaS_SelfBandage {
 	void HandleBandage() {
-		statusMessage = Stringtable.Localize("$UAS_BANDAGING_DESCRIPTION_TITLE");
-		statusMessage = statusMessage..Stringtable.Localize("$UAS_BANDAGING_DESCRIPTION_DESCRIPTION");
+		statusMessage = Stringtable.Localize("$UI_SELFBDG_TOOL_BANDAGE");
 
-		toolHelpText =
-			LWPHELP_FIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_BANDAGEWOUND")
-			..LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_RIPBANDAGE");
+		toolHelpText = String.Format(
+			Stringtable.Localize("$HELPTEXT_SELFBDG_BANDAGE"),
+			LWPHELP_FIRE,
+			LWPHELP_ALTFIRE
+		);
 
 		if (owner.player.cmd.buttons & BT_FIREMODE) { return; }
 		if (owner.player.cmd.buttons & BT_ATTACK) { TryBandage(); }
@@ -31,18 +32,18 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.depth <= 0. && mti.currentWound.patched <= 0.) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MSG_NOTHINGTOBEDONE");
+			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
-			string text = "$UAS_BANDAGING_BANDAGEMSG_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
+			string text = "$UI_SELFBDG_BANDAGE_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
 			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_BANDAGEMSG_ATTEMPTING");
+		currentMessage.text = Stringtable.Localize("$UI_SELFBDG_BANDAGE_ATTEMPTING");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_BANDAGE) {
 			timeout = 5;
@@ -83,18 +84,18 @@ extend class UaS_SelfBandage {
 		if (CheckCovered() || !mti.currentWound) { return; }
 		if (mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.patched <= 0.) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_MSG_NOTHINGTOBEDONE");
+			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
-			string text = "$UAS_BANDAGING_RIPBANDAGEMSG_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
+			string text = "$UI_SELFBDG_RIPBANDAGE_STAYSTILL_"..((mti.patient == owner)? "YOU" : "THEY");
 			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_RIPBANDAGEMSG_ATTEMPTING");
+		currentMessage.text = Stringtable.Localize("$UI_SELFBDG_RIPBANDAGE_ATTEMPTING");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBANDAGE) {
 			timeout = 5;

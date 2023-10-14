@@ -25,12 +25,14 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	override string GetHelpText() {
 		LocalizeHelp();
 		return
-			LWPHELP_RELOAD..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_SLASH")..LWPHELP_ALTRELOAD..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_CYCLEWOUNDS")
-			..LWPHELP_FIREMODE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_HOLDAND")
-			..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_PLUS")..LWPHELP_FIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_REMOVEBLOODFEEDER")
-			..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_PLUS")..LWPHELP_ALTFIRE..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_STRIPLAYERS")
-			..LWPHELP_ZOOM..Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_TREATANOTHER")
-			..toolHelpText;
+			String.Format(
+				Stringtable.Localize("$HELPTEXT_SELFBDG"),
+				LWPHELP_RELOAD, LWPHELP_ALTRELOAD,
+				LWPHELP_FIREMODE,
+				LWPHELP_FIRE,
+				LWPHELP_ALTFIRE,
+				LWPHELP_ZOOM
+			)..toolHelpText;
 	}
 
 	override Inventory CreateTossable() {
@@ -73,7 +75,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	bool CheckCovered() {
 		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_ONLYFULL);
 		if (blockinv) {
-			string text = "$UAS_BANDAGING_HELPTEXT_TAKEOFF_"..((mti.patient == owner)? "YOU" : "THEY");
+			string text = "$UI_SELFBDG_TAKEOFF_"..((mti.patient == owner)? "YOU" : "THEY");
 			currentMessage.text = string.Format(Stringtable.Localize(text), blockinv.GetTag());
 			currentMessage.timeout = 2 * 35;
 			return true;
@@ -104,13 +106,13 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			|| CheckCovered()
 		) { return; }
 		if (!mti.patient.CountInv("BloodBagWorn")) {
-			string text = "$UAS_BANDAGING_HELPTEXT_NOBLOODBAG_"..((mti.patient == owner)? "YOU" : "THEY");
+			string text = "$UI_SELFBDG_NOBLOODBAG_"..((mti.patient == owner)? "YOU" : "THEY");
 			currentMessage.text = Stringtable.Localize(text);
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
 
-		currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_RIPPINGOFFBAG");
+		currentMessage.text = Stringtable.Localize("$UI_SELFBDG_RIPPINGOFFBAG");
 		currentMessage.timeout = 10;
 		if ((timer <= 0 && timeout <= 0) || actionType != ACTION_RIPBLOODBAG) {
 			timeout = 5;
@@ -135,7 +137,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 			&& !(owner.player.oldbuttons & BT_ALTFIRE)
 		)) { return; }
 		if (HDPlayerPawn.CheckStrip(mti.patient, mti.patient, silent: true)) {
-			currentMessage.text = Stringtable.Localize("$UAS_BANDAGING_HELPTEXT_NOTHINGTOSTRIP");
+			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOSTRIP");
 			currentMessage.timeout = 2 * 35;
 			return;
 		}
