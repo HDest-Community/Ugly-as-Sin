@@ -152,14 +152,15 @@ class UaS_TraumaKit : UaS_MedicalTool {
 	bool HandleStrip() {
 		string itemname, imperative;
 		// check for intervening items, otherwise exit early
+		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_CHECKBODY);
 		bool intervening = (
-			!HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)
+			blockinv
+			|| !HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)
 			|| (mti.currentWound && mti.currentWound.patched > 0.)
 		);
 		if (!intervening) { return true; }
 
-		if (mti.patient.countinv("WornRadsuit")) { itemname = Stringtable.Localize("$UI_TRK_ENVIROSUIT"); }
-		else if (mti.patient.countinv("HDArmourWorn")) { itemname = Stringtable.Localize("$UI_TRK_ARMOUR"); }
+		if (blockinv) { itemname = blockinv.GetTag(); }
 		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = Stringtable.Localize("$UI_TRK_BANDAGE"); }
 		else { itemname = Stringtable.Localize("$UI_TRK_WORNLAYERS"); }
 
