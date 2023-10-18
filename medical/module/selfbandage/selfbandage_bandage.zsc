@@ -82,7 +82,7 @@ extend class UaS_SelfBandage {
 
 	void TryRipBandage() {
 		if (CheckCovered() || !mti.currentWound) { return; }
-		if (actionType != ACTION_BANDAGE && mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
+		if (actionType != ACTION_RIPBANDAGE && mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.patched <= 0.) {
 			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
