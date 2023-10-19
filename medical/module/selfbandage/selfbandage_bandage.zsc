@@ -30,10 +30,13 @@ extend class UaS_SelfBandage {
 
 	void TryBandage() {
 		if (CheckCovered() || !mti.currentWound) { return; }
-		if (actionType != ACTION_BANDAGE && mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.depth <= 0. && mti.currentWound.patched <= 0.) {
 			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
+			return;
+		}
+		if (actionType != ACTION_BANDAGE && mti.patient == owner && owner.pitch < 45) {
+			owner.pitch += 6;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
@@ -82,10 +85,13 @@ extend class UaS_SelfBandage {
 
 	void TryRipBandage() {
 		if (CheckCovered() || !mti.currentWound) { return; }
-		if (actionType != ACTION_RIPBANDAGE && mti.patient == owner && owner.pitch < 45) { owner.pitch += 6; return; }
 		if (mti.currentWound.patched <= 0.) {
 			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOBEDONE");
 			currentMessage.timeout = 2 * 35;
+			return;
+		}
+		if (actionType != ACTION_RIPBANDAGE && mti.patient == owner && owner.pitch < 45) {
+			owner.pitch += 6;
 			return;
 		}
 		else if (mti.patient.CountInv("IsMoving") >= 4) {
