@@ -261,7 +261,7 @@ extend class UaS_Wound {
 		BP.Flags = SPF_REPLACE;
 		BP.FadeStep = 0;
 		BP.Style = STYLE_Normal;
-		BP.StartAlpha = max((depth/width), 0.3);
+		BP.StartAlpha = min(1, max((depth/width), 0.3));
 		level.SpawnParticle(BP);
 
 		// Do appearing and drops running down body
