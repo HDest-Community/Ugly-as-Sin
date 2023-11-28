@@ -247,6 +247,7 @@ extend class UaS_Wound {
 			location.y * bleeder.height);
 		vector3 interpvel = level.Vec3Diff(oldpos, off);
 		double avgsize = (width + depth) / 2.0;
+		float bludalpha = (width > 0.)? (depth / width) : 0;
 
 		// Spawn a wound particle;
 		if (depth >= 8) { BP.Texture = TexMan.CheckForTexture ("BLUDC0"); }
@@ -261,7 +262,7 @@ extend class UaS_Wound {
 		BP.Flags = SPF_REPLACE;
 		BP.FadeStep = 0;
 		BP.Style = STYLE_Normal;
-		BP.StartAlpha = min(1, max((depth/width), 0.3));
+		BP.StartAlpha = min(1, max(bludalpha, 0.3));
 		level.SpawnParticle(BP);
 
 		// Do appearing and drops running down body
