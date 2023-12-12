@@ -85,6 +85,7 @@ class UaS_TraumaKit : UaS_MedicalTool {
 				break;
 		}
 
+		HandleBandages();
 		TickMessages();
 	}
 
@@ -152,25 +153,36 @@ class UaS_TraumaKit : UaS_MedicalTool {
 	bool HandleStrip() {
 		string itemname, imperative;
 		// check for intervening items, otherwise exit early
+		bool isBandaged = (mti.currentWound && mti.currentWound.patched > 0.);
 		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_CHECKBODY);
-		bool intervening = (
-			blockinv
-			|| !HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)
-			|| (mti.currentWound && mti.currentWound.patched > 0.)
-		);
-		if (!intervening) { return true; }
-
 		if (blockinv) { itemname = blockinv.GetTag(); }
-		else if (mti.currentWound && mti.currentWound.patched > 0.) { itemname = Stringtable.Localize("$UI_TRK_BANDAGE"); }
-		else { itemname = Stringtable.Localize("$UI_TRK_WORNLAYERS"); }
+		else if (!HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)) { itemname = Stringtable.Localize("$UI_TRK_WORNLAYERS"); }
+		else if (isBandaged) { itemname = Stringtable.Localize("$UI_TRK_BANDAGE"); }
+		else { return true; }
 
 		// check owner or other
 		imperative = Stringtable.Localize("$UI_TRK_TAKEOFF_"..((mti.patient == owner)? "YOU" : "THEY"));
 
 		// display message
 		currentmessage.text = String.Format(imperative, itemname);
+		if (isBandaged) { currentmessage.text = currentmessage.text..Stringtable.Localize("$UI_TRK_BANDAGETIP"); }
 		currentmessage.timeout = 2*35;
 		return false;
+	}
+
+	void HandleBandages() {
+		if (!(
+			mti.currentWound
+			&& mti.currentWound.patched > 0.
+			&& owner.player.cmd.buttons & BT_ATTACK
+		)) { return; }
+
+		let bandage = UaS_SelfBandage(owner.FindInventory("UaS_SelfBandage"));
+		bandage.TryRipBandage();
+		if (bandage.currentmessage.text != "") {
+			currentmessage.text = bandage.currentmessage.text;
+			currentmessage.timeout = bandage.currentmessage.timeout;
+		}
 	}
 
 	void DebugStatus() {
