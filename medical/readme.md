@@ -24,5 +24,7 @@ The alternative medikit. In order to let your wounds heal up, you need to operat
 Use the correct tools to treat whatever is stopping your wounds from healing up. (note: try to get all of the listed statuses close to green)
 The wound will only start to heal up once it becomes green in the wounds list.
 
+Note: If the wound you're operating on is bandaged, you can hold Fire to rip it off. (or AltFire in the bandage tool)
+
 ## Credits
  - bunyear/Tapwave: Made the trauma kit tool sprites
