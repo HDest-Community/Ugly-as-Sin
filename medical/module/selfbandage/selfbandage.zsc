@@ -47,16 +47,15 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	}
 
 	override void DoEffect() {
-		if (!(owner.player.ReadyWeapon is "UaS_SelfBandage")) { return; }
-
-		Super.DoEffect();
-
 		if (timer >= 0) { --timer; }
 		if (timeout >= 0) { --timeout; }
 		if (timeout <= 0) { ResetAction(); }
 		if (currentMessage.timeout > 0) { --currentMessage.timeout; }
 		else { currentMessage.text = ""; }
 
+		if (!(owner.player.ReadyWeapon is "UaS_SelfBandage")) { return; }
+
+		Super.DoEffect();
 		CycleWounds();
 		TryRipBloodbag();
 		TryStripWorn();
