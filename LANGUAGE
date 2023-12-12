@@ -272,6 +272,7 @@ UI_TRK_BANDAGE = "bandage";
 UI_TRK_WORNLAYERS = "worn layers";
 UI_TRK_TAKEOFF_YOU = "Take off your %s first!\n";
 UI_TRK_TAKEOFF_THEY = "Have them take off their %s first!\n";
+UI_TRK_BANDAGETIP = "(hold Fire to remove bandage)";
 
 // Help Text: Trauma Kit
 HELPTEXT_TRK_NORMAL =
