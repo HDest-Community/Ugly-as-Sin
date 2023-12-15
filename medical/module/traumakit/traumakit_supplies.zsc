@@ -83,7 +83,7 @@ extend class UaS_TraumaKit {
 	}
 
 	void HandleSupplies() {
-		if((owner.player.cmd.buttons & BT_ALTFIRE) && !(owner.player.oldbuttons & BT_ALTFIRE)) {
+		if(mti.PressedKey(mti.KEY_ALTFIRE, true)) {
 
 			switch (weaponstatus[TK_SELECTED]) {
 				case T_PAINKILLER:

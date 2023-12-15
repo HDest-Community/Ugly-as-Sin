@@ -310,9 +310,9 @@ OptionMenu "UaS_Medical_Options" {
 	Slider "Item Wheel BG Alpha","UaS_Wheel_Alpha", 0, 1, 0.05, 2
 	StaticText " "
 
-	Option "Invert Trauma Kit Cycling","UaS_TraumaKit_InvertCycle", "YesNo"
-	StaticText "Use firemode to change tools instead (item wheel included)", "White"
-	Option "Use Alternative Trauma Kit Controls","UaS_TraumaKit_AltControls", "YesNo"
+	Option "Switch Zoom and Alt. Fire","UaS_Medical_SwitchZoom", "YesNo"
+	Option "Switch Firemode button press","UaS_Medical_SwitchFiremode", "YesNo"
+	Option "Invert Cycling","UaS_Medical_InvertCycle", "YesNo"
 	StaticText " "
 
 	StaticText "Bandage options", "White"

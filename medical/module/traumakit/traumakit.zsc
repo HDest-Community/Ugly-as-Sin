@@ -97,55 +97,38 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		}
 	}
 
-	// -1 = left
-	// 0 = none
-	// 1 = right
-	int GetCycleInput() {
-		if ((owner.player.cmd.buttons & BT_RELOAD) && !(owner.player.oldbuttons & BT_RELOAD)) {
-			return (UaS_TraumaKit_InvertCycle.GetBool())? -1 : 1;
-		}
-		else if ((owner.player.cmd.buttons & BT_ALTRELOAD) && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
-			return (UaS_TraumaKit_InvertCycle.GetBool())? 1 : -1;
-		}
-		return 0;
-	}
-
 	void CycleWounds() {
 		if (
 			mti.wh.critwounds.Size() == 0
-			|| (!UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
-			|| (UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
+			|| !mti.PressedKey(mti.KEY_FIREMODE, false)
 		) { return; }
-		if (GetCycleInput() == 1) { mti.UpdateCurrentWound(mti.currentWoundIdx + 1); }
-		else if (GetCycleInput() == -1) { mti.UpdateCurrentWound(mti.currentWoundIdx - 1); }
+		if (mti.PressedKey(mti.KEY_CYCLENEXT, true)) { mti.UpdateCurrentWound(mti.currentWoundIdx + 1); }
+		else if (mti.PressedKey(mti.KEY_CYCLEPREV, true)) { mti.UpdateCurrentWound(mti.currentWoundIdx - 1); }
 	}
 
 	void CycleTools(int set = -1) {
-		if (
-			(!UaS_TraumaKit_AltControls.GetBool() && (owner.player.cmd.buttons & BT_FIREMODE))
-			|| (UaS_TraumaKit_AltControls.GetBool() && !(owner.player.cmd.buttons & BT_FIREMODE))
-		) { return; }
 		if (set != -1) { weaponstatus[TK_SELECTED] = set; return; }
-		if (!UaS_TraumaKit_AltControls.GetBool()) {
-			if (GetCycleInput() == 1) {
+		if (!mti.PressedKey(mti.KEY_FIREMODE, false)) {
+			if (mti.PressedKey(mti.KEY_CYCLENEXT, true)) {
 				weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] + 1) % 7;
 				weaponstatus[TK_HOLD] = 0;
 				currentmessage.text = "";
 				currentmessage.timeout = 0;
 			}
-			else if (GetCycleInput() == -1) {
+			else if (mti.PressedKey(mti.KEY_CYCLEPREV, true)) {
 				weaponstatus[TK_SELECTED] = (weaponstatus[TK_SELECTED] - 1);
 				if(weaponstatus[TK_SELECTED] < 0) { weaponstatus[TK_SELECTED] = 6; }
 				weaponstatus[TK_HOLD] = 0;
 				currentmessage.text = "";
 				currentmessage.timeout = 0;
 			}
-		}
-		else {
-			int selected = wheel.GetWheelInput(
-				7, (Screen.GetWidth() / 2, Screen.GetHeight() / 2)
-			);
-			if (selected != -1) { weaponstatus[TK_SELECTED] = selected; }
+			// wheel
+			if (mti.UaS_Medical_SwitchFiremode.GetBool()) {
+				int selected = wheel.GetWheelInput(
+					7, (Screen.GetWidth() / 2, Screen.GetHeight() / 2)
+				);
+				if (selected != -1) { weaponstatus[TK_SELECTED] = selected; }
+			}
 		}
 	}
 

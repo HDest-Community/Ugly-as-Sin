@@ -70,6 +70,10 @@ class UaS_MedicalToolInfo : Inventory {
 	UaS_Wound currentWound;
 	int currentWoundIdx;
 
+	transient CVar UaS_Medical_SwitchZoom;
+	transient CVar UaS_Medical_SwitchFiremode;
+	transient CVar UaS_Medical_InvertCycle;
+
 	override void BeginPlay() {
 		currentWoundIdx = 0;
 		Super.BeginPlay();
@@ -79,6 +83,11 @@ class UaS_MedicalToolInfo : Inventory {
 		// Make sure currentWoundIdx doesn't wrap around to 0 when updating
 		if (wh && wh.critwounds.Size() > 0) { currentWoundIdx = min(currentWoundIdx, wh.critwounds.Size() - 1); }
 		if (!currentWound) { UpdateCurrentWound(currentWoundIdx); }
+		if (!UaS_Medical_SwitchZoom) {
+			UaS_Medical_SwitchZoom = CVar.GetCVar("UaS_Medical_SwitchZoom", owner.player);
+			UaS_Medical_SwitchFiremode = CVar.GetCVar("UaS_Medical_SwitchFiremode", owner.player);
+			UaS_Medical_InvertCycle = CVar.GetCVar("UaS_Medical_InvertCycle", owner.player);
+		}
 	}
 
 	void UpdateCurrentWound(int idx) {
@@ -95,7 +104,7 @@ class UaS_MedicalToolInfo : Inventory {
 		owner.LineTrace(owner.angle, 42, owner.pitch, offsetz: owner.height-12, data: tktrace);
 		if (tktrace.hitactor && tktrace.hitactor is "HDPlayerPawn") { other = HDPlayerPawn(tktrace.hitactor); }
 
-		if (other && (owner.player.cmd.buttons & BT_ZOOM)) { patient = other; }
+		if (other && PressedKey(KEY_SETPATIENT, false)) { patient = other; }
 		if (!patient || levellocals.Vec3Diff(owner.pos, patient.pos).length() > owner.radius * 4) { patient = HDPlayerPawn(owner); }
 
 		wh = UaS_WoundHandler(patient.FindInventory('UaS_WoundHandler'));
@@ -103,4 +112,49 @@ class UaS_MedicalToolInfo : Inventory {
 		if (patient != lastpatient) { UpdateCurrentWound(0); }
 		lastpatient = patient;
 	}
+
+	bool PressedKey(int type, bool justPressed) {
+		int bt = 0;
+		switch (type) {
+			case KEY_SETPATIENT:
+				if (UaS_Medical_SwitchZoom.GetBool()) { bt = BT_ALTFIRE; }
+				else { bt = BT_ZOOM; }
+				break;
+
+			case KEY_FIRE:
+				bt = BT_ATTACK;
+				break;
+
+			case KEY_ALTFIRE:
+				if (UaS_Medical_SwitchZoom.GetBool()) { bt = BT_ZOOM; }
+				else { bt = BT_ALTFIRE; }
+				break;
+
+			case KEY_CYCLENEXT:
+				if (UaS_Medical_InvertCycle.GetBool()) { bt = BT_ALTRELOAD; }
+				else { bt = BT_RELOAD; }
+				break;
+
+			case KEY_CYCLEPREV:
+				if (UaS_Medical_InvertCycle.GetBool()) { bt = BT_RELOAD; }
+				else { bt = BT_ALTRELOAD; }
+				break;
+
+			case KEY_FIREMODE:
+				if (UaS_Medical_SwitchFiremode.GetBool()) { return !(owner.player.cmd.buttons & BT_FIREMODE); }
+				else { bt = BT_FIREMODE; }
+				break;
+		}
+		if (justPressed) { return (owner.player.cmd.buttons & bt && !(owner.player.oldbuttons & bt)); }
+		return (owner.player.cmd.buttons & bt);
+	}
+
+	enum MedicalToolKeys {
+		KEY_SETPATIENT,
+		KEY_FIRE,
+		KEY_ALTFIRE,
+		KEY_CYCLENEXT,
+		KEY_CYCLEPREV,
+		KEY_FIREMODE,
+	};
 }
