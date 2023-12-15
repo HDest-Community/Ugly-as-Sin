@@ -4,7 +4,6 @@ class UaS_SelfBandage : UaS_MedicalTool {
 	int timer;
 	int timeout;
 	string statusMessage;
-	string toolHelpText;
 	BandageActions actionType;
 
 	Default {
@@ -19,20 +18,46 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		timer = 0;
 		progress = 0;
 		actionType = ACTION_NONE;
-		toolHelpText = "";
 	}
 
 	override string GetHelpText() {
+		if (!mti || !mti.UaS_Medical_SwitchZoom) { return ""; }
+		string r = "";
 		LocalizeHelp();
-		return
-			String.Format(
+		string keySetPatient, keyAltFire;
+		if (mti.UaS_Medical_SwitchZoom.GetBool()) { keySetPatient = LWPHELP_ALTFIRE; keyAltFire = LWPHELP_ZOOM; }
+		else { keySetPatient = LWPHELP_ZOOM; keyAltFire = LWPHELP_ALTFIRE; }
+		if (mti.UaS_Medical_SwitchFiremode.GetBool()) {
+			r.AppendFormat(
+				Stringtable.Localize("$HELPTEXT_SELFBDGALT"),
+				LWPHELP_RELOAD,
+				LWPHELP_ALTRELOAD,
+				LWPHELP_FIREMODE,
+				LWPHELP_RELOAD, LWPHELP_ALTRELOAD,
+				keySetPatient
+			);
+		}
+		else {
+			r.AppendFormat(
 				Stringtable.Localize("$HELPTEXT_SELFBDG"),
 				LWPHELP_RELOAD, LWPHELP_ALTRELOAD,
 				LWPHELP_FIREMODE,
-				LWPHELP_FIRE,
-				LWPHELP_ALTFIRE,
-				LWPHELP_ZOOM
-			)..toolHelpText;
+				LWPHELP_RELOAD,
+				LWPHELP_ALTRELOAD,
+				keySetPatient
+			);
+		}
+
+		switch (weaponstatus[0]) {
+			default:
+				r.AppendFormat(
+					Stringtable.Localize("$HELPTEXT_SELFBDG_BANDAGE"),
+					LWPHELP_FIRE,
+					keyAltFire
+				);
+				break;
+		}
+		return r;
 	}
 
 	override Inventory CreateTossable() {
@@ -85,14 +110,14 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 	// also updates wounds
 	void CycleWounds() {
-		if (mti.wh.critwounds.Size() == 0) { return; }
+		if (mti.wh.critwounds.Size() == 0 || !mti.PressedKey(mti.KEY_FIREMODE, false)) { return; }
 
-		if (owner.player.cmd.buttons & BT_RELOAD && !(owner.player.oldbuttons & BT_RELOAD)) {
+		if (mti.PressedKey(mti.KEY_CYCLENEXT, true)) {
 			mti.UpdateCurrentWound(mti.currentWoundIdx + 1);
 			ResetAction();
 			currentMessage.timeout = 0;
 		}
-		else if (owner.player.cmd.buttons & BT_ALTRELOAD && !(owner.player.oldbuttons & BT_ALTRELOAD)) {
+		else if (mti.PressedKey(mti.KEY_CYCLEPREV, true)) {
 			mti.UpdateCurrentWound(mti.currentWoundIdx - 1);
 			ResetAction();
 			currentMessage.timeout = 0;
@@ -101,7 +126,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 	void TryRipBloodbag() {
 		if (
-			!(owner.player.cmd.buttons & BT_FIREMODE && owner.player.cmd.buttons & BT_ATTACK)
+			!(!mti.PressedKey(mti.KEY_FIREMODE, false) && owner.player.cmd.buttons & BT_ALTRELOAD)
 			|| CheckCovered()
 		) { return; }
 		if (!mti.patient.CountInv("BloodBagWorn")) {
@@ -131,9 +156,9 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 	void TryStripWorn() {
 		if (!(
-			owner.player.cmd.buttons & BT_FIREMODE
-			&& owner.player.cmd.buttons & BT_ALTFIRE
-			&& !(owner.player.oldbuttons & BT_ALTFIRE)
+			!mti.PressedKey(mti.KEY_FIREMODE, false)
+			&& owner.player.cmd.buttons & BT_RELOAD
+			&& !(owner.player.oldbuttons & BT_RELOAD)
 		)) { return; }
 		if (HDPlayerPawn.CheckStrip(mti.patient, mti.patient, silent: true)) {
 			currentMessage.text = Stringtable.Localize("$UI_SELFBDG_NOTHINGTOSTRIP");

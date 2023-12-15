@@ -287,10 +287,16 @@ UI_SELFBDG_BANDAGE_VERYLOOSE     = "- Bandage feels %svery loose";
 
 // Helptext: Self Bandage
 HELPTEXT_SELFBDG =
+	"%s  Strip worn layers\n"
+	"%s  Remove blood feeder\n"
+	"%s  Hold and ...\n"
+	"  +%s/%s  Cycle wounds\n"
+	"%s  Treat another player\n\n";
+HELPTEXT_SELFBDGALT =
 	"%s/%s  Cycle wounds\n"
 	"%s  Hold and ...\n"
-	"  +%s  Remove blood feeder\n"
 	"  +%s  Strip worn layers\n"
+	"  +%s  Remove blood feeder\n"
 	"%s  Treat another player\n\n";
 HELPTEXT_SELFBDG_BANDAGE =
 	"%s  Bandage wound\n"

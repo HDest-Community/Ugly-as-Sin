@@ -2,15 +2,8 @@ extend class UaS_SelfBandage {
 	void HandleBandage() {
 		statusMessage = Stringtable.Localize("$UI_SELFBDG_TOOL_BANDAGE");
 
-		toolHelpText = String.Format(
-			Stringtable.Localize("$HELPTEXT_SELFBDG_BANDAGE"),
-			LWPHELP_FIRE,
-			LWPHELP_ALTFIRE
-		);
-
-		if (owner.player.cmd.buttons & BT_FIREMODE) { return; }
-		if (owner.player.cmd.buttons & BT_ATTACK) { TryBandage(); }
-		else if (owner.player.cmd.buttons & BT_ALTATTACK) { TryRipBandage(); }
+		if (mti.PressedKey(mti.KEY_FIRE, false)) { TryBandage(); }
+		else if (mti.PressedKey(mti.KEY_ALTFIRE, false)) { TryRipBandage(); }
 	}
 
 	void BandageWound(float toPatch, float pressure) {
