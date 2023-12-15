@@ -249,8 +249,9 @@ extend class UaS_TraumaKit {
 
 		// wheel stuff
 		if (
-			!UaS_TraumaKit_AltControls
-			|| !(UaS_TraumaKit_AltControls.GetBool() && (hpl.Player.cmd.Buttons & BT_FIREMODE))
+			!mti.UaS_Medical_SwitchFiremode
+			|| !mti.UaS_Medical_SwitchFiremode.GetBool()
+			|| !(hpl.Player.cmd.Buttons & BT_FIREMODE)
 			|| !wheel
 		) { return; }
 
