@@ -3,9 +3,6 @@ const UAS_HDLD_TRAUMAKIT = "trk";
 class UaS_TraumaKit : UaS_MedicalTool {
 	string statusMessage;
 
-	transient CVar UaS_TraumaKit_AltControls;
-	transient CVar UaS_TraumaKit_InvertCycle;
-
 	Default {
 		radius 4;
 		height 4;
@@ -45,11 +42,6 @@ class UaS_TraumaKit : UaS_MedicalTool {
 	override void DoEffect() {
 		if (!(owner.player.readyweapon is 'UaS_TraumaKit')) { return; }
 		statusMessage = ""; // This is used for tools to display stuff
-
-		if (!UaS_TraumaKit_AltControls) {
-			UaS_TraumaKit_AltControls = CVar.GetCVar("UaS_TraumaKit_AltControls", owner.player);
-			UaS_TraumaKit_InvertCycle = CVar.GetCVar("UaS_TraumaKit_InvertCycle", owner.player);
-		}
 
 		Super.DoEffect();
 		SetHelpText();

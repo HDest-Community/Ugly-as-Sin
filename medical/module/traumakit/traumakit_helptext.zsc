@@ -7,9 +7,15 @@ extend class UaS_TraumaKit {
 		}
 	}
 	override string gethelptext(){
+		if (!mti || !mti.UaS_Medical_SwitchZoom) { return ""; }
 		string r;
 		LocalizeHelp();
-		if (UaS_TraumaKit_AltControls && UaS_Traumakit_AltControls.GetBool()) {
+
+		string keySetPatient, keyAltFire;
+		if (mti.UaS_Medical_SwitchZoom.GetBool()) { keySetPatient = LWPHELP_ALTFIRE; keyAltFire = LWPHELP_ZOOM; }
+		else { keySetPatient = LWPHELP_ZOOM; keyAltFire = LWPHELP_ALTFIRE; }
+
+		if (mti.UaS_Medical_SwitchFiremode.GetBool()) {
 			r.AppendFormat(
 				Stringtable.Localize("$HELPTEXT_TRK_ALT"),
 				LWPHELP_RELOAD,
@@ -17,7 +23,7 @@ extend class UaS_TraumaKit {
 				LWPHELP_FIREMODE,
 				LWPHELP_RELOAD,
 				LWPHELP_ALTRELOAD,
-				LWPHELP_ZOOM,
+				keySetPatient,
 				LWPHELP_DROPONE
 			);
 		} else {
@@ -28,7 +34,7 @@ extend class UaS_TraumaKit {
 				LWPHELP_FIREMODE,
 				LWPHELP_RELOAD,
 				LWPHELP_ALTRELOAD,
-				LWPHELP_ZOOM,
+				keySetPatient,
 				LWPHELP_DROPONE
 			);
 		}
@@ -38,14 +44,14 @@ extend class UaS_TraumaKit {
 				r.AppendFormat(
 					Stringtable.Localize("$HELPTEXT_TRK_PAINKILLER"),
 					LWPHELP_FIRE,
-					LWPHELP_ALTFIRE
+					keyAltFire
 				);
 				break;
 			case T_SALINE:
 				r.AppendFormat(
 					Stringtable.Localize("$HELPTEXT_TRK_SALINE"),
 					LWPHELP_FIRE,
-					LWPHELP_ALTFIRE
+					keyAltFire
 				);
 				break;
 			case T_FORCEPS:
@@ -59,14 +65,14 @@ extend class UaS_TraumaKit {
 				r.AppendFormat(
 					Stringtable.Localize("$HELPTEXT_TRK_BIOFOAM"),
 					LWPHELP_FIRE,
-					LWPHELP_ALTFIRE
+					keyAltFire
 				);
 				break;
 			case T_STAPLER:
 				r.AppendFormat(
 					Stringtable.Localize("$HELPTEXT_TRK_STAPLER"),
 					LWPHELP_FIRE,
-					LWPHELP_ALTFIRE
+					keyAltFire
 				);
 				break;
 			case T_SUTURES:
