@@ -115,12 +115,14 @@ class UaS_TraumaKit : UaS_MedicalTool {
 				currentmessage.timeout = 0;
 			}
 			// wheel
+			/*
 			if (mti.UaS_Medical_SwitchFiremode.GetBool()) {
 				int selected = wheel.GetWheelInput(
 					7, (Screen.GetWidth() / 2, Screen.GetHeight() / 2)
 				);
 				if (selected != -1) { weaponstatus[TK_SELECTED] = selected; }
 			}
+			*/
 		}
 	}
 

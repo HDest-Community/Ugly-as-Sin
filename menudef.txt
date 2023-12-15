@@ -306,8 +306,8 @@ OptionMenu "UaS_Medical_Options" {
 
 	Slider "Trauma Kit UI Scale","UaS_TraumaKit_HUDScale", 0, 2, 0.05, 2
 	Slider "Bandage UI Scale","UaS_Bandage_HUDScale", 0, 2, 0.05, 2
-	Slider "Item Wheel UI Scale","UaS_Wheel_Scale", 0, 2, 0.05, 2
-	Slider "Item Wheel BG Alpha","UaS_Wheel_Alpha", 0, 1, 0.05, 2
+	//Slider "Item Wheel UI Scale","UaS_Wheel_Scale", 0, 2, 0.05, 2
+	//Slider "Item Wheel BG Alpha","UaS_Wheel_Alpha", 0, 1, 0.05, 2
 	StaticText " "
 
 	Option "Switch Zoom and Alt. Fire","UaS_Medical_SwitchZoom", "YesNo"
