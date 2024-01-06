@@ -11,7 +11,7 @@ class UaS_GyroStabilizer : HDPickup {
 	Default {
 		Inventory.Amount 1;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "$PICKUP_STABILIZER";
+		Inventory.PickupMessage "$PICKUP_GYROSTABILIZER";
 		Inventory.Icon "UGSIR0";
 		HDPickup.Bulk 10;
 		Scale 0.75;
