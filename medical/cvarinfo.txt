@@ -6,3 +6,4 @@ user bool UaS_Medical_SwitchFiremode = false;
 nosave float UaS_Wheel_Alpha = 0.75;
 nosave float UaS_Wheel_Scale = 1.00;
 nosave float UaS_Bandage_HUDScale = 1.00;
+nosave bool UaS_Medical_VisualWounds = true;

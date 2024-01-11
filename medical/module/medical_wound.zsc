@@ -39,7 +39,7 @@ class UaS_Wound : HDBleedingWound {
 		if (!bleeder) { return; }
 
 		if (!CheckSkip()) { TryStabilise(); }
-		BloodDrops();
+		if (UaS_Medical_VisualWounds) { BloodDrops(); }
 
 		// Make sure bandage doesn't fall off when trying to bandage yourself while incap
 		if (HDPlayerPawn(bleeder) && HDIncapWeapon(HDPlayerPawn(bleeder).Player.ReadyWeapon) && pressure <= 0.) {
