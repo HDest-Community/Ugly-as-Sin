@@ -38,7 +38,10 @@ extend class UaS_SelfBandage {
 
 		// bleeding?
 		if (wound.depth > 0.) {
-			let blud = TexMan.CheckForTexture("BLUDC0");
+			TextureID blud;
+			if (wound.depth >= 8) { blud = TexMan.CheckForTexture("BLUDC0"); }
+			else if (wound.depth >= 4) { blud = TexMan.CheckForTexture("BLUDB0"); }
+			else { blud = TexMan.CheckForTexture("BLUDA0"); }
 			Vector2 bludScale = woundScale * log(wound.depth + 1) / 2;
 			Vector2 bludOffset = (
 				sb.pSmallFont.mFont.GetCharWidth("X") / 2 * woundScale.x,
@@ -50,7 +53,8 @@ extend class UaS_SelfBandage {
 				woundPosition + bludOffset,
 				sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER,
 				woundAlpha - 0.25,
-				scale: bludScale
+				scale: bludScale,
+				translation: wound.bleeder.BloodTranslation
 			);
 		}
 
