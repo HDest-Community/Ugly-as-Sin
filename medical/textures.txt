@@ -45,3 +45,33 @@ Graphic "CIRCLEBG", 400, 400
 {
 	Patch "patches/circlebg.png", 0, 0
 }
+
+Graphic "UASBLUDC0", 12, 11
+{
+	Offset 7, 6
+	Patch "BLUDC0", 0, 0
+	{
+		Translation Desaturate, 31
+		Style Translucent
+	}
+}
+
+Graphic "UASBLUDB0", 8, 8
+{
+	Offset 4, 4
+	Patch "BLUDB0", 0, 0
+	{
+		Translation Desaturate, 31
+		Style Translucent
+	}
+}
+
+Graphic "UASBLUDA0", 5, 6
+{
+	Offset 2, 3
+	Patch "BLUDA0", 0, 0
+	{
+		Translation Desaturate, 31
+		Style Translucent
+	}
+}
