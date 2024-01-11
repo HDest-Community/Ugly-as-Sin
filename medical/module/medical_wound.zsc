@@ -249,20 +249,22 @@ extend class UaS_Wound {
 		double avgsize = (width + depth) / 2.0;
 
 		// Spawn a wound particle;
-		if (depth >= 8) { BP.Texture = TexMan.CheckForTexture ("BLUDC0"); }
-		else if (depth >= 4) { BP.Texture = TexMan.CheckForTexture ("BLUDB0"); }
-		else if (depth >= 1) { BP.Texture = TexMan.CheckForTexture ("BLUDA0"); }
+		if (depth >= 8) { BP.Texture = TexMan.CheckForTexture ("UASBLUDC0"); }
+		else if (depth >= 4) { BP.Texture = TexMan.CheckForTexture ("UASBLUDB0"); }
+		else if (depth >= 1) { BP.Texture = TexMan.CheckForTexture ("UASBLUDA0"); }
 		else { BP.Texture = TexMan.CheckForTexture (""); }
-		BP.Color1 = "DarkRed";
+		if (bleeder.BloodColor) { BP.Color1 = bleeder.BloodColor; }
+		else { BP.Color1 = "DarkRed"; }
 		BP.Pos = oldpos;
 		BP.Lifetime = 1;
 		BP.Vel = interpvel;
 		BP.Size = (depth+1)/2;
 		BP.Flags = SPF_REPLACE;
 		BP.FadeStep = 0;
-		BP.Style = STYLE_Normal;
+		BP.Style = STYLE_Shaded;
 		if (width > 0.) { BP.StartAlpha = min(1, max((depth / width), 0.3)); }
 		else { BP.StartAlpha = 0.3; }
+		if (depth >= 1) { BP.StartAlpha *= 2.0; } // STYLE_Shaded applies a lot of transparency for some reason
 		level.SpawnParticle(BP);
 
 		// Do appearing and drops running down body
@@ -278,6 +280,7 @@ extend class UaS_Wound {
 			BP.Accel.Z = 0;
 			BP.Vel = interpvel;
 			BP.Vel.Z += d.vel.z;
+			BP.Style = STYLE_Normal;
 
 			if (d.size >= d.maxsize) {
 				d.vel.z = clamp(
