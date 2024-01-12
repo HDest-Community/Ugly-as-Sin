@@ -148,10 +148,23 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		}
 		else if (timer > 0 && timeout > 0) { timeout = 5; return; }
 
+		int prevWoundCount = mti.wh.critwounds.Size();
 		mti.patient.A_SetBlend("7a 3a 18", 0.1, 4);
 		HDPlayerPawn(owner).A_MuzzleClimb((0, 2), (0, 0), (0, 0), (0, 0));
 		HDPlayerPawn.PlaySkinSound(mti.patient, SKINSOUND_MEDS, "*usemeds");
 		mti.patient.DropInventory(mti.patient.FindInventory("BloodBagWorn"));
+
+		// patch up wound
+		mti.wh.UpdateWounds();
+		if (mti.wh.critwounds.Size() <= prevWoundCount) { return; }
+		for (int i = prevWoundCount; i < mti.wh.critwounds.Size(); i++) {
+			UaS_Wound wound = mti.wh.critwounds[i];
+			if (wound.source != mti.patient) { continue; }
+
+			wound.patched = wound.depth;
+			wound.depth = 0;
+			wound.pressure = frandom(1.0, wound.patched + 1.0);
+		}
 	}
 
 	void TryStripWorn() {
