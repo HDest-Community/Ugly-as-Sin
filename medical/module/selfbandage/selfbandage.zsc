@@ -156,8 +156,7 @@ class UaS_SelfBandage : UaS_MedicalTool {
 
 		// patch up wound
 		mti.wh.UpdateWounds();
-		if (mti.wh.critwounds.Size() <= prevWoundCount) { return; }
-		for (int i = prevWoundCount; i < mti.wh.critwounds.Size(); i++) {
+		for (int i = min(prevWoundCount, mti.wh.critwounds.Size() - 1); i < mti.wh.critwounds.Size(); i++) {
 			UaS_Wound wound = mti.wh.critwounds[i];
 			if (wound.source != mti.patient) { continue; }
 
