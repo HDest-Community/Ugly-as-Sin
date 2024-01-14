@@ -114,6 +114,7 @@ class UaS_MedicalToolInfo : Inventory {
 	}
 
 	bool PressedKey(int type, bool justPressed) {
+		if (!UaS_Medical_SwitchZoom) { DoEffect(); } // ensure that cvars are loaded
 		int bt = 0;
 		switch (type) {
 			case KEY_SETPATIENT:
