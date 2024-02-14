@@ -1,0 +1,66 @@
+class UaS_HungerStatus : Service {
+	// Returns -1 on any invalid condition
+	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
+
+		// Process the request
+		if (request ~== "Energy") { return int(r.energy); }
+		if (request ~== "Hydro") { return int(r.hydro); }
+		if (request ~== "Sick") { return int(r.sick); }
+		return -1;
+	}
+	
+	// Returns -1 on any invalid condition
+	override int GetIntUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
+
+		// Process the request
+		if (request ~== "Energy") { return int(r.energy); }
+		if (request ~== "Hydro") { return int(r.hydro); }
+		if (request ~== "Sick") { return int(r.sick); }
+		return -1;
+	}
+}
+
+// Example implementation that returns the respirator status
+// for whichever player uses the test item from inventory.
+/*
+class MyTestObject {
+	int getPlayerEnergy(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_HungerStatus");
+		service HungerStatus;
+		while (HungerStatus = i.Next()) {
+			int energy = int(HungerStatus.GetInt("Energy", objectArg:players[pnum].mo));
+			console.printf("player "..pnum.." Energy "..energy);
+			return energy;
+		}
+		return -1;
+	}
+	
+	int getPlayerThirst(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_HungerStatus");
+		service HungerStatus;
+		while (HungerStatus = i.Next()) {
+			int thirst = int(HungerStatus.GetInt("Thirst", objectArg:players[pnum].mo));
+			console.printf("player "..pnum.." Thirst "..thirst);
+			return thirst;
+		}
+		return -1;
+	}
+	
+	int getPlayerHunger(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_HungerStatus");
+		service HungerStatus;
+		while (HungerStatus = i.Next()) {
+			int sick = int(HungerStatus.GetInt("Sick", objectArg:players[pnum].mo));
+			console.printf("player "..pnum.." Sick "..sick);
+			return sick;
+		}
+		return -1;
+	}
+}
+*/
