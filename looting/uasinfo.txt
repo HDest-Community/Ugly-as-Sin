@@ -11,4 +11,4 @@ Looting:Jackboot: ShellPickup*3
 
 Looting:VulcanetteZombie: HD4mMag*4,PortableBerserkPack
 
-Looting:Serpentipede: HDHandgunRandomDrop
+Looting:FighterImp: HDHandgunRandomDrop
