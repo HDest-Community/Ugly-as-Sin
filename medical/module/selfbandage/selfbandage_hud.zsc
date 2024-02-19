@@ -28,7 +28,7 @@ extend class UaS_SelfBandage {
 		string symbol = Stringtable.Localize("$UI_SELFBDG_WOUND_"..type);
 		sb.DrawString(
 			sb.pSmallFont,
-			GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
+			mti.GetStatusColor(100 - ((wound.open > 0.)? wound.stabilised : 100))..symbol,
 			woundPosition,
 			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER,
 			(selected)? Font.CR_RED : Font.CR_DARKRED,
@@ -191,7 +191,7 @@ extend class UaS_SelfBandage {
 		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UI_SELFBDG_NOWOUNDSELECTED")); }
 		else {
 			string statusText;
-			status.Push(GetOpenStatus(mti.currentWound));
+			status.Push(mti.GetOpenStatus(mti.currentWound));
 
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
 				woundInfoPos -= (0, halfStep);
@@ -203,11 +203,11 @@ extend class UaS_SelfBandage {
 				else if (mti.currentWound.pressure > 0.5) { statusText = "$UI_SELFBDG_BANDAGE_SOMEWHATLOOSE"; }
 				else if (mti.currentWound.pressure > 0.2) { statusText = "$UI_SELFBDG_BANDAGE_LOOSE"; }
 				else { statusText = "$UI_SELFBDG_BANDAGE_VERYLOOSE"; }
-				status.Push(string.Format(Stringtable.Localize(statusText), GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
+				status.Push(string.Format(Stringtable.Localize(statusText), mti.GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
 			}
 
 			woundInfoPos -= (0, halfStep);
-			status.Push(GetStabilityStatus(mti.currentWound));
+			status.Push(mti.GetStabilityStatus(mti.currentWound));
 		}
 
 		for (int i = 0; i < status.Size(); i++) {

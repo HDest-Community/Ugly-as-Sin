@@ -1,4 +1,4 @@
-// Any medical tool that requires a fancy interface for whatever reason
+// generic medical tool
 class UaS_MedicalTool : HDWeapon {
 	StatusInfo currentMessage; // used for UI messages
 
@@ -9,53 +9,6 @@ class UaS_MedicalTool : HDWeapon {
 		+Weapon.WIMPY_WEAPON;
 		+Weapon.NO_AUTO_SWITCH;
 		Weapon.SlotNumber 9;
-	}
-
-	override void DoEffect() {
-		if (!wheel || wheel.owner != owner) { wheel = UaS_MedicalWheel(owner.FindInventory("UaS_MedicalWheel")); }
-		if (!mti || mti.owner != owner) { mti = UaS_MedicalToolInfo(owner.FindInventory("UaS_MedicalToolInfo")); }
-		if (mti) { mti.SetPatient(); }
-	}
-
-	UaS_Wound GetWound(int index) {
-		if (mti.wh.critwounds.size() <= 0) { return null; }
-		return mti.wh.critwounds[index];
-	}
-
-	ui string GetStatusColor(int amount) {
-		if (amount >= 90) { return Stringtable.Localize("$UI_STATUS_BLACK"); }
-		if (amount >= 80) { return Stringtable.Localize("$UI_STATUS_DARKRED"); }
-		if (amount >= 70) { return Stringtable.Localize("$UI_STATUS_BRICK"); }
-		if (amount >= 60) { return Stringtable.Localize("$UI_STATUS_FIRE"); }
-		if (amount >= 50) { return Stringtable.Localize("$UI_STATUS_ORANGE"); }
-		if (amount >= 40) { return Stringtable.Localize("$UI_STATUS_YELLOW"); }
-		if (amount >= 30) { return Stringtable.Localize("$UI_STATUS_DARKBROWN"); }
-		if (amount >= 20) { return Stringtable.Localize("$UI_STATUS_DARKGREEN"); }
-		if (amount >= 10) { return Stringtable.Localize("$UI_STATUS_GREEN"); }
-		if (amount >= 0) { return Stringtable.Localize("$UI_STATUS_GREY"); }
-		return Stringtable.Localize("$UI_STATUS_WHITE");
-	}
-
-	ui string GetOpenStatus(UaS_Wound currentWound) {
-		string statusText;
-		if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) { statusText = "$UI_WOUND_PATCHED"; }
-		else if (currentWound.patched > 0.) { statusText = statusText..Stringtable.Localize("$UI_WOUND_SOMEWHATPATCHED"); }
-		else if (mti.currentWound.depth <= 0) { statusText = "$UI_WOUND_SEALED"; }
-		else { statusText = "$UI_WOUND_OPEN"; }
-
-		return string.Format(Stringtable.Localize(statusText), GetStatusColor(currentWound.open / 15 * 100));
-	}
-
-	ui string GetStabilityStatus(UaS_Wound currentWound) {
-		string statusText;
-		if (currentWound.stabilised >= 100.0) { statusText = "$UI_STABILITY_FINE"; }
-		else if (currentWound.stabilised > 75.0) { statusText = "$UI_STABILITY_SOMEWHATFINE"; }
-		else if (currentWound.stabilised > 50.0) { statusText = "$UI_STABILITY_DECENT"; }
-		else if (currentWound.stabilised > 25.0) { statusText = "$UI_STABILITY_NOTTHATGREAT"; }
-		else if (currentWound.stabilised > 5.0) { statusText = "$UI_STABILITY_LESSHORRIBLE"; }
-		else { statusText = "$UI_STABILITY_HORRIBLE"; }
-
-		return String.Format(Stringtable.Localize(statusText), GetStatusColor(100 - currentWound.stabilised));
 	}
 
 	struct StatusInfo {
@@ -73,6 +26,14 @@ class UaS_MedicalToolInfo : Inventory {
 	transient CVar UaS_Medical_SwitchZoom;
 	transient CVar UaS_Medical_SwitchFiremode;
 	transient CVar UaS_Medical_InvertCycle;
+
+	// checks and set tool info
+	static void SetToolInfo(out UaS_MedicalToolInfo mti, HDPlayerPawn hpl)
+	{
+		if (mti && mti.owner == hpl) { return; }
+		mti = UaS_MedicalToolInfo(hpl.FindInventory("UaS_MedicalToolInfo"));
+		if (!mti) { Console.PrintF("could not find tool info!!! something is horribly wrong"); }
+	}
 
 	override void BeginPlay() {
 		currentWoundIdx = 0;
@@ -113,6 +74,11 @@ class UaS_MedicalToolInfo : Inventory {
 		lastpatient = patient;
 	}
 
+	UaS_Wound GetWound(int index) {
+		if (wh.critwounds.size() <= 0) { return null; }
+		return wh.critwounds[index];
+	}
+
 	bool PressedKey(int type, bool justPressed) {
 		if (!UaS_Medical_SwitchZoom) { DoEffect(); } // ensure that cvars are loaded
 		int bt = 0;
@@ -148,6 +114,42 @@ class UaS_MedicalToolInfo : Inventory {
 		}
 		if (justPressed) { return (owner.player.cmd.buttons & bt && !(owner.player.oldbuttons & bt)); }
 		return (owner.player.cmd.buttons & bt);
+	}
+
+	ui string GetStatusColor(int amount) {
+		if (amount >= 90) { return Stringtable.Localize("$UI_STATUS_BLACK"); }
+		if (amount >= 80) { return Stringtable.Localize("$UI_STATUS_DARKRED"); }
+		if (amount >= 70) { return Stringtable.Localize("$UI_STATUS_BRICK"); }
+		if (amount >= 60) { return Stringtable.Localize("$UI_STATUS_FIRE"); }
+		if (amount >= 50) { return Stringtable.Localize("$UI_STATUS_ORANGE"); }
+		if (amount >= 40) { return Stringtable.Localize("$UI_STATUS_YELLOW"); }
+		if (amount >= 30) { return Stringtable.Localize("$UI_STATUS_DARKBROWN"); }
+		if (amount >= 20) { return Stringtable.Localize("$UI_STATUS_DARKGREEN"); }
+		if (amount >= 10) { return Stringtable.Localize("$UI_STATUS_GREEN"); }
+		if (amount >= 0) { return Stringtable.Localize("$UI_STATUS_GREY"); }
+		return Stringtable.Localize("$UI_STATUS_WHITE");
+	}
+
+	ui string GetOpenStatus(UaS_Wound currentWound) {
+		string statusText;
+		if (currentWound.depth <= 0. && currentWound.patched > 0) { statusText = "$UI_WOUND_PATCHED"; }
+		else if (currentWound.patched > 0.) { statusText = statusText..Stringtable.Localize("$UI_WOUND_SOMEWHATPATCHED"); }
+		else if (currentWound.depth <= 0) { statusText = "$UI_WOUND_SEALED"; }
+		else { statusText = "$UI_WOUND_OPEN"; }
+
+		return string.Format(Stringtable.Localize(statusText), GetStatusColor(currentWound.open / 15 * 100));
+	}
+
+	ui string GetStabilityStatus(UaS_Wound currentWound) {
+		string statusText;
+		if (currentWound.stabilised >= 100.0) { statusText = "$UI_STABILITY_FINE"; }
+		else if (currentWound.stabilised > 75.0) { statusText = "$UI_STABILITY_SOMEWHATFINE"; }
+		else if (currentWound.stabilised > 50.0) { statusText = "$UI_STABILITY_DECENT"; }
+		else if (currentWound.stabilised > 25.0) { statusText = "$UI_STABILITY_NOTTHATGREAT"; }
+		else if (currentWound.stabilised > 5.0) { statusText = "$UI_STABILITY_LESSHORRIBLE"; }
+		else { statusText = "$UI_STABILITY_HORRIBLE"; }
+
+		return String.Format(Stringtable.Localize(statusText), GetStatusColor(100 - currentWound.stabilised));
 	}
 
 	enum MedicalToolKeys {
