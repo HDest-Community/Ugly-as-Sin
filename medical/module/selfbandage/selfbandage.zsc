@@ -78,9 +78,10 @@ class UaS_SelfBandage : UaS_MedicalTool {
 		if (currentMessage.timeout > 0) { --currentMessage.timeout; }
 		else { currentMessage.text = ""; }
 
+		UaS_MedicalToolInfo.SetToolInfo(mti, HDPlayerPawn(owner));
 		if (!(owner.player.ReadyWeapon is "UaS_SelfBandage")) { return; }
 
-		Super.DoEffect();
+		mti.SetPatient();
 		CycleWounds();
 		TryRipBloodbag();
 		TryStripWorn();

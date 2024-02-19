@@ -112,15 +112,15 @@ extend class UaS_TraumaKit {
 		Array<string> status;
 		if (mti.currentWound) {
 			if (mti.currentWound.open <= 0.) {
-				status.Push(GetOpenStatus(mti.currentWound));
+				status.Push(mti.GetOpenStatus(mti.currentWound));
 			}
 			else if (mti.currentWound.patched > 0.) {
-				status.Push(GetOpenStatus(mti.currentWound));
-				status.Push(GetStabilityStatus(mti.currentWound));
+				status.Push(mti.GetOpenStatus(mti.currentWound));
+				status.Push(mti.GetStabilityStatus(mti.currentWound));
 				woundInfoOffsetY -= halfStep;
 			}
 			else {
-				status.Push(GetOpenStatus(mti.currentWound));
+				status.Push(mti.GetOpenStatus(mti.currentWound));
 
 				string tmpStr;
 
@@ -130,7 +130,7 @@ extend class UaS_TraumaKit {
 				else if (mti.currentWound.painkiller >= 50) tmpStr = "$UI_TRK_PAINKILLERS_MOSTLYNUMBED";
 				else if (mti.currentWound.painkiller >= 25) tmpStr = "$UI_TRK_PAINKILLERS_SOMEWHATNUMBED";
 
-				status.Push(String.Format(Stringtable.Localize(tmpStr), GetStatusColor(100 - mti.currentWound.painkiller)));
+				status.Push(String.Format(Stringtable.Localize(tmpStr), mti.GetStatusColor(100 - mti.currentWound.painkiller)));
 				woundInfoOffsetY -= halfStep;
 
 				// Dirty
@@ -143,7 +143,7 @@ extend class UaS_TraumaKit {
 					else if (mti.currentWound.dirty >= 25) { tmpStr = "$UI_TRK_DIRTINESS_ALMOSTCLEAN"; }
 					else if (mti.currentWound.dirty >= 15) { tmpStr = "$UI_TRK_DIRTINESS_ACCEPTABLYCLEAN"; }
 
-					status.Push(String.Format(Stringtable.Localize(tmpStr), GetStatusColor(mti.currentWound.dirty)));
+					status.Push(String.Format(Stringtable.Localize(tmpStr), mti.GetStatusColor(mti.currentWound.dirty)));
 					woundInfoOffsetY -= halfStep;
 				}
 
@@ -156,7 +156,7 @@ extend class UaS_TraumaKit {
 					else if (mti.currentWound.obstructed >= 25) { tmpStr = "$UI_TRK_OBSTRUCTIONS_SOME"; }
 					else if (mti.currentWound.obstructed >= 15) { tmpStr = "$UI_TRK_OBSTRUCTIONS_VERYFEW"; }
 
-					status.Push(String.Format(Stringtable.Localize(tmpStr), GetStatusColor(mti.currentWound.obstructed)));
+					status.Push(String.Format(Stringtable.Localize(tmpStr), mti.GetStatusColor(mti.currentWound.obstructed)));
 					woundInfoOffsetY -= halfStep;
 				}
 
@@ -169,7 +169,7 @@ extend class UaS_TraumaKit {
 					else if (mti.currentWound.cavity >= 2.5) { tmpStr = "$UI_TRK_CAVITY_SOMEDAMAGE"; }
 					else if (mti.currentWound.cavity >= 1.0) { tmpStr = "$UI_TRK_CAVITY_LITTLEDAMAGE"; }
 
-					status.Push(String.Format(Stringtable.Localize(tmpStr), GetStatusColor(mti.currentWound.cavity / 12 * 100)));
+					status.Push(String.Format(Stringtable.Localize(tmpStr), mti.GetStatusColor(mti.currentWound.cavity / 12 * 100)));
 					woundInfoOffsetY -= halfStep;
 				}
 			}
