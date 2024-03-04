@@ -296,7 +296,7 @@ HELPTEXT_TRK_PAINKILLER =
 	"%s  Refill anesthetic\n(break down stimpack)\n";
 HELPTEXT_TRK_SALINE =
 	"%s  Flush wound\n"
-	"%s  Refill saline\n(break down stimpack)\n";
+	"%s  Refill saline\n(break down bloodpack)\n";
 HELPTEXT_TRK_FORCEPS =
 	"%s  Hold wound open\n"
 	"%s  Extract obstructions\n";
