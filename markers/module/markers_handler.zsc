@@ -33,7 +33,7 @@ class UaS_MarkerHandler : Inventory {
 			AttachedMarker.pos,
 			mpos,
 			AttachedMarker.vel,
-			0.25, 0.5);
+			0.6, 0.5);
 	}
 
 	void AttachNewMarker(UaS_Marker newmrkr) {
