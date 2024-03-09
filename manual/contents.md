@@ -10,6 +10,7 @@
 * [Weapon Jamming](../jamming/readme.md)
 * [Laser / Flashlight](../laserlight/readme.md)
 * [Markers](../markers/readme.md)
+* [Medical](../medical/readme.md)
 * [Scarcity](../scarcity/readme.md)
 * [Stabilizer](../stabilizer/readme.md)
 * [YOLO](../yolo/readme.md)
