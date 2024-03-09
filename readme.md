@@ -8,7 +8,6 @@ The following download options are available:
 
 * [**Stable**](https://github.com/caligari87/Ugly-as-Sin/releases/latest) - Stable version (usually) that attempts to target the same numbered version of Hideous Destructor and GZDoom. In other words, **Ugly as Sin v4.5.0** targets **Hideous Destructor v4.5.0** which targets **GZDoom 4.5.0**. Will sometimes include a **Stable Legacy** build for LZDoom compatibility when needed and possible.
 * [**Unstable**](https://github.com/caligari87/Ugly-as-Sin/archive/master.zip) - Also sometimes called the `master` build. Constantly-updated version which targets the latest `main` development version of Hideous Destructor. Most up to date but may have bugs, testing features, or be broken.
-* [**Unstable Legacy**](https://github.com/caligari87/Ugly-as-Sin/archive/refs/heads/legacy.zip) - The same as the **Unstable** build but targets LZDoom compatibilty when possible. May be missing features.
 
 ## Instructions
 
