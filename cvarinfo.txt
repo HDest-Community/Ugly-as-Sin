@@ -46,6 +46,7 @@ server float UaS_ScarcityOverspawn = 0.5;
 server int UaS_ScarcityRate = 50;
 user int UaS_SlingDelay = 35;
 server bool UaS_StabilizerSpawns = true;
+nosave float UaS_TraumaKit_HUDScale = 1.00;
 server bool UaS_VisWepsEnabled = false;
 nosave float UaS_Wheel_Alpha = 0.75;
 nosave float UaS_Wheel_Scale = 1.00;
