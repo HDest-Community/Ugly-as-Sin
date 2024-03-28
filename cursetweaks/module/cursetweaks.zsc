@@ -1,0 +1,44 @@
+class UaS_CurseTweaker : EventHandler {
+	ThinkerIterator CurseList;
+	array<NecromancerGhost> CurseArray;
+
+	override void OnRegister() {
+		console.printf("Curse Tweaker initialized");
+	}
+
+	override void WorldTick() {
+		if (UaS_CurseRate < 100) { ProcessCurses(); }
+	}
+
+	void ProcessCurses(bool RemoveAll = false) {
+		if (!CurseList) {
+			CurseList = ThinkerIterator.Create("NecromancerGhost", Thinker.STAT_DEFAULT);
+		}
+		NecromancerGhost ThisCurse;
+		while (ThisCurse = NecromancerGhost(CurseList.Next())) {
+			if (!RemoveAll && !InCurseList(ThisCurse) && random[cursetweaks](0,100) > UaS_CurseRate) {
+				console.printf("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and added to preserve list.");
+				CurseArray.push(ThisCurse);
+			}
+			else {
+				console.printf("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and destroyed.");
+				ThisCurse.Destroy();
+			}
+		}
+		
+	}
+
+	bool InCurseList(NecromancerGhost ToCheck) {
+		if (CurseArray.Find(ToCheck) != CurseArray.Size()) { return true; }
+		return false;
+	}
+
+	override void NetworkProcess(ConsoleEvent e) {
+		if(e.Name ~== "UaS_RemoveCurses") {
+			console.printf("Remove all necromancer curses...");
+			CurseList = null;
+			CurseArray.Clear();
+			ProcessCurses(true);
+		}
+	}
+}

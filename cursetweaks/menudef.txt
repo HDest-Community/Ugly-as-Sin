@@ -1,0 +1,21 @@
+AddOptionMenu "UaS_LoadedModules" {
+	StaticText "Curse Tweaks"
+}
+
+AddOptionMenu "UaS_ConfigureModules" {
+	Submenu "Curse Tweaks", "UaS_Curse_Options"
+}
+
+OptionValue "UaS_CurseRateNames" {
+	0,"Never (0%)"
+	10,"Rare (10%)"
+	50,"Sometimes (50%)"
+	100,"Always (100%)"
+}
+
+OptionMenu "UaS_Curse_Options" {
+	Title "Curse Tweaks Module Settings"
+
+	Option "Necromancer curse rate","UaS_CurseRate", "UaS_CurseRateNames"
+	Command "Remove All Curses", "netevent UaS_RemoveCurses"
+}

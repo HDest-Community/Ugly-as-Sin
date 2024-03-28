@@ -10,7 +10,7 @@ class UaS_FragRemovalHandler : EventHandler {
 	}
 
 	override void NetworkProcess(ConsoleEvent e) {
-		if(e.Name == "UaS_RemoveFrag") {
+		if(e.Name ~== "UaS_RemoveFrag") {
 			int RemovedShards = RemoveLevelFrag();
 			console.printf("Removed "..RemovedShards.." frag shards.");
 		}

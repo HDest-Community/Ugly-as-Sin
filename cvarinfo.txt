@@ -12,6 +12,7 @@ server int UaS_AllyPreferred = 0;
 server int UaS_AllySpawnRate = 0;
 nosave bool UaS_Bandage_WoundShake = true;
 nosave float UaS_Bandage_HUDScale = 1.00;
+server int UaS_CurseRate = 100;
 user bool UaS_DeathFade = true;
 server int UaS_Debug = 0;
 user bool UaS_FlashlightParticles = true;
