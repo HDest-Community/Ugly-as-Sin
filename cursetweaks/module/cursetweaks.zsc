@@ -1,5 +1,5 @@
 class UaS_CurseTweaker : EventHandler {
-	ThinkerIterator CurseList;
+	transient ThinkerIterator CurseList;
 	array<NecromancerGhost> CurseArray;
 
 	override void OnRegister() {
