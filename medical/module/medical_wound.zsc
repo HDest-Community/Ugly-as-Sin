@@ -98,7 +98,7 @@ class UaS_Wound : HDBleedingWound {
 	// 2f has does its own regen so we don't really have to worry about it here.
 	override void Regenerate() {
 		if (depth > 0. || patched > 0.) { Patch(frandom(0.0, 0.2 * regenrate), true); }
-		else if (sealed > 0.) { sealed = max(sealed - frandom(0, 0.4 * regenrate), 0); }
+		else if (healing > 0.) { healing = max(healing - frandom(0, 0.4 * regenrate), 0); }
 
 		if (cavity > 0.) { cavity = max(cavity - frandom(0.0, 0.2 * regenrate), 0); }
 
@@ -180,7 +180,7 @@ extend class UaS_Wound {
 		nw.width = hdbw.width; // Affects bleedrate, somewhat
 		nw.patched = hdbw.patched;
 		nw.oldPatched = nw.patched;
-		nw.sealed = hdbw.sealed;
+		nw.healing = hdbw.healing;
 		nw.regenrate = 0; // avgstat will influence this
 		nw.damagetype = hdbw.damagetype;
 		nw.location = hdbw.location; // Could be used for flavour text?

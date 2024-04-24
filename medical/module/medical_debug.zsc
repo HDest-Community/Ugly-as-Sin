@@ -39,7 +39,7 @@ class UaS_MedicalDebug : EventHandler {
 			);
 			whInfo = String.Format(
 				"%s | \c[red]%f\c-/\c[gold]%f\c-/\c[darkgray]%f\c- | width %f | regenrate %f",
-				whInfo, wi.depth, wi.patched, wi.sealed, wi.width, wi.regenrate
+				whInfo, wi.depth, wi.patched, wi.healing, wi.width, wi.regenrate
 			);
 			whInfo = String.Format(
 				"%s | avgstat %i | timer %i",
