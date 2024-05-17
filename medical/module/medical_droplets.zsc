@@ -1,0 +1,159 @@
+class UaS_VisualWound : VisualThinker {
+	UaS_Wound wound;
+	TextureID smalltex, medtex, bigtex;
+
+	static UaS_VisualWound Create(UaS_Wound wound) {
+		let viswound = UaS_VisualWound(VisualThinker.Spawn(
+			"UaS_VisualWound",
+			TexMan.CheckForTexture("UASBLUDA0"),
+			UaS_VisualWound.GetWoundPos(wound.bleeder, wound.location),
+			(0, 0, 0),
+			style: STYLE_Shaded
+		));
+		viswound.wound = wound;
+
+		return viswound;
+	}
+
+	static vector3 GetWoundPos(Actor bleeder, vector2 location)
+	{
+		vector3 off = bleeder.pos + (
+			cos(location.x + bleeder.angle) * bleeder.radius * 0.7,
+			sin(location.x + bleeder.angle) * bleeder.radius * 0.7,
+			location.y * bleeder.height
+		);
+		return off;
+	}
+
+	override void PostBeginPlay()
+	{
+		smalltex = TexMan.CheckForTexture("UASBLUDA0");
+		medtex = TexMan.CheckForTexture("UASBLUDB0");
+		bigtex = TexMan.CheckForTexture("UASBLUDC0");
+	}
+
+	override void Tick()
+	{
+		if (!wound) {
+			Destroy();
+			return;
+		}
+
+		// scale taken from the bandage hud
+		double size = log(wound.depth + 1) / 2;
+		Scale = (size, size);
+		if (wound.depth >= 8) { Texture = bigtex; }
+		else if (wound.depth >= 4) { Texture = medtex; }
+		else if (wound.depth >= 1) { Texture = smalltex; }
+		if (wound.depth >= 1 && wound.width > 0.) {
+			Alpha = min(1, max((wound.depth / wound.width), 0.3));
+			Alpha *= 2.0;
+		}
+		else { Alpha = 0; }
+		if (wound.bleeder.BloodColor) { SColor = wound.bleeder.BloodColor; }
+		else { SColor = "DarkRed"; }
+		Super.Tick();
+
+		// this has to go after Super.Tick() due to interpolation reasons
+		Pos = UaS_VisualWound.GetWoundPos(wound.bleeder, wound.location);
+	}
+}
+
+class UaS_BloodDroplet : VisualThinker {
+	vector2 woundpos;
+	vector3 relpos; // position relative to woundpos
+	double maxscale;
+	double maxz;
+	int lifetime; // tmp
+	Actor bleeder;
+	bool falling;
+
+	static UaS_BloodDroplet Create(UaS_Wound wound) {
+		double avgsize = (wound.width + wound.depth) / 2.0;
+		let texture = TexMan.CheckForTexture("XHAIRS7");
+		let droplet = UaS_BloodDroplet(VisualThinker.Spawn(
+			"UaS_BloodDroplet",
+			texture,
+			UaS_VisualWound.GetWoundPos(wound.bleeder, wound.location),
+			(0, 0, 0),
+			offset: (-0.5, -0.5),
+			style: STYLE_Shaded
+		));
+		droplet.woundpos = wound.location;
+		droplet.relpos = (
+			frandom[ubw](-avgsize, avgsize) * 0.05,
+			frandom[ubw](-avgsize, avgsize) * 0.05,
+			frandom[ubw](-avgsize, avgsize) * 0.05
+		);
+		droplet.maxscale = frandom[ubw](1, 2);
+		droplet.maxz = frandom[ubw](-8, -5);
+		droplet.bleeder = wound.bleeder;
+		droplet.lifetime = 20 * TICRATE;
+
+		return droplet;
+	}
+
+	override void PostBeginPlay() {
+		Scale = (maxscale, 0);
+		Alpha = 1.0;
+		if (bleeder && bleeder.BloodColor) { SColor = bleeder.BloodColor; }
+		else { SColor = "DarkRed"; }
+		falling = false;
+	}
+
+	override void Tick() {
+		Scale.X = min(Scale.X + frandom[ubw](0.01, 0.1), maxscale);
+		Scale.Y = min(Scale.Y + frandom[ubw](0.01, 0.1), maxscale);
+		Super.Tick();
+
+		if (
+			!bleeder
+			|| bleeder.health <= 0
+			|| !curSector
+		) {
+			Destroy();
+			return;
+		}
+
+		if (falling) {
+			double minz = curSector.NextLowestFloorAt(
+				Pos.X, Pos.Y,
+				Pos.Z, Pos.Z,
+				FFCF_SAMESECTOR
+			);
+			// also check velocity to prevent droplets from teleporting to the nearest floor
+			if (Pos.Z <= minz && Pos.Z - Vel.Z >= minz) {
+				let blood = Actor.Spawn(
+					bleeder.bloodtype,
+					(Pos.X, Pos.Y, minz + 0.1),
+					ALLOW_REPLACE
+				);
+				Destroy();
+			}
+			else if (!Level.IsPointInLevel(Pos)) { Destroy(); }
+			else { Vel.Z += -bleeder.gravity * 0.5; }
+			return;
+		}
+
+		Pos = UaS_VisualWound.GetWoundPos(bleeder, woundpos) + relpos;
+		if (Scale.X >= maxscale) {
+			Vel.Z = clamp(
+				Vel.Z + frandom[ubw](-0.01, 0.01),
+				-0.25, 0
+			);
+		}
+		relpos += Vel;
+
+		// Drop free after a bit, or when the player is falling too fast
+		// TODO: handle X and Y velocity for falling off (must check if the droplet is against the body)
+		if ((relpos.z < maxz && random[ubw](1, 5) == 1) || abs(bleeder.Vel.Z) > frandom[ubw](10, 20)) {
+			// inherit some of the player's velocity
+			Vel = (
+				bleeder.Vel.X * 0.75,
+				bleeder.Vel.Y * 0.75,
+				Vel.Z + (bleeder.Vel.Z * 0.75)
+			);
+			falling = true;
+		}
+	}
+}
