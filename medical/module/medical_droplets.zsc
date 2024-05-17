@@ -40,7 +40,7 @@ class UaS_VisualWound : VisualThinker {
 		}
 
 		// scale taken from the bandage hud
-		double size = log(wound.depth + 1) / 2;
+		double size = log(wound.depth + 1) / 3;
 		Scale = (size, size);
 		if (wound.depth >= 8) { Texture = bigtex; }
 		else if (wound.depth >= 4) { Texture = medtex; }
