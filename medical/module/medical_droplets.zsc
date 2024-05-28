@@ -39,13 +39,13 @@ class UaS_VisualWound : VisualThinker {
 			return;
 		}
 
-		// scale taken from the bandage hud
-		double size = log(wound.depth + 1) / 3;
-		Scale = (size, size);
 		if (wound.depth >= 8) { Texture = bigtex; }
 		else if (wound.depth >= 4) { Texture = medtex; }
 		else if (wound.depth >= 1) { Texture = smalltex; }
 		if (wound.depth >= 1 && wound.width > 0.) {
+			double size = (wound.depth + 1) / 2;
+			Vector2 texsize = TexMan.GetScaledSize(Texture);
+			Scale = (size / texsize.X, size / texsize.Y);
 			Alpha = min(1, max((wound.depth / wound.width), 0.3));
 			Alpha *= 2.0;
 		}
