@@ -43,7 +43,7 @@ class UaS_VisualWound : VisualThinker {
 		else if (wound.depth >= 4) { Texture = medtex; }
 		else if (wound.depth >= 1) { Texture = smalltex; }
 		if (wound.depth >= 1 && wound.width > 0.) {
-			double size = (wound.depth + 1) / 2;
+			double size = (wound.depth + 1) / 3;
 			Vector2 texsize = TexMan.GetScaledSize(Texture);
 			Scale = (size / texsize.X, size / texsize.Y);
 			Alpha = min(1, max((wound.depth / wound.width), 0.3));
