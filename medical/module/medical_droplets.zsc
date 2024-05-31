@@ -120,10 +120,12 @@ class UaS_BloodDroplet : VisualThinker {
 			);
 			// also check velocity to prevent droplets from teleporting to the nearest floor
 			if (Pos.Z <= minz && Pos.Z - Vel.Z >= minz) {
-				let blood = Actor.Spawn(
+				bleeder.A_SpawnItemEx(
 					bleeder.bloodtype,
-					(Pos.X, Pos.Y, minz + 0.1),
-					ALLOW_REPLACE
+					Pos.X - bleeder.Pos.X,
+					Pos.Y - bleeder.Pos.Y,
+					minz + 0.1 - bleeder.Pos.Z,
+					flags: SXF_USEBLOODCOLOR | SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION
 				);
 				Destroy();
 			}
