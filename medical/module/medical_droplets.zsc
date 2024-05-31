@@ -15,8 +15,7 @@ class UaS_VisualWound : VisualThinker {
 		return viswound;
 	}
 
-	static vector3 GetWoundPos(Actor bleeder, vector2 location)
-	{
+	static vector3 GetWoundPos(Actor bleeder, vector2 location) {
 		vector3 off = bleeder.pos + (
 			cos(location.x + bleeder.angle) * bleeder.radius * 0.7,
 			sin(location.x + bleeder.angle) * bleeder.radius * 0.7,
@@ -25,15 +24,13 @@ class UaS_VisualWound : VisualThinker {
 		return off;
 	}
 
-	override void PostBeginPlay()
-	{
+	override void PostBeginPlay() {
 		smalltex = TexMan.CheckForTexture("UASBLUDA0");
 		medtex = TexMan.CheckForTexture("UASBLUDB0");
 		bigtex = TexMan.CheckForTexture("UASBLUDC0");
 	}
 
-	override void Tick()
-	{
+	override void Tick() {
 		if (!wound) {
 			Destroy();
 			return;
