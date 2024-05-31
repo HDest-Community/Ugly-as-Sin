@@ -112,6 +112,9 @@ class UaS_BloodDroplet : VisualThinker {
 			return;
 		}
 
+		if (bleeder.BloodColor) { SColor = bleeder.BloodColor; }
+		else { SColor = "DarkRed"; }
+
 		if (falling) {
 			double minz = curSector.NextLowestFloorAt(
 				Pos.X, Pos.Y,
