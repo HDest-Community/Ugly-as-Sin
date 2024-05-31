@@ -43,7 +43,7 @@ class UaS_VisualWound : VisualThinker {
 			double size = (wound.depth + 1) / 3;
 			Vector2 texsize = TexMan.GetScaledSize(Texture);
 			Scale = (size / texsize.X, size / texsize.Y);
-			Alpha = min(1, max((wound.depth / wound.width), 0.3));
+			Alpha = min(1, max((wound.depth / wound.width), 0.3)) * UaS_VisualWounds_AlphaFactor;
 			Alpha *= 2.0;
 		}
 		else { Alpha = 0; }
@@ -92,7 +92,7 @@ class UaS_BloodDroplet : VisualThinker {
 
 	override void PostBeginPlay() {
 		Scale = (maxscale, 0);
-		Alpha = 1.0;
+		Alpha = UaS_VisualWounds_AlphaFactor;
 		if (bleeder && bleeder.BloodColor) { SColor = bleeder.BloodColor; }
 		else { SColor = "DarkRed"; }
 		falling = false;
