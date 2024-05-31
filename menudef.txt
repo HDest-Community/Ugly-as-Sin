@@ -325,7 +325,7 @@ AddOptionMenu "UaS_Controls" {
 OptionMenu "UaS_Medical_Options" {
 	Title "Medical Module Settings"
 
-	Option "Enable visual wounds","UaS_Medical_VisualWounds", "YesNo"
+	Slider "Visual wounds alpha factor","UaS_VisualWounds_AlphaFactor", 0, 2, 0.05, 2
 	Slider "Trauma Kit UI Scale","UaS_TraumaKit_HUDScale", 0, 2, 0.05, 2
 	Slider "Bandage UI Scale","UaS_Bandage_HUDScale", 0, 2, 0.05, 2
 	//Slider "Item Wheel UI Scale","UaS_Wheel_Scale", 0, 2, 0.05, 2
