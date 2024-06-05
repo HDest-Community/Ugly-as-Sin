@@ -93,17 +93,17 @@ PICKUP_TRK        = "Picked up a personal trauma kit.";
 
 // UI: General wound info
 // (note: %s is where the colour would be applied)
-UI_WOUND_OPEN            = "- The wound is %sopen";
-UI_WOUND_PATCHED         = "- The wound is %sopen\c- but \c[Yellow]patched";
-UI_WOUND_SOMEWHATPATCHED = "- The wound is %sopen\c- but \c[Orange]somewhat patched";
-UI_WOUND_SEALED          = "- The wound is \c[Green]sealed";
+UI_WOUND_OPEN            = "The wound is %sopen\c-";
+UI_WOUND_PATCHED         = "The wound is %sopen\c- but \c[Yellow]patched\c-";
+UI_WOUND_SOMEWHATPATCHED = "The wound is %sopen\c- but \c[Orange]somewhat patched\c-";
+UI_WOUND_SEALED          = "The wound is \c[Green]sealed\c-";
 
-UI_STABILITY_FINE         = "- It feels %sfine";
-UI_STABILITY_SOMEWHATFINE = "- It feels %ssomewhat fine";
-UI_STABILITY_DECENT       = "- It feels %sdecent";
-UI_STABILITY_NOTTHATGREAT = "- It feels %snot that great";
-UI_STABILITY_LESSHORRIBLE = "- It feels %sless horrible";
-UI_STABILITY_HORRIBLE     = "- It feels %shorrible";
+UI_STABILITY_FINE         = "It feels %sfine\c-";
+UI_STABILITY_SOMEWHATFINE = "It feels %ssomewhat fine\c-";
+UI_STABILITY_DECENT       = "It feels %sdecent\c-";
+UI_STABILITY_NOTTHATGREAT = "It feels %snot that great\c-";
+UI_STABILITY_LESSHORRIBLE = "It feels %sless horrible\c-";
+UI_STABILITY_HORRIBLE     = "It feels %shorrible\c-";
 
 
 // Wound Descriptions
@@ -360,13 +360,13 @@ UI_SELFBDG_NOTHINGTOSTRIP = "Nothing to strip.";
 
 // UI: Self Bandage (Wound info)
 UI_SELFBDG_NOWOUNDSELECTED       = "\c[DarkGray]No wound selected.\c-";
-UI_SELFBDG_BANDAGE_VERYTIGHT     = "- Bandage feels %svery tight";
-UI_SELFBDG_BANDAGE_TIGHT         = "- Bandage feels %stight";
-UI_SELFBDG_BANDAGE_ABITTIGHT     = "- Bandage feels %sa bit tight";
-UI_SELFBDG_BANDAGE_SOMEWHATTIGHT = "- Bandage feels %ssomewhat tight";
-UI_SELFBDG_BANDAGE_SOMEWHATLOOSE = "- Bandage feels %ssomewhat loose";
-UI_SELFBDG_BANDAGE_LOOSE         = "- Bandage feels %sloose";
-UI_SELFBDG_BANDAGE_VERYLOOSE     = "- Bandage feels %svery loose";
+UI_SELFBDG_BANDAGE_VERYTIGHT     = "Bandage feels %svery tight\c-";
+UI_SELFBDG_BANDAGE_TIGHT         = "Bandage feels %stight\c-";
+UI_SELFBDG_BANDAGE_ABITTIGHT     = "Bandage feels %sa bit tight\c-";
+UI_SELFBDG_BANDAGE_SOMEWHATTIGHT = "Bandage feels %ssomewhat tight\c-";
+UI_SELFBDG_BANDAGE_SOMEWHATLOOSE = "Bandage feels %ssomewhat loose\c-";
+UI_SELFBDG_BANDAGE_LOOSE         = "Bandage feels %sloose\c-";
+UI_SELFBDG_BANDAGE_VERYLOOSE     = "Bandage feels %svery loose\c-";
 
 // Helptext: Self Bandage
 HELPTEXT_SELFBDG =

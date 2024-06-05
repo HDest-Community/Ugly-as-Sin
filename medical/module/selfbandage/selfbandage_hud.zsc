@@ -93,6 +93,10 @@ extend class UaS_SelfBandage {
 		float halfStep = padStep / 2;
 		float baseOffset = padStep * -8;
 		int baseFlags = sb.DI_SCREEN_CENTER;
+		if (hudScale.x == 0 || hudScale.y == 0) { return; }
+
+		// force scaling
+		sb.BeginHud(forcescaled: true);
 
 		// Title
 		int titleFlags = baseFlags | sb.DI_TEXT_ALIGN_CENTER;
@@ -116,7 +120,7 @@ extend class UaS_SelfBandage {
 		);
 
 		// Show wounds
-		Vector2 woundsLocation = (-70 * hudScale.x, 0);
+		Vector2 woundsLocation = (-65 * hudScale.x, 0);
 
 		// cool grid
 		int gridAlpha = 25;
@@ -161,7 +165,7 @@ extend class UaS_SelfBandage {
 		}
 
 		// Wound icons
-		if (!mti.wh) { return; }
+		if (!mti.wh) { sb.BeginHud(forcescaled: false); return; }
 		if (mti.wh.critWounds.Size() == 0) {
 			sb.DrawString(
 				sb.pSmallFont,
@@ -185,17 +189,16 @@ extend class UaS_SelfBandage {
 		if (mti.currentWound) { DrawWound(sb, mti.currentWound, woundsLocation, gridSize, hudScale); }
 
 		// Wound info
-		Vector2 woundInfoPos = (10 * hudScale.x, baseOffset / 2);
-		Array<string> status;
+		Vector2 woundInfoPos = (5 * hudScale.x, baseOffset / 2 - 1.5 * textHeight);
+		Array<string> woundStatus;
 
-		if (!mti.currentWound) { status.Push(Stringtable.Localize("$UI_SELFBDG_NOWOUNDSELECTED")); }
+		if (!mti.currentWound) { woundStatus.Push(Stringtable.Localize("$UI_SELFBDG_NOWOUNDSELECTED")); }
 		else {
 			string statusText;
-			status.Push(mti.GetOpenStatus(mti.currentWound));
+			woundStatus.Push("\c[DarkGray]"..mti.currentWound.description);
+			woundStatus.Push(mti.GetOpenStatus(mti.currentWound));
 
 			if (mti.currentWound.depth <= 0. && mti.currentWound.patched > 0) {
-				woundInfoPos -= (0, halfStep);
-
 				if (mti.currentWound.pressure > 5.0) { statusText = "$UI_SELFBDG_BANDAGE_VERYTIGHT"; }
 				else if (mti.currentWound.pressure > 3.5) { statusText = "$UI_SELFBDG_BANDAGE_TIGHT"; }
 				else if (mti.currentWound.pressure > 2.0) { statusText = "$UI_SELFBDG_BANDAGE_ABITTIGHT"; }
@@ -203,29 +206,48 @@ extend class UaS_SelfBandage {
 				else if (mti.currentWound.pressure > 0.5) { statusText = "$UI_SELFBDG_BANDAGE_SOMEWHATLOOSE"; }
 				else if (mti.currentWound.pressure > 0.2) { statusText = "$UI_SELFBDG_BANDAGE_LOOSE"; }
 				else { statusText = "$UI_SELFBDG_BANDAGE_VERYLOOSE"; }
-				status.Push(string.Format(Stringtable.Localize(statusText), mti.GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
+				woundStatus.Push(String.Format(Stringtable.Localize(statusText), mti.GetStatusColor(max(0, 100 - mti.currentWound.pressure / 5 * 100))));
 			}
 
-			woundInfoPos -= (0, halfStep);
-			status.Push(mti.GetStabilityStatus(mti.currentWound));
+			woundStatus.Push(mti.GetStabilityStatus(mti.currentWound));
 		}
 
-		for (int i = 0; i < status.Size(); i++) {
+		string marker = "- ";
+		float markerWidth = SmallFont.StringWidth(marker) / hudScale.x;
+		int woundInfoWrapWidth = sb.HorizontalResolution / 2 / hudScale.x - woundInfoPos.x;
+		for (int i = 0; i < woundStatus.size(); i++)
+		{
+			string status = woundStatus[i];
+			BrokenLines lines = SmallFont.BreakLines(status, woundInfoWrapWidth);
+			float nextYOffset = SmallFont.GetHeight() * lines.Count();
+			float xOffset = (i == 0)? 0 : markerWidth;
+			lines.Destroy(); // this has to be done to prevent GC issues
+
+			if (i != 0) {
+				sb.DrawString(
+					sb.pSmallFont,
+					marker,
+					woundInfoPos,
+					sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+					Font.CR_GRAY,
+					scale: hudScale
+				);
+			}
 			sb.DrawString(
 				sb.pSmallFont,
-				status[i],
-				woundInfoPos,
+				status,
+				(woundInfoPos.x + xOffset, woundInfoPos.y),
 				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
 				Font.CR_GRAY,
+				wrapwidth: woundInfoWrapWidth,
+				linespacing: 0,
 				scale: hudScale
 			);
-			woundInfoPos += (0, padStep);
+
+			woundInfoPos += (0, nextYOffset);
 		}
 
-		Array<string> trueStatusMessage;
-		statusMessage.Split(trueStatusMessage, "\n");
-		Vector2 toolInfoPos = (woundInfoPos.x,  baseOffset / -2 - textHeight / 2 * trueStatusMessage.Size());
-
+		Vector2 toolInfoPos = (woundInfoPos.x,  baseOffset / -2 - textHeight);
 		sb.DrawString(
 			sb.pSmallFont,
 			// For some reason this won't translate properly. Dunno why. This isn't the only sb.DrawString with a Stringtable.Localize call I've done here yet it's the only one that doesn't work... - [Ted]
@@ -235,17 +257,30 @@ extend class UaS_SelfBandage {
 			Font.CR_GRAY,
 			scale: hudScale
 		);
-		for (int i = 0; i < trueStatusMessage.Size(); i++) {
-			sb.DrawString(
-				sb.pSmallFont,
-				trueStatusMessage[i],
-				toolInfoPos,
-				sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
-				Font.CR_GRAY,
-				scale: hudScale
-			);
-			toolInfoPos += (0, textHeight);
-		}
+		sb.DrawString(
+			sb.pSmallFont,
+			statusMessage,
+			toolInfoPos,
+			sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+			Font.CR_GRAY,
+			wrapwidth: sb.HorizontalResolution / 2 / hudScale.x - toolInfoPos.x,
+			linespacing: 0,
+			scale: hudScale
+		);
+		// foreach (statusmsg : trueStatusMessage) {
+		// 	sb.DrawString(
+		// 		sb.pSmallFont,
+		// 		statusmsg,
+		// 		toolInfoPos,
+		// 		sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_LEFT,
+		// 		Font.CR_GRAY,
+		// 		wrapwidth: sb.HorizontalResolution / 2 - toolInfoPos.x,
+		// 		// wrapwidth: SmallFont.StringWidth("m") * 22,
+		// 		linespacing: 0,
+		// 		scale: hudScale
+		// 	);
+		// 	toolInfoPos += (0, textHeight);
+		// }
 
 		Array<string> msg;
 		currentMessage.text.Split(msg, "\n");
@@ -262,6 +297,8 @@ extend class UaS_SelfBandage {
 			);
 			msgPos += (0, textHeight);
 		}
+
+		sb.BeginHud(forcescaled: false);
 	}
 
 	ui void ShowDebugInfo() {
