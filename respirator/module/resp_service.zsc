@@ -6,8 +6,8 @@ class UaS_RespiratorStatus : Service {
 		let r = UaS_Respirator(p.FindInventory("UaS_Respirator")); if (!r) return -1;
 
 		// Process the request
-		if (request ~== "IsWorn") { return int(r.activated); }
-		if (request ~== "AirRemaining") { return int(r.mags[0]); }
+		if (request ~== "IsWorn") { return HandleIsWorn(r); }
+		if (request ~== "AirRemaining") { return HandleAirRemaining(r); }
 		return -1;
 	}
 	
@@ -18,9 +18,19 @@ class UaS_RespiratorStatus : Service {
 		let r = UaS_Respirator(p.FindInventory("UaS_Respirator")); if (!r) return -1;
 
 		// Process the request
-		if (request ~== "IsWorn") { return int(r.activated); }
-		if (request ~== "AirRemaining") { return int(r.mags[0]); }
+		if (request ~== "IsWorn") { return HandleIsWorn(r); }
+		if (request ~== "AirRemaining") { return HandleAirRemaining(r); }
 		return -1;
+	}
+
+	private clearscope int HandleIsWorn(UaS_Respirator r) {
+		return r.activated;
+	}
+
+	private clearscope int HandleAirRemaining(UaS_Respirator r) {
+		return r.mags.Size() > 0
+			? r.mags[0]
+			: 0;
 	}
 }
 
