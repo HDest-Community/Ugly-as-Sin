@@ -1,6 +1,24 @@
 extend class UaS_Scarcity_Handler {
+	static const name armourClassNames[] = {
+		'HDCorporateArmour',
+		'HDArmorPlate',
+		'HDLeatherArmour',
+		'HDHEVArmour',
+		'HHelmet',
+		'WAN_SneakingSuit'
+	};
+
 	bool DoOther(actor mo) {
 		bool dbgActuallyHandled = false;
+
+		Array< Class<Inventory> > armourClasses;
+
+		armourClasses.clear();
+		forEach(className : armourClassNames) {
+			let cls = (Class<Inventory>)(className);
+
+			if (cls) armourClasses.push(cls);
+		}
 		
 		bool boxClass = (
 			mo is 'HD9mBoxPickup'
@@ -13,15 +31,31 @@ extend class UaS_Scarcity_Handler {
 			|| mo is 'HDShellAmmo'
 		);
 
-		//Replacer routines for mag-type items
-		if (mo is 'HDMagAmmo') {
+		bool armourCls = false;
+		forEach(armourClass : armourClasses) armourCls |= mo is armourClass;
+
+		// Replacer routine for Armour-type items
+		if (mo is 'HDArmour' || armourCls) {
+			dbgActuallyHandled = true;
+			HDMagAmmo a = HDMagAmmo(mo);
+			name armourname = a.GetClassName();
+			ArmourReplacer(armourname, a.maxPerUnit, mo);
+			mo.destroy();
+		}
+
+		// Replacer routines for mag-type items
+		else if (mo is 'HDMagAmmo') {
 			dbgActuallyHandled = true;
 			HDMagAmmo m = HDMagAmmo(mo);
 			name magname = m.GetClassName();
 			name roundtype = "";
 			int mpu = m.maxperunit;
+			// if (m is "HD4mMag") { mpu = 50; } // Maybe?
 			if (m is "HD7mMag") { mpu = 30; }
 			if (m is "HD7mClip") { mpu = 10; }
+			// TODO: Add more support for addon mags that use recast system (PB's CAWS Mags)
+			if (m.GetClassName() == "HD_CAWSMag") { mpu = 10; }
+			if (m.GetClassName() == "HD_FALMag") { mpu = 75; }
 			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
 			MagReplacer(magname, roundtype, mpu, mo);
 			mo.Destroy();
@@ -57,7 +91,7 @@ extend class UaS_Scarcity_Handler {
 			mo.Destroy();
 		}
 
-		//Replacer routines for equipment
+		// Replacer routines for equipment
 		else if (mo is 'HDMap') {
 			dbgActuallyHandled = true;
 			let spawnedMap = UaS_Automap(actor.Spawn('UaS_Automap', mo.pos));
