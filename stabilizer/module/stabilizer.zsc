@@ -6,6 +6,7 @@ class UaS_GyroStabilizer : HDPickup {
 	array<int> AttachList;
 	string statusText;
 	int statusTimeout;
+	float statusFactor;
 	double stabilize;
 
 	Default {
@@ -63,9 +64,10 @@ class UaS_GyroStabilizer : HDPickup {
 			double maxfactor = max(stabilize/(stabilize+20),minfactor);
 			MultiplyRecoil(maxfactor);
 			// console.printf(""..maxfactor);
-			if (maxfactor >= 0.75) { SetStatusText("\crCALIBRATING ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
-			else if (maxfactor >= 0.5) { SetStatusText("\cqSTABILIZING ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
-			else { SetStatusText("\cdSTABILIZED ".."\cu"..frandom(maxfactor,maxfactor*1.1), 1); }
+			statusFactor = frandom(maxfactor,maxfactor*1.1);
+			if (maxfactor >= 0.75) { SetStatusText(string.format(StringTable.localize("$UI_STABILIZER_CALIBRATING_FORMAT"), statusFactor), 1); }
+			else if (maxfactor >= 0.5) { SetStatusText(string.format(StringTable.localize("$UI_STABILIZER_STABILIZING_FORMAT"), statusFactor), 1); }
+			else { SetStatusText(string.format(StringTable.localize("$UI_STABILIZER_STABILIZED_FORMAT"), statusFactor), 1); }
 		}
 	}
 
@@ -119,7 +121,7 @@ class UaS_GyroStabilizer : HDPickup {
 
 	override bool Use(bool pickup) {
 		if (owner.player.cmd.buttons&BT_USE) {
-			SetStatusText("\czUnpaired all UIDS", 35, true);
+			SetStatusText(StringTable.localize("$UI_STABILIZER_DETACH_ALL"), 35, true);
 			AttachList.clear();
 		}
 		else {
@@ -155,13 +157,13 @@ class UaS_GyroStabilizer : HDPickup {
 			AttachList.delete(index);
 			// console.printf("Detatched index "..index);
 			A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
-			SetStatusText("\czDetached \ccUID "..UID, 35, true);
+			SetStatusText(string.format(StringTable.localize("$UI_STABILIZER_DETACHED_FORMAT"), UID), 35, true);
 		}
 	}
 
 	void AttachToWeapon(HDWeapon at) {
 		if (AttachList.Size() >= 3) {
-			SetStatusText("\cgMax pairings exceeded", 35, true);
+			SetStatusText(StringTable.localize("$UI_STABILIZER_ATTACHED_MAX"), 35, true);
 			return;
 		}
 		bool validWeapon = false;
@@ -175,7 +177,7 @@ class UaS_GyroStabilizer : HDPickup {
 		AttachList.push(UID);
 		A_StartSound("misc/fragknock", CHAN_BODY, volume: 0.3);
 		A_StartSound("misc/casing", CHAN_WEAPON, volume: 0.3);
-		SetStatusText(string.format("\czAttached %i/3 \ccUID %i", AttachList.size(), UID), 70, true);
+		SetStatusText(string.format(StringTable.localize("$UI_STABILIZER_ATTACHED_FORMAT"), AttachList.size(), UID), 70, true);
 	}
 
 	States {

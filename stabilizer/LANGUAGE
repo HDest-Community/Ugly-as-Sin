@@ -1,6 +1,16 @@
 [enu default]
 
-TAG_GYROSTABILIZER    = "Gyroscopic Stabilizer";
-TAG_SLING             = "Weapon Sling";
-PICKUP_GYROSTABILIZER = "Picked up a gyro stabilizer.";
-PICKUP_SLING          = "Picked up a weapon sling.";
+TAG_GYROSTABILIZER            = "Gyroscopic Stabilizer";
+TAG_SLING                     = "Weapon Sling";
+PICKUP_GYROSTABILIZER         = "Picked up a gyro stabilizer.";
+PICKUP_SLING                  = "Picked up a weapon sling.";
+
+// GYRO STABILIZER STATUS TEXTS
+UI_STABILIZER_ATTACHED_MAX       = "\cgMax pairings exceeded";
+UI_STABILIZER_DETACHED_ALL       = "\czUnpaired all UIDS";
+
+UI_STABILIZER_ATTACHED_FORMAT    = "\czAttached %i/3 \ccUID %i";
+UI_STABILIZER_DETACHED_FORMAT    = "\czDetached \ccUID %i";
+UI_STABILIZER_CALIBRATING_FORMAT = "\crCALIBRATING \cu%.5f";
+UI_STABILIZER_STABILIZING_FORMAT = "\cqSTABILIZING \cu%.5f";
+UI_STABILIZER_STABILIZED_FORMAT  = "\cdSTABILIZED \cu%.5f";

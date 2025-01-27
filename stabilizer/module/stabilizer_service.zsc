@@ -1,0 +1,115 @@
+class UaS_GyroStabilizerStatus : Service {
+	// Returns -1 on any invalid condition
+	override float GetFloat(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
+
+		// Process the request
+		if (request ~== "StatusFactor") { return HandleStatusFactor(s); }
+		return -1;
+	}
+	
+	// Returns -1 on any invalid condition
+	override float GetIntUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
+
+		// Process the request
+		if (request ~== "StatusFactor") { return HandleStatusFactor(s); }
+		return -1;
+	}
+	// Returns -1 on any invalid condition
+	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
+
+		// Process the request
+		if (request ~== "StatusTimeout") { return HandleStatusTimeout(s); }
+		return -1;
+	}
+	
+	// Returns -1 on any invalid condition
+	override int GetIntUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
+
+		// Process the request
+		if (request ~== "StatusTimeout") { return HandleStatusTimeout(s); }
+		return -1;
+	}
+
+	// Returns emptyString on any invalid condition
+	override string GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return "";
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return "";
+
+		// Process the request
+		if (request ~== "StatusText") { return HandleStatusText(s); }
+		return "";
+	}
+	
+	// Returns emptyString on any invalid condition
+	override string GetStringUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and respirator
+		let p = HDPlayerPawn(objectArg); if (!p) return "";
+		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return "";
+
+		// Process the request
+		if (request ~== "StatusText") { return HandleStatusText(s); }
+		return "";
+	}
+
+	private clearscope string HandleStatusFactor(UaS_GyroStabilizer s) {
+		return s.statusFactor;
+	}
+
+	private clearscope string HandleStatusText(UaS_GyroStabilizer s) {
+		return s.statusText;
+	}
+
+	private clearscope int HandleStatusTimeout(UaS_GyroStabilizer s) {
+		return s.statusTimeout;
+	}
+}
+
+// Example implementation that returns the stabilizer status
+// for whichever player uses the test item from inventory.
+/*
+class MyTestObject {
+	string GetGyroStatusText(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_GyroStabilizerStatus");
+		service GyroStatus;
+		while (GyroStatus = i.Next()) {
+			float StatusFactor = GyroStatus.GetFloat("StatusFactor", objectArg:players[pnum].mo);
+			console.printf("player "..pnum.." Factor "..StatusFactor);
+			return StatusFactor;
+		}
+		return -1;
+	}
+	string GetGyroStatusText(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_GyroStabilizerStatus");
+		service GyroStatus;
+		while (GyroStatus = i.Next()) {
+			string StatusText = GyroStatus.GetInt("StatusText", objectArg:players[pnum].mo);
+			console.printf("player "..pnum.." Text "..StatusText);
+			return StatusText;
+		}
+		return "";
+	}
+	int GetGyroStatusTimeout(int pnum) {
+		ServiceIterator i = ServiceIterator.Find("UaS_GyroStabilizerStatus");
+		service GyroStatus;
+		while (GyroStatus = i.Next()) {
+			int Timeout = int(GyroStatus.GetString("StatusTimeout", objectArg:players[pnum].mo));
+			console.printf("player "..pnum.." Timeout "..Timeout);
+			return Timeout;
+		}
+		return -1;
+	}
+}
+*/

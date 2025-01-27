@@ -62,6 +62,21 @@ RESPIRATOR_AMT_SUFFIX                                 = " percent capacity";
 // Looting Module
 FISTWH_USE                                            = "   Crouch next to a body\n      and hold to search.";
 
+//-----------------
+// Stabilizer Module Language Lumps
+//-----------------
+
+
+// UI: Gyro Stabilizer Status Text
+UI_STABILIZER_ATTACHED_MAX       = "\cgMax pairings exceeded";
+UI_STABILIZER_DETACHED_ALL       = "\czUnpaired all UIDS";
+
+UI_STABILIZER_ATTACHED_FORMAT    = "\czAttached %i/3 \ccUID %i";
+UI_STABILIZER_DETACHED_FORMAT    = "\czDetached \ccUID %i";
+UI_STABILIZER_CALIBRATING_FORMAT = "\crCALIBRATING \cu%.5f";
+UI_STABILIZER_STABILIZING_FORMAT = "\cqSTABILIZING \cu%.5f";
+UI_STABILIZER_STABILIZED_FORMAT  = "\cdSTABILIZED \cu%.5f";
+
 
 //-----------------
 // Medical Module Language Lumps
