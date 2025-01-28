@@ -64,7 +64,7 @@ class UaS_GyroStabilizerStatus : Service {
 		return "";
 	}
 
-	private clearscope string HandleStatusFactor(UaS_GyroStabilizer s) {
+	private clearscope double HandleStatusFactor(UaS_GyroStabilizer s) {
 		return s.statusFactor;
 	}
 
@@ -85,7 +85,7 @@ class MyTestObject {
 		ServiceIterator i = ServiceIterator.Find("UaS_GyroStabilizerStatus");
 		service GyroStatus;
 		while (GyroStatus = i.Next()) {
-			float StatusFactor = GyroStatus.GetFloat("StatusFactor", objectArg:players[pnum].mo);
+			double StatusFactor = GyroStatus.GetDouble("StatusFactor", objectArg:players[pnum].mo);
 			console.printf("player "..pnum.." Factor "..StatusFactor);
 			return StatusFactor;
 		}
