@@ -245,7 +245,7 @@ class UaS_LaserLightModule : HDWeapon {
 			// }
 
 			double targetpitch = owner.pitch;
-			if (owner.target) {
+			if (!(owner is "HERPBot") && owner.target) {
 				targetpitch = owner.PitchTo(owner.target, zOfs: owner.height*heightfactor, targZOfs:owner.target.height/2);
 				//console.printf(""..targetpitch);
 			}
