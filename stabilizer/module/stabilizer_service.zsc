@@ -1,7 +1,7 @@
 class UaS_GyroStabilizerStatus : Service {
 	// Returns -1 on any invalid condition
 	override double GetDouble(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
 
@@ -12,7 +12,7 @@ class UaS_GyroStabilizerStatus : Service {
 	
 	// Returns -1 on any invalid condition
 	override double GetDoubleUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
 
@@ -20,9 +20,10 @@ class UaS_GyroStabilizerStatus : Service {
 		if (request ~== "StatusFactor") { return HandleStatusFactor(s); }
 		return -1;
 	}
+
 	// Returns -1 on any invalid condition
 	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
 
@@ -33,7 +34,7 @@ class UaS_GyroStabilizerStatus : Service {
 	
 	// Returns -1 on any invalid condition
 	override int GetIntUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return -1;
 
@@ -44,7 +45,7 @@ class UaS_GyroStabilizerStatus : Service {
 
 	// Returns emptyString on any invalid condition
 	override string GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return "";
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return "";
 
@@ -55,7 +56,7 @@ class UaS_GyroStabilizerStatus : Service {
 	
 	// Returns emptyString on any invalid condition
 	override string GetStringUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and stabilizer
 		let p = HDPlayerPawn(objectArg); if (!p) return "";
 		let s = UaS_GyroStabilizer(p.FindInventory("UaS_GyroStabilizer")); if (!s) return "";
 

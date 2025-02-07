@@ -11,6 +11,12 @@ class UaS_MedicalTool : HDWeapon {
 		Weapon.SlotNumber 9;
 	}
 
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+
+		actualamount = amount;
+	}
+
 	struct StatusInfo {
 		string text;
 		int timeout;
