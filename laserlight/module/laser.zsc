@@ -185,7 +185,7 @@ class UaS_LaserLightModule : HDWeapon {
 			bool OtherClass = (
 				owner is "SatanRobo" ||
 				owner is "Spiderdemon" ||
-				owner is "Manticore"
+				owner is "Balor"
 			);
 			if (HumanClass) { offset = 8; heightfactor = 0.8; }
 			else if (BotClass) {
