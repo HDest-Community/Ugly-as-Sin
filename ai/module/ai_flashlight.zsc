@@ -21,7 +21,7 @@ extend class UaS_AI_Handler {
 		bool OtherClass = (
 			owner is "SatanRobo" ||
 			owner is "Spiderdemon" ||
-			owner is "Manticore"
+			owner is "Balor"
 		);
 		if (!(BotClass || HumanClass || OtherClass)) { return; }
 
