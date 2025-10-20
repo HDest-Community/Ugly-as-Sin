@@ -30,6 +30,7 @@ extend class UaS_TraumaKit {
 			else {
 				//PlaySkinSound(SKINSOUND_GRUNT,"*grunt");
 				weaponstatus[TK_HOLD] = 15;
+				if (mti.patient != owner) { weaponstatus[TK_HOLD] = int(ceil(weaponstatus[TK_HOLD] * 0.5)); }
 			}
 			mti.patient.A_MuzzleClimb(
 				(frandom[uas_tk](-1,1),frandom[uas_tk](-1,1)),
