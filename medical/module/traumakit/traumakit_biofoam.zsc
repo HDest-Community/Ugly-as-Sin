@@ -55,7 +55,7 @@ extend class UaS_TraumaKit {
 					frandom[uas_tk](0,10)) / 2;
 
 				// slightly more efficient healing when operating on others
-				if (mti.patient != owner) { check = max(check - frandom[uas_tk](0.1, 5), 0); }
+				if (mti.patient != owner) { check = max(check - frandom[uas_tk](0.1, 2.5), 0); }
 
 				// remove some tissue damage
 				if (check < mti.currentWound.cavity) {
