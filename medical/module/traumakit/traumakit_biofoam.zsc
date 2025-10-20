@@ -54,10 +54,17 @@ extend class UaS_TraumaKit {
 					frandom[uas_tk](0,5) +
 					frandom[uas_tk](0,10)) / 2;
 
+				// slightly more efficient healing when operating on others
+				double fillIncrease = 0;
+				if (mti.patient != owner) {
+					check = max(check - frandom[uas_tk](0.1, 5), 0);
+					fillIncrease = frandom[uas_tk](0.1, 0.2);
+				}
+
 				// remove some tissue damage
 				if (check < mti.currentWound.cavity) {
 					mti.patient.A_StartSound("misc/bulletflesh",CHAN_BODY, CHANF_DEFAULT, 0.2);
-					mti.currentWound.cavity = max(mti.currentWound.cavity - frandom(0.1, 0.4), 0);
+					mti.currentWound.cavity = max(mti.currentWound.cavity - frandom[uas_tk](0.1, 0.4) - fillIncrease, 0);
 					//if(random[uas_tk](0,5)) { PlaySkinSound(SKINSOUND_GRUNT,"*grunt"); }
 					mti.patient.A_MuzzleClimb(
 						(frandom[uas_tk](-.1,.1),frandom[uas_tk](-.1,.1)),

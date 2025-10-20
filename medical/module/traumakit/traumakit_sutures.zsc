@@ -23,7 +23,8 @@ extend class UaS_TraumaKit {
 		if ((owner.player.cmd.buttons & BT_ATTACK) && (weaponstatus[TK_HOLD] == 0)) {
 			if (!HandleStrip()) { return; }
 			owner.A_StartSound("bandage/rustle",CHAN_BODY,CHANF_OVERLAP);
-			weaponstatus[TK_HOLD] = 35;
+			if (mti.patient == owner) { weaponstatus[TK_HOLD] = 35; }
+			else { weaponstatus[TK_HOLD] = 25; }
 		}
 
 		// finish suture
