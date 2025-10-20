@@ -43,6 +43,11 @@ extend class UaS_TraumaKit {
 					random[uas_tk](0,75) +
 					random[uas_tk](0,100)) / 2;
 
+				// somewhat increase clean chance if someone else is doing it
+				if (mti.patient != owner) {
+					check = max(check - random[uas_tk](1, 10), 0);
+				}
+
 				if (mti.currentWound.inpain(5)) {
 					weaponstatus[TK_HOLD] = -5;
 					mti.currentWound.inpain(35);
