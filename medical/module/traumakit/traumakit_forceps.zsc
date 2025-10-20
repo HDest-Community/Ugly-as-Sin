@@ -61,9 +61,11 @@ extend class UaS_TraumaKit {
 			string result;
 
 			if (mti.currentWound.obstructed > 0 && remove > minimum) {
+				int totalRemove = remove;
+				if (mti.patient != owner) { totalRemove += random[uas_tk](2, 8); }
 				result = ExtractionMessage();
 				mti.patient.A_StartSound("misc/bulletflesh",CHAN_BODY);
-				mti.currentWound.obstructed = max(mti.currentWound.obstructed - remove, 0);
+				mti.currentWound.obstructed = max(mti.currentWound.obstructed - totalRemove, 0);
 				//mti.patient.damagemobj(owner,owner,1,"staples");
 			}
 			else { result = Stringtable.Localize("$UI_TRK_FORCEPS_PROBEWOUND"); }
