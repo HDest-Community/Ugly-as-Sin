@@ -134,7 +134,6 @@ class UaS_TraumaKit : UaS_MedicalTool {
 		bool isBandaged = (mti.currentWound && mti.currentWound.patched > 0.);
 		let blockinv = HDWoundFixer.CheckCovered(mti.patient, CHECKCOV_CHECKBODY);
 		if (blockinv) { itemname = blockinv.GetTag(); }
-		else if (!HDPlayerPawn.CheckStrip(mti.patient, mti.patient, false)) { itemname = Stringtable.Localize("$UI_TRK_WORNLAYERS"); }
 		else if (isBandaged) { itemname = Stringtable.Localize("$UI_TRK_BANDAGE"); }
 		else { return true; }
 
