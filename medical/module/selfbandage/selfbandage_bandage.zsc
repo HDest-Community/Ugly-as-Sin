@@ -117,7 +117,7 @@ extend class UaS_SelfBandage {
 			default:
 				BandageEffect(0, 0);
 				mti.patient.A_StartSound("bandage/rip", CHAN_BODY, CHANF_OVERLAP);
-				owner.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
+				mti.patient.A_ChangeVelocity(FRandom(-0.3, 0.3), FRandom(-0.3, 0.3), FRandom(-1, 2));
 
 				progress = 0;
 				mti.currentWound.depth += mti.currentWound.patched;
