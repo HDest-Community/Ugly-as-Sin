@@ -57,7 +57,7 @@ extend class UaS_Scarcity_Handler {
 			if (m.GetClassName() == "HD_CAWSMag") { mpu = 10; }
 			if (m.GetClassName() == "HD_FALMag") { mpu = 75; }
 			if (m.roundtype != "None") { roundtype =  m.roundtype.GetClassName(); }
-			MagReplacer(magname, roundtype, mpu, mo);
+			MagReplacer(magname, roundtype, min(m.mags[m.mags.size() - 1], mpu), mo);
 			mo.Destroy();
 		}
 	
