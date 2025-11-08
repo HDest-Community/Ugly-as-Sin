@@ -1,10 +1,11 @@
 extend class UaS_Scarcity_Handler {
 	//Generic function for breaking/replacing map-spawned armours
-	void ArmourReplacer(name ArmourName, int DurabilityMax, actor spawnPointer) {
+	void ArmourReplacer(name ArmourName, int DurabilityMin, int DurabilityMax, actor spawnPointer) {
 		DurabilityMax = int(DurabilityMax * UaS_ScarcityOverspawn); //Possible spawn at least *some* durability, based on overspawn
-		int durability = random(0, DurabilityMax); //Pick a number up to maxdurability
+		int durability = random(DurabilityMin, DurabilityMax); //Pick a number up to maxdurability
 
-		if (durability) HDMagAmmo.SpawnMag(spawnPointer, ArmourName, durability);
+		//If there's any durability left and the overspawn chance succeeds, spawn a damaged armour
+		if (durability > DurabilityMin && UaS.RandomChance(UaS_ScarcityOverspawn)) HDMagAmmo.SpawnMag(spawnPointer, ArmourName, durability);
 	}
 
 	//Generic function for breaking/replacing map-spawned magazines
