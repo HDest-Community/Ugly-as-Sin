@@ -1,5 +1,7 @@
 extend class UaS_Scarcity_Handler {
 	static const name armourClassNames[] = {
+		'GarrisonArmour',
+		'BattleArmour',
 		'HDCorporateArmour',
 		'HDArmorPlate',
 		'HDLeatherArmour',
@@ -39,7 +41,11 @@ extend class UaS_Scarcity_Handler {
 			dbgActuallyHandled = true;
 			HDMagAmmo a = HDMagAmmo(mo);
 			name armourname = a.GetClassName();
-			ArmourReplacer(armourname, a.maxPerUnit, mo);
+			
+			let min = (mo is 'HDArmour' && HDArmour(mo).mega) ? 1000 : 0;
+			let max = a.mags[0];
+
+			ArmourReplacer(armourname, min, max, mo);
 			mo.destroy();
 		}
 
