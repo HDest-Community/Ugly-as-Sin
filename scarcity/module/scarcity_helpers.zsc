@@ -36,6 +36,6 @@ extend class UaS_Scarcity_Handler {
 			hdupk(spawnedBox).amount = packed;
 		}
 		//spill the rest on the ground
-		UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
+		if (ammoName != 'None') UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
 	}
 }
