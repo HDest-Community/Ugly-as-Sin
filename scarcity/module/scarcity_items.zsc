@@ -86,45 +86,55 @@ class UaS_Automap : HDPickup {
 }
 
 // Loose injector pickups
-class UaS_StimInjector : Actor {
+class UaS_StimInjector : HDUPK {
 	default {
+		scale 0.3;
+
 		translation "176:191=80:95";
+
+		hdupk.pickupmessage "$PICKUP_STIMPACK";
 	}
 
-	override void PostBeginPlay(){
-		let spawneditem = Inventory(actor.Spawn("PortableStimpack", (pos.x, pos.y, pos.z + 5)));
-		if(spawneditem) {
-			console.printf("BREAKCHECK");
-			spawneditem.sprite = GetSpriteIndex('SYRB');
-			spawneditem.frame = 0;
-			spawneditem.translation = translation;
-			spawneditem.scale.x = 0.32;
-			spawneditem.scale.y = 0.28;
-			//spawneditem.PickupMsg = "Picked up a loose stim injector.";
-		}
+	override void A_HDUPKGive() {
+		if (!picktarget || bnointeraction) return;
+
+		bNOINTERACTION = true;
+
+		let hdp = HDPlayerPawn(picktarget);
+		if (hdp) HDF.give(hdp, 'PortableStimpack');
+
 		destroy();
-		super.PostBeginPlay();
+	}
+
+	states {
+		spawn:
+			SYRG A -1;
 	}
 }
 
-class UaS_ZerkInjector : Actor {
+class UaS_ZerkInjector : HDUPK {
 	default {
+		scale 0.3;
+
 		translation "112:127=107:111";
+
+		hdupk.pickupmessage "$PICKUP_ZERKPACK";
 	}
 
-	override void PostBeginPlay(){
-		let spawneditem = Inventory(actor.Spawn("PortableBerserkPack", (pos.x, pos.y, pos.z + 5)));
-		if(spawneditem) {
-			spawneditem.sprite = GetSpriteIndex('SYRG');
-			spawneditem.frame = 0;
-			spawneditem.translation = translation;
-			spawneditem.scale.x = 0.32;
-			spawneditem.scale.y = 0.28;
-			spawneditem.amount = 1;
-			//spawneditem.PickupMsg = "Picked up a loose zerk injector.";
-		}
+	override void A_HDUPKGive() {
+		if (!picktarget || bnointeraction) return;
+
+		bNOINTERACTION = true;
+
+		let hdp = HDPlayerPawn(picktarget);
+		if (hdp) HDF.give(hdp, 'PortableBerserkPack');
+
 		destroy();
-		super.PostBeginPlay();
+	}
+
+	states {
+		spawn:
+			SYRG A -1;
 	}
 }
 
