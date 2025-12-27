@@ -416,10 +416,12 @@ class UaS_LaserLightModule : HDWeapon {
 		vector3 pold = level.vec3diff(emitter.pos, lastpos);
 		// Velocity offset between old and new angular vectors
 		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
+		// Max Length of Laser Beam
+		let maxLen = laserTrace.distance - laserTrace.HitDir.length();
 
 		// int pspawns = 0;
 		double incr=0.1;
-		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + incr) {
+		for (double f = 0; f <= maxLen; f = f + incr) {
 			LP.Pos = emitter.pos + (oldpvec * f) + pold;
 			LP.Vel = (pvoff * f) - pold;
 			LP.Size = sizefactor * frandom[llm](0.75,1.25);
