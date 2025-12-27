@@ -72,10 +72,19 @@ class UaS_LaserLightModule : HDWeapon {
 	override void DoEffect() {
 		if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
 		if (owner is 'PlayerPawn') { Configuring(); }
+
 		UpdateEmitter();
 		ProcessIntents();
 		GetDefaults(owner, 1);
-		if(activated && owner.health > 0) {
+
+		if(
+			activated
+			&& owner.health > 0
+			&& (
+				owner.Distance3D(players[consoleplayer].camera) < (HDCONST_ONEMETRE * 256)
+				|| !emitter.A_CheckSight("null")
+			)
+		) {
 			Light(modeLight);
 			Laser(modeLaser);
 		}
