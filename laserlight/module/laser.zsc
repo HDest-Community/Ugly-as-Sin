@@ -71,19 +71,24 @@ class UaS_LaserLightModule : HDWeapon {
 
 	override void DoEffect() {
 		if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
+
 		if (owner is 'PlayerPawn') { Configuring(); }
 
 		UpdateEmitter();
 		ProcessIntents();
 		GetDefaults(owner, 1);
 
+		// Grab closest playerpawn distance.
+		let dist = int.MAX;
+		for(int i = 0; i < MAXPLAYERS; i++) if (playeringame[i]) dist = min(dist, owner.Distance3D(players[i].mo));
+
+		// Turn LLM on only if intended to do so,
+		// by an alive actor,
+		// that is close enough or within view of at least one player
 		if(
 			activated
 			&& owner.health > 0
-			&& (
-				owner.Distance3D(players[consoleplayer].camera) < (HDCONST_ONEMETRE * 256)
-				|| !emitter.A_CheckSight("null")
-			)
+			&& (dist < (HDCONST_ONEMETRE * 256) || !emitter.A_CheckSight("null"))
 		) {
 			Light(modeLight);
 			Laser(modeLaser);
@@ -92,7 +97,9 @@ class UaS_LaserLightModule : HDWeapon {
 			Light(0);
 			Laser(0);
 		}
+
 		super.doEffect();
+
 		lastangle = emitter.angle;
 		lastpitch = emitter.pitch;
 		lastpos = emitter.pos;
