@@ -1,40 +1,47 @@
 extend class UaS_Scarcity_Handler {
 	//Generic function for breaking/replacing map-spawned armours
-	void ArmourReplacer(name ArmourName, int DurabilityMax, actor spawnPointer) {
+	void ArmourReplacer(name ArmourName, int DurabilityMin, int DurabilityMax, actor spawnPointer) {
 		DurabilityMax = int(DurabilityMax * UaS_ScarcityOverspawn); //Possible spawn at least *some* durability, based on overspawn
-		int durability = random(0, DurabilityMax); //Pick a number up to maxdurability
+		int durability = random(DurabilityMin, DurabilityMax); //Pick a number up to maxdurability
 
-		if (durability) HDMagAmmo.SpawnMag(spawnPointer, ArmourName, durability);
+		//If there's any durability left and the overspawn chance succeeds, spawn a damaged armour
+		if (durability > DurabilityMin && UaS.RandomChance(UaS_ScarcityOverspawn)) HDMagAmmo.SpawnMag(spawnPointer, ArmourName, durability);
 	}
 
 	//Generic function for breaking/replacing map-spawned magazines
 	void MagReplacer(name MagName, name ammoName, int MagCap, actor spawnPointer) {
 		int rounds, packed;
+
 		MagCap = int(MagCap * UaS_ScarcityOverspawn); //Possible spawn at least *some* ammo, based on overspawn
 		rounds = random(0, MagCap); //Pick a number up to cap
+
 		//Pack some in a mag, or no mag at all
-		if(UaS.RandomChance(UaS_ScarcityOverspawn)) {
+		if (UaS.RandomChance(UaS_ScarcityOverspawn)) {
 			packed = randompick(0, random(1, rounds)); //50%: pack none (spawn empty), or up to all
 			rounds -= packed;
 			HDMagAmmo.SpawnMag(spawnPointer, MagName, packed);
 		}
+
 		//spill the rest on the ground
-		if (ammoName != "None") { UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos); }
+		if (ammoName != 'None') UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
 	}
 
 	//Generic function for reducing amount in map-spawned ammo boxes, without removal since boxes are already rare
 	void BoxReplacer(name BoxName, name ammoName, int BoxCap, actor spawnPointer) {
 		int rounds, packed;
+
 		BoxCap = int(BoxCap * UaS_ScarcityOverspawn); //Possible spawn at least *some* ammo, based on overspawn
 		rounds = random(int(BoxCap * 0.5), BoxCap); //Pick a number from 50% up to cap
+
 		//Pack some in a box or no box at all
-		if(UaS.RandomChance(UaS_ScarcityOverspawn)) {
+		if (UaS.RandomChance(UaS_ScarcityOverspawn)) {
 			packed = randompick(0, random(1, rounds)); //50%: pack none (spawn empty), or up to all
 			rounds -= packed;
 			let spawnedBox = hdupk(actor.Spawn(BoxName, spawnPointer.pos));
 			hdupk(spawnedBox).amount = packed;
 		}
+
 		//spill the rest on the ground
-		UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
+		if (ammoName != 'None') UaS.SpawnStuff(ammoName, rounds, spawnPointer.pos);
 	}
 }

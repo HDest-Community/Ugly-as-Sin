@@ -71,11 +71,25 @@ class UaS_LaserLightModule : HDWeapon {
 
 	override void DoEffect() {
 		if (!emitter) { emitter = UaS_LLM_Emitter(actor.spawn("UaS_LLM_Emitter", owner.pos, false)); }
+
 		if (owner is 'PlayerPawn') { Configuring(); }
+
 		UpdateEmitter();
 		ProcessIntents();
 		GetDefaults(owner, 1);
-		if(activated && owner.health > 0) {
+
+		// Grab closest playerpawn distance.
+		let dist = int.MAX;
+		for(int i = 0; i < MAXPLAYERS; i++) if (playeringame[i]) dist = min(dist, owner.Distance3D(players[i].mo));
+
+		// Turn LLM on only if intended to do so,
+		// by an alive actor,
+		// that is close enough or within view of at least one player
+		if(
+			activated
+			&& owner.health > 0
+			&& (dist < (HDCONST_ONEMETRE * 256) || !emitter.A_CheckSight("null"))
+		) {
 			Light(modeLight);
 			Laser(modeLaser);
 		}
@@ -83,7 +97,9 @@ class UaS_LaserLightModule : HDWeapon {
 			Light(0);
 			Laser(0);
 		}
+
 		super.doEffect();
+
 		lastangle = emitter.angle;
 		lastpitch = emitter.pitch;
 		lastpos = emitter.pos;
@@ -407,10 +423,12 @@ class UaS_LaserLightModule : HDWeapon {
 		vector3 pold = level.vec3diff(emitter.pos, lastpos);
 		// Velocity offset between old and new angular vectors
 		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
+		// Max Length of Laser Beam
+		let maxLen = laserTrace.distance - laserTrace.HitDir.length();
 
 		// int pspawns = 0;
 		double incr=0.1;
-		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + incr) {
+		for (double f = 0; f <= maxLen; f = f + incr) {
 			LP.Pos = emitter.pos + (oldpvec * f) + pold;
 			LP.Vel = (pvoff * f) - pold;
 			LP.Size = sizefactor * frandom[llm](0.75,1.25);
