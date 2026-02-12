@@ -422,10 +422,10 @@ class UaS_LaserLightModule : HDWeapon {
 
 		// Set some useful limits
 		double stepMax = 1000.0;
-		double stepMin = 0.1;
+		double stepMin = 0.25;
 		double spotRadius = 128; // "radius" of near beam spot
 
-		int pspawns = 0;
+		// int pspawns = 0;
 		double incr = 0.1;
 		for (double f = 0; f <= maxLen; f=f+incr) {
 			LP.Pos = emitter.pos + (oldpvec * f) + pold;
@@ -459,12 +459,12 @@ class UaS_LaserLightModule : HDWeapon {
 			// actually spawn particle
 			LP.StartAlpha = alph * LaserAlpha;
 			Level.SpawnParticle(LP);
-			pspawns++;
+			// pspawns++;
 		}
 		LP.Size = 1; LP.StartAlpha = 1*LaserAlpha; Level.SpawnParticle(LP);
 		LP.Size *= 4; LP.StartAlpha = 0.25*LaserAlpha; Level.SpawnParticle(LP);
 		LP.Size *= 4; LP.StartAlpha = 0.125*LaserAlpha; Level.SpawnParticle(LP);
-		console.printf("particles "..pspawns);
+		// console.printf("particles "..pspawns);
 
 		//Bounce Light
 		if (!lbounce && owner is 'HDPlayerPawn') { lbounce = UaS_LLM_BounceLight(actor.spawn("UaS_LLM_BounceLight", laserTrace.HitLocation, false)); }
