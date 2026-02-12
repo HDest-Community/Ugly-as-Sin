@@ -246,7 +246,7 @@ class UaS_LaserLightModule : HDWeapon {
 
 			double targetpitch = owner.pitch;
 			// HERPs are excluded because it makes their lasers wobble a lot
-			if (!(owner is "HERPBot") && owner.target) {
+			if (!(owner is "HERPBot") && owner.target && !owner.IsFrozen()) {
 				targetpitch = owner.PitchTo(owner.target, zOfs: owner.height*heightfactor, targZOfs:owner.target.height/2);
 				//console.printf(""..targetpitch);
 			}
