@@ -415,7 +415,7 @@ class UaS_LaserLightModule : HDWeapon {
 		// Calculate player's position relative to the laser
 		vector3 laserVector = laserTrace.HitLocation - emitter.pos;
 		vector3 playerVector = players[consoleplayer].mo.pos - emitter.pos;
-		if (laserVector.length()==0.0) {laserVector.x += 1;}
+		if (laserVector.length()==0.0) {laserVector += (0.01,0.01,0.01);}
 		double playerLinePos = (playerVector dot laserVector) / (laserVector dot laserVector);
 		playerLinePos = clamp(playerLinePos, 0.0, 1.0);
 		playerLinePos *= maxLen; //Actual distance along laser in mapunits
