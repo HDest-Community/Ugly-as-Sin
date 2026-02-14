@@ -153,6 +153,7 @@ class UaS_LaserLightModule : HDWeapon {
 	}
 
 	void UpdateEmitter() {
+		if(owner.IsFrozen()) { return; }
 		vector3 newpos;
 		double newangle, newpitch;
 		if (owner is "HDPlayerPawn") {
@@ -246,7 +247,7 @@ class UaS_LaserLightModule : HDWeapon {
 
 			double targetpitch = owner.pitch;
 			// HERPs are excluded because it makes their lasers wobble a lot
-			if (!(owner is "HERPBot") && owner.target && !owner.IsFrozen()) {
+			if (!(owner is "HERPBot") && owner.target) {
 				targetpitch = owner.PitchTo(owner.target, zOfs: owner.height*heightfactor, targZOfs:owner.target.height/2);
 				//console.printf(""..targetpitch);
 			}
