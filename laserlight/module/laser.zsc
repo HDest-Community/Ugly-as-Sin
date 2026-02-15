@@ -13,6 +13,7 @@ class UaS_LaserLightModule : HDWeapon {
 	FSpawnParticleParams LP, FP;
 	transient cvar beams;
 	transient cvar laserpref, lasercolorpref, lightpref;
+	double avgdist;
 
 	double lastangle, lastpitch;
 	vector3 lastpos, lastvel;
@@ -153,6 +154,7 @@ class UaS_LaserLightModule : HDWeapon {
 	}
 
 	void UpdateEmitter() {
+		if(owner.IsFrozen()) { return; }
 		vector3 newpos;
 		double newangle, newpitch;
 		if (owner is "HDPlayerPawn") {
@@ -356,6 +358,7 @@ class UaS_LaserLightModule : HDWeapon {
 		LP.Lifetime = 1;
 		LP.SizeStep = 0;
 		LP.FadeStep = -1;
+		LP.StartAlpha = 1.0;
 		LP.Flags = SPF_FULLBRIGHT|SPF_REPLACE;
 		LP.Texture = TexMan.CheckForTexture ("glstuff/glpart.png");
 
@@ -379,7 +382,7 @@ class UaS_LaserLightModule : HDWeapon {
 			PlayerPawn plr = players[consoleplayer].mo;
 			PortableLiteAmp nvg = PortableLiteAmp(plr.FindInventory("PortableLiteAmp"));
 			if (nvg && nvg.worn) {
-				//sizefactor *= clamp(nvg.amplitude * 0.1, 1, 3);
+				sizefactor *= clamp(nvg.amplitude * 0.1, 1, 3);
 				if (nvg.amplitude > 0) { LaserAlpha = 1.0; }
 			}
 		}
@@ -408,37 +411,67 @@ class UaS_LaserLightModule : HDWeapon {
 		// Velocity offset between old and new angular vectors
 		vector3 pvoff = level.vec3diff(oldpvec,newpvec);
 
-		// int pspawns = 0;
-		double incr=0.1;
-		for (double f = 0; f <= laserTrace.distance-laserTrace.HitDir.length(); f = f + incr) {
-			LP.Pos = emitter.pos + (oldpvec * f) + pold;
-			LP.Vel = (pvoff * f) - pold;
-			LP.Size = sizefactor * frandom[llm](0.75,1.25);
+		// Max Length of Laser Beam
+		double maxLen = laserTrace.distance - laserTrace.HitDir.length();
+		avgdist = (avgdist*0.95)+(maxLen*0.05);
 
-			// Increase density at ends
-			incr = sin((f/laserTrace.distance)*180)*(laserTrace.distance*0.0075);
-			incr = clamp(incr, 0.1, 1000);
-			incr *= frandom[llm](0.1,2);
+		// Calculate player's position relative to the laser
+		vector3 laserVector = laserTrace.HitLocation - emitter.pos;
+		vector3 playerVector = players[consoleplayer].mo.pos - emitter.pos;
+		if (laserVector.length()==0.0) {laserVector += (0.01,0.01,0.01);}
+		double playerLinePos = (playerVector dot laserVector) / (laserVector dot laserVector);
+		//playerLinePos = clamp(playerLinePos, 0.0, 1.0);
+		playerLinePos *= maxLen; //Actual distance along laser in mapunits
 
-			// Calculate simulated atmospheric density (pseudo-perlin?)
-			// https://www.desmos.com/calculator/ihnnq7pdjt
-			double alph = (
-				(sin(LP.Pos.X) + sin(LP.Pos.Y) + sin(LP.Pos.Z)) +
-				(sin(LP.Pos.X*10) + sin(LP.Pos.Y*10) + sin(LP.Pos.Z*10)) +
-				(sin(LP.Pos.X*.5) + sin(LP.Pos.Y*.1) + sin(LP.Pos.Z*.5)) +
-				sin(f+getage()));
-			alph += max(1-incr,0);
-			alph = clamp(alph, 0, 1);
+		
+		double fadeLen = HDCONST_ONEMETRE*2;
+		double jitter,drawpos;
+		int maxLoops = clamp((avgdist/HDCONST_ONEMETRE)*2,5,60);
+		int pspawns=0;
+		double sizefade;
 
-			// actually spawn particle
-			LP.StartAlpha = alph * LaserAlpha;
-			Level.SpawnParticle(LP);
-			// pspawns++;
+		for (int i = 0; i < maxLoops; i++) {
+			jitter=(frandom[llmbeam](-1,1)
+				+frandom[llmbeam](-1,1)
+				+frandom[llmbeam](-1,1)
+				+frandom[llmbeam](-1,1))/4;
+			
+			// draw starting beam
+			drawpos=0+(jitter*fadeLen);
+			if (drawpos>=0 && drawpos<=maxLen) {
+				pspawns+=DrawLaserParticle(drawpos,sizefactor,oldpvec,pold,pvoff);
+			}
+
+			// draw ending beam
+			drawpos=maxLen-(jitter*fadeLen);
+			if (drawpos>=0 && drawpos<=maxLen) {
+				pspawns+=DrawLaserParticle(drawpos,sizefactor,oldpvec,pold,pvoff);
+			}
+
+			// draw spot near player
+			drawpos=clamp(playerLinePos,
+				fadeLen, maxLen-(fadeLen));
+			drawpos+=(jitter*fadeLen);
+			if (drawpos>=0 && drawpos<=maxLen) {
+				pspawns+=DrawLaserParticle(drawpos,sizefactor,oldpvec,pold,pvoff);
+			}
+
+			// fill in rest of beam.
+			for (int j=0; j<3; j++) {
+				drawpos=frandom[llmbeam](0,maxLen);
+				pspawns+=DrawLaserParticle(drawpos,sizefactor,oldpvec,pold,pvoff);
+			}
 		}
+
+		// debugging
+		//if(level.time % 10 == 0) { console.printf("particles "..pspawns.." loops "..maxLoops.. " avgdist "..avgdist/HDCONST_ONEMETRE); }
+
+		// Draw ending particle glow
+		LP.Pos = emitter.pos + (oldpvec * maxLen) + pold;
+		LP.Vel = (pvoff * maxLen) - pold;
 		LP.Size = 1; LP.StartAlpha = 1*LaserAlpha; Level.SpawnParticle(LP);
 		LP.Size *= 4; LP.StartAlpha = 0.25*LaserAlpha; Level.SpawnParticle(LP);
 		LP.Size *= 4; LP.StartAlpha = 0.125*LaserAlpha; Level.SpawnParticle(LP);
-		// console.printf("particles "..pspawns);
 
 		//Bounce Light
 		if (!lbounce && owner is 'HDPlayerPawn') { lbounce = UaS_LLM_BounceLight(actor.spawn("UaS_LLM_BounceLight", laserTrace.HitLocation, false)); }
@@ -449,6 +482,23 @@ class UaS_LaserLightModule : HDWeapon {
 		}
 	}
 
+	int DrawLaserParticle(double dp, double sf, vector3 opv, vector3 po, vector3 pvo) {
+		//DrawLaserParticle(drawpos,oldpvec,pold,pvoff);
+		LP.Size = sf * sizefade(dp);
+		LP.Pos = emitter.pos + (opv * dp) + po;
+		LP.Vel = (pvo * dp) - po;
+		Level.SpawnParticle(LP);
+		return 1;
+	}
+
+	double sizefade(double dp) {
+		double a = sin(dp*6+getage());
+		double b = sin(dp*3-getage()*3);
+		double c = sin(dp+getage()*6);
+		double d = 0.5*(a*b*c);
+		return 1+abs(d);
+	}
+	
 	//override int getsbarnum(int flags){ return mode; }
 
 	override inventory CreateTossable(int amt) {
