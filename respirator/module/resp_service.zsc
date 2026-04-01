@@ -6,9 +6,13 @@ class UaS_RespiratorStatus : Service {
 		let r = UaS_Respirator(p.FindInventory("UaS_Respirator")); if (!r) return -1;
 
 		// Process the request
-		if (request ~== "IsWorn") { return HandleIsWorn(r); }
-		if (request ~== "AirRemaining") { return HandleAirRemaining(r); }
-		return -1;
+		name reqName = request;
+		switch (reqName) {
+			case 'AirRemaining': return HandleAirRemaining(r);
+			case 'isRefilling': return HandleIsRefilling(r);
+			case 'IsWorn': return HandleIsWorn(r);
+			default: return -1;
+		}
 	}
 	
 	// Returns -1 on any invalid condition
@@ -18,9 +22,17 @@ class UaS_RespiratorStatus : Service {
 		let r = UaS_Respirator(p.FindInventory("UaS_Respirator")); if (!r) return -1;
 
 		// Process the request
-		if (request ~== "IsWorn") { return HandleIsWorn(r); }
-		if (request ~== "AirRemaining") { return HandleAirRemaining(r); }
-		return -1;
+		name reqName = request;
+		switch (reqName) {
+			case 'AirRemaining': return HandleAirRemaining(r);
+			case 'isRefilling': return HandleIsRefilling(r);
+			case 'IsWorn': return HandleIsWorn(r);
+			default: return -1;
+		}
+	}
+
+	private clearscope int HandleIsRefilling(UaS_Respirator r) {
+		return !r.activated && r.refill;
 	}
 
 	private clearscope int HandleIsWorn(UaS_Respirator r) {
