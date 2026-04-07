@@ -26,5 +26,7 @@ The wound will only start to heal up once it becomes green in the wounds list.
 
 Note: If the wound you're operating on is bandaged, you can hold Fire to rip it off. (or AltFire in the bandage tool)
 
+Fun fact: If you're operating on someone else, you're more likely to be a bit more efficient! (trust me it makes sense)
+
 ## Credits
  - bunyear/Tapwave: Made the trauma kit tool sprites
