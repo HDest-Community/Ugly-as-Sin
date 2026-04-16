@@ -57,4 +57,6 @@ OptionMenu "UaS_CoreDebug" {
 	FlagOption "Stealth","UaS_Debug","OnOff",10
 	FlagOption "Searching","UaS_Debug","OnOff",11
 	FlagOption "Intents","UaS_Debug","OnOff",12
+	FlagOption "Curse Tweaker","UaS_Debug","OnOff",13
 }
+
