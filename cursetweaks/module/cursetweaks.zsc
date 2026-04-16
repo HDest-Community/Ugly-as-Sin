@@ -3,7 +3,7 @@ class UaS_CurseTweaker : EventHandler {
 	array<NecromancerGhost> CurseArray;
 
 	override void OnRegister() {
-		console.printf("Curse Tweaker initialized");
+		UaS.LogDebug(DBG_Curse, string.format("Curse Tweaker initialized"));
 	}
 
 	override void WorldTick() {
@@ -17,11 +17,11 @@ class UaS_CurseTweaker : EventHandler {
 		NecromancerGhost ThisCurse;
 		while (ThisCurse = NecromancerGhost(CurseList.Next())) {
 			if (!RemoveAll && !InCurseList(ThisCurse) && random[cursetweaks](0,100) > UaS_CurseRate) {
-				console.printf("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and added to preserve list.");
+				UaS.LogDebug(DBG_Curse, string.format("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and added to preserve list."));
 				CurseArray.push(ThisCurse);
 			}
 			else {
-				console.printf("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and destroyed.");
+				UaS.LogDebug(DBG_Curse, string.format("Curse "..ThisCurse.." found for player "..ThisCurse.targetplayer.." and destroyed."));
 				ThisCurse.Destroy();
 			}
 		}
@@ -35,7 +35,7 @@ class UaS_CurseTweaker : EventHandler {
 
 	override void NetworkProcess(ConsoleEvent e) {
 		if(e.Name ~== "UaS_RemoveCurses") {
-			console.printf("Remove all necromancer curses...");
+			console.printf("Remove all necromancer curses..."); // Keeping this message for menu feedback purposes
 			CurseList = null;
 			CurseArray.Clear();
 			ProcessCurses(true);
