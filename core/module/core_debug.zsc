@@ -12,6 +12,7 @@ enum UaS_Debug_Flags {
 	DBG_Stealth = 1024,
 	DBG_Searching = 2048,
 	DBG_Intents = 4096,
+	DBG_Curse = 8192,
 };
 
 extend class UaS {
