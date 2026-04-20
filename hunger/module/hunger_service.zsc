@@ -1,7 +1,7 @@
 class UaS_HungerStatus : Service {
 	// Returns -1 on any invalid condition
 	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and hunger tracker
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
 
@@ -11,10 +11,33 @@ class UaS_HungerStatus : Service {
 		if (request ~== "Sick") { return int(r.sick); }
 		return -1;
 	}
+
+	override string GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
+		// Do casting and nullchecks for player and hunger tracker
+		let p = HDPlayerPawn(objectArg); if (!p) return -1;
+		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
+
+		// Process the request
+		// example call:
+		// string retmessage = string(HungerStatus.GetString("SetEnergy", intArg:2000, objectArg:players[pnum].mo));
+		if (request ~== "SetEnergy") {
+			r.energy = intArg; return string.format("Set energy to "..r.energy); }
+		if (request ~== "SetHydro") {
+			r.hydro = intArg; return string.format("Set hydration to "..r.hydro); }
+		if (request ~== "SetPendingEnergy") {
+			r.pending_calories = intArg; return string.format("Set pending calories to "..r.pending_calories); }
+		if (request ~== "SetPendingHydro") {
+			r.pending_fluid = intArg; return string.format("Set pending fluid to "..r.pending_fluid); }
+		if (request ~== "SetSick") { 
+			r.sick = intArg; return string.format("Set sickness to "..r.sick); }
+
+		// Error
+		return "Invalid set request for UaS_Hunger";
+	}
 	
 	// Returns -1 on any invalid condition
 	override int GetIntUI(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
-		// Do casting and nullchecks for player and respirator
+		// Do casting and nullchecks for player and hunger tracker
 		let p = HDPlayerPawn(objectArg); if (!p) return -1;
 		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
 
