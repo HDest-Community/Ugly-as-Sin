@@ -14,8 +14,8 @@ class UaS_HungerStatus : Service {
 
 	override string GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg) {
 		// Do casting and nullchecks for player and hunger tracker
-		let p = HDPlayerPawn(objectArg); if (!p) return -1;
-		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return -1;
+		let p = HDPlayerPawn(objectArg); if (!p) return "Player object not found";
+		let r = UaS_HungerTracker(p.FindInventory("UaS_HungerTracker")); if (!r) return "Hunger tracker not found";
 
 		// Process the request
 		// example call:
