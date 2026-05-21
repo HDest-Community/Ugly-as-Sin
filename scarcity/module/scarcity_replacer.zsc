@@ -42,10 +42,10 @@ extend class UaS_Scarcity_Handler {
 			HDMagAmmo a = HDMagAmmo(mo);
 			name armourname = a.GetClassName();
 			
-			let min = (mo is 'HDArmour' && HDArmour(mo).mega) ? 1000 : 0;
+			// let min = (mo is 'HDArmour' && HDArmour(mo).mega) ? 1000 : 0;
 			let max = a.mags[0];
 
-			ArmourReplacer(armourname, min, max, mo);
+			ArmourReplacer(armourname, 0, max, mo);
 			mo.destroy();
 		}
 

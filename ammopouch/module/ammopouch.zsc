@@ -1,52 +1,213 @@
 const UAS_HDLD_AMMOPOUCH = "apo";
 
+enum AmmoPouchSlots {
+
+	// From HDStorageItemStats
+	// ------------------------
+
+	// SISTAT_ININDEX  = 1,
+	// SISTAT_SELINDEX = 2,
+	// SISTAT_HOWMANY  = 3,
+	// SISTAT_SCROLL   = 4,
+
+	// SI_WEPICONSLOT  = HDWEP_STATUSSLOTS + 1,
+	// SI_WEPBULKSLOT  = HDWEP_STATUSSLOTS + 2,
+	// SI_MAXROWS      = 10,
+	// SI_MAXBUNCH     = 20,
+	// SI_SCROLLCYCLE  = (2 << 9),
+
+	APS_AMOUNT         = 5
+}
+
 //==================================================
 // Base Definition
 //==================================================
-class UaS_AmmoPouch : HDBackpack {
+class UaS_AmmoPouch : HDStorageItem {
+
 	default {
-		tag "$TAG_AMMOPOUCH";
-		HDBackpack.MaxCapacity 200;
+		+Inventory.INVBAR
+		+Weapon.WIMPY_WEAPON
+		// -HDWeapon.DROPTRANSLATION
+		+HDWeapon.FITSINBACKPACK
+		// +HDWeapon.IGNORELOADOUTAMOUNT
+
+		Tag "$TAG_AMMOPOUCH";
 		Inventory.Icon "UGSPA0";
 		Inventory.PickupMessage "$PICKUP_AMMOPOUCH";
+		Inventory.PickupSound "weapons/pocket";
 		scale 0.6;
+
 		hdweapon.wornlayer 0;
 		hdweapon.refid UAS_HDLD_AMMOPOUCH;
+
+		HDStorageItem.MinBulk 20;
+		HDStorageItem.MaxCapacity 200;
+		HDStorageItem.MaxBunch 20;
 	}
 
-	override string, double GetPickupSprite() { return "UGSPA0", 1.0; }
+	override bool IsBeingWorn() { return false; }
+
+	override double WeaponBulk() {
+		return ContainerBulk(itemBulk);
+	}
+
+	override double ContainerBulk(double it) const {
+		let numPouches = max(weaponStatus[APS_AMOUNT], 1);
+		let calcAmount = min(numPouches, 5);
+		let reductionFactor = 0.45 + min(0.05 * calcAmount, 0.5);
+
+		return max(it * reductionFactor, minBulk * numPouches);
+	}
 
 	override void BeginPlay() {
 		super.BeginPlay();
-		Storage = new('AmmoPouch_ItemStorage');
-		weaponstatus[APS_AMOUNT] = max(weaponstatus[APS_AMOUNT], 1);
-		UpdateCapacity();
+
+		weaponStatus[APS_AMOUNT] = max(weaponStatus[APS_AMOUNT], 1);
 	}
 
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		weaponstatus[APS_AMOUNT] = max(weaponstatus[APS_AMOUNT], 1);
-		UpdateCapacity();
+
+		weaponStatus[APS_AMOUNT] = max(weaponStatus[APS_AMOUNT], 1);
 	}
 
-	// Thanks Accensus for figuring out multiple pouches in loadout codes!
+	override bool CanFitInThisContainer(Class<Inventory> itemType) {
+		return itemType && (itemType  is 'HDRoundAmmo' || itemType is 'FourMilAmmo');
+	}
+
+	override bool ThisCanFitInThisContainer(Inventory item) {
+		return item && (item  is 'HDRoundAmmo' || item is 'FourMilAmmo');
+	}
+
+	override void actualpickup(actor other, bool silent) {
+		let HeldPouch = UaS_AmmoPouch(other.findinventory("UaS_AmmoPouch"));
+		if (HeldPouch)
+		{
+			HeldPouch.weaponStatus[APS_AMOUNT]++;
+			HeldPouch.maxCapacity = HeldPouch.weaponStatus[APS_AMOUNT] * HeldPouch.default.maxCapacity;
+
+			while (items.size())
+			{
+
+				string itemCls, prefix;
+				[itemCls, prefix] = itemClassAndPrefix(0);
+
+				let amt = count(itemCls);
+				HeldPouch.insert(extract(0, amt), amt);
+			}
+
+			destroy();
+			return;
+		}
+
+		super.actualpickup(other, silent);
+	}
+
+	override inventory CreateTossable(int amt) {
+		amount = weaponStatus[APS_AMOUNT]; // Hack to satisfy CreateTossable expectations
+
+		let DroppedPouch = UaS_AmmoPouch(super.CreateTossable(amt));
+
+		if (DroppedPouch && weaponStatus[APS_AMOUNT] > 1)
+		{
+			let bulkRatio = itemBulk / (maxCapacity * 1.0);
+			weaponStatus[APS_AMOUNT]--;
+			maxCapacity = weaponStatus[APS_AMOUNT] * default.maxCapacity;
+
+			if (items.size() <= 0)
+			{
+				return DroppedPouch;
+			}
+
+			while (DroppedPouch.itemBulk / DroppedPouch.maxCapacity < bulkRatio)
+			{
+				string itemCls, prefix;
+				[itemCls, prefix] = itemClassAndPrefix(0);
+
+				if (itemCls)
+				{
+					double unitBulk = max(getDefaultByType((Class<HDPickup>)(itemCls)).bulk * HDMath.getEncumbranceMult(), Double.EPSILON);
+
+					int amt = min((DroppedPouch.maxCapacity - DroppedPouch.itemBulk) / unitBulk, count(itemCls));
+					DroppedPouch.insert(extract(0, amt), amt);
+				}
+			}
+		}
+
+		return DroppedPouch;
+	}
+
+	// Configure from Loadout
 	override void LoadoutConfigure(string input) {
+		super.LoadoutConfigure(input);
+
 		int amt = input.ToInt();
 		if (amt > 0)
 		{
-			weaponstatus[APS_AMOUNT] = amt;
-			UpdateCapacity();
+			weaponStatus[APS_AMOUNT] = amt;
 		}
-		super.LoadoutConfigure(input);
 	}
 
-	override bool IsBeingWorn() { return false; }
+	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl) {
+		super.DrawHUDStuff(sb, hdw, hpl);
+
+		let bofs = -120;
+		int lnh = SmallFont.GetHeight() + 3;
+
+	// 	sb.DrawString(sb.pSmallFont, "\c[DarkBrown][] [] [] \c[DarkGreen]"..StringTable.localize("$TAG_GUNSMITH_POUCH").."\c[DarkBrown] [] [] []", (0, BaseOffset), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER);
+		if (weaponStatus[APS_AMOUNT] > 1) sb.DrawString(sb.pSmallFont, "Pouches: \cf"..weaponStatus[APS_AMOUNT].."\c-", (0, bofs + (lnh * 2)), sb.DI_SCREEN_CENTER|sb.DI_TEXT_ALIGN_CENTER);
+
+	// 	int ItemCount = Storage.Items.Size();
+
+	// 	if (ItemCount == 0)
+	// 	{
+	// 		sb.DrawString(sb.pSmallFont, "Empty.", (0, BaseOffset + 30), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_DARKGRAY);
+	// 		return;
+	// 	}
+
+	// 	StorageItem SelItem = Storage.GetSelectedItem();
+	// 	if (!SelItem)
+	// 	{
+	// 		return;
+	// 	}
+
+	// 	for (int i = 0; i < (ItemCount > 1 ? 5 : 1); ++i)
+	// 	{
+	// 		int RealIndex = (Storage.SelItemIndex + (i - 2)) % ItemCount;
+	// 		if (RealIndex < 0)
+	// 		{
+	// 			RealIndex = ItemCount - abs(RealIndex);
+	// 		}
+
+	// 		vector2 Offset = ItemCount > 1 ? (-100, 8) : (0, 0);
+	// 		switch (i)
+	// 		{
+	// 			case 1: Offset = (-50, 4);  break;
+	// 			case 2: Offset = (0, 0); break;
+	// 			case 3: Offset = (50, 4); break;
+	// 			case 4: Offset = (100, 8); break;
+	// 		}
+
+	// 		StorageItem CurItem = Storage.Items[RealIndex];
+	// 		bool CenterItem = Offset ~== (0, 0);
+	// 		sb.DrawImage(CurItem.Icons[0], (Offset.x, BaseOffset + 40 + Offset.y), sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, CenterItem && !CurItem.HaveNone() ? 1.0 : 0.6, CenterItem ? (50, 30) : (30, 20), CenterItem ? (4.0, 4.0) : (3.0, 3.0));
+	// 	}
+
+	// 	sb.DrawString(sb.pSmallFont, SelItem.NiceName, (0, BaseOffset + 60), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, Font.CR_FIRE);
+
+	// 	int AmountInBackpack = SelItem.Amounts.Size() > 0 ? SelItem.Amounts[0] : 0;
+	// 	sb.DrawString(sb.pSmallFont, "In pouch:  "..sb.FormatNumber(AmountInBackpack, 1, 6), (0, BaseOffset + 70), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountInBackpack > 0 ? Font.CR_BROWN : Font.CR_DARKBROWN);
+
+	// 	int AmountOnPerson = GetAmountOnPerson(hpl.FindInventory(SelItem.ItemClass));
+	// 	sb.DrawString(sb.pSmallFont, "On person:  "..sb.FormatNumber(AmountOnPerson, 1, 6), (0, BaseOffset + 78), sb.DI_SCREEN_CENTER | sb.DI_TEXT_ALIGN_CENTER, AmountOnPerson > 0 ?  Font.CR_WHITE : Font.CR_DARKGRAY);
+
+	}
 
 	States {
 		Spawn:
 			UGSP ABC -1 NoDelay
 			{
-				if (invoker.Storage.TotalBulk ~== 0)
+				if (invoker.items.size() == 0)
 				{
 					frame = 1;
 				}
@@ -55,6 +216,7 @@ class UaS_AmmoPouch : HDBackpack {
 					translation = target.translation;
 					frame = 2;
 				}
+
 				invoker.bNO_AUTO_SWITCH = false;
 			}
 			Stop;
@@ -62,8 +224,25 @@ class UaS_AmmoPouch : HDBackpack {
 			#### # 0 A_MagManager("");
 			goto Ready;
 	}
+}
 
-	enum AmmoPouchSlots {
-		APS_AMOUNT
+class UaS_AmmoPouchStorageItemList : HDStorageItemList {
+	override bool CanAdd(Class<Inventory> itemCls)
+	{
+		return itemCls && (itemCls  is 'HDRoundAmmo' || itemCls is 'FourMilAmmo');
+	}
+}
+
+class UaS_WildAmmoPouch : IdleDummy {
+	override void postbeginplay() {
+		super.postbeginplay();
+
+		let SpawnedPouch = UaS_AmmoPouch(spawn("UaS_AmmoPouch", pos, ALLOW_REPLACE));
+		SpawnedPouch.RandomContents("UaS_AmmoPouchStorageItemList", frandom(0.1, 0.5), false);
+
+		HDF.TransferSpecials(self, SpawnedPouch);
+		SpawnedPouch.vel = vel;
+
+		destroy();
 	}
 }

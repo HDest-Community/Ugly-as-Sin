@@ -4,10 +4,14 @@
 class UaS_WildAssaultPack : IdleDummy {
 	override void postbeginplay() {
 		super.postbeginplay();
-		let Spawned=UaS_AssaultPack(spawn("UaS_AssaultPack",pos,ALLOW_REPLACE));
+
+		let Spawned = UaS_AssaultPack(spawn("UaS_AssaultPack", pos, ALLOW_REPLACE));
+		Spawned.RandomContents("HDStorageItemList", frandom(0.1, 0.5), false);
+
 		Spawned.vel = vel;
-		Spawned.RandomContents();
-		self.destroy();
+		HDF.TransferSpecials(self, Spawned);
+
+		destroy();
 	}
 }
 
