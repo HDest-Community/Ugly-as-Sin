@@ -4,47 +4,75 @@ const UAS_STRIP_ASSAULTPACK = STRIP_BACKPACK;
 //==================================================
 // Base Definition
 //==================================================
-class UaS_AssaultPack : HDBackpack {
+class UaS_AssaultPack : HDStorageItem {
 	default {
-		tag "$TAG_ASSAULTPACK";
-		HDBackpack.MaxCapacity 500;
+		+Inventory.INVBAR
+		+Weapon.WIMPY_WEAPON
+		+HDWeapon.DROPTRANSLATION
+		+HDWeapon.FITSINBACKPACK
+		+HDWeapon.ALWAYSSHOWSTATUS
+		+HDWeapon.IGNORELOADOUTAMOUNT
+		+HDWeapon.HINDERLEGS
+
+		Weapon.SelectionOrder 1010;
+
+		Tag "$TAG_ASSAULTPACK";
 		Inventory.Icon "UGSQA0";
 		Inventory.PickupMessage "$PICKUP_ASSAULTPACK";
+		Inventory.PickupSound "weapons/pocket";
 		scale 0.75;
-		hdweapon.wornlayer UAS_STRIP_ASSAULTPACK;
-		hdweapon.refid UAS_HDLD_ASSAULTPACK;
+
+		HDWeapon.wornlayer UAS_STRIP_ASSAULTPACK;
+		HDWeapon.refid UAS_HDLD_ASSAULTPACK;
+
+		HDStorageItem.MinBulk 50;
+		HDStorageItem.MaxCapacity 500;
+		HDStorageItem.MaxBunch 20;
 	}
 
-	override void BeginPlay(){
-		Super.BeginPlay();
-		if(Storage) Storage.destroy();
-		Storage = new('UaS_AssaultPackStorage');
-		UpdateCapacity();
+	override double WeaponBulk() { return ContainerBulk(itemBulk * 0.9); }
+
+	//how much space it takes inside another container
+	//if we don't do this then things nested inside multiple containers
+	//eventually have almost no bulk at all
+	override double ContainerBulk(double it) const { return max(it * 0.8, minBulk); }
+
+	// check if an item can be added at all
+	override bool CanFitInThisContainer(Class<Inventory> itemType) {
+		// let iBulk = 0.0;
+
+		// let item = Inventory(getDefaultByType(itemType));
+		// let hdw = HDWeapon(item);
+		// let hdm = HDMagAmmo(item);
+		// let hdp = HDPickup(item);
+
+		// if(hdw)      iBulk = hdw.WeaponBulk();
+		// else if(hdm) iBulk = hdm.GetBulk();
+		// else if(hdp) iBulk = hdp.bulk;
+
+		return super.CanFitInThisContainer(itemType) /* && iBulk < 75 */;
 	}
+	
+	// sometimes particular instances of an item may vary
+	override bool ThisCanFitInThisContainer(Inventory item) {
+		// let iBulk = 0.0;
 
-	override void DoEffect() {
-		super.DoEffect();
-		UpdateCapacity();
+		// let hdw = HDWeapon(item);
+		// let hdm = HDMagAmmo(item);
+		// let hdp = HDPickup(item);
+
+		// if(hdw)      iBulk = hdw.WeaponBulk();
+		// else if(hdm) iBulk = hdm.GetBulk();
+		// else if(hdp) iBulk = hdp.bulk;
+
+		return super.ThisCanFitInThisContainer(item) /* && iBulk < 75 */;
 	}
-
-	override double WeaponBulk() {
-		return max((Storage ? Storage.TotalBulk * 0.80 : 0), 50);
-	}
-
-	override void UpdateCapacity() {
-		MaxCapacity = default.MaxCapacity;
-		Storage.MaxBulk = min(Storage.TotalBulk + 75, MaxCapacity);
-	}
-
-	override bool IsBeingWorn() { return true; }
-
-	override string, double GetPickupSprite() { return "UGSQA0", 1.0; }
 
 	States {
 		Spawn:
 			UGSQ ABC -1 NoDelay
 			{
-				if (invoker.Storage.TotalBulk ~== 0)
+				if (invoker.items.size() == 0)
 				{
 					frame = 1;
 				}
@@ -56,14 +84,5 @@ class UaS_AssaultPack : HDBackpack {
 				invoker.bNO_AUTO_SWITCH = false;
 			}
 			Stop;
-	}
-}
-
-class UaS_AssaultPackStorage : ItemStorage {
-	override string GetFailMessage() {
-		if (MaxBulk < 500) {
-			return Stringtable.Localize("$ASSAULTPACK_TOOLARGE");
-		}
-		return Stringtable.Localize("$ASSAULTPACK_TOOFULL");
 	}
 }
