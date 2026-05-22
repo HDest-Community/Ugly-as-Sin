@@ -39,34 +39,56 @@ class UaS_AssaultPack : HDStorageItem {
 
 	// check if an item can be added at all
 	override bool CanFitInThisContainer(Class<Inventory> itemType) {
-		// let iBulk = 0.0;
+		let iBulk = 0.0;
 
-		// let item = Inventory(getDefaultByType(itemType));
-		// let hdw = HDWeapon(item);
-		// let hdm = HDMagAmmo(item);
-		// let hdp = HDPickup(item);
+		let item = Inventory(getDefaultByType(itemType));
+		let hdw = HDWeapon(item);
+		let hdm = HDMagAmmo(item);
+		let hdp = HDPickup(item);
 
-		// if(hdw)      iBulk = hdw.WeaponBulk();
-		// else if(hdm) iBulk = hdm.GetBulk();
-		// else if(hdp) iBulk = hdp.bulk;
+		if(hdw)      iBulk = hdw.WeaponBulk();
+		else if(hdm) iBulk = hdm.GetBulk();
+		else if(hdp) iBulk = hdp.bulk;
 
-		return super.CanFitInThisContainer(itemType) /* && iBulk < 75 */;
+		return super.CanFitInThisContainer(itemType) && iBulk < 75;
 	}
 	
 	// sometimes particular instances of an item may vary
 	override bool ThisCanFitInThisContainer(Inventory item) {
-		// let iBulk = 0.0;
+		let iBulk = 0.0;
 
-		// let hdw = HDWeapon(item);
-		// let hdm = HDMagAmmo(item);
-		// let hdp = HDPickup(item);
+		let hdw = HDWeapon(item);
+		let hdm = HDMagAmmo(item);
+		let hdp = HDPickup(item);
 
-		// if(hdw)      iBulk = hdw.WeaponBulk();
-		// else if(hdm) iBulk = hdm.GetBulk();
-		// else if(hdp) iBulk = hdp.bulk;
+		if(hdw)      iBulk = hdw.WeaponBulk();
+		else if(hdm) iBulk = hdm.GetBulk();
+		else if(hdp) iBulk = hdp.bulk;
 
-		return super.ThisCanFitInThisContainer(item) /* && iBulk < 75 */;
+		return super.ThisCanFitInThisContainer(item) && iBulk < 75;
 	}
+
+	// // check if an item can be added at all
+	// override bool CanFitInThisContainer(Class<Inventory> itemType) {
+	// 	return super.CanFitInThisContainer(itemType) && GetItemBulk(Inventory(getDefaultByType(itemType))) < 75;
+	// }
+	
+	// // sometimes particular instances of an item may vary
+	// override bool ThisCanFitInThisContainer(Inventory item) {
+	// 	return super.ThisCanFitInThisContainer(item) && GetItemBulk(item) < 75;
+	// }
+
+	// virtual clearscope double GetItemBulk(Inventory item) {
+	// 	let hdw = HDWeapon(item);
+	// 	let hdm = HDMagAmmo(item);
+	// 	let hdp = HDPickup(item);
+
+	// 	if(hdw)      return hdw.WeaponBulk();
+	// 	else if(hdm) return hdm.GetBulk();
+	// 	else if(hdp) return hdp.bulk;
+
+	// 	return 0.0;
+	// }
 
 	States {
 		Spawn:
