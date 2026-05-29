@@ -1,6 +1,20 @@
 //============================================
 // Spawning
 //============================================
+class UaS_WildAmmoPouch : IdleDummy {
+	override void postbeginplay() {
+		super.postbeginplay();
+
+		let SpawnedPouch = UaS_AmmoPouch(spawn("UaS_AmmoPouch", pos, ALLOW_REPLACE));
+		SpawnedPouch.RandomContents("UaS_AmmoPouchStorageItemList", frandom(0.1, 0.5), false);
+
+		HDF.TransferSpecials(self, SpawnedPouch);
+		SpawnedPouch.vel = vel;
+
+		destroy();
+	}
+}
+
 class UaS_AmmoPouchSpawner : EventHandler {
 	int alreadyspawned;
 	int failspawn;
