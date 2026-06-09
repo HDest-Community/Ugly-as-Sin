@@ -123,11 +123,7 @@ class UaS_RandomConsumable : HDPickup {
 				GiveClass = fl.RandomDrinkItem();
 			}
 			if (owner) {
-				owner.A_GiveInventory("HDWeaponGiver");
-				HDWeaponGiver wg = HDWeaponGiver(owner.findinventory("HDWeaponGiver"));
-				wg.weapontogive = GiveClass;
-				wg.postbeginplay();
-				wg.destroy();
+				owner.A_GiveInventory(GiveClass);
 			}
 			else {
 				let s = actor.Spawn(GiveClass, pos, ALLOW_REPLACE);
