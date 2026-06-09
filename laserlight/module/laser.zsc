@@ -446,6 +446,8 @@ class UaS_LaserLightModule : HDWeapon {
 		int pspawns=0;
 		double sizefade;
 
+		LP.StartAlpha = 1*LaserAlpha;
+
 		for (int i = 0; i < maxLoops; i++) {
 			jitter=(frandom[llmbeam](-1,1)
 				+frandom[llmbeam](-1,1)
