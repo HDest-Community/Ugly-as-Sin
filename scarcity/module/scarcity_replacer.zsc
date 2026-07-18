@@ -98,12 +98,6 @@ extend class UaS_Scarcity_Handler {
 		}
 
 		// Replacer routines for equipment
-		else if (mo is 'HDMap') {
-			dbgActuallyHandled = true;
-			let spawnedMap = UaS_Automap(actor.Spawn('UaS_Automap', mo.pos));
-			if(spawnedMap) { spawnedMap.status = random(0, 2); }
-			mo.Destroy();
-		}
 		else if (mo is 'PortableLiteAmp') {
 			dbgActuallyHandled = true;
 			let spawnedLiteAmp = PortableLiteAmp(actor.Spawn('PortableLiteAmp', mo.pos));

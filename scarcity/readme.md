@@ -39,9 +39,6 @@ The following examples describe what happens with various combinations of **Scar
 In an attempt to make scarcity more interesting, some items have been replaced or augmented with new functionality:
 
 * Medikits: The auto-suture gun now has *reloadable* Second Flesh modules, which may be removed from the currently-held medikit with the `Unload` key, and inserted with the `AltReload` key. Modules may also spawn near broken-open medikits.
-* Automap: Now comes in "glitched" and "broken" variants.
-  * Glitched automaps have a flickering screen and will fail to pick up if the screen is dark, so wait for it to flicker on.
-  * Broken automaps simply have a blank screen, but can often be coaxed into a working/glitched state by repeated pickup attempts
 * Lite-Amp: The NVGs / lite-amp goggles now come in "glitched", "broken", and "smashed" variants, determined by an internal "brokenness" variable which can range from 0-500. The calculation to determine this value is complex, but is influenced by the **Overspawn** setting (higher overspawn == lower brokenness).
   * Glitched goggles (0-400 broken) may still be picked up and used, but will flicker badly (as if the battery were low).
   * Broken goggles (400-450 broken) may be picked up and used, but provide no light amplification and are basically only useful as green sunglasses. In the future, these may be repaired with the proper components or by changing maps, and so will still be worth picking up.
