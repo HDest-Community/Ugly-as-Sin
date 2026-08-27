@@ -13,7 +13,7 @@ enum UAS_LIB_CONSTANTS {
 extend class UaS_WeaponJammer {
 	void LiberatorJamming() {
 		wep = HDWeapon(owner.player.ReadyWeapon);
-		FlagSlot = LIBS_FLAGS;
+		FlagSlot = 0;
 		ChamberSlot = LIBS_CHAMBER;
 		MagSlot = LIBS_MAG;
 		HeatSlot = LIBS_HEAT;
