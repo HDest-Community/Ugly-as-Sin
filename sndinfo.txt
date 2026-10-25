@@ -31,8 +31,8 @@ UaS/respirator/vent			"respirator/sounds/resp_vent.wav"
 UaS/respirator/breathing	"respirator/sounds/resp_breathing.wav"
 UaS/respirator/toggle		"respirator/sounds/resp_toggle.wav"
 UaS/respirator/empty		"respirator/sounds/resp_empty.wav"
-UaS/respirator/click		"respirator/sounds/dsgrload.wav"
-UaS/respirator/pump			"respirator/sounds/dsland.ogg"
+UaS/respirator/click		dsgrload
+UaS/respirator/pump			dsland
 
 UaS/traumakit/biofoam		"dsfwoosh"
 
