@@ -7,7 +7,7 @@ class UaS_WeaponSling : HDPickup {
 	bool slingBraced;
 	string attachedWeapon;
 	int attachedPoints;
-	array<string> weaponList;
+	array<name> weaponList;
 
 	Default {
 		Inventory.Amount 1;
@@ -22,18 +22,18 @@ class UaS_WeaponSling : HDPickup {
 	}
 
 	override void BeginPlay() {
-		weaponList.push("hdpistol");
-		weaponList.push("hdrevolver");
-		weaponList.push("hdsmg");
-		weaponList.push("hunter");
-		weaponList.push("slayer");
-		weaponList.push("zm66assaultrifle");
-		weaponList.push("zm66semi");
-		weaponList.push("zm66regular");
-		weaponList.push("vulcanette");
-		weaponList.push("liberatorrifle");
-		weaponList.push("liberatornogl");
-		weaponList.push("bossrifle");
+		weaponList.push('HDPistol');
+		weaponList.push('HDRevolver');
+		weaponList.push('HDSMG');
+		weaponList.push('Hunter');
+		weaponList.push('Slayer');
+		weaponList.push('ZM66AssaultRifle');
+		weaponList.push('ZM66Semi');
+		weaponList.push('ZM66Regular');
+		weaponList.push('Vulcanette');
+		weaponList.push('LiberatorRifle');
+		weaponList.push('LiberatorNoGL');
+		weaponList.push('BossRifle');
 		super.BeginPlay();
 	}
 
